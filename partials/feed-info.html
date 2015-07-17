@@ -1,0 +1,97 @@
+<script type="text/template" id="feed-info">
+
+  <form id="feed-form">
+    <h1>Time to feed <%= data.baby %>!</h1>
+
+    <div class="pad-bottom-1em">
+      <h3>How much did she eat?</h3>
+      <section class="ounce-stepper">
+        <div class="stepper stepper-full">
+          <button class="btn btn-invert stepper-btn top-btn" data-direction="up">
+            <i class="fa fa-angle-up"></i>
+          </button>
+          <span>0</span>
+          <button class="btn btn-invert stepper-btn bottom-btn" data-direction="down">
+            <i class="fa fa-angle-down"></i>
+          </button>
+        </div>
+        <div class="stepper stepper-fractional">
+          <button class="btn btn-invert stepper-btn top-btn" data-direction="up">
+            <i class="fa fa-angle-up"></i>
+          </button>
+          <span>--</span>
+          <button class="btn btn-invert stepper-btn bottom-btn" data-direction="down">
+            <i class="fa fa-angle-down"></i>
+          </button>
+        </div>
+        <div class="ounce-label">
+          <label>Oz.</label>
+        </div>
+      </section>
+    </div>
+
+    <div class="pad-bottom-1em">
+      <h3>Any burp?</h3>
+      <div>
+        <span class="switch">
+          <input type="radio" name="burp" value="big"/>
+          <label>Big</label>
+        </span>
+        <span class="switch">
+          <input type="radio" name="burp" value="small" />
+          <label>Small</label>
+        </span>
+        <span class="switch">
+          <input type="radio" name="burp" value="none"/>
+          <label>None</label>
+        </span>
+      </div>
+    </div>
+
+    <div class="pad-bottom-1em">
+      <h3>Did she take any medicine?</h3>
+      <div>
+        <span class="switch">
+          <input type="checkbox" name="medicine" checked value="gasDrops"/>
+          <label>Gas Drops</label>
+        </span>
+        <span class="switch">
+          <input type="checkbox" name="medicine" value="zantac"/>
+          <label>Zantac</label>
+        </span>
+      </div>
+    </div>
+
+    <div class="pad-bottom-1em">
+      <h3>How was the diaper?</h3>
+      <div>
+        <span class="switch">
+          <input type="checkbox" name="diaper" checked  value="wet"/>
+          <label>Wet</label>
+        </span>
+        <span class="switch">
+          <input type="checkbox" name="diaper" value="small"/>
+          <label>Small Poop</label>
+        </span>
+        <span class="switch">
+          <input type="checkbox" name="diaper" value="big"/>
+          <label>Big Poop</label>
+        </span>
+      </div>
+      <div class="pad-bottom-1em">
+        <span class="switch">
+          <input type="checkbox" name="diaper" value="runny"/>
+          <label>Runny Poop</label>
+        </span>
+        <span class="switch">
+          <input type="checkbox" name="diaper" value="dry"/>
+          <label>Dry Poop</label>
+        </span>
+      </div>
+    </div>
+
+    <input type="submit" class="btn btn-invert submit-btn" />
+    <button class="btn btn-cancel btn-invert">Cancel</button>
+  </form>
+
+</script>

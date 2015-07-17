@@ -1,0 +1,24 @@
+<script type="text/template" id="overall-info">
+
+  <% _.forEach(data.babies, function(baby) { %>
+
+    <article>
+      <h2><%= baby.name %></h2>
+      <em>Next feeding at ~3:30am</em>
+      <p>Last Feeding</p>
+      <ul>
+        <li>
+          <%= baby.lastFeeding.amount %>oz at <%= baby.lastFeeding.time %>
+        </li>
+        <li>
+          <%= baby.lastFeeding.burp %> burp
+        </li>
+        <li>
+          <%= baby.lastFeeding.diaper %> diaper
+        </li>
+      </ul>
+    </article>
+
+  <% }); %>
+
+</script>
