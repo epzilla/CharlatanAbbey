@@ -70,30 +70,35 @@ gulp.task('sass', function () {
 
 /* Reload task */
 gulp.task('bs-reload', function () {
-    browserSync.reload();
+  browserSync.reload();
 });
 
-gulp.task('serve', ['default'], function() {
-  nodemon({
-    script: 'server.js',
-    ext: 'js html',
-    env: { 'ENVIRONMENT': 'dev' }
+gulp.task('browser-sync', ['nodemon'], function() {
+  browserSync.init(['css/*.css', 'js/*.js'], {
+    proxy: 'http://localhost:3000',
+    port: 4000
   });
 });
 
-/* Prepare Browser-sync for localhost */
-gulp.task('browser-sync', function() {
-  browserSync.init(['css/*.css', 'js/*.js'], {
-    /*
-    I like to use a vhost, WAMP guide: https://www.kristengrote.com/blog/articles/how-to-set-up-virtual-hosts-using-wamp, XAMP guide: http://sawmac.com/xampp/virtualhosts/
-    */
-    // proxy: 'your_dev_site.url'
-    /* For a static server you would use this: */
-
-    server: {
-      baseDir: './'
-    }
-
+gulp.task('nodemon', function (cb) {
+  var called = false;
+  return nodemon({
+    script: 'server.js',
+    nodeArgs: ['--debug'],
+    watch: ['models', 'routes', 'server.js', 'gulpfile.js']
+  })
+  .on('start', function onStart() {
+    // ensure start only got called once
+    if (!called) { cb(); }
+    called = true;
+  })
+  .on('restart', function onRestart() {
+    // reload connected browsers after a slight delay
+    setTimeout(function reload() {
+      browserSync.reload({
+        stream: false
+      });
+    }, 500);
   });
 });
 
@@ -102,24 +107,13 @@ gulp.task('watch', function () {
   /* Watch scss, run the sass task on change. */
   gulp.watch(['scss/*.scss', 'scss/**/*.scss'], ['sass']);
   /* Watch app.js file, run the scripts task on change. */
-  gulp.watch(['js/app.js'], ['scripts']);
+  // gulp.watch(['js/**/*.js'], ['bs-reload']);
   /* Watch .html files, run the bs-reload task on change. */
-  gulp.watch(['*.html'], ['bs-reload']);
-
-  nodemon({
-    script: 'server.js'
-  });
+  gulp.watch(['*.html', '*.js'], ['bs-reload']);
 });
 
 /* Watch scss, js and html files, doing different things with each. */
-gulp.task('default', ['sass', 'browser-sync', 'watch'], function () {
-  // /* Watch scss, run the sass task on change. */
-  // gulp.watch(['scss/*.scss', 'scss/**/*.scss'], ['sass']);
-  //  Watch app.js file, run the scripts task on change.
-  // gulp.watch(['js/app.js'], ['scripts']);
-  // /* Watch .html files, run the bs-reload task on change. */
-  // gulp.watch(['*.html'], ['bs-reload']);
-});
+gulp.task('default', ['sass', 'browser-sync', 'watch'], function () {});
 
 gulp.task('serve', ['sass', 'watch'], function () {
 
