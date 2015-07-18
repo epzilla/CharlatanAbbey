@@ -6,7 +6,9 @@ var FeedingSchema = new Schema({
   time: Date,
   burp: String,
   amount: Number,
-  diaper: String
+  diaper: String,
+  medicine: String,
+  spit: String
 });
 
 module.exports = mongoose.model('Feeding', FeedingSchema);
