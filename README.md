@@ -2,8 +2,8 @@
 Twin tracker
 
 ## Improvements
-- Add Tylenol
-- Add Eye Drops
+- Template caching
+- Add Tylenol & eye drops to Meds
 - Add Time of feeding (adjustment)
-- Add Alarm/Timer
-- Add spit-up
+- Add Alarm/Timer for holding/burping
+- Add Spit-up
