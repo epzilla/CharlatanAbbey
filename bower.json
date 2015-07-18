@@ -1,0 +1,26 @@
+{
+  "name": "CharlatanAbbey",
+  "version": "0.0.0",
+  "authors": [
+    "Adam Epling <adamepling@gmail.com>"
+  ],
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fastclick": "~1.0.6",
+    "fontawesome": "~4.3.0",
+    "hammerjs": "~2.0.4",
+    "lodash": "~3.10.0",
+    "qwest": "~1.7.0",
+    "moment-timezone": "~0.4.0"
+  }
+}

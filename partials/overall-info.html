@@ -8,7 +8,7 @@
       <p>Last Feeding</p>
       <ul>
         <li>
-          <%= baby.lastFeeding.amount %>oz at <%= baby.lastFeeding.time %>
+          <%= baby.lastFeeding.amount %>oz at <%= moment(new Date(baby.lastFeeding.time)).format('h:mma') %>
         </li>
         <li>
           <%= baby.lastFeeding.burp %> burp
