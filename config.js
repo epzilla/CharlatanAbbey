@@ -17,4 +17,5 @@ module.exports = {
   ADDRESS: address,
   DEV_DB_ADDRESS: 'mongodb://localhost:27017/charlatan',
   PROD_DB_ADDRESS: 'mongodb://snappycat:synapsefoosball@ds061661.mongolab.com:61661/heroku_app35867326',
+  TEMPLATE_DIR: 'partials'
 };

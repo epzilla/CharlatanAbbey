@@ -1,4 +1,7 @@
 var router = require('express').Router();
+var _ = require('lodash');
+var fs = require('fs');
+var config = require('../config');
 var Feeding = require('../models/feeding');
 
 router.use(function(req, res, next) {
@@ -26,6 +29,24 @@ router.post('/feedings', function (req, res) {
       res.status(500).send(err);
     }
     res.json(feeding);
+  });
+});
+
+router.get('/templates', function (req, res) {
+  fs.readdir(config.TEMPLATE_DIR, function (err, files) {
+    if (err) {
+      res.status(500).send(err);
+    }
+
+    var templates = [];
+
+    files.forEach(function (file) {
+      templates.push(fs.readFileSync(config.TEMPLATE_DIR + '/' + file, {
+        encoding: 'utf-8'
+      }));
+    });
+
+    res.send(templates);
   });
 });
 

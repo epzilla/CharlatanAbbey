@@ -1,40 +1,67 @@
 // Avoid `console` errors in browsers that lack a console.
 (function() {
-  var method;
-  var noop = function () {};
-  var methods = [
-  'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
-  'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
-  'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
-  'timeline', 'timelineEnd', 'timeStamp', 'trace', 'warn'
-  ];
-  var length = methods.length;
-  var console = (window.console = window.console || {});
 
-  while (length--) {
-    method = methods[length];
+  /**
+   * LocalStorage helper
+   */
+  window.ls = {
+    // Prefix to use for LocalStorage keys
+    prefix: 'charlatan-abbey',
 
-    // Only stub undefined methods.
-    if (!console[method]) {
-      console[method] = noop;
+    /**
+     * Store item in LocalStorage
+     * @param  {String} key - The key to store the item under
+     * @param  {Object} val - The object to store
+     * @return {Object} val
+     */
+    set: function(key, val) {
+      window.localStorage.setItem(this.prefix + '-' + key, JSON.stringify(val));
+      return val;
+    },
+
+    /**
+     * Retrieve an object from LocalStorage
+     * @param  {String} key - The key of the item to retrieve
+     * @return {Object}
+     */
+    get: function(key) {
+      return JSON.parse(window.localStorage.getItem(this.prefix + '-' + key));
+    },
+
+    /**
+     * Remove an object from LocalStorage
+     * @param  {String} key - The key of the item to remove
+     */
+    remove: function(key) {
+      window.localStorage.removeItem(this.prefix + '-' + key);
     }
-  }
+  };
 
-  window.renderIntoTemplate = function (thisTemplate, intoThatContainer, optionalData, callback) {
+  window.loadTemplates = function(done) {
+    var cachedTemplates = ls.get('templates');
     var req = new XMLHttpRequest();
+
     var handleResponse = function() {
       if (req.readyState === 4) {
-        if (req.status < 400) {
+        if (req.status >= 200 && req.status < 400) {
           var el = document.createElement('html');
           el.innerHTML = req.responseText;
-          var guts = el.querySelector('#' + thisTemplate).innerHTML;
-          var template = _.template(guts);
-          var container = document.getElementById(intoThatContainer);
-          container.innerHTML = template({data: optionalData ? optionalData : null});
-          if (callback) {
-            callback();
+          var templateNodes = el.querySelectorAll('script');
+          var templates = [];
+
+          [].forEach.call(templateNodes, function (node) {
+            templates.push({
+              id: node.getAttribute('id').replace(/\\"/g, ''),
+              template: node.innerHTML
+            });
+          });
+
+          window.templates = templates;
+          window.ls.set('templates', templates);
+
+          if (!cachedTemplates) {
+            done();
           }
-          return container;
         } else {
           console.error(req.responseText);
           return false;
@@ -43,7 +70,24 @@
     };
 
     req.onreadystatechange = handleResponse;
-    req.open('GET', '/partials/' + thisTemplate + '.html');
+    req.open('GET', '/api/templates');
     req.send();
+
+    if (cachedTemplates) {
+      window.templates = cachedTemplates;
+      done();
+    }
   };
+
+  window.renderIntoTemplate = function (thisTemplate, intoThatContainer, optionalData, callback) {
+    var container = document.getElementById(intoThatContainer);
+    var rawTemplate = _.find(window.templates, {id: thisTemplate}).template;
+    var template = _.template(rawTemplate.replace(/\\n/g, '').replace(/\\"/g, '"'));
+    container.innerHTML = template({data: optionalData ? optionalData : null});
+
+    if (callback) {
+      callback();
+    }
+  };
+
 }());

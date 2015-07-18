@@ -36,7 +36,6 @@ app.use('/api', routes);
 app.set('port', port);
 
 app.get('/*', function(req, res) {
-  console.log('loading index file');
   res.render('./index.html');
 });
 
