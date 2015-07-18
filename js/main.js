@@ -25,6 +25,7 @@
   });
 
   var history = window.ls.get('feedings');
+
   qwest.get('/api/feedings')
     .then(function (feedings) {
       if (!history || history.toString() !== feedings.toString()) {
@@ -35,7 +36,7 @@
       console.error(err);
     });
 
-  window.loadTemplates(function() {
+  window.loadTemplates(function () {
     renderIntoTemplate('overall-info', 'baby-info', info);
 
     var modalSheet = document.querySelector('.modal-sheet');

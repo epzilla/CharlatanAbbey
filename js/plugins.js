@@ -1,4 +1,3 @@
-// Avoid `console` errors in browsers that lack a console.
 (function() {
 
   /**
@@ -37,41 +36,37 @@
     }
   };
 
+  /**
+   * Load all templates from server and cache them client-side
+   * @param  {Function} done callback
+   */
   window.loadTemplates = function(done) {
     var cachedTemplates = ls.get('templates');
-    var req = new XMLHttpRequest();
 
-    var handleResponse = function() {
-      if (req.readyState === 4) {
-        if (req.status >= 200 && req.status < 400) {
-          var el = document.createElement('html');
-          el.innerHTML = req.responseText;
-          var templateNodes = el.querySelectorAll('script');
-          var templates = [];
+    qwest.get('/api/templates')
+      .then(function (response) {
+        var el = document.createElement('html');
+        el.innerHTML = response;
+        var templateNodes = el.querySelectorAll('script');
+        var templates = [];
 
-          [].forEach.call(templateNodes, function (node) {
-            templates.push({
-              id: node.getAttribute('id').replace(/\\"/g, ''),
-              template: node.innerHTML
-            });
+        [].forEach.call(templateNodes, function (node) {
+          templates.push({
+            id: node.getAttribute('id').replace(/\\"/g, ''),
+            template: node.innerHTML
           });
+        });
 
-          window.templates = templates;
-          window.ls.set('templates', templates);
+        window.templates = templates;
+        window.ls.set('templates', templates);
 
-          if (!cachedTemplates) {
-            done();
-          }
-        } else {
-          console.error(req.responseText);
-          return false;
+        if (!cachedTemplates) {
+          done();
         }
-      }
-    };
-
-    req.onreadystatechange = handleResponse;
-    req.open('GET', '/api/templates');
-    req.send();
+      })
+      .catch(function (err) {
+        console.error(err);
+      });
 
     if (cachedTemplates) {
       window.templates = cachedTemplates;
@@ -79,6 +74,13 @@
     }
   };
 
+  /**
+   * Render a template with optional data
+   * @param  {String}   thisTemplate      name of template
+   * @param  {String}   intoThatContainer ID of container into which to render
+   * @param  {Object}   optionalData      data object
+   * @param  {Function} callback
+   */
   window.renderIntoTemplate = function (thisTemplate, intoThatContainer, optionalData, callback) {
     var container = document.getElementById(intoThatContainer);
     var rawTemplate = _.find(window.templates, {id: thisTemplate}).template;

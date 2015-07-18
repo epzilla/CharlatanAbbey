@@ -1,24 +1,3 @@
-/*
-Gulpfile.js file for the tutorial:
-Using Gulp, SASS and Browser-Sync for your front end web development - DESIGNfromWITHIN
-http://designfromwithin.com/blog/gulp-sass-browser-sync-front-end-dev
-
-Steps:
-
-1. Install gulp globally:
-npm install --global gulp
-
-2. Type the following after navigating in your project folder:
-npm install gulp gulp-util gulp-sass gulp-uglify gulp-rename gulp-minify-css gulp-notify gulp-concat gulp-plumber browser-sync --save-dev
-
-3. Move this file in your project folder
-
-4. Setup your vhosts or just use static server (see 'Prepare Browser-sync for localhost' below)
-
-5. Type 'Gulp' and ster developing
-*/
-
-/* Needed gulp config */
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
@@ -32,12 +11,10 @@ var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 var nodemon = require('gulp-nodemon');
 
-/* Setup scss path */
 var paths = {
     scss: './sass/*.scss'
 };
 
-/* Scripts task */
 gulp.task('scripts', function() {
   return gulp.src([
     /* Add your JS files here, they will be combined in this order */
@@ -51,7 +28,6 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('js'));
 });
 
-/* Sass task */
 gulp.task('sass', function () {
     gulp.src('scss/main.scss')
     .pipe(plumber())
@@ -68,7 +44,6 @@ gulp.task('sass', function () {
     .pipe(reload({stream:true}));
 });
 
-/* Reload task */
 gulp.task('bs-reload', function () {
   browserSync.reload();
 });
