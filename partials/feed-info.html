@@ -4,13 +4,41 @@
     <h1>Time to feed <%= data.baby %>!</h1>
 
     <div class="pad-bottom-1em">
+      <h3>How long ago did the feeding start?</h3>
+      <div>
+        <span class="switch">
+          <input type="radio" name="time" value="0"/>
+          <label>Just Now</label>
+        </span>
+        <span class="switch">
+          <input type="radio" name="time" value="15"/>
+          <label>15 mins</label>
+        </span>
+        <span class="switch">
+          <input type="radio" name="time" checked value="30"/>
+          <label>30 mins</label>
+        </span>
+      </div>
+      <div>
+        <span class="switch">
+          <input type="radio" name="time" value="45"/>
+          <label>45 mins</label>
+        </span>
+        <span class="switch">
+          <input type="radio" name="time" value="60"/>
+          <label>An hour</label>
+        </span>
+      </div>
+    </div>
+
+    <div class="pad-bottom-1em">
       <h3>How much did she eat?</h3>
       <section class="ounce-stepper">
         <div class="stepper stepper-full">
           <button class="btn btn-invert stepper-btn top-btn" data-direction="up">
             <i class="fa fa-angle-up"></i>
           </button>
-          <span>0</span>
+          <span>2</span>
           <button class="btn btn-invert stepper-btn bottom-btn" data-direction="down">
             <i class="fa fa-angle-down"></i>
           </button>
@@ -34,7 +62,7 @@
       <h3>Any burp?</h3>
       <div>
         <span class="switch">
-          <input type="radio" name="burp" value="big"/>
+          <input type="radio" name="burp" checked value="big"/>
           <label>Big</label>
         </span>
         <span class="switch">
@@ -94,6 +122,24 @@
         <span class="switch">
           <input type="checkbox" name="diaper" value="dry"/>
           <label>Dry Poop</label>
+        </span>
+      </div>
+    </div>
+
+    <div class="pad-bottom-1em">
+      <h3>Any spit-up?</h3>
+      <div>
+        <span class="switch">
+          <input type="radio" name="spit" value="big"/>
+          <label>Big</label>
+        </span>
+        <span class="switch">
+          <input type="radio" name="spit" value="small"/>
+          <label>Small</label>
+        </span>
+        <span class="switch">
+          <input type="radio" name="spit" checked value="none"/>
+          <label>None</label>
         </span>
       </div>
     </div>

@@ -13,12 +13,12 @@ router.use(function(req, res, next) {
 
 router.get('/feedings', function (req, res) {
   Feeding.find()
-    .sort({'time': 'asc'})
+    .sort({'time': 'desc'})
     .exec(function(err, feedings) {
       if (err) {
         res.status(500).send(err);
       }
-      res.json(feedings);
+      res.json(_.groupBy(feedings, 'name'));
     });
 });
 

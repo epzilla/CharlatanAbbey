@@ -1,20 +1,22 @@
 <script type="text/template" id="overall-info">
 
-  <% _.forEach(data.babies, function(baby) { %>
+  <% _.forEach(data, function(feeding) { %>
 
     <article>
-      <h2><%= baby.name %></h2>
-      <em>Next feeding at ~3:30am</em>
+      <h2><%= feeding.name %></h2>
+      <em>Next feeding at ~
+        <%= moment(new Date(feeding.time)).add(3, 'hours').format('h:mma') %>
+      </em>
       <p>Last Feeding</p>
       <ul>
         <li>
-          <%= baby.lastFeeding.amount %>oz at <%= moment(new Date(baby.lastFeeding.time)).format('h:mma') %>
+          <%= feeding.amount %>oz at <%= moment(new Date(feeding.time)).format('h:mma') %>
         </li>
         <li>
-          <%= baby.lastFeeding.burp %> burp
+          <%= feeding.burp %> burp
         </li>
         <li>
-          <%= baby.lastFeeding.diaper %> diaper
+          <%= feeding.diaper %> diaper
         </li>
       </ul>
     </article>

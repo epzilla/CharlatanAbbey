@@ -1,35 +1,31 @@
 (function () {
-  var info = window.ls.get('baby-info') || window.ls.set('baby-info', {
-    babies: [
-    {
-      name: 'Charlotte',
-      lastFeeding: {
-        time: 'Mon Jul 13 2015 16:03:00 GMT-0500 (CDT)',
-        amount: '2.5',
-        burp: 'Big',
-        diaper: 'Normal Poop',
-        meds: 'Gas Drops'
-      },
-    },
-    {
-      name: 'Abby',
-      lastFeeding: {
-        time: 'Mon Jul 13 2015 15:47:00 GMT-0500 (CDT)',
-        amount: '2',
-        burp: 'Small',
-        diaper: 'Wet',
-        meds: 'Gas Drops'
-      },
-    }
-    ]
-  });
-
+  var babies = ['Charlotte', 'Abby'];
+  var latest = window.ls.get('latest-feedings');
   var history = window.ls.get('feedings');
+
+  console.log(history);
+  console.log(latest);
+
+  var pickLatestFeedings = function (sortedGroupedFeedings, babies) {
+    var tmp = [];
+
+    babies.forEach(function (baby) {
+      tmp.push(sortedGroupedFeedings[baby][0]);
+    });
+
+    return ls.set('latest-feedings', tmp);
+  };
+
+  if (history) {
+    latest = pickLatestFeedings(history, babies);
+  }
 
   qwest.get('/api/feedings')
     .then(function (feedings) {
       if (!history || history.toString() !== feedings.toString()) {
-        history = window.ls.set('feedings', feedings);
+        history = ls.set('feedings', feedings);
+        latest = pickLatestFeedings(history, babies);
+        renderIntoTemplate('overall-info', 'baby-info', latest);
       }
     })
     .catch(function (err) {
@@ -37,7 +33,7 @@
     });
 
   window.loadTemplates(function () {
-    renderIntoTemplate('overall-info', 'baby-info', info);
+    renderIntoTemplate('overall-info', 'baby-info', latest);
 
     var modalSheet = document.querySelector('.modal-sheet');
     var actionSheet = document.querySelector('.action-sheet');
@@ -128,17 +124,21 @@
 
       var submitFeedForm = function () {
         var amountEls = feedForm.querySelectorAll('.stepper span');
-        var burp = feedForm.querySelectorAll('input[name="burp"]:checked');
+        var burp = feedForm.querySelector('input[name="burp"]:checked');
         var diaper = feedForm.querySelectorAll('input[name="diaper"]:checked');
         var meds = feedForm.querySelectorAll('input[name="medicine"]:checked');
+        var timeAgo = feedForm.querySelector('input[name="time"]:checked');
+        var spit = feedForm.querySelector('input[name="spit"]:checked');
         var wholeNum = parseInt(amountEls[0].textContent);
         var fracNum = parseFloat(fractionToDecimal(amountEls[1].textContent));
-        console.log(wholeNum + fracNum);
+
         console.log({
           amount: (wholeNum + fracNum),
-          burp: getValsFromNodeList(burp),
+          burp: burp.value,
           diaper: getValsFromNodeList(diaper),
-          medicine: getValsFromNodeList(meds)
+          medicine: getValsFromNodeList(meds),
+          spit: spit.value,
+          time: moment(new Date()).subtract(parseInt(timeAgo.value), 'minutes').format()
         });
         closeModalSheet();
       };
@@ -197,7 +197,7 @@
     };
 
     logBtn.addEventListener('click', function (e) {
-      renderIntoTemplate('feed-btns', 'action-sheet', info, function () {
+      renderIntoTemplate('feed-btns', 'action-sheet', latest, function () {
         actionSheet.classList.add('show');
         setFeedClickHandlers();
       });

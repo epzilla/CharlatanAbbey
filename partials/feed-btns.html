@@ -1,5 +1,5 @@
 <script type="text/template" id="feed-btns">
-  <% _.forEach(data.babies, function(baby) { %>
+  <% _.forEach(data, function(baby) { %>
     <button class="btn feed-btn" data-baby="<%- baby.name %>">Feed <%= baby.name %></button>
   <% }); %>
 </script>
