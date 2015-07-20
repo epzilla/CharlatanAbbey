@@ -49,7 +49,7 @@ gulp.task('bs-reload', function () {
 });
 
 gulp.task('browser-sync', ['nodemon'], function() {
-  browserSync.init(['css/*.css', 'js/*.js'], {
+  browserSync.init(['css/*.css', 'js/*.js', '*.html'], {
     proxy: 'http://localhost:3000',
     port: 4000
   });
