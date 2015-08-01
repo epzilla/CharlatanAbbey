@@ -86,12 +86,17 @@
       return _.find(fractionalSteps, {displayValue: frac}).actualValue;
     };
 
-    var getValsFromNodeList = function (nodes) {
-      var vals = [];
+    var getValFromNodeList = function (nodes) {
+      var val = '';
+      var i = 0;
       [].forEach.call(nodes, function(node) {
-        vals.push(node.value);
+        if (i > 0) {
+          val += ', ' + node.value;
+        } else {
+          val += node.value;
+        }
       });
-      return vals;
+      return val;
     };
 
     var setFeedFormHandlers = function () {

@@ -13,10 +13,16 @@
           <%= feeding.amount %>oz at <%= moment(new Date(feeding.time)).format('h:mma') %>
         </li>
         <li>
-          <%= feeding.burp %> burp
+          Burp: <%= _.capitalize(feeding.burp) %>
         </li>
         <li>
-          <%= feeding.diaper %> diaper
+          Diaper: <%= _.capitalize(feeding.diaper) %>
+        </li>
+        <li>
+          Medicine: <%= _.capitalize(feeding.medicine) %>
+        </li>
+        <li>
+          Spit-up: <%= _.capitalize(feeding.spit) %>
         </li>
       </ul>
     </article>

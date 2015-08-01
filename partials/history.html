@@ -15,10 +15,10 @@
               <h5><%= moment(feeding.time).format('M/DD - h:mma') %></h5>
               <ul>
                 <li>Drank <%= feeding.amount %>oz.</li>
-                <li><%= feeding.diaper %> diaper</li>
-                <li><%= feeding.burp %> burp</li>
-                <li><%= feeding.medicine %></li>
-                <li><%= feeding.spit %> spit-up</li>
+                <li>_.capitalize(<%= feeding.diaper %>) diaper</li>
+                <li>_.capitalize(<%= feeding.burp %>) burp</li>
+                <li>_.capitalize(<%= feeding.medicine %>)</li>
+                <li>_.capitalize(<%= feeding.spit %>) spit-up</li>
               </ul>
             </div>
           <% }) %>
