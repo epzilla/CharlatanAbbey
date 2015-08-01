@@ -3,10 +3,12 @@ var sass = require('gulp-sass');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var notify = require('gulp-notify');
+var del = require('del');
 var autoprefixer = require('gulp-autoprefixer');
 var minifycss = require('gulp-minify-css');
 var concat = require('gulp-concat');
 var plumber = require('gulp-plumber');
+var runSequence = require('run-sequence');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 var nodemon = require('gulp-nodemon');
@@ -14,19 +16,6 @@ var nodemon = require('gulp-nodemon');
 var paths = {
   scss: './sass/*.scss'
 };
-
-gulp.task('scripts', function() {
-  return gulp.src([
-    /* Add your JS files here, they will be combined in this order */
-    'js/vendor/jquery-1.11.1.js',
-    'js/app.js'
-    ])
-    .pipe(concat('main.js'))
-    .pipe(gulp.dest('js'))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
-    .pipe(gulp.dest('js'));
-});
 
 gulp.task('sass', function () {
   gulp.src('scss/main.scss')
@@ -91,3 +80,65 @@ gulp.task('watch', function () {
 gulp.task('default', ['sass', 'browser-sync', 'watch'], function () {});
 
 gulp.task('serve', ['sass', 'watch'], function () {});
+
+
+//======================================================================
+//  BUILD STUFF
+//======================================================================
+gulp.task('bower_build', function () {
+  return gulp.src('bower_components/**/*')
+    .pipe(gulp.dest('build/bower_components'));
+});
+
+gulp.task('css_build', ['sass'], function  () {
+  return gulp.src('css/**/*')
+    .pipe(gulp.dest('build/css'));
+});
+
+gulp.task('js_build', function () {
+  return gulp.src([
+    /* Add your JS files here, they will be combined in this order */
+    'js/vendor/**/*.js',
+    'js/*.js'
+    ])
+    .pipe(concat('main.js'))
+    .pipe(gulp.dest('js'))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(uglify())
+    .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('misc_build', function () {
+  gulp.src('./img/**/*').pipe(gulp.dest('./build/img'));
+  gulp.src('./models/**/*').pipe(gulp.dest('./build/models'));
+  gulp.src('./partials/**/*').pipe(gulp.dest('./build/partials'));
+  gulp.src('./routes/**/*').pipe(gulp.dest('./build/routes'));
+  return gulp.src([
+    'index.html',
+    '404.html',
+    'Procfile',
+    'favicon.ico',
+    'config.js',
+    'robots.txt',
+    'package.json'
+    ]).pipe(gulp.dest('./build'));
+});
+
+gulp.task('clean_build', function () {
+  return del([
+    './build.**',
+    '!./build/.git'
+  ]);
+});
+
+gulp.task('build', function () {
+  runSequence(
+    'clean_build',
+    [
+      'bower_build',
+      'js_build',
+      'css_build'
+    ],
+    'misc_build'
+  );
+});
