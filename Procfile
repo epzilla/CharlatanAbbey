@@ -1,1 +1,1 @@
-web: NODE_ENV='prod' node erver.js
+web: NODE_ENV='production' node server.js
