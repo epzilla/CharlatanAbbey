@@ -3,7 +3,7 @@ env = process.env.NODE_ENV || 'dev';
 
 if (env === 'prod' || env === 'production') {
   address = 'http://charlatan-abbey.herokuapp.com';
-  port = 80;
+  port = process.env.PORT || 80;
 } else {
   address = 'http://localhost';
   port = 3000;

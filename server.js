@@ -35,6 +35,8 @@ if (env === 'prod' || env === 'production') {
 app.use('/api', routes);
 app.set('port', port);
 
+console.info('PORT : ' + port);
+
 app.get('/*', function(req, res) {
   res.render('./index.html');
 });
