@@ -272,3 +272,15 @@ h4 {
 .pad-bottom-1em {
   padding-bottom: 1em;
 }
+
+@media (max-width: $phoneish) {
+  .cell {
+    padding: 0.5em;
+    max-height: 10em;
+    height: auto;
+    ul {
+      font-size: 0.75em;
+      padding-left: 1em;
+    }
+  }
+}

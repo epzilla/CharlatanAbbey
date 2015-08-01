@@ -146,8 +146,8 @@
           amount: (wholeNum + fracNum),
           name: baby,
           burp: burp.value,
-          diaper: getValsFromNodeList(diaper),
-          medicine: getValsFromNodeList(meds),
+          diaper: getValFromNodeList(diaper),
+          medicine: getValFromNodeList(meds),
           spit: spit.value,
           time: moment(new Date()).subtract(parseInt(timeAgo.value), 'minutes').format()
         };
