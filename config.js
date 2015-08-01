@@ -1,8 +1,8 @@
 var address, env, port;
-env = 'dev';
+env = process.env.NODE_ENV || 'dev';
 
 if (env === 'prod' || env === 'production') {
-  address = 'http://some-place-tbd.com';
+  address = 'http://charlatan-abbey.herokuapp.com';
   port = 80;
 } else {
   address = 'http://localhost';
@@ -16,6 +16,6 @@ module.exports = {
   LOCAL_STORAGE_PREFIX: 'charlatan-abbey',
   ADDRESS: address,
   DEV_DB_ADDRESS: 'mongodb://localhost:27017/charlatan',
-  PROD_DB_ADDRESS: 'mongodb://user:pass@appnum.mongolab.com:port/heroku_app_id_num',
+  PROD_DB_ADDRESS: 'mongodb://archimedes:pinfeathers&gullyfluff@ds053808.mongolab.com:53808/heroku_mkjhj5wg',
   TEMPLATE_DIR: 'partials'
 };
