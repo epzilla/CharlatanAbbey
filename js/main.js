@@ -20,17 +20,21 @@
     latest = pickLatestFeedings(history, babies);
   }
 
-  qwest.get('/api/feedings')
-    .then(function (feedings) {
-      if (!history || history.toString() !== feedings.toString()) {
-        history = ls.set('feedings', feedings);
-        latest = pickLatestFeedings(history, babies);
-        renderIntoTemplate('overall-info', 'baby-info', latest);
-      }
-    })
-    .catch(function (err) {
-      console.error(err);
-    });
+  var loadHomeScreen = function () {
+    qwest.get('/api/feedings')
+      .then(function (feedings) {
+        if (!history || JSON.stringify(history) !== JSON.stringify(feedings)) {
+          history = ls.set('feedings', feedings);
+          latest = pickLatestFeedings(history, babies);
+          renderIntoTemplate('overall-info', 'baby-info', latest);
+        }
+      })
+      .catch(function (err) {
+        console.error(err);
+      });
+  };
+
+  loadHomeScreen();
 
   window.loadTemplates(function () {
     renderIntoTemplate('overall-info', 'baby-info', latest);
@@ -123,6 +127,7 @@
       };
 
       var submitFeedForm = function () {
+        var baby = feedForm.dataset.baby;
         var amountEls = feedForm.querySelectorAll('.stepper span');
         var burp = feedForm.querySelector('input[name="burp"]:checked');
         var diaper = feedForm.querySelectorAll('input[name="diaper"]:checked');
@@ -132,15 +137,21 @@
         var wholeNum = parseInt(amountEls[0].textContent);
         var fracNum = parseFloat(fractionToDecimal(amountEls[1].textContent));
 
-        console.log({
+        var feeding = {
           amount: (wholeNum + fracNum),
+          name: baby,
           burp: burp.value,
           diaper: getValsFromNodeList(diaper),
           medicine: getValsFromNodeList(meds),
           spit: spit.value,
           time: moment(new Date()).subtract(parseInt(timeAgo.value), 'minutes').format()
-        });
-        closeModalSheet();
+        };
+
+        qwest.post('/api/feedings', feeding)
+          .then(function() {
+            closeModalSheet();
+            loadHomeScreen();
+          });
       };
 
       feedForm.addEventListener('click', function(e) {
@@ -207,7 +218,7 @@
       renderIntoTemplate('history', 'right-sheet', history, function () {
         rightSheet.classList.add('show');
 
-        document.getElementById('feeding-list').innerHTML = JSON.stringify(history);
+        // document.getElementById('feeding-list').innerHTML = JSON.stringify(history);
 
         var closeBtn = document.querySelector('.close-btn');
         closeBtn.addEventListener('click', function (e) {

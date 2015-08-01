@@ -12,7 +12,7 @@ var reload = browserSync.reload;
 var nodemon = require('gulp-nodemon');
 
 var paths = {
-    scss: './sass/*.scss'
+  scss: './sass/*.scss'
 };
 
 gulp.task('scripts', function() {
@@ -29,19 +29,19 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('sass', function () {
-    gulp.src('scss/main.scss')
-    .pipe(plumber())
-    .pipe(sass({
-        includePaths: ['scss']
-    }))
-    .pipe(gulp.dest('css'))
-    .pipe(autoprefixer({
-      browsers: ['> 1%']
-    }))
-    .pipe(minifycss())
-    .pipe(gulp.dest('css'))
-    /* Reload the browser CSS after every change */
-    .pipe(reload({stream:true}));
+  gulp.src('scss/main.scss')
+  .pipe(plumber())
+  .pipe(sass({
+    includePaths: ['scss']
+  }))
+  .pipe(gulp.dest('css'))
+  .pipe(autoprefixer({
+    browsers: ['> 1%']
+  }))
+  .pipe(minifycss())
+  .pipe(gulp.dest('css'))
+  /* Reload the browser CSS after every change */
+  .pipe(reload({stream:true}));
 });
 
 gulp.task('bs-reload', function () {
@@ -90,6 +90,4 @@ gulp.task('watch', function () {
 /* Watch scss, js and html files, doing different things with each. */
 gulp.task('default', ['sass', 'browser-sync', 'watch'], function () {});
 
-gulp.task('serve', ['sass', 'watch'], function () {
-
-});
+gulp.task('serve', ['sass', 'watch'], function () {});

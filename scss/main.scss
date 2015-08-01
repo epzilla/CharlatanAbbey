@@ -37,6 +37,32 @@ h4 {
   margin: 0.1em 0;
 }
 
+.table {
+  display: flex;
+  justify-content: stretch;
+  background: aliceblue;
+  color: $slate;
+  .column {
+    width: 50%;
+  }
+  .cell {
+    padding: 1em;
+    border: 1px solid #C3C3C3;
+    height: 17em;
+    &.cell-header {
+      height: 3em;
+      padding: 0.5em 1em;
+      background: $seafoam;
+      border: 1px solid $seafoam;
+      color: aliceblue;
+      text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.31);
+    }
+    @media(min-width: $tabletportrait) {
+      height: 13em;
+    }
+  }
+}
+
 .btn {
   border-radius: 5px;
   background: aliceblue;
