@@ -15,7 +15,7 @@
           var poopFlag = poo.cloneNode(true);
           if (hoursSincePoop < 24) {
             sortedGroupedFeedings[baby][0].poopFlag = 0;
-          } else if (hoursSincePoop < 48) {
+          } else if (hoursSincePoop < 72) {
             sortedGroupedFeedings[baby][0].poopFlag = 1;
           } else {
             sortedGroupedFeedings[baby][0].poopFlag = 2;
