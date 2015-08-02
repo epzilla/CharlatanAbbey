@@ -3,7 +3,7 @@
   <% _.forEach(data, function(feeding) { %>
 
     <article>
-      <h2><%= feeding.name %></h2>
+      <h2><%= feeding.name %> <span class="replace-poop" data-poop="<%= feeding.poopFlag %>"></span></h2>
       <em>Next feeding at ~
         <%= moment(new Date(feeding.time)).add(3, 'hours').format('h:mma') %>
       </em>

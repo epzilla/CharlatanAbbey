@@ -21,6 +21,7 @@
     "hammerjs": "~2.0.4",
     "lodash": "~3.10.0",
     "qwest": "~1.7.0",
-    "moment-timezone": "~0.4.0"
+    "moment-timezone": "~0.4.0",
+    "emojify": "~1.1.0"
   }
 }

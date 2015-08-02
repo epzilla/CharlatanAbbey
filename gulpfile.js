@@ -101,10 +101,10 @@ gulp.task('js_build', function () {
     'js/vendor/**/*.js',
     'js/*.js'
     ])
-    .pipe(concat('main.js'))
-    .pipe(gulp.dest('js'))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
+    // .pipe(concat('main.js'))
+    // .pipe(gulp.dest('js'))
+    // .pipe(rename({suffix: '.min'}))
+    // .pipe(uglify())
     .pipe(gulp.dest('build/js'));
 });
 

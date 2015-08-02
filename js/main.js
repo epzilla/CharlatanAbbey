@@ -2,19 +2,61 @@
   var babies = ['Charlotte', 'Abby'];
   var latest = window.ls.get('latest-feedings');
   var history = window.ls.get('feedings');
-
-  console.log(history);
-  console.log(latest);
+  var emojifier = document.querySelector('.emojifier');
 
   var pickLatestFeedings = function (sortedGroupedFeedings, babies) {
     var tmp = [];
 
     babies.forEach(function (baby) {
+      for (var i = 0; i < sortedGroupedFeedings[baby].length; i++) {
+        var f = sortedGroupedFeedings[baby][i];
+        if (_.contains(f.diaper, 'poop')) {
+          var hoursSincePoop = moment(Date.now()).diff(f.time, 'hours');
+          var poopFlag = poo.cloneNode(true);
+          if (hoursSincePoop < 24) {
+            sortedGroupedFeedings[baby][0].poopFlag = 0;
+          } else if (hoursSincePoop < 48) {
+            sortedGroupedFeedings[baby][0].poopFlag = 1;
+          } else {
+            sortedGroupedFeedings[baby][0].poopFlag = 2;
+          }
+          break;
+        }
+      }
       tmp.push(sortedGroupedFeedings[baby][0]);
     });
 
     return ls.set('latest-feedings', tmp);
   };
+
+  var runEmoji = function (el) {
+    emojify.setConfig({
+      img_dir: '/bower_components/emojify/dist/images/basic',
+    });
+    emojify.run(el);
+    var emo = emojifier.cloneNode(true);
+    emo.style.display = 'inline';
+    return emo;
+  };
+
+  var colorPoop = function () {
+    var poopers = document.querySelectorAll('.replace-poop');
+    [].forEach.call(poopers, function (pooper) {
+      var newPoo = poo.cloneNode(true);
+      var pooLevel = parseInt(pooper.getAttribute('data-poop'));
+      if (pooLevel === 0) {
+        newPoo.classList.add('ok');
+      } else if (pooLevel === 1) {
+        newPoo.classList.add('warn');
+      } else {
+        newPoo.classList.add('uh-oh');
+      }
+      pooper.parentNode.appendChild(newPoo);
+      pooper.parentNode.removeChild(pooper);
+    });
+  };
+
+  var poo = runEmoji(emojifier);
 
   if (history) {
     latest = pickLatestFeedings(history, babies);
@@ -26,7 +68,9 @@
         if (!history || JSON.stringify(history) !== JSON.stringify(feedings)) {
           history = ls.set('feedings', feedings);
           latest = pickLatestFeedings(history, babies);
-          renderIntoTemplate('overall-info', 'baby-info', latest);
+          renderIntoTemplate('overall-info', 'baby-info', latest, function () {
+            colorPoop();
+          });
         }
       })
       .catch(function (err) {
@@ -37,8 +81,9 @@
   loadHomeScreen();
 
   window.loadTemplates(function () {
-    renderIntoTemplate('overall-info', 'baby-info', latest);
-
+    renderIntoTemplate('overall-info', 'baby-info', latest, function () {
+      colorPoop();
+    });
     var modalSheet = document.querySelector('.modal-sheet');
     var actionSheet = document.querySelector('.action-sheet');
     var rightSheet = document.querySelector('.right-sheet');
@@ -73,6 +118,8 @@
       }
     ];
 
+    runEmoji(emojifier);
+
     var closeRightSheet = function () {
       rightSheet.classList.remove('show');
     };
@@ -88,14 +135,13 @@
 
     var getValFromNodeList = function (nodes) {
       var val = '';
-      var i = 0;
-      [].forEach.call(nodes, function(node) {
+      for (var i = 0; i < nodes.length; i++) {
         if (i > 0) {
-          val += ', ' + node.value;
+          val += ' + ' + nodes[i].value;
         } else {
-          val += node.value;
+          val += nodes[i].value;
         }
-      });
+      }
       return val;
     };
 

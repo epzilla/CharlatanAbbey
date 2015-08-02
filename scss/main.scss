@@ -284,3 +284,22 @@ h4 {
     }
   }
 }
+
+.emojifier {
+  padding: 0 5px 5px 5px;
+  border-radius: 1em;
+  &.ok {
+    background-color: #2DB12D;
+  }
+  &.warn {
+    background-color: #F3F30C;
+  }
+  &.uh-oh {
+    background-color: #EA1E1E;
+  }
+  .emoji {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+  }
+}
