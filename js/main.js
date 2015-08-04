@@ -269,8 +269,6 @@
       renderIntoTemplate('history', 'right-sheet', history, function () {
         rightSheet.classList.add('show');
 
-        // document.getElementById('feeding-list').innerHTML = JSON.stringify(history);
-
         var closeBtn = document.querySelector('.close-btn');
         closeBtn.addEventListener('click', function (e) {
           closeRightSheet();
