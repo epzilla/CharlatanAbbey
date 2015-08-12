@@ -303,3 +303,7 @@ h4 {
     display: inline-block;
   }
 }
+
+.btn.btn-invert.submit-btn:disabled {
+  background-color: lighten($purps, 20%);
+}

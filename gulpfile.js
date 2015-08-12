@@ -119,6 +119,7 @@ gulp.task('misc_build', function () {
     'Procfile',
     'favicon.ico',
     'config.js',
+    'server.js',
     'robots.txt',
     'package.json'
     ]).pipe(gulp.dest('./build'));

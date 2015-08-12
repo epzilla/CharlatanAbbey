@@ -213,6 +213,7 @@
         if (el.classList.contains('btn')) {
           e.preventDefault();
           if (el.classList.contains('submit-btn')) {
+            el.disabled = true;
             submitFeedForm();
           } else if (el.classList.contains('btn-cancel')) {
             closeModalSheet();
