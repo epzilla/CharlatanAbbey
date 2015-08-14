@@ -19,10 +19,6 @@ var ActionButtons = React.createClass({
     this.setState({
       logEvent: false
     });
-    document.querySelector('.action-btns').classList.add('background');
-    window.setTimeout(function () {
-      document.querySelector('.action-btns').classList.remove('background');
-    }, 100);
   },
 
   _logEvent: function () {

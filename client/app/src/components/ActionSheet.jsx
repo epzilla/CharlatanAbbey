@@ -10,6 +10,7 @@ var EventBtn = React.createClass({
   mixins: [ Navigation ],
 
   _logEvent: function () {
+    this.props.dismiss();
     this.transitionTo('log-event', {name: this.props.baby.name});
   },
 
@@ -28,13 +29,10 @@ var EventBtn = React.createClass({
 
 var ActionSheet = React.createClass({
 
-  _logEvent: function () {
-    // body...
-  },
-
   render: function () {
+    var that = this;
     var babies = _.map(this.props.babies, function (baby) {
-      return <EventBtn key={'EventBtn' + baby.name} baby={baby}/>;
+      return <EventBtn key={'EventBtn' + baby.name} baby={baby} dismiss={that.props.dismiss}/>;
     });
 
     return (

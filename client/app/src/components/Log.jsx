@@ -7,7 +7,7 @@ var Link = Router.Link;
 var State = Router.State;
 var FeederStore = require('../stores/feeder-store');
 var _ = require('lodash');
-var cx = React.addons.classSet;
+var cx = require('classnames');
 
 var StepperBtn = React.createClass({
 
@@ -29,7 +29,7 @@ var StepperBtn = React.createClass({
     var dir = this.props.btnPos === 'top' ? 'up' : 'down';
 
     return (
-      <button className={btnClasses} data-direction={dir}>
+      <button className={btnClasses} data-direction={dir} onClick={this.props.onClick}>
         <i className={iClass}></i>
       </button>
     );
