@@ -42,8 +42,6 @@ var ActionSheet = React.createClass({
         <section key={'section' + this.props.babies[0].name} className="action-sheet flex-center flex-col" id="action-sheet">
           <div key={'div-babies'} className='baby-btn-container flex-center flex-row'>
             {babies}
-          </div>
-          <div key={'div-cancel'} className='cancel-btn-container flex-center flex-row'>
             <button key={'cancel' + this.props.babies[0].name}
               className="btn feed-btn cancel-btn"
               onClick={this.props.dismiss}>
