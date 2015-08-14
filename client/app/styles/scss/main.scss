@@ -196,32 +196,21 @@ h4 {
   width: 100%;
   min-height: 20%;
   padding: 1em;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   background: $translucentGrey;
-  transition: opacity 0.1s ease;
+  // transition: opacity 0.1s ease;
   button {
     margin: 0 0.5em 0 0;
   }
   &.background {
-    opacity: 0;
+    // opacity: 0;
   }
 }
 
-.modal-sheet, .action-sheet, .right-sheet {
-  &.show {
-    opacity: 1;
-    position: absolute;
-    transform: translateY(0%);
-  }
-}
-
-.modal-sheet, .action-sheet {
+.modal-sheet, .swipeable-action-sheet {
   left: 0;
   width: 100%;
-  // opacity: 0;
-  // transform: translateY(100%);
-  transition: all 0.3s ease;
 }
 
 .modal-sheet {
@@ -353,61 +342,33 @@ h4 {
   }
 }
 
-.action-sheet {
+.swipeable-action-sheet {
   height: 35%;
   bottom: 0;
   background: #111;
   z-index: 1;
-  position: fixed;
+  position: absolute;
   transition: all $transitionTime ease;
+  .action-sheet {
+    height: 100%;
+  }
 }
 
 .action-sheet-enter {
-  // FAKE
-  transform: translateY(1%);
-  opacity: 0;
-  transition: transform 0.01s linear;
-  .action-sheet {
-    // REAL
-    transform: translateY(100%);
-    opacity: 1;
-    transition: all $transitionTime ease;
-  }
+  transform: translateY(100%);
+  transition: transform $transitionTime linear;
   &.action-sheet-enter-active {
-    // FAKE
     transform: translateY(0%);
-    opacity: 0;
-    transition: all 0.01s linear;
-    .action-sheet {
-      // REAL
-      transform: translateY(0%);
-      opacity: 1;
-      transition: all $transitionTime ease;
-    }
+    transition: all $transitionTime linear;
   }
 }
 
 .action-sheet-leave {
-  // FAKE
-  transform: translate3d(0, 1%, 1px);
-  opacity: 1;
-  bottom: 0;
-  position: fixed;
-  width: 100%;
-  transition: all $transitionTime ease;
-  background-color: #111;
-  z-index: 1 !important;
-  height: 25%;
-  .action-sheet {
-    height: 100%;
-    transform: translate3d(0, 0, 1px);
-    z-index: 1;
-    transition: all 0.0001s linear;
-  }
+  transform: translateY(0%);
+  transition: transform $transitionTime linear;
   &.action-sheet-leave-active {
-    transform: translate3d(0, 100%, 1px);
-    transition: all $transitionTime ease;
-    z-index: 1;
+    transform: translateY(100%);
+    transition: all $transitionTime linear;
   }
 }
 

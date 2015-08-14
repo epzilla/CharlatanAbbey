@@ -200,7 +200,7 @@ var ActionSheet = React.createClass({displayName: "ActionSheet",
     });
 
     return (
-      React.createElement(Swipeable, {key: 'Swipeable' + this.props.babies[0].weight, onSwipedDown: this.props.dismiss}, 
+      React.createElement(Swipeable, {className: "swipeable-action-sheet", key: 'Swipeable' + this.props.babies[0].weight, onSwipedDown: this.props.dismiss}, 
         React.createElement("section", {key: 'section' + this.props.babies[0].name, className: "action-sheet flex-center flex-col", id: "action-sheet"}, 
           React.createElement("div", {key: 'div-babies', className: "baby-btn-container flex-center flex-row"}, 
             babies, 
