@@ -89,6 +89,8 @@ h4 {
       width: 47.5%;
       margin-left: 5%;
       text-align: center;
+      height: 4rem;
+      font-size: 1.5em;
       &:active {
         background: darken(#6FAABB, 25%);
       }
@@ -96,6 +98,8 @@ h4 {
     &.submit-btn {
       background: #2C9C3D;
       width: 47.5%;
+      height: 4rem;
+      font-size: 1.5em;
     }
   }
 }
@@ -350,7 +354,7 @@ h4 {
 }
 
 .action-sheet {
-  height: 25%;
+  height: 35%;
   bottom: 0;
   background: #111;
   z-index: 1;
