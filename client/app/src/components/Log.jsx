@@ -7,6 +7,81 @@ var Link = Router.Link;
 var State = Router.State;
 var FeederStore = require('../stores/feeder-store');
 var _ = require('lodash');
+var cx = React.addons.classSet;
+
+var StepperBtn = React.createClass({
+
+  render: function () {
+    var btnClasses = cx({
+      'btn': true,
+      'btn-invert': true,
+      'stepper-btn': true,
+      'top-btn': this.props.btnPos === 'top',
+      'bottom-btn': this.props.btnPos === 'bottom'
+    });
+
+    var iClass = cx({
+      'fa': true,
+      'fa-angle-up': this.props.btnPos === 'top',
+      'fa-angle-down': this.props.btnPos === 'bottom'
+    });
+
+    var dir = this.props.btnPos === 'top' ? 'up' : 'down';
+
+    return (
+      <button className={btnClasses} data-direction={dir}>
+        <i className={iClass}></i>
+      </button>
+    );
+  }
+});
+
+var Stepper = React.createClass({
+  _stepDown: function (e) {
+    e.preventDefault();
+    console.log('stepping down');
+  },
+
+  _stepUp: function (e) {
+    e.preventDefault();
+    console.log('stepping up');
+  },
+
+  render: function () {
+    var full = this.props.full;
+    var classes = cx({
+      'stepper': true,
+      'stepper-full': full,
+      'stepper-fractional': !full
+    });
+
+    var startVal = full ? 2 : '--';
+
+    return (
+      <div className={classes}>
+        <StepperBtn btnPos='top' onClick={this._stepUp}/>
+        <span>{startVal}</span>
+        <StepperBtn btnPos='bottom' onClick={this._stepDown}/>
+      </div>
+    );
+  }
+});
+
+var OunceStepper = React.createClass({
+
+  render: function () {
+    return (
+      <section className='ounce-stepper'>
+        <Stepper full />
+        <Stepper />
+        <div className='ounce-label'>
+          <label>Oz.</label>
+        </div>
+      </section>
+    );
+  }
+
+});
 
 var Log = React.createClass({
 
@@ -65,29 +140,7 @@ var Log = React.createClass({
 
           <div className='pad-bottom-1em'>
             <h3>How much did she eat?</h3>
-            <section className='ounce-stepper'>
-              <div className='stepper stepper-full'>
-                <button className='btn btn-invert stepper-btn top-btn' data-direction='up'>
-                  <i className='fa fa-angle-up'></i>
-                </button>
-                <span>2</span>
-                <button className='btn btn-invert stepper-btn bottom-btn' data-direction='down'>
-                  <i className='fa fa-angle-down'></i>
-                </button>
-              </div>
-              <div className='stepper stepper-fractional'>
-                <button className='btn btn-invert stepper-btn top-btn' data-direction='up'>
-                  <i className='fa fa-angle-up'></i>
-                </button>
-                <span>--</span>
-                <button className='btn btn-invert stepper-btn bottom-btn' data-direction='down'>
-                  <i className='fa fa-angle-down'></i>
-                </button>
-              </div>
-              <div className='ounce-label'>
-                <label>Oz.</label>
-              </div>
-            </section>
+            <OunceStepper />
           </div>
 
           <div className='pad-bottom-1em'>

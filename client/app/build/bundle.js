@@ -433,6 +433,81 @@ var Link = Router.Link;
 var State = Router.State;
 var FeederStore = require('../stores/feeder-store');
 var _ = require('lodash');
+var cx = React.addons.classSet;
+
+var StepperBtn = React.createClass({displayName: "StepperBtn",
+
+  render: function () {
+    var btnClasses = cx({
+      'btn': true,
+      'btn-invert': true,
+      'stepper-btn': true,
+      'top-btn': this.props.btnPos === 'top',
+      'bottom-btn': this.props.btnPos === 'bottom'
+    });
+
+    var iClass = cx({
+      'fa': true,
+      'fa-angle-up': this.props.btnPos === 'top',
+      'fa-angle-down': this.props.btnPos === 'bottom'
+    });
+
+    var dir = this.props.btnPos === 'top' ? 'up' : 'down';
+
+    return (
+      React.createElement("button", {className: btnClasses, "data-direction": dir}, 
+        React.createElement("i", {className: iClass})
+      )
+    );
+  }
+});
+
+var Stepper = React.createClass({displayName: "Stepper",
+  _stepDown: function (e) {
+    e.preventDefault();
+    console.log('stepping down');
+  },
+
+  _stepUp: function (e) {
+    e.preventDefault();
+    console.log('stepping up');
+  },
+
+  render: function () {
+    var full = this.props.full;
+    var classes = cx({
+      'stepper': true,
+      'stepper-full': full,
+      'stepper-fractional': !full
+    });
+
+    var startVal = full ? 2 : '--';
+
+    return (
+      React.createElement("div", {className: classes}, 
+        React.createElement(StepperBtn, {btnPos: "top", onClick: this._stepUp}), 
+        React.createElement("span", null, startVal), 
+        React.createElement(StepperBtn, {btnPos: "bottom", onClick: this._stepDown})
+      )
+    );
+  }
+});
+
+var OunceStepper = React.createClass({displayName: "OunceStepper",
+
+  render: function () {
+    return (
+      React.createElement("section", {className: "ounce-stepper"}, 
+        React.createElement(Stepper, {full: true}), 
+        React.createElement(Stepper, null), 
+        React.createElement("div", {className: "ounce-label"}, 
+          React.createElement("label", null, "Oz.")
+        )
+      )
+    );
+  }
+
+});
 
 var Log = React.createClass({displayName: "Log",
 
@@ -491,29 +566,7 @@ var Log = React.createClass({displayName: "Log",
 
           React.createElement("div", {className: "pad-bottom-1em"}, 
             React.createElement("h3", null, "How much did she eat?"), 
-            React.createElement("section", {className: "ounce-stepper"}, 
-              React.createElement("div", {className: "stepper stepper-full"}, 
-                React.createElement("button", {className: "btn btn-invert stepper-btn top-btn", "data-direction": "up"}, 
-                  React.createElement("i", {className: "fa fa-angle-up"})
-                ), 
-                React.createElement("span", null, "2"), 
-                React.createElement("button", {className: "btn btn-invert stepper-btn bottom-btn", "data-direction": "down"}, 
-                  React.createElement("i", {className: "fa fa-angle-down"})
-                )
-              ), 
-              React.createElement("div", {className: "stepper stepper-fractional"}, 
-                React.createElement("button", {className: "btn btn-invert stepper-btn top-btn", "data-direction": "up"}, 
-                  React.createElement("i", {className: "fa fa-angle-up"})
-                ), 
-                React.createElement("span", null, "--"), 
-                React.createElement("button", {className: "btn btn-invert stepper-btn bottom-btn", "data-direction": "down"}, 
-                  React.createElement("i", {className: "fa fa-angle-down"})
-                )
-              ), 
-              React.createElement("div", {className: "ounce-label"}, 
-                React.createElement("label", null, "Oz.")
-              )
-            )
+            React.createElement(OunceStepper, null)
           ), 
 
           React.createElement("div", {className: "pad-bottom-1em"}, 
