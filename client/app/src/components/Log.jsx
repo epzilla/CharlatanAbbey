@@ -37,14 +37,118 @@ var StepperBtn = React.createClass({
 });
 
 var Stepper = React.createClass({
+
+  _fractionalPointer: 0,
+  _fractions: [
+    {
+      displayValue: '--',
+      actualValue: 0
+    },
+    {
+      displayValue: '¼',
+      actualValue: 0.25
+    },
+    {
+      displayValue: '⅓',
+      actualValue: 0.33
+    },
+    {
+      displayValue: '½',
+      actualValue: 0.5
+    },
+    {
+      displayValue: '⅔',
+      actualValue: 0.66
+    },
+    {
+      displayValue: '¾',
+      actualValue: 0.75
+    }
+  ],
+
   _stepDown: function (e) {
     e.preventDefault();
-    console.log('stepping down');
+    return this.props.full ? this._stepDownFull() : this._stepDownFractional();
   },
 
   _stepUp: function (e) {
     e.preventDefault();
-    console.log('stepping up');
+    return this.props.full ? this._stepUpFull() : this._stepUpFractional();
+  },
+
+  _stepUpFull: function () {
+    var curVal = this.state.val;
+    curVal++;
+    this.setState({
+      val: curVal
+    });
+    this.props.onChange({
+      full: true,
+      amount: curVal
+    });
+  },
+
+  _stepUpFractional: function () {
+    var fracPointer = this.state.fraction;
+
+    if (fracPointer !== 5) {
+      fracPointer++;
+    } else {
+      fracPointer = 0;
+    }
+
+    this.setState({
+      fraction: fracPointer,
+      val: this._fractions[fracPointer].displayValue
+    });
+    this.props.onChange({
+      full: false,
+      amount: this._fractions[fracPointer]
+    });
+  },
+
+  _stepDownFull: function () {
+    var curVal = this.state.val;
+
+    if (curVal > 0) {
+      curVal--;
+    } else {
+      curVal = 0;
+    }
+
+    this.setState({
+      val: curVal
+    });
+    this.props.onChange({
+      full: true,
+      amount: curVal
+    });
+  },
+
+  _stepDownFractional: function () {
+    var fracPointer = this.state.fraction;
+
+    if (fracPointer !== 0) {
+      fracPointer--;
+    } else {
+      fracPointer = 5;
+    }
+
+    this.setState({
+      fraction: fracPointer,
+      val: this._fractions[fracPointer].displayValue
+    });
+    this.props.onChange({
+      full: false,
+      amount: this._fractions[fracPointer]
+    });
+  },
+
+  getInitialState: function () {
+    return {
+      val: this.props.full ? 2 : '--',
+      fraction: 0
+    };
   },
 
   render: function () {
@@ -55,12 +159,10 @@ var Stepper = React.createClass({
       'stepper-fractional': !full
     });
 
-    var startVal = full ? 2 : '--';
-
     return (
       <div className={classes}>
         <StepperBtn btnPos='top' onClick={this._stepUp}/>
-        <span>{startVal}</span>
+        <span>{this.state.val}</span>
         <StepperBtn btnPos='bottom' onClick={this._stepDown}/>
       </div>
     );
@@ -72,8 +174,8 @@ var OunceStepper = React.createClass({
   render: function () {
     return (
       <section className='ounce-stepper'>
-        <Stepper full />
-        <Stepper />
+        <Stepper full onChange={this.props.onChange}/>
+        <Stepper onChange={this.props.onChange}/>
         <div className='ounce-label'>
           <label>Oz.</label>
         </div>
@@ -87,19 +189,98 @@ var Log = React.createClass({
 
   mixins: [ State ],
 
+  _submit: function (e) {
+    e.preventDefault();
+    console.log(this.state);
+  },
+
+  _setFeedingTime: function (e) {
+    this.setState({
+      feedingTime: parseInt(e.target.value)
+    });
+  },
+
+  _setAmount: function (val) {
+    if (val.full) {
+      this.setState({
+        fullAmount: val.amount
+      });
+    } else {
+      this.setState({
+        fracAmount: val.amount.actualValue
+      });
+    }
+  },
+
+  _setFeeder: function (e) {
+    this.setState({
+      feeder: e.target.value
+    });
+  },
+
+  _setBurp: function (e) {
+    this.setState({
+      burp: e.target.value
+    });
+  },
+
+  _setMeds: function (e) {
+    var meds = this.state.medicine;
+    var val = e.target.value;
+
+    if (_.contains(meds, val)) {
+      meds = _.without(meds, val);
+    } else {
+      meds.push(val);
+    }
+
+    this.setState({
+      medicine: meds
+    });
+  },
+
+  _setDiaper: function (e) {
+    var diapers = this.state.diaper;
+    var val = e.target.value;
+
+    if (_.contains(diapers, val)) {
+      diapers = _.without(diapers, val);
+    } else {
+      diapers.push(val);
+    }
+
+    this.setState({
+      diaper: diapers
+    });
+  },
+
+  _setSpit: function (e) {
+    this.setState({
+      spit: e.target.value
+    });
+  },
+
   getInitialState: function () {
     return {
-      feeders: FeederStore.getFeeders()
+      fullAmount: 2,
+      fracAmount: 0,
+      feeders: FeederStore.getFeeders(),
+      medicine: [],
+      diaper: ['wet'],
+      feedingTime: 30,
+      burp: 'big',
+      spit: 'no'
     };
   },
 
   render: function () {
+    var that = this;
     var baby = this.getParams().name;
 
     var feeders = _.map(this.state.feeders, function (f) {
       return (
         <span className='switch' key={f.name}>
-          <input type='radio' name='feeder' value={f.name}/>
+          <input type='radio' name='feeder' onChange={that._setFeeder} value={f.name}/>
           <label>{f.name}</label>
         </span>
       );
@@ -107,32 +288,32 @@ var Log = React.createClass({
 
     return (
       <section className="modal-sheet">
-        <form id='feed-form' data-baby={baby}>
+        <form id='feed-form' data-baby={baby} onSubmit={this._submit}>
           <h1>Time to feed {baby}!</h1>
 
           <div className='pad-bottom-1em'>
             <h3>How long ago did the feeding start?</h3>
             <div>
               <span className='switch'>
-                <input type='radio' name='time' value='0'/>
+                <input type='radio' name='time' onChange={this._setFeedingTime} value='0'/>
                 <label>Just Now</label>
               </span>
               <span className='switch'>
-                <input type='radio' name='time' value='15'/>
+                <input type='radio' name='time' onChange={this._setFeedingTime} value='15'/>
                 <label>15 mins</label>
               </span>
               <span className='switch'>
-                <input type='radio' name='time' defaultChecked value='30'/>
+                <input type='radio' name='time' onChange={this._setFeedingTime} defaultChecked value='30'/>
                 <label>30 mins</label>
               </span>
             </div>
             <div>
               <span className='switch'>
-                <input type='radio' name='time' value='45'/>
+                <input type='radio' name='time' onChange={this._setFeedingTime} value='45'/>
                 <label>45 mins</label>
               </span>
               <span className='switch'>
-                <input type='radio' name='time' value='60'/>
+                <input type='radio' name='time' onChange={this._setFeedingTime} value='60'/>
                 <label>An hour</label>
               </span>
             </div>
@@ -140,7 +321,7 @@ var Log = React.createClass({
 
           <div className='pad-bottom-1em'>
             <h3>How much did she eat?</h3>
-            <OunceStepper />
+            <OunceStepper onChange={this._setAmount} />
           </div>
 
           <div className='pad-bottom-1em'>
@@ -154,15 +335,15 @@ var Log = React.createClass({
             <h3>Any burp?</h3>
             <div>
               <span className='switch'>
-                <input type='radio' name='burp' defaultChecked value='big'/>
+                <input type='radio' name='burp' onChange={this._setBurp} defaultChecked value='big'/>
                 <label>Big</label>
               </span>
               <span className='switch'>
-                <input type='radio' name='burp' value='small' />
+                <input type='radio' name='burp' onChange={this._setBurp} value='small' />
                 <label>Small</label>
               </span>
               <span className='switch'>
-                <input type='radio' name='burp' value='no'/>
+                <input type='radio' name='burp' onChange={this._setBurp} value='no'/>
                 <label>None</label>
               </span>
             </div>
@@ -172,19 +353,19 @@ var Log = React.createClass({
             <h3>Did she take any medicine?</h3>
             <div>
               <span className='switch'>
-                <input type='checkbox' name='medicine' defaultChecked value='gas drops'/>
+                <input type='checkbox' name='medicine' onChange={this._setMeds} value='gas drops'/>
                 <label>Gas Drops</label>
               </span>
               <span className='switch'>
-                <input type='checkbox' name='medicine' value='zantac'/>
+                <input type='checkbox' name='medicine' onChange={this._setMeds} value='zantac'/>
                 <label>Zantac</label>
               </span>
               <span className='switch'>
-                <input type='checkbox' name='medicine' value='eye drops'/>
+                <input type='checkbox' name='medicine' onChange={this._setMeds} value='eye drops'/>
                 <label>Eye Drops</label>
               </span>
               <span className='switch'>
-                <input type='checkbox' name='medicine' value='tylenol'/>
+                <input type='checkbox' name='medicine' onChange={this._setMeds} value='tylenol'/>
                 <label>Tylenol</label>
               </span>
             </div>
@@ -194,29 +375,29 @@ var Log = React.createClass({
             <h3>How was the diaper?</h3>
             <div>
               <span className='switch'>
-                <input type='checkbox' name='diaper' defaultChecked  value='wet'/>
+                <input type='checkbox' name='diaper' onChange={this._setDiaper} defaultChecked  value='wet'/>
                 <label>Wet</label>
               </span>
               <span className='switch'>
-                <input type='checkbox' name='diaper' value='small poop'/>
+                <input type='checkbox' name='diaper' onChange={this._setDiaper} value='small poop'/>
                 <label>Small Poop</label>
               </span>
               <span className='switch'>
-                <input type='checkbox' name='diaper' value='poop'/>
+                <input type='checkbox' name='diaper' onChange={this._setDiaper} value='poop'/>
                 <label>Normal Poop</label>
               </span>
               <span className='switch'>
-                <input type='checkbox' name='diaper' value='big poop'/>
+                <input type='checkbox' name='diaper' onChange={this._setDiaper} value='big poop'/>
                 <label>Big Poop</label>
               </span>
             </div>
             <div className='pad-bottom-1em'>
               <span className='switch'>
-                <input type='checkbox' name='diaper' value='runny poop'/>
+                <input type='checkbox' name='diaper' onChange={this._setDiaper} value='runny poop'/>
                 <label>Runny Poop</label>
               </span>
               <span className='switch'>
-                <input type='checkbox' name='diaper' value='dry poop'/>
+                <input type='checkbox' name='diaper' onChange={this._setDiaper} value='dry poop'/>
                 <label>Dry Poop</label>
               </span>
             </div>
@@ -226,15 +407,15 @@ var Log = React.createClass({
             <h3>Any spit-up?</h3>
             <div>
               <span className='switch'>
-                <input type='radio' name='spit' value='big'/>
+                <input type='radio' name='spit' onChange={this._setSpit} value='big'/>
                 <label>Big</label>
               </span>
               <span className='switch'>
-                <input type='radio' name='spit' value='small'/>
+                <input type='radio' name='spit' onChange={this._setSpit} value='small'/>
                 <label>Small</label>
               </span>
               <span className='switch'>
-                <input type='radio' name='spit' defaultChecked value='no'/>
+                <input type='radio' name='spit' onChange={this._setSpit} defaultChecked value='no'/>
                 <label>None</label>
               </span>
             </div>

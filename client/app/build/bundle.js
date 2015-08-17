@@ -457,14 +457,118 @@ var StepperBtn = React.createClass({displayName: "StepperBtn",
 });
 
 var Stepper = React.createClass({displayName: "Stepper",
+
+  _fractionalPointer: 0,
+  _fractions: [
+    {
+      displayValue: '--',
+      actualValue: 0
+    },
+    {
+      displayValue: '¼',
+      actualValue: 0.25
+    },
+    {
+      displayValue: '⅓',
+      actualValue: 0.33
+    },
+    {
+      displayValue: '½',
+      actualValue: 0.5
+    },
+    {
+      displayValue: '⅔',
+      actualValue: 0.66
+    },
+    {
+      displayValue: '¾',
+      actualValue: 0.75
+    }
+  ],
+
   _stepDown: function (e) {
     e.preventDefault();
-    console.log('stepping down');
+    return this.props.full ? this._stepDownFull() : this._stepDownFractional();
   },
 
   _stepUp: function (e) {
     e.preventDefault();
-    console.log('stepping up');
+    return this.props.full ? this._stepUpFull() : this._stepUpFractional();
+  },
+
+  _stepUpFull: function () {
+    var curVal = this.state.val;
+    curVal++;
+    this.setState({
+      val: curVal
+    });
+    this.props.onChange({
+      full: true,
+      amount: curVal
+    });
+  },
+
+  _stepUpFractional: function () {
+    var fracPointer = this.state.fraction;
+
+    if (fracPointer !== 5) {
+      fracPointer++;
+    } else {
+      fracPointer = 0;
+    }
+
+    this.setState({
+      fraction: fracPointer,
+      val: this._fractions[fracPointer].displayValue
+    });
+    this.props.onChange({
+      full: false,
+      amount: this._fractions[fracPointer]
+    });
+  },
+
+  _stepDownFull: function () {
+    var curVal = this.state.val;
+
+    if (curVal > 0) {
+      curVal--;
+    } else {
+      curVal = 0;
+    }
+
+    this.setState({
+      val: curVal
+    });
+    this.props.onChange({
+      full: true,
+      amount: curVal
+    });
+  },
+
+  _stepDownFractional: function () {
+    var fracPointer = this.state.fraction;
+
+    if (fracPointer !== 0) {
+      fracPointer--;
+    } else {
+      fracPointer = 5;
+    }
+
+    this.setState({
+      fraction: fracPointer,
+      val: this._fractions[fracPointer].displayValue
+    });
+    this.props.onChange({
+      full: false,
+      amount: this._fractions[fracPointer]
+    });
+  },
+
+  getInitialState: function () {
+    return {
+      val: this.props.full ? 2 : '--',
+      fraction: 0
+    };
   },
 
   render: function () {
@@ -475,12 +579,10 @@ var Stepper = React.createClass({displayName: "Stepper",
       'stepper-fractional': !full
     });
 
-    var startVal = full ? 2 : '--';
-
     return (
       React.createElement("div", {className: classes}, 
         React.createElement(StepperBtn, {btnPos: "top", onClick: this._stepUp}), 
-        React.createElement("span", null, startVal), 
+        React.createElement("span", null, this.state.val), 
         React.createElement(StepperBtn, {btnPos: "bottom", onClick: this._stepDown})
       )
     );
@@ -492,8 +594,8 @@ var OunceStepper = React.createClass({displayName: "OunceStepper",
   render: function () {
     return (
       React.createElement("section", {className: "ounce-stepper"}, 
-        React.createElement(Stepper, {full: true}), 
-        React.createElement(Stepper, null), 
+        React.createElement(Stepper, {full: true, onChange: this.props.onChange}), 
+        React.createElement(Stepper, {onChange: this.props.onChange}), 
         React.createElement("div", {className: "ounce-label"}, 
           React.createElement("label", null, "Oz.")
         )
@@ -507,19 +609,98 @@ var Log = React.createClass({displayName: "Log",
 
   mixins: [ State ],
 
+  _submit: function (e) {
+    e.preventDefault();
+    console.log(this.state);
+  },
+
+  _setFeedingTime: function (e) {
+    this.setState({
+      feedingTime: parseInt(e.target.value)
+    });
+  },
+
+  _setAmount: function (val) {
+    if (val.full) {
+      this.setState({
+        fullAmount: val.amount
+      });
+    } else {
+      this.setState({
+        fracAmount: val.amount.actualValue
+      });
+    }
+  },
+
+  _setFeeder: function (e) {
+    this.setState({
+      feeder: e.target.value
+    });
+  },
+
+  _setBurp: function (e) {
+    this.setState({
+      burp: e.target.value
+    });
+  },
+
+  _setMeds: function (e) {
+    var meds = this.state.medicine;
+    var val = e.target.value;
+
+    if (_.contains(meds, val)) {
+      meds = _.without(meds, val);
+    } else {
+      meds.push(val);
+    }
+
+    this.setState({
+      medicine: meds
+    });
+  },
+
+  _setDiaper: function (e) {
+    var diapers = this.state.diaper;
+    var val = e.target.value;
+
+    if (_.contains(diapers, val)) {
+      diapers = _.without(diapers, val);
+    } else {
+      diapers.push(val);
+    }
+
+    this.setState({
+      diaper: diapers
+    });
+  },
+
+  _setSpit: function (e) {
+    this.setState({
+      spit: e.target.value
+    });
+  },
+
   getInitialState: function () {
     return {
-      feeders: FeederStore.getFeeders()
+      fullAmount: 2,
+      fracAmount: 0,
+      feeders: FeederStore.getFeeders(),
+      medicine: [],
+      diaper: ['wet'],
+      feedingTime: 30,
+      burp: 'big',
+      spit: 'no'
     };
   },
 
   render: function () {
+    var that = this;
     var baby = this.getParams().name;
 
     var feeders = _.map(this.state.feeders, function (f) {
       return (
         React.createElement("span", {className: "switch", key: f.name}, 
-          React.createElement("input", {type: "radio", name: "feeder", value: f.name}), 
+          React.createElement("input", {type: "radio", name: "feeder", onChange: that._setFeeder, value: f.name}), 
           React.createElement("label", null, f.name)
         )
       );
@@ -527,32 +708,32 @@ var Log = React.createClass({displayName: "Log",
 
     return (
       React.createElement("section", {className: "modal-sheet"}, 
-        React.createElement("form", {id: "feed-form", "data-baby": baby}, 
+        React.createElement("form", {id: "feed-form", "data-baby": baby, onSubmit: this._submit}, 
           React.createElement("h1", null, "Time to feed ", baby, "!"), 
 
           React.createElement("div", {className: "pad-bottom-1em"}, 
             React.createElement("h3", null, "How long ago did the feeding start?"), 
             React.createElement("div", null, 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", value: "0"}), 
+                React.createElement("input", {type: "radio", name: "time", onChange: this._setFeedingTime, value: "0"}), 
                 React.createElement("label", null, "Just Now")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", value: "15"}), 
+                React.createElement("input", {type: "radio", name: "time", onChange: this._setFeedingTime, value: "15"}), 
                 React.createElement("label", null, "15 mins")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", defaultChecked: true, value: "30"}), 
+                React.createElement("input", {type: "radio", name: "time", onChange: this._setFeedingTime, defaultChecked: true, value: "30"}), 
                 React.createElement("label", null, "30 mins")
               )
             ), 
             React.createElement("div", null, 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", value: "45"}), 
+                React.createElement("input", {type: "radio", name: "time", onChange: this._setFeedingTime, value: "45"}), 
                 React.createElement("label", null, "45 mins")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", value: "60"}), 
+                React.createElement("input", {type: "radio", name: "time", onChange: this._setFeedingTime, value: "60"}), 
                 React.createElement("label", null, "An hour")
               )
             )
@@ -560,7 +741,7 @@ var Log = React.createClass({displayName: "Log",
 
           React.createElement("div", {className: "pad-bottom-1em"}, 
             React.createElement("h3", null, "How much did she eat?"), 
-            React.createElement(OunceStepper, null)
+            React.createElement(OunceStepper, {onChange: this._setAmount})
           ), 
 
           React.createElement("div", {className: "pad-bottom-1em"}, 
@@ -574,15 +755,15 @@ var Log = React.createClass({displayName: "Log",
             React.createElement("h3", null, "Any burp?"), 
             React.createElement("div", null, 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "burp", defaultChecked: true, value: "big"}), 
+                React.createElement("input", {type: "radio", name: "burp", onChange: this._setBurp, defaultChecked: true, value: "big"}), 
                 React.createElement("label", null, "Big")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "burp", value: "small"}), 
+                React.createElement("input", {type: "radio", name: "burp", onChange: this._setBurp, value: "small"}), 
                 React.createElement("label", null, "Small")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "burp", value: "no"}), 
+                React.createElement("input", {type: "radio", name: "burp", onChange: this._setBurp, value: "no"}), 
                 React.createElement("label", null, "None")
               )
             )
@@ -592,19 +773,19 @@ var Log = React.createClass({displayName: "Log",
             React.createElement("h3", null, "Did she take any medicine?"), 
             React.createElement("div", null, 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "medicine", defaultChecked: true, value: "gas drops"}), 
+                React.createElement("input", {type: "checkbox", name: "medicine", onChange: this._setMeds, value: "gas drops"}), 
                 React.createElement("label", null, "Gas Drops")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "medicine", value: "zantac"}), 
+                React.createElement("input", {type: "checkbox", name: "medicine", onChange: this._setMeds, value: "zantac"}), 
                 React.createElement("label", null, "Zantac")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "medicine", value: "eye drops"}), 
+                React.createElement("input", {type: "checkbox", name: "medicine", onChange: this._setMeds, value: "eye drops"}), 
                 React.createElement("label", null, "Eye Drops")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "medicine", value: "tylenol"}), 
+                React.createElement("input", {type: "checkbox", name: "medicine", onChange: this._setMeds, value: "tylenol"}), 
                 React.createElement("label", null, "Tylenol")
               )
             )
@@ -614,29 +795,29 @@ var Log = React.createClass({displayName: "Log",
             React.createElement("h3", null, "How was the diaper?"), 
             React.createElement("div", null, 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "diaper", defaultChecked: true, value: "wet"}), 
+                React.createElement("input", {type: "checkbox", name: "diaper", onChange: this._setDiaper, defaultChecked: true, value: "wet"}), 
                 React.createElement("label", null, "Wet")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "diaper", value: "small poop"}), 
+                React.createElement("input", {type: "checkbox", name: "diaper", onChange: this._setDiaper, value: "small poop"}), 
                 React.createElement("label", null, "Small Poop")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "diaper", value: "poop"}), 
+                React.createElement("input", {type: "checkbox", name: "diaper", onChange: this._setDiaper, value: "poop"}), 
                 React.createElement("label", null, "Normal Poop")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "diaper", value: "big poop"}), 
+                React.createElement("input", {type: "checkbox", name: "diaper", onChange: this._setDiaper, value: "big poop"}), 
                 React.createElement("label", null, "Big Poop")
               )
             ), 
             React.createElement("div", {className: "pad-bottom-1em"}, 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "diaper", value: "runny poop"}), 
+                React.createElement("input", {type: "checkbox", name: "diaper", onChange: this._setDiaper, value: "runny poop"}), 
                 React.createElement("label", null, "Runny Poop")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "checkbox", name: "diaper", value: "dry poop"}), 
+                React.createElement("input", {type: "checkbox", name: "diaper", onChange: this._setDiaper, value: "dry poop"}), 
                 React.createElement("label", null, "Dry Poop")
               )
             )
@@ -646,15 +827,15 @@ var Log = React.createClass({displayName: "Log",
             React.createElement("h3", null, "Any spit-up?"), 
             React.createElement("div", null, 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "spit", value: "big"}), 
+                React.createElement("input", {type: "radio", name: "spit", onChange: this._setSpit, value: "big"}), 
                 React.createElement("label", null, "Big")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "spit", value: "small"}), 
+                React.createElement("input", {type: "radio", name: "spit", onChange: this._setSpit, value: "small"}), 
                 React.createElement("label", null, "Small")
               ), 
               React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "spit", defaultChecked: true, value: "no"}), 
+                React.createElement("input", {type: "radio", name: "spit", onChange: this._setSpit, defaultChecked: true, value: "no"}), 
                 React.createElement("label", null, "None")
               )
             )
