@@ -3,32 +3,32 @@
 
 var React = require('react');
 var FeedingInfo = require('./FeedingInfo.jsx');
-var FeedingStore = require('../stores/feeding-store');
+var EventStore = require('../stores/event-store');
 var BabyStore = require('../stores/baby-store');
 var ActionButtons = require('./ActionButtons.jsx');
 
 var APP = React.createClass({
   getInitialState: function(){
     return {
-      feedings: FeedingStore.getLatestFeedings(),
+      feedings: EventStore.getLatestFeedings(),
       babies: BabyStore.getBabies()
     };
   },
 
   _onChange: function(){
     this.setState({
-      feedings: FeedingStore.getLatestFeedings(),
+      feedings: EventStore.getLatestFeedings(),
       babies: BabyStore.getBabies()
     });
   },
 
   componentDidMount: function(){
-    FeedingStore.addChangeListener(this._onChange);
+    EventStore.addChangeListener(this._onChange);
     BabyStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function(){
-    FeedingStore.removeChangeListener(this._onChange);
+    EventStore.removeChangeListener(this._onChange);
     BabyStore.removeChangeListener(this._onChange);
   },
 

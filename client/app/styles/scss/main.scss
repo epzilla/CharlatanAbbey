@@ -356,19 +356,19 @@ h4 {
 
 .action-sheet-enter {
   transform: translateY(100%);
-  transition: transform $transitionTime ease;
+  transition: transform $transitionTime linear;
   &.action-sheet-enter-active {
     transform: translateY(0%);
-    transition: all $transitionTime ease;
+    transition: all $transitionTime linear;
   }
 }
 
 .action-sheet-leave {
   transform: translateY(0%);
-  transition: transform $transitionTime ease;
+  transition: transform $transitionTime linear;
   &.action-sheet-leave-active {
     transform: translateY(100%);
-    transition: all $transitionTime ease;
+    transition: all $transitionTime linear;
   }
 }
 

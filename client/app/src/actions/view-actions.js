@@ -7,6 +7,10 @@ var API = require('../utils/api');
 var ViewActions = {
   getFeeders: function () {
     API.getFeeders();
+  },
+
+  submitEventForm: function (formValues) {
+    API.submitEvent(formValues);
   }
 };
 

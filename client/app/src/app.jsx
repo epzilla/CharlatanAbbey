@@ -34,7 +34,7 @@ var routes = (
 );
 
 document.addEventListener('DOMContentLoaded', function () {
-  API.getFeedings();
+  API.getEvents();
   API.getBabies();
   Router.run(routes, Router.HistoryLocation, function (Handler) {
     React.render(<Handler/>, document.body);

@@ -15,7 +15,8 @@ var reload = browserSync.reload;
 var paths = {
     app: ['./client/app/src/app.jsx'],
     js: ['./client/app/src/**/*.*'],
-    scss: ['./client/app/styles/scss/**/*.scss']
+    scss: ['./client/app/styles/scss/**/*.scss'],
+    img: ['./client/app/img/**/*']
 };
 
 gulp.task('sass', function () {

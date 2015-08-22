@@ -21,7 +21,7 @@ var EventBtn = React.createClass({
         key={'button' + baby.birth}
         className="btn feed-btn"
         onClick={this._logEvent}>
-        Feed {baby.name}
+        Log {baby.name}
       </button>
     );
   }

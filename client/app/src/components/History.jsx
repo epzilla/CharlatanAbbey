@@ -5,7 +5,7 @@ var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
 var Navigation = Router.Navigation;
-var FeedingStore = require('../stores/feeding-store');
+var EventStore = require('../stores/event-store');
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var Swipeable = require('react-swipeable');
@@ -54,7 +54,7 @@ var History = React.createClass({
 
   _onChange: function () {
     this.setState({
-      feedings: FeedingStore.getFeedings()
+      feedings: EventStore.getFeedings()
     });
   },
 
@@ -64,16 +64,16 @@ var History = React.createClass({
 
   getInitialState: function () {
     return {
-      feedings: FeedingStore.getFeedings()
+      feedings: EventStore.getFeedings()
     };
   },
 
   componentDidMount: function () {
-    FeedingStore.addChangeListener(this._onChange);
+    EventStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function () {
-    FeedingStore.removeChangeListener(this._onChange);
+    EventStore.removeChangeListener(this._onChange);
   },
 
   render: function () {

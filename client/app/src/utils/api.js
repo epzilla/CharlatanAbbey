@@ -8,21 +8,33 @@ if (!String.prototype.includes) {
 }
 
 module.exports = {
-  getFeedings: function() {
-    return Rest.get('/api/feedings').then(function(res) {
+  getEvents: function () {
+    return Rest.get('/api/events').then(function (res) {
+      ServerActions.receiveEvents(res.response);
+    });
+  },
+
+  getFeedings: function () {
+    return Rest.get('/api/events/feedings').then(function (res) {
       ServerActions.receiveFeedings(res.response);
     });
   },
 
-  getBabies: function() {
-    return Rest.get('/api/babies').then(function(res) {
+  getBabies: function () {
+    return Rest.get('/api/babies').then(function (res) {
       ServerActions.receiveBabies(res.response);
     });
   },
 
-  getFeeders: function() {
-    return Rest.get('/api/feeders').then(function(res) {
+  getFeeders: function () {
+    return Rest.get('/api/feeders').then(function (res) {
       ServerActions.receiveFeeders(res.response);
+    });
+  },
+
+  submitEvent: function (info) {
+    return Rest.post('/api/events', info).then(function (res) {
+      ServerActions.successfulEventPost(res.response);
     });
   }
 };
