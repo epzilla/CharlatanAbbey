@@ -154,6 +154,7 @@ h4 {
   width: 5em;
   display: inline-block;
   font-weight: bold;
+  margin-right: 1em;
   .btn {
     position: absolute;
     font-weight: bold;
@@ -455,5 +456,16 @@ h4 {
     background-color: #C74444;
     color: white;
     margin-bottom: 1em;
+  }
+}
+
+.big-colon {
+  position: relative;
+  &:after {
+    content: ':';
+    font-size: 2em;
+    position: absolute;
+    top: -2.65em;
+    left: -0.4em;
   }
 }

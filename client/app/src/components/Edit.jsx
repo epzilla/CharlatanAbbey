@@ -10,6 +10,7 @@ var EventStore = require('../stores/event-store');
 var Actions = require('../actions/view-actions');
 var _ = require('lodash');
 var moment = require('moment-timezone');
+var TimeStepper = require('./TimeStepper.jsx');
 var OunceStepper = require('./OunceStepper.jsx');
 
 var Edit = React.createClass({
@@ -39,8 +40,9 @@ var Edit = React.createClass({
   },
 
   _setEventTime: function (e) {
+    console.log(e);
     this.setState({
-      time: parseInt(e.target.value)
+      time: e
     });
   },
 
@@ -119,7 +121,7 @@ var Edit = React.createClass({
   getInitialState: function () {
     return {
       logEvent: EventStore.getEvent(this.props.params.logEvent),
-      feeders: FeederStore.getFeeders()
+      feeders: FeederStore.getFeeders(),
     };
   },
 
@@ -127,6 +129,8 @@ var Edit = React.createClass({
     var that = this;
     var logEvent = this.state.logEvent;
     var baby = logEvent.name;
+    var time = moment(logEvent.time);
+
     var ounceField, feederField, medField, burpField, diaperField, spitField;
 
     if (logEvent.eventType === 'feeding') {
@@ -307,31 +311,8 @@ var Edit = React.createClass({
           </div>
 
           <div className='pad-bottom-1em'>
-            <h3>How long ago?</h3>
-            <div>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} value='0'/>
-                <label>Just Now</label>
-              </span>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} value='15'/>
-                <label>15 mins</label>
-              </span>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} defaultChecked value='30'/>
-                <label>30 mins</label>
-              </span>
-            </div>
-            <div>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} value='45'/>
-                <label>45 mins</label>
-              </span>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} value='60'/>
-                <label>An hour</label>
-              </span>
-            </div>
+            <h3>What Time?</h3>
+            <TimeStepper time={time} onChange={this._setEventTime}/>
           </div>
 
           {ounceField}
