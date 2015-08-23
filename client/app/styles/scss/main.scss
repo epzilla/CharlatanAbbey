@@ -11,10 +11,17 @@
 }
 
 html, body {
-  height: 100%;
   background: $purps;
   color: #FAFAFA;
   font-family: $mainFont;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
 }
 
 h1, h2 {
@@ -196,7 +203,7 @@ h4 {
   width: 100%;
   min-height: 20%;
   padding: 1em;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   background: $translucentGrey;
   // transition: opacity 0.1s ease;
@@ -315,7 +322,7 @@ h4 {
 }
 
 .right-sheet {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   padding: 1em;
