@@ -3,7 +3,6 @@
 
 var React = require('react');
 var Router = require('react-router');
-var Link = Router.Link;
 var State = Router.State;
 var Navigation = Router.Navigation;
 var FeederStore = require('../stores/feeder-store');
@@ -13,14 +12,14 @@ var _ = require('lodash');
 var moment = require('moment-timezone');
 var OunceStepper = require('./OunceStepper.jsx');
 
-var Log = React.createClass({
+var Edit = React.createClass({
 
   mixins: [ State, Navigation ],
 
   _submit: function (e) {
     e.preventDefault();
-    console.log(this.state);
-    Actions.submitEventForm({
+
+    Actions.editEventForm({
       name: this.state.baby,
       eventType: this.state.eventType,
       burp: this.state.burp,
@@ -119,36 +118,33 @@ var Log = React.createClass({
 
   getInitialState: function () {
     return {
-      fullAmount: 2,
-      fracAmount: 0,
-      feeders: FeederStore.getFeeders(),
-      medicine: [],
-      diaper: ['wet'],
-      time: 30,
-      burp: 'big',
-      spit: 'no',
-      eventType: 'feeding',
-      baby: this.props.params.name
+      logEvent: EventStore.getEvent(this.props.params.logEvent),
+      feeders: FeederStore.getFeeders()
     };
   },
 
   render: function () {
     var that = this;
-    var baby = this.props.params.name;
+    var logEvent = this.state.logEvent;
+    var baby = logEvent.name;
     var ounceField, feederField, medField, burpField, diaperField, spitField;
 
-    if (this.state.eventType === 'feeding') {
+    if (logEvent.eventType === 'feeding') {
       ounceField = (
         <div className='pad-bottom-1em ounce-field'>
           <h3>How much did she eat?</h3>
-          <OunceStepper onChange={this._setAmount} />
+          <OunceStepper onChange={this._setAmount} initialValue={logEvent.amount}/>
         </div>
       );
 
       var feeders = _.map(this.state.feeders, function (f) {
         return (
           <span className='switch' key={f.name}>
-            <input type='radio' name='feeder' onChange={that._setFeeder} value={f.name}/>
+            <input type='radio'
+                   name='feeder'
+                   onChange={that._setFeeder}
+                   value={f.name}
+                   defaultChecked={logEvent.feeder === f.name}/>
             <label>{f.name}</label>
           </span>
         );
@@ -164,21 +160,21 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'burp') {
+    if (logEvent.eventType === 'feeding' || logEvent.eventType === 'burp') {
       burpField = (
         <div className='pad-bottom-1em burp-field'>
           <h3>Any burp?</h3>
           <div>
             <span className='switch'>
-              <input type='radio' name='burp' onChange={this._setBurp} defaultChecked value='big'/>
+              <input type='radio' name='burp' onChange={this._setBurp} defaultChecked={logEvent.burp === 'big'} value='big'/>
               <label>Big</label>
             </span>
             <span className='switch'>
-              <input type='radio' name='burp' onChange={this._setBurp} value='small' />
+              <input type='radio' name='burp' onChange={this._setBurp} defaultChecked={logEvent.burp === 'small'} value='small' />
               <label>Small</label>
             </span>
             <span className='switch'>
-              <input type='radio' name='burp' onChange={this._setBurp} value='no'/>
+              <input type='radio' name='burp' onChange={this._setBurp} defaultChecked={logEvent.burp === 'no'} value='no'/>
               <label>None</label>
             </span>
           </div>
@@ -186,25 +182,29 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'meds') {
+    if (logEvent.eventType === 'feeding' || logEvent.eventType === 'meds') {
       medField = (
         <div className='pad-bottom-1em meds-field'>
           <h3>Did she take any medicine?</h3>
           <div>
             <span className='switch'>
-              <input type='checkbox' name='medicine' onChange={this._setMeds} value='gas drops'/>
+              <input type='checkbox' name='medicine' onChange={this._setMeds}
+                     defaultChecked={_.contains(logEvent.medicine, 'gas drops')} value='gas drops'/>
               <label>Gas Drops</label>
             </span>
             <span className='switch'>
-              <input type='checkbox' name='medicine' onChange={this._setMeds} value='zantac'/>
+              <input type='checkbox' name='medicine' onChange={this._setMeds}
+                     defaultChecked={_.contains(logEvent.medicine, 'zantac')} value='zantac'/>
               <label>Zantac</label>
             </span>
             <span className='switch'>
-              <input type='checkbox' name='medicine' onChange={this._setMeds} value='eye drops'/>
+              <input type='checkbox' name='medicine' onChange={this._setMeds}
+                     defaultChecked={_.contains(logEvent.medicine, 'eye drops')} value='eye drops'/>
               <label>Eye Drops</label>
             </span>
             <span className='switch'>
-              <input type='checkbox' name='medicine' onChange={this._setMeds} value='tylenol'/>
+              <input type='checkbox' name='medicine' onChange={this._setMeds}
+                     defaultChecked={_.contains(logEvent.medicine, 'tylenol')} value='tylenol'/>
               <label>Tylenol</label>
             </span>
           </div>
@@ -212,35 +212,41 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'diaper') {
+    if (logEvent.eventType === 'feeding' || logEvent.eventType === 'diaper') {
       diaperField = (
         <div className='pad-bottom-1em diaper-field'>
           <h3>How was the diaper?</h3>
           <div>
             <span className='switch'>
-              <input type='checkbox' name='diaper' onChange={this._setDiaper} defaultChecked  value='wet'/>
+              <input type='checkbox' name='diaper' onChange={this._setDiaper}
+                     defaultChecked={_.contains(logEvent.diaper, 'wet')} value='wet'/>
               <label>Wet</label>
             </span>
             <span className='switch'>
-              <input type='checkbox' name='diaper' onChange={this._setDiaper} value='small poop'/>
+              <input type='checkbox' name='diaper' onChange={this._setDiaper}
+                     defaultChecked={_.contains(logEvent.diaper, 'small')} value='small poop'/>
               <label>Small Poop</label>
             </span>
             <span className='switch'>
-              <input type='checkbox' name='diaper' onChange={this._setDiaper} value='poop'/>
+              <input type='checkbox' name='diaper' onChange={this._setDiaper}
+                     defaultChecked={_.contains(logEvent.diaper, '+ poop')} value='poop'/>
               <label>Normal Poop</label>
             </span>
             <span className='switch'>
-              <input type='checkbox' name='diaper' onChange={this._setDiaper} value='big poop'/>
+              <input type='checkbox' name='diaper' onChange={this._setDiaper}
+                     defaultChecked={_.contains(logEvent.diaper, 'big')} value='big poop'/>
               <label>Big Poop</label>
             </span>
           </div>
           <div className='pad-bottom-1em'>
             <span className='switch'>
-              <input type='checkbox' name='diaper' onChange={this._setDiaper} value='runny poop'/>
+              <input type='checkbox' name='diaper' onChange={this._setDiaper}
+                     defaultChecked={_.contains(logEvent.diaper, 'runny')} value='runny poop'/>
               <label>Runny Poop</label>
             </span>
             <span className='switch'>
-              <input type='checkbox' name='diaper' onChange={this._setDiaper} value='dry poop'/>
+              <input type='checkbox' name='diaper' onChange={this._setDiaper}
+                     defaultChecked={_.contains(logEvent.diaper, 'dry')} value='dry poop'/>
               <label>Dry Poop</label>
             </span>
           </div>
@@ -248,21 +254,24 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'spit') {
+    if (logEvent.eventType === 'feeding' || logEvent.eventType === 'spit') {
       spitField = (
         <div className='pad-bottom-1em spit-field'>
           <h3>Any spit-up?</h3>
           <div>
             <span className='switch'>
-              <input type='radio' name='spit' onChange={this._setSpit} value='big'/>
+              <input type='radio' name='spit' onChange={this._setSpit}
+                     defaultChecked={_.contains(logEvent.spit, 'big')} value='big'/>
               <label>Big</label>
             </span>
             <span className='switch'>
-              <input type='radio' name='spit' onChange={this._setSpit} value='small'/>
+              <input type='radio' name='spit' onChange={this._setSpit}
+                     defaultChecked={_.contains(logEvent.spit, 'small')} value='small'/>
               <label>Small</label>
             </span>
             <span className='switch'>
-              <input type='radio' name='spit' onChange={this._setSpit} defaultChecked value='no'/>
+              <input type='radio' name='spit' onChange={this._setSpit}
+                     defaultChecked={_.contains(logEvent.spit, 'no')} value='no'/>
               <label>None</label>
             </span>
           </div>
@@ -271,9 +280,9 @@ var Log = React.createClass({
     }
 
     return (
-      <section className='modal-sheet'>
+      <section className='modal-sheet edit'>
         <form id='feed-form' data-baby={baby} onSubmit={this._submit}>
-          <h1>Log Event for {baby}</h1>
+          <h1>Edit Event for {baby}</h1>
 
           <div className='pad-bottom-1em'>
             <h3>What type of event is this?</h3>
@@ -338,11 +347,11 @@ var Log = React.createClass({
           {spitField}
 
           <input type='submit' className='btn btn-invert submit-btn' />
-          <Link to="/" className='btn btn-cancel btn-invert' >Cancel</Link>
+          <button onClick={this.goBack} className='btn btn-cancel btn-invert' >Cancel</button>
         </form>
       </section>
     );
   }
 });
 
-module.exports = Log;
+module.exports = Edit;

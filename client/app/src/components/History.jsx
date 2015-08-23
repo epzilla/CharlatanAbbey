@@ -11,6 +11,14 @@ var moment = require('moment-timezone');
 var Swipeable = require('react-swipeable');
 
 var FeedingCell = React.createClass({
+
+  mixins: [ Navigation ],
+
+  _edit: function () {
+    console.log(this.props.feeding);
+    this.transitionTo('edit', {logEvent: this.props.feeding._id});
+  },
+
   render: function () {
     var feeding = this.props.feeding;
 
@@ -24,6 +32,9 @@ var FeedingCell = React.createClass({
           <li>{ _.capitalize(feeding.medicine) }</li>
           <li>{ _.capitalize(feeding.spit) } spit-up</li>
         </ul>
+        <button className="btn btn-edit-cell" onClick={this._edit}>
+          <i className="fa fa-edit"></i> Edit
+        </button>
       </div>
     );
   }
@@ -88,7 +99,7 @@ var History = React.createClass({
           delta={1}
         >
           <h2>Feeding History</h2>
-          <Link to="/" className="close-btn close-btn-fixed flex-center">
+          <Link to="/" className="close-btn flex-center">
             <i className="fa fa-close"></i>
           </Link>
           <section id="feeding-list">

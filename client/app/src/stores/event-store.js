@@ -39,6 +39,10 @@ var EventStore = assign({}, EventEmitter.prototype, {
     return _events;
   },
 
+  getEvent: function (id) {
+    return _.find(_events, {_id: id});
+  },
+
   getLatestFeedings: function () {
     return _latest;
   },

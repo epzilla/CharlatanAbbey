@@ -56,6 +56,7 @@ h4 {
     padding: 1em;
     border: 1px solid #C3C3C3;
     height: 17em;
+    position: relative;
     &.cell-header {
       height: 3em;
       padding: 0.5em 1em;
@@ -67,6 +68,33 @@ h4 {
     @media(min-width: $tabletportrait) {
       height: 13em;
     }
+    &.transition-to-edit {
+      z-index: 1;
+      background-color: whitesmoke;
+      animation: scaler 0.1s ease-in;
+      transition: all 0.1s ease-in;
+    }
+    &.editing {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      height: 100%;
+      z-index: 1;
+      background-color: whitesmoke;
+      max-height: none;
+      transition: all 0.1s linear;
+    }
+  }
+}
+
+@keyframes scaler {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(3);
   }
 }
 
@@ -108,6 +136,11 @@ h4 {
       height: 4rem;
       font-size: 1.5em;
     }
+  }
+  &.btn-edit-cell {
+    background-color: deepskyblue;
+    color: white;
+    margin-top: 1em;
   }
 }
 
@@ -281,6 +314,9 @@ h4 {
       padding-left: 1em;
     }
   }
+  .btn-edit-cell {
+    font-size: 0.75em
+  }
 }
 
 .emojifier {
@@ -316,6 +352,25 @@ h4 {
     transition: all $transitionTime ease;
     &.routechange-leave-active {
       transform: translateY(100%);
+      transition: transform $transitionTime ease;
+    }
+  }
+}
+
+.modal-sheet.edit {
+  &.routechange-enter {
+    transform: scale(0.25);
+    transition: all $transitionTime ease;
+    &.routechange-enter-active {
+      transform: scale(1);
+      transition: transform $transitionTime ease;
+    }
+  }
+  &.routechange-leave {
+    transform: scale(1);
+    transition: all $transitionTime ease;
+    &.routechange-leave-active {
+      transform: scale(0.25);
       transition: transform $transitionTime ease;
     }
   }

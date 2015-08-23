@@ -7,6 +7,7 @@ var Handler = Router.RouteHandler;
 var Home = require('./components/Home.jsx');
 var History = require('./components/History.jsx');
 var Log = require('./components/Log.jsx');
+var Edit = require('./components/Edit.jsx');
 var API = require('./utils/api');
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -30,6 +31,7 @@ var routes = (
     <Route name="home" path="/" handler={Home}/>
     <Route name="history" path="/history" handler={History}/>
     <Route name="log-event" path="/log-event/:name" handler={Log}/>
+    <Route name="edit" path="/edit/:logEvent" handler={Edit}/>
   </Route>
 );
 
