@@ -289,7 +289,7 @@ var Edit = React.createClass({
           <h1>Edit Event for {baby}</h1>
 
           <div className='pad-bottom-1em'>
-            <h3>What type of event is this?</h3>
+            <h3>What type of event was this?</h3>
             <div>
               <span className='switch'>
                 <input type='radio' name='eventType' onChange={this._setEventType} defaultChecked value='feeding'/>

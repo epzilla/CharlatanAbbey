@@ -140,7 +140,8 @@ h4 {
   &.btn-edit-cell {
     background-color: deepskyblue;
     color: white;
-    margin-top: 1em;
+    bottom: 1em;
+    position: absolute;
   }
 }
 
@@ -308,7 +309,7 @@ h4 {
 @media (max-width: $phoneish) {
   .cell {
     padding: 0.5em;
-    max-height: 10em;
+    max-height: 12em;
     height: auto;
     ul {
       font-size: 0.75em;
@@ -468,4 +469,17 @@ h4 {
     top: -2.65em;
     left: -0.4em;
   }
+}
+
+.ampm {
+  display: inline-flex;
+  align-items: center;
+  position: absolute;
+  .switch {
+    input, label {
+      max-width: 100%;
+      min-width: 45%;
+    }
+  }
+  height: 10em;
 }

@@ -73,12 +73,12 @@ var TimeStepper = React.createClass({
         <Stepper full initialValue={this.state.hours} onChange={this._setHours} />
         <span className='big-colon'></span>
         <Stepper full initialValue={this.state.minutes} onChange={this._setMins}/>
-        <div>
-          <span className='switch ampm'>
+        <div className='ampm'>
+          <span className='switch'>
             <input type='radio' name='pm' onChange={this._setAmPm} defaultChecked={!this.state.pm} value='am'/>
             <label>AM</label>
           </span>
-          <span className='switch ampm'>
+          <span className='switch'>
             <input type='radio' name='pm' onChange={this._setAmPm} defaultChecked={this.state.pm} value='pm' />
             <label>PM</label>
           </span>
