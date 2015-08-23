@@ -21,16 +21,22 @@ var Edit = React.createClass({
     e.preventDefault();
 
     Actions.editEventForm({
+      _id: this.props.params.logEvent,
       name: this.state.baby,
       eventType: this.state.eventType,
       burp: this.state.burp,
       diaper: this.state.diaper.join(' + '),
       feeder: this.state.feeder,
-      time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
+      time: this.state.time.format(),
       amount: this.state.fullAmount + this.state.fracAmount,
       medicine: this.state.medicine.join(', '),
       spit: this.state.spit
     });
+  },
+
+  _cancel: function (e) {
+    e.preventDefault();
+    this.goBack();
   },
 
   _setEventType: function (e) {
@@ -107,7 +113,7 @@ var Edit = React.createClass({
   },
 
   _onChange: function () {
-    this.transitionTo('/');
+    this.transitionTo('history');
   },
 
   componentDidMount: function () {
@@ -119,9 +125,30 @@ var Edit = React.createClass({
   },
 
   getInitialState: function () {
+    var e = EventStore.getEvent(this.props.params.logEvent);
+    var diaper = e.diaper;
+    var meds = e.medicine;
+
+    if (diaper) {
+      diaper = diaper.split(' + ');
+    }
+
+    if (meds) {
+      meds = meds.split(', ');
+    }
+
     return {
-      logEvent: EventStore.getEvent(this.props.params.logEvent),
+      logEvent: e,
+      amount: e.amount,
+      eventType: e.eventType,
+      name: e.name,
+      diaper: diaper || [],
+      feeder: e.feeder,
       feeders: FeederStore.getFeeders(),
+      medicine: meds || [],
+      burp: e.burp,
+      spit: e.spit,
+      time: moment(e.time)
     };
   },
 
@@ -328,7 +355,7 @@ var Edit = React.createClass({
           {spitField}
 
           <input type='submit' className='btn btn-invert submit-btn' />
-          <button onClick={this.goBack} className='btn btn-cancel btn-invert' >Cancel</button>
+          <button onClick={this._cancel} className='btn btn-cancel btn-invert' >Cancel</button>
         </form>
       </section>
     );

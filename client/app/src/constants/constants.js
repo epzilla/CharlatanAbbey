@@ -7,7 +7,8 @@ module.exports = {
     RECEIVE_BABIES: null,
     RECEIVE_FEEDERS: null,
     RECEIVE_FEEDINGS: null,
-    SUCCESSFUL_EVENT_POST: null
+    SUCCESSFUL_EVENT_POST: null,
+    SUCCESSFUL_EVENT_EDIT: null
   }),
 
   PayloadSources: keyMirror({

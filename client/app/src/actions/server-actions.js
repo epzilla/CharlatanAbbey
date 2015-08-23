@@ -37,6 +37,13 @@ var ServerActions = {
       type: ActionTypes.SUCCESSFUL_EVENT_POST,
       data: data
     });
+  },
+
+  successfulEventEdit: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.SUCCESSFUL_EVENT_EDIT,
+      data: data
+    });
   }
 };
 

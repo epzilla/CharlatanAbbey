@@ -85,6 +85,13 @@ var ServerActions = {
       type: ActionTypes.SUCCESSFUL_EVENT_POST,
       data: data
     });
+  },
+
+  successfulEventEdit: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.SUCCESSFUL_EVENT_EDIT,
+      data: data
+    });
   }
 };
 
@@ -105,6 +112,11 @@ var ViewActions = {
 
   submitEventForm: function (formValues) {
     API.submitEvent(formValues);
+  },
+
+  editEventForm: function (formValues) {
+    console.log(formValues);
+    API.editEvent(formValues);
   }
 };
 
@@ -256,16 +268,22 @@ var Edit = React.createClass({displayName: "Edit",
     e.preventDefault();
 
     Actions.editEventForm({
+      _id: this.props.params.logEvent,
       name: this.state.baby,
       eventType: this.state.eventType,
       burp: this.state.burp,
       diaper: this.state.diaper.join(' + '),
       feeder: this.state.feeder,
-      time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
+      time: this.state.time.format(),
       amount: this.state.fullAmount + this.state.fracAmount,
       medicine: this.state.medicine.join(', '),
       spit: this.state.spit
     });
+  },
+
+  _cancel: function (e) {
+    e.preventDefault();
+    this.goBack();
   },
 
   _setEventType: function (e) {
@@ -342,7 +360,7 @@ var Edit = React.createClass({displayName: "Edit",
   },
 
   _onChange: function () {
-    this.transitionTo('/');
+    this.transitionTo('history');
   },
 
   componentDidMount: function () {
@@ -354,9 +372,30 @@ var Edit = React.createClass({displayName: "Edit",
   },
 
   getInitialState: function () {
+    var e = EventStore.getEvent(this.props.params.logEvent);
+    var diaper = e.diaper;
+    var meds = e.medicine;
+
+    if (diaper) {
+      diaper = diaper.split(' + ');
+    }
+
+    if (meds) {
+      meds = meds.split(', ');
+    }
+
     return {
-      logEvent: EventStore.getEvent(this.props.params.logEvent),
+      logEvent: e,
+      amount: e.amount,
+      eventType: e.eventType,
+      name: e.name,
+      diaper: diaper || [],
+      feeder: e.feeder,
       feeders: FeederStore.getFeeders(),
+      medicine: meds || [],
+      burp: e.burp,
+      spit: e.spit,
+      time: moment(e.time)
     };
   },
 
@@ -563,7 +602,7 @@ var Edit = React.createClass({displayName: "Edit",
           spitField, 
 
           React.createElement("input", {type: "submit", className: "btn btn-invert submit-btn"}), 
-          React.createElement("button", {onClick: this.goBack, className: "btn btn-cancel btn-invert"}, "Cancel")
+          React.createElement("button", {onClick: this._cancel, className: "btn btn-cancel btn-invert"}, "Cancel")
         )
       )
     );
@@ -1392,7 +1431,7 @@ var moment = require('moment-timezone');
 var TimeStepper = React.createClass({displayName: "TimeStepper",
 
   _setHours: function (e) {
-    var newTime = moment(this.state.time);
+    var newTime = this.state.time;
     var newHours = e.amount;
 
     if (this.state.amPm === 'pm' && newHours > 12) {
@@ -1410,7 +1449,7 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
   },
 
   _setMins: function (e) {
-    var newTime = moment(this.state.time);
+    var newTime = this.state.time;
     newTime.minutes(e.amount);
     this.setState({
       time: newTime,
@@ -1421,7 +1460,7 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
   },
 
   _setAmPm: function (e) {
-    var newTime = moment(this.state.time);
+    var newTime = this.state.time;
     if (e.target.value === 'pm') {
       newTime = newTime.add(12, 'hours');
     } else {
@@ -1489,7 +1528,8 @@ module.exports = {
     RECEIVE_BABIES: null,
     RECEIVE_FEEDERS: null,
     RECEIVE_FEEDINGS: null,
-    SUCCESSFUL_EVENT_POST: null
+    SUCCESSFUL_EVENT_POST: null,
+    SUCCESSFUL_EVENT_EDIT: null
   }),
 
   PayloadSources: keyMirror({
@@ -1699,6 +1739,15 @@ EventStore.dispatchToken = Dispatcher.register(function (payload) {
       _events.push(action.data);
       updateStore();
       break;
+
+    case ActionTypes.SUCCESSFUL_EVENT_EDIT:
+      _events.forEach(function (e) {
+        if (e._id.toString() === action.data._id.toString()) {
+          _events.splice(_events.indexOf(e), 1, action.data);
+        }
+      });
+      updateStore();
+      break;
   }
   EventStore.emitChange();
 });
@@ -1786,6 +1835,12 @@ module.exports = {
   submitEvent: function (info) {
     return Rest.post('/api/events', info).then(function (res) {
       ServerActions.successfulEventPost(res.response);
+    });
+  },
+
+  editEvent: function (info) {
+    return Rest.put('/api/events/' + info._id, info).then(function (res) {
+      ServerActions.successfulEventEdit(res.response);
     });
   }
 };

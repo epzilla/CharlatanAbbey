@@ -11,6 +11,11 @@ var ViewActions = {
 
   submitEventForm: function (formValues) {
     API.submitEvent(formValues);
+  },
+
+  editEventForm: function (formValues) {
+    console.log(formValues);
+    API.editEvent(formValues);
   }
 };
 

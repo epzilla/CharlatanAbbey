@@ -36,5 +36,11 @@ module.exports = {
     return Rest.post('/api/events', info).then(function (res) {
       ServerActions.successfulEventPost(res.response);
     });
+  },
+
+  editEvent: function (info) {
+    return Rest.put('/api/events/' + info._id, info).then(function (res) {
+      ServerActions.successfulEventEdit(res.response);
+    });
   }
 };

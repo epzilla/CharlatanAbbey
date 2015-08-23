@@ -120,6 +120,15 @@ EventStore.dispatchToken = Dispatcher.register(function (payload) {
       _events.push(action.data);
       updateStore();
       break;
+
+    case ActionTypes.SUCCESSFUL_EVENT_EDIT:
+      _events.forEach(function (e) {
+        if (e._id.toString() === action.data._id.toString()) {
+          _events.splice(_events.indexOf(e), 1, action.data);
+        }
+      });
+      updateStore();
+      break;
   }
   EventStore.emitChange();
 });

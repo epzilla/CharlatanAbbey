@@ -4,7 +4,7 @@ var moment = require('moment-timezone');
 var TimeStepper = React.createClass({
 
   _setHours: function (e) {
-    var newTime = moment(this.state.time);
+    var newTime = this.state.time;
     var newHours = e.amount;
 
     if (this.state.amPm === 'pm' && newHours > 12) {
@@ -22,7 +22,7 @@ var TimeStepper = React.createClass({
   },
 
   _setMins: function (e) {
-    var newTime = moment(this.state.time);
+    var newTime = this.state.time;
     newTime.minutes(e.amount);
     this.setState({
       time: newTime,
@@ -33,7 +33,7 @@ var TimeStepper = React.createClass({
   },
 
   _setAmPm: function (e) {
-    var newTime = moment(this.state.time);
+    var newTime = this.state.time;
     if (e.target.value === 'pm') {
       newTime = newTime.add(12, 'hours');
     } else {
