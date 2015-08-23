@@ -122,6 +122,12 @@ EventStore.dispatchToken = Dispatcher.register(function (payload) {
       break;
 
     case ActionTypes.SUCCESSFUL_EVENT_EDIT:
+      for (var i = 0; i < _events.length; i++) {
+        if (_events[i]._id.toString() === action.data._id.toString()) {
+          _events.splice(i, 1, action.data);
+          break;
+        }
+      }
       _events.forEach(function (e) {
         if (e._id.toString() === action.data._id.toString()) {
           _events.splice(_events.indexOf(e), 1, action.data);
