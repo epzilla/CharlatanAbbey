@@ -266,6 +266,7 @@ var Edit = React.createClass({displayName: "Edit",
 
   _submit: function (e) {
     e.preventDefault();
+    var amount = (this.state.fullAmount || 2) + (this.state.fracAmount || 0);
 
     Actions.editEventForm({
       _id: this.props.params.logEvent,
@@ -275,7 +276,7 @@ var Edit = React.createClass({displayName: "Edit",
       diaper: this.state.diaper.join(' + '),
       feeder: this.state.feeder,
       time: this.state.time.format(),
-      amount: this.state.fullAmount + this.state.fracAmount,
+      amount: amount,
       medicine: this.state.medicine.join(', '),
       spit: this.state.spit
     });
@@ -1201,9 +1202,25 @@ var Stepper = require('./Stepper.jsx');
 var OunceStepper = React.createClass({displayName: "OunceStepper",
 
   getInitialState: function () {
+    var initial = this.props.initialValue ? parseFloat(this.props.initialValue) : 2.0;
+    var fullNumber = Math.floor(initial);
+    var remainder = initial % 1;
     return {
-      initialValue: this.props.initialValue || 2.0
+      initialValue: initial,
+      fullNumber: fullNumber,
+      fraction: remainder
     };
+  },
+
+  componentDidMount: function () {
+    this.props.onChange({
+      full: true,
+      amount: this.state.fullNumber
+    });
+
+    this.props.onChange({
+      amount: this.state.fraction
+    });
   },
 
   render: function () {

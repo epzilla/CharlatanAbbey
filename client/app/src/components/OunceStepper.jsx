@@ -7,9 +7,25 @@ var Stepper = require('./Stepper.jsx');
 var OunceStepper = React.createClass({
 
   getInitialState: function () {
+    var initial = this.props.initialValue ? parseFloat(this.props.initialValue) : 2.0;
+    var fullNumber = Math.floor(initial);
+    var remainder = initial % 1;
     return {
-      initialValue: this.props.initialValue || 2.0
+      initialValue: initial,
+      fullNumber: fullNumber,
+      fraction: remainder
     };
+  },
+
+  componentDidMount: function () {
+    this.props.onChange({
+      full: true,
+      amount: this.state.fullNumber
+    });
+
+    this.props.onChange({
+      amount: this.state.fraction
+    });
   },
 
   render: function () {

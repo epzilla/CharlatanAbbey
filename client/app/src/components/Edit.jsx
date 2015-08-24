@@ -19,6 +19,7 @@ var Edit = React.createClass({
 
   _submit: function (e) {
     e.preventDefault();
+    var amount = (this.state.fullAmount || 2) + (this.state.fracAmount || 0);
 
     Actions.editEventForm({
       _id: this.props.params.logEvent,
@@ -28,7 +29,7 @@ var Edit = React.createClass({
       diaper: this.state.diaper.join(' + '),
       feeder: this.state.feeder,
       time: this.state.time.format(),
-      amount: this.state.fullAmount + this.state.fracAmount,
+      amount: amount,
       medicine: this.state.medicine.join(', '),
       spit: this.state.spit
     });
