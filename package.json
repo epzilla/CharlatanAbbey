@@ -1,15 +1,15 @@
 {
-  "name": "react-flux-fullstack",
+  "name": "Charlatan-Abbey",
   "version": "0.0.1",
-  "description": "A template for fullstack react applications with gulp and browserify",
-  "main": "index.js",
+  "description": "Twin Tracker",
+  "main": "server/app.js",
   "scripts": {
     "start": "node server/app.js",
     "test": "gulp test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/urban-boa/react-fullstack.git"
+    "url": "https://github.com/epzilla/charlatan-abbey.git"
   },
   "dependencies": {
     "body-parser": "~1.5.0",
