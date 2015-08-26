@@ -2,7 +2,7 @@
 @import 'normalize';
 @import '../../../../node_modules/font-awesome/scss/font-awesome.scss';
 @import 'variables';
-@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400italic,400,700);
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400italic,400,700);
 
 * {
   box-sizing: border-box;
@@ -482,4 +482,57 @@ h4 {
     }
   }
   height: 10em;
+}
+
+.filter-btns {
+  width: 100%;
+  .switch {
+    width: 33.333%;
+    margin-right: 0;
+    @media(max-width: $phoneish) {
+      font-size: 14px;
+      height: 40px;
+      label, input {
+        font-size: 14px;
+        height: 40px;
+        padding: 10px 0;
+      }
+    }
+    label, input, input:checked, input:checked~label {
+      width: 100%;
+      min-width: initial;
+    }
+    label {
+      background: #00BFFF;
+      color: #FFF;
+      border-radius: 0;
+      border-right: 2px solid darken(#00BFFF, 15%);
+      border-left: none;
+    }
+    input:checked {
+      &~label {
+        background: darken(#00BFFF, 15%);
+      }
+    }
+    &:first-child {
+      label {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-left: 1px solid black;
+      }
+    }
+    &:last-child {
+      label {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-right: 1px solid black;
+      }
+    }
+  }
+  &.type-filter .switch {
+    width: 25%;
+  }
+  &.time-filter {
+    margin-bottom: 1em;
+  }
 }

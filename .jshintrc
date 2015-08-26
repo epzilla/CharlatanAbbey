@@ -91,6 +91,9 @@
     "globals"       : {
       "module": false,
       "require": false,
-      "console": false
+      "console": false,
+      "process": false,
+      "exports": false,
+      "__dirname": false
     }        // additional predefined global variables
 }

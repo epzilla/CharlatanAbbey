@@ -18,6 +18,8 @@ module.exports = {
     uri:    process.env.MONGOLAB_URI ||
             process.env.MONGOHQ_URL ||
             process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
-            'mongodb://localhost/charlatan'
-  }
+            'mongodb://archimedes:pinfeathers&gullyfluff@ds053808.mongolab.com:53808/heroku_mkjhj5wg',
+  },
+
+  seedDB: true
 };

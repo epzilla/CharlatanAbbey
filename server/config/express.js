@@ -14,15 +14,14 @@ var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
-var passport = require('passport');
-var session = require('express-session');
-var mongoStore = require('connect-mongo')(session);
-var mongoose = require('mongoose');
+// var passport = require('passport');
+// var session = require('express-session');
+// var mongoStore = require('connect-mongo')(session);
+// var mongoose = require('mongoose');
 
 module.exports = function(app) {
   var env = app.get('env');
 
-  app.set('views', config.root + '/server/views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
   app.use(compression());
@@ -31,15 +30,15 @@ module.exports = function(app) {
   app.use(methodOverride());
   app.use(cookieParser());
 
-  if ('production' === env) {
-    app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
-    app.use(express.static(path.join(config.root, 'public')));
-    app.set('appPath', config.root + '/public');
-    app.use(morgan('dev'));
-  }
-
-  if ('development' === env || 'test' === env) {
-    // app.use(require('connect-livereload')());
+  if ('production' === env || 'prod' === env) {
+    config.root = path.normalize(__dirname + '/..');
+    app.set('views', config.root + '/views');
+    app.use(favicon(path.join(config.root, 'img', 'favicon.ico')));
+    app.use(express.static(path.join(config.root)));
+    app.set('appPath', config.root);
+    app.use(morgan('prod'));
+  } else {
+    app.set('views', config.root + '/server/views');
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
     app.set('appPath', 'client');

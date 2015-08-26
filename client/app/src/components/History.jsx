@@ -65,7 +65,7 @@ var History = React.createClass({
 
   _onChange: function () {
     this.setState({
-      feedings: EventStore.getFeedings()
+      events: EventStore.getEverything()
     });
   },
 
@@ -73,9 +73,27 @@ var History = React.createClass({
     this.transitionTo('/');
   },
 
+  _setTimeFilter: function (e) {
+    this.setState({
+      timeFilter: e.target.value
+    }, function () {
+      console.log(this.state);
+    });
+  },
+
+  _setTypeFilter: function (e) {
+    this.setState({
+      typeFilter: e.target.value
+    }, function () {
+      console.log(this.state);
+    });
+  },
+
   getInitialState: function () {
     return {
-      feedings: EventStore.getFeedings()
+      events: EventStore.getEverything(),
+      timeFilter: 'lastDay',
+      typeFilter: 'feedings'
     };
   },
 
@@ -88,7 +106,9 @@ var History = React.createClass({
   },
 
   render: function () {
-    var feedingTable = _.map(this.state.feedings, function (feedingGroup) {
+    var timeFilter = this.state.timeFilter;
+    var typeFilter = this.state.typeFilter;
+    var feedingTable = _.map(this.state.events[timeFilter][typeFilter], function (feedingGroup) {
       return (<FeedingCol key={feedingGroup[0]._id} feedings={feedingGroup} />);
     });
 
@@ -98,10 +118,44 @@ var History = React.createClass({
           onSwipedRight={this._swipedRight}
           delta={1}
         >
-          <h2>Feeding History</h2>
+          <h2>Event History</h2>
           <Link to="/" className="close-btn flex-center">
             <i className="fa fa-close"></i>
           </Link>
+          <h4>Show Me:</h4>
+          <section className="type-filter filter-btns">
+            <span className='switch'>
+              <input type='radio' name='typeFilter' onChange={this._setTypeFilter} defaultChecked={typeFilter === 'feedings'} value='feedings'/>
+              <label>Feedings</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='typeFilter' onChange={this._setTypeFilter} defaultChecked={typeFilter === 'poops'} value='poops'/>
+              <label>Poops</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='typeFilter' onChange={this._setTypeFilter} defaultChecked={typeFilter === 'meds'} value='meds'/>
+              <label>Medicine</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='typeFilter' onChange={this._setTypeFilter} defaultChecked={typeFilter === 'events'} value='events'/>
+              <label>All</label>
+            </span>
+          </section>
+          <h4>From:</h4>
+          <section className="time-filter filter-btns">
+            <span className='switch'>
+              <input type='radio' name='timeFilter' onChange={this._setTimeFilter} defaultChecked={timeFilter === 'lastDay'} value='lastDay'/>
+              <label>Past Day</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='timeFilter' onChange={this._setTimeFilter} defaultChecked={timeFilter === 'lastWeek'} value='lastWeek'/>
+              <label>Past Week</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='timeFilter' onChange={this._setTimeFilter} defaultChecked={timeFilter === 'all'} value='all'/>
+              <label>All</label>
+            </span>
+          </section>
           <section id="feeding-list">
             <article className="table">
               {feedingTable}
