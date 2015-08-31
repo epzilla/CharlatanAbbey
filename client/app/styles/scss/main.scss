@@ -240,7 +240,7 @@ h4 {
 .baby-info {
   width: 100%;
   padding: 1em;
-  min-height: 80%;
+  min-height: 30em;
 }
 
 .action-btns {
@@ -388,14 +388,20 @@ h4 {
 }
 
 .right-sheet {
+  &:first-child {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
   padding: 1em;
-  width: 100%;
-  height: 100%;
   background: $purps;
   transition: all $transitionTime ease;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
   z-index: 10;
   &.routechange-enter {
     transform: translateX(100%);
