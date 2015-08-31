@@ -5,13 +5,15 @@ var React = require('react');
 var FeedingInfo = require('./FeedingInfo.jsx');
 var EventStore = require('../stores/event-store');
 var BabyStore = require('../stores/baby-store');
+var TimeLogStore = require('../stores/time-log-store');
 var ActionButtons = require('./ActionButtons.jsx');
 
 var APP = React.createClass({
   getInitialState: function(){
     return {
       feedings: EventStore.getLatestFeedings(),
-      babies: BabyStore.getBabies()
+      babies: BabyStore.getBabies(),
+      timeLogs: TimeLogStore.getTimeLogs()
     };
   },
 

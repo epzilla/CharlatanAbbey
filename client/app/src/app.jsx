@@ -8,6 +8,7 @@ var Home = require('./components/Home.jsx');
 var History = require('./components/History.jsx');
 var Log = require('./components/Log.jsx');
 var Edit = require('./components/Edit.jsx');
+var Timesheet = require('./components/Timesheet.jsx');
 var API = require('./utils/api');
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
 
@@ -31,6 +32,7 @@ var routes = (
     <Route name="home" path="/" handler={Home}/>
     <Route name="history" path="/history" handler={History}/>
     <Route name="log-event" path="/log-event/:name" handler={Log}/>
+    <Route name="timesheet" path="/timesheet" handler={Timesheet}/>
     <Route name="edit" path="/edit/:logEvent" handler={Edit}/>
   </Route>
 );
@@ -38,6 +40,7 @@ var routes = (
 document.addEventListener('DOMContentLoaded', function () {
   API.getEvents();
   API.getBabies();
+  API.getTimeLogs();
   Router.run(routes, Router.HistoryLocation, function (Handler) {
     React.render(<Handler/>, document.body);
   });

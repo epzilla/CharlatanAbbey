@@ -46,6 +46,7 @@
     "react-router": "^0.13.0",
     "react-router-component": "^0.25.4",
     "react-swipeable": "^3.0.2",
+    "reactabular": "^0.7.0",
     "serve-favicon": "~2.0.1"
   },
   "author": "Urban Boa",

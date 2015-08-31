@@ -32,6 +32,13 @@ var ServerActions = {
     });
   },
 
+  receiveTimeLogs: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.RECEIVE_TIME_LOGS,
+      data: data
+    });
+  },
+
   successfulEventPost: function (data) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.SUCCESSFUL_EVENT_POST,

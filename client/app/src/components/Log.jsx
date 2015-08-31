@@ -189,7 +189,7 @@ var Log = React.createClass({
     if (this.state.eventType === 'feeding' || this.state.eventType === 'meds') {
       medField = (
         <div className='pad-bottom-1em meds-field'>
-          <h3>Did she take any medicine?</h3>
+          <h3>Did she take any medicine? <small>(Check all that apply)</small></h3>
           <div>
             <span className='switch'>
               <input type='checkbox' name='medicine' onChange={this._setMeds} value='gas drops'/>
@@ -215,7 +215,7 @@ var Log = React.createClass({
     if (this.state.eventType === 'feeding' || this.state.eventType === 'diaper') {
       diaperField = (
         <div className='pad-bottom-1em diaper-field'>
-          <h3>How was the diaper?</h3>
+          <h3>How was the diaper? <small>(Check all that apply)</small></h3>
           <div>
             <span className='switch'>
               <input type='checkbox' name='diaper' onChange={this._setDiaper} defaultChecked  value='wet'/>

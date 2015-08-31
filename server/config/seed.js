@@ -9,6 +9,7 @@ var LogEvent = require('../api/log-event/log-event.model');
 var DeprecatedFeeding = require('../api/log-event/feeding-deprecated.model');
 var Feeder = require('../api/feeder/feeder.model');
 var Baby = require('../api/baby/baby.model');
+var TimeLog = require('../api/time-log/time-log.model');
 
 Baby.find(function (err, babies) {
   if (babies && babies.length > 0) {
@@ -72,5 +73,26 @@ LogEvent.find(function (err, logEvents) {
         });
       }
     });
+  }
+});
+
+TimeLog.find(function (err, timeLogEvents) {
+  if (!timeLogEvents || timeLogEvents.length === 0) {
+    TimeLog.create(
+      {
+        date: '2015-08-28T19:00:10.000Z',
+        timeIn: '2015-08-28T19:00:10.000Z',
+        timeOut: '2015-08-29T00:00:10.000Z',
+        hours: 5
+      },
+      {
+        date: '2015-08-29T14:00:10.000Z',
+        timeIn: '2015-08-29T14:00:10.000Z',
+        timeOut: '2015-08-29T18:00:10.000Z',
+        hours: 4
+      },
+      function () {
+        console.log('Time Logs created!');
+      });
   }
 });

@@ -29,6 +29,13 @@ var EventBtn = React.createClass({
 
 var ActionSheet = React.createClass({
 
+  mixins: [ Navigation ],
+
+  _logTime: function () {
+    this.props.dismiss();
+    this.transitionTo('timesheet');
+  },
+
   render: function () {
     var that = this;
     var babies = _.map(this.props.babies, function (baby) {
@@ -40,6 +47,15 @@ var ActionSheet = React.createClass({
         <section key={'section' + this.props.babies[0].name} className="action-sheet flex-center flex-col" id="action-sheet">
           <div key={'div-babies'} className='baby-btn-container flex-center flex-row'>
             {babies}
+          </div>
+          <div key={'div-timesheet-btn'} className='baby-btn-container flex-center flex-row'>
+            <button key={'nanny' + this.props.babies[0].name}
+              className="btn feed-btn timesheet-btn"
+              onClick={this._logTime}>
+              <i className="fa fa-clock-o"></i> Nanny Timesheet
+            </button>
+          </div>
+          <div key={'div-cancel-btn'} className='baby-btn-container flex-center flex-row'>
             <button key={'cancel' + this.props.babies[0].name}
               className="btn feed-btn cancel-btn"
               onClick={this.props.dismiss}>
