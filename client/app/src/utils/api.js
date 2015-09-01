@@ -55,5 +55,17 @@ module.exports = {
     return Rest.put('/api/events/' + info._id, info).then(function (res) {
       ServerActions.successfulEventEdit(getJSON(res.response));
     });
+  },
+
+  clockIn: function (timeLog) {
+    return Rest.post('/api/time-logs', timeLog).then(function (res) {
+      ServerActions.clockedIn(getJSON(res.response));
+    });
+  },
+
+  clockOut: function (id, timeLog) {
+    return Rest.put('/api/time-logs/' + id, timeLog).then(function (res) {
+      ServerActions.clockedOut(getJSON(res.response));
+    });
   }
 };

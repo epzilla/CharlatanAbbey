@@ -146,6 +146,10 @@ h4 {
       width: 47.5%;
       height: 4rem;
       font-size: 1.5em;
+      &:disabled {
+        opacity: 0.5;
+        font-size: 1em;
+      }
     }
   }
 
@@ -615,21 +619,30 @@ table {
 
 .timesheet {
   margin: 0 auto -15vh;
-  .fixed-top {
-    position: fixed;
-    top: 0;
+  .fixed-top, .fixed-bottom, .middle {
+    padding: 1em;
     left: 0;
     width: 100%;
+  }
+  .fixed-top, .fixed-bottom {
+    position: fixed;
     z-index: 100;
   }
+  .fixed-top {
+    top: 0;
+    height: 25vh;
+    background: aliceblue;
+  }
+  .middle {
+    position: absolute;
+    top: 25vh;
+    max-height: 50vh;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
   .fixed-bottom {
-    position: fixed;
-    padding: 1em;
     bottom: 0;
     height: 15vh;
-    left: 0;
-    width: 100%;
-    z-index: 100;
     &.translucent-bg {
       background-color: rgba(100, 100, 100, 0.3);
     }

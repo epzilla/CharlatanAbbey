@@ -7,6 +7,7 @@ var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _ = require('lodash');
 var moment = require('moment-timezone');
+var _rawLogs = ls.get('raw-time-logs') || [];
 var _timeLogs = ls.get('time-logs') || [];
 var _weeklyTimeLogs = ls.get('weekly-time-logs') || {};
 var _monthlyTimeLogs = ls.get('monthly-time-logs') || {};
@@ -36,49 +37,71 @@ var TimeLogStore = assign({}, EventEmitter.prototype, {
   }
 });
 
+var updateStore = function () {
+  _timeLogs = _.chain(_rawLogs)
+    .map(function (tl) {
+      var timeIn = moment(tl.timeIn);
+      var timeOut = tl.timeOut ? moment(tl.timeOut) : null;
+      return {
+        _id: tl._id,
+        date: moment(tl.date).format('M/D/YY'),
+        timeIn: timeIn.format('h:mma'),
+        timeOut: timeOut ? timeOut.format('h:mma') : null,
+        hours: (tl.hours || tl.hours === 0) ? tl.hours: null,
+        weekOf: timeIn.startOf('week').format('M/D'),
+        monthOf: timeIn.startOf('month').format('MMMM')
+      };
+    })
+    .value();
+
+  _isClockedIn = !(_timeLogs[0].timeOut);
+
+  var now = moment(new Date());
+  var thisWeek = now.startOf('week').format('M/D');
+  var thisMonth = now.startOf('month').format('MMMM');
+  _weeklyTimeLogs = _.groupBy(_timeLogs, 'weekOf');
+  _monthlyTimeLogs = _.groupBy(_timeLogs, 'monthOf');
+  _thisWeekLog = _weeklyTimeLogs[thisWeek];
+  _thisMonthLog = _monthlyTimeLogs[thisMonth];
+  ls.set('weekly-time-logs', _weeklyTimeLogs);
+  ls.set('monthly-time-logs', _monthlyTimeLogs);
+  console.log(_weeklyTimeLogs);
+  console.log(_monthlyTimeLogs);
+  console.log(_thisWeekLog);
+  console.log(_thisMonthLog);
+  ls.set('time-logs', _timeLogs);
+  TimeLogStore.emitChange();
+};
+
+var needsUpdating = function (logs) {
+  return ((!logs) || (logs.length === 0) || (JSON.stringify(_rawLogs) !== JSON.stringify(logs)));
+};
+
 TimeLogStore.dispatchToken = Dispatcher.register(function (payload) {
   var action;
   action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_TIME_LOGS:
-      _timeLogs = _.chain(action.data)
-        .sortBy(function (tl) {
-          return new Date(tl.timeIn);
-        })
-        .reverse()
-        .map(function (tl) {
-          var timeIn = moment(tl.timeIn);
-          var timeOut = moment(tl.timeOut);
-          return {
-            date: moment(tl.date).format('M/D/YY'),
-            timeIn: timeIn.format('h:mma'),
-            timeOut: timeOut.format('h:mma'),
-            hours: tl.hours,
-            weekOf: timeIn.startOf('week').format('M/D'),
-            monthOf: timeIn.startOf('month').format('MMMM')
-          };
-        })
-        .value();
+      if (needsUpdating(action.data)) {
+        _rawLogs = _.chain(action.data)
+          .sortBy(function (tl) {
+            return new Date(tl.timeIn);
+          })
+          .reverse()
+          .value();
 
-      _isClockedIn = !(_timeLogs[0].timeOut);
-
-      var now = moment(new Date());
-      var thisWeek = now.startOf('week').format('M/D');
-      var thisMonth = now.startOf('month').format('MMMM');
-      _weeklyTimeLogs = _.groupBy(_timeLogs, 'weekOf');
-      _monthlyTimeLogs = _.groupBy(_timeLogs, 'monthOf');
-      _thisWeekLog = _weeklyTimeLogs[thisWeek];
-      _thisMonthLog = _monthlyTimeLogs[thisMonth];
-      ls.set('weekly-time-logs', _weeklyTimeLogs);
-      ls.set('monthly-time-logs', _monthlyTimeLogs);
-      console.log(_weeklyTimeLogs);
-      console.log(_monthlyTimeLogs);
-      console.log(_thisWeekLog);
-      console.log(_thisMonthLog);
-      ls.set('time-logs', _timeLogs);
+        updateStore();
+      }
+      break;
+    case ActionTypes.CLOCKED_IN:
+      _rawLogs.unshift(action.data);
+      updateStore();
+      break;
+    case ActionTypes.CLOCKED_OUT:
+      _rawLogs[0] = action.data;
+      updateStore();
       break;
   }
-  TimeLogStore.emitChange();
 });
 
 module.exports = TimeLogStore;

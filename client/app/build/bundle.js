@@ -102,6 +102,20 @@ var ServerActions = {
       type: ActionTypes.SUCCESSFUL_EVENT_EDIT,
       data: data
     });
+  },
+
+  clockedIn: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.CLOCKED_IN,
+      data: data
+    });
+  },
+
+  clockedOut: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.CLOCKED_OUT,
+      data: data
+    });
   }
 };
 
@@ -110,9 +124,6 @@ module.exports = ServerActions;
 
 },{"../constants/constants":15,"../dispatcher/app-dispatcher":16}],3:[function(require,module,exports){
 'use strict';
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var AppConstants = require('../constants/constants');
-var ActionTypes = AppConstants.ActionTypes;
 var API = require('../utils/api');
 
 var ViewActions = {
@@ -125,15 +136,22 @@ var ViewActions = {
   },
 
   editEventForm: function (formValues) {
-    console.log(formValues);
     API.editEvent(formValues);
+  },
+
+  clockIn: function (timeLog) {
+    API.clockIn(timeLog);
+  },
+
+  clockOut: function (id, timeLog) {
+    API.clockOut(id, timeLog);
   }
 };
 
 module.exports = ViewActions;
 
 
-},{"../constants/constants":15,"../dispatcher/app-dispatcher":16,"../utils/api":21}],4:[function(require,module,exports){
+},{"../utils/api":21}],4:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -945,7 +963,11 @@ var Log = React.createClass({displayName: "Log",
 
   _submit: function (e) {
     e.preventDefault();
-    console.log(this.state);
+
+    this.setState({
+      submitting: true
+    });
+
     Actions.submitEventForm({
       name: this.state.baby,
       eventType: this.state.eventType,
@@ -1263,7 +1285,10 @@ var Log = React.createClass({displayName: "Log",
 
           spitField, 
 
-          React.createElement("input", {type: "submit", className: "btn btn-invert submit-btn"}), 
+          React.createElement("input", {type: "submit", 
+            className: "btn btn-invert submit-btn", 
+            disabled: this.state.submitting ? 'disabled' : false, 
+            value: this.state.submitting ? 'Submitting...' : 'Submit'}), 
           React.createElement(Link, {to: "/", className: "btn btn-cancel btn-invert"}, "Cancel")
         )
       )
@@ -1628,6 +1653,23 @@ var moment = require('moment-timezone');
 var cx = require('classnames');
 var Table = require('reactabular').Table;
 var TimeLogStore = require('../stores/time-log-store');
+var Actions = require('../actions/view-actions');
+
+var ClockOutBtn = React.createClass({displayName: "ClockOutBtn",
+  _clockOut: function () {
+    Actions.clockOut(this.props.clockOutID, {timeOut: new Date()});
+  },
+
+  render: function () {
+    return (
+      React.createElement("button", {key: 'clock-in-timesheet', 
+        className: this.props.className, 
+        onClick: this._clockOut}, 
+        React.createElement("i", {className: "fa fa-sign-out"}), " Clock Out"
+      )
+    );
+  }
+});
 
 var Timesheet = React.createClass({displayName: "Timesheet",
 
@@ -1641,12 +1683,31 @@ var Timesheet = React.createClass({displayName: "Timesheet",
     };
   },
 
+  componentDidMount: function () {
+    TimeLogStore.addChangeListener(this._onChange);
+  },
+
+  componentDidUnmount: function () {
+    TimeLogStore.removeChangeListener(this._onChange);
+  },
+
+  _onChange: function () {
+    this.setState({
+      timeLogs: TimeLogStore.getTimeLogs(),
+      isClockedIn: TimeLogStore.isClockedIn()
+    });
+  },
+
   _clockIn: function () {
-    alert('Clocked in!');
+    var now = new Date();
+    Actions.clockIn({
+      date: now,
+      timeIn: now
+    });
   },
 
   _clockOut: function () {
-    alert('Clocked out!');
+    alert('Clocked out!' + this.props.clockOutID);
   },
 
   _setFilter: function (e) {
@@ -1691,13 +1752,9 @@ var Timesheet = React.createClass({displayName: "Timesheet",
     });
 
     if (this.state.isClockedIn) {
+      var clockOutID = this.state.timeLogs[0]._id;
       clockOutBtn = (
-        React.createElement("button", {key: 'clock-in-timesheet', 
-          className: clockOutClasses, 
-          onClick: this._clockOut, 
-          disabled: !this.state.isClockedIn}, 
-          React.createElement("i", {className: "fa fa-sign-out"}), " Clock Out"
-        )
+        React.createElement(ClockOutBtn, {key: 'clock-out-timesheet', clockOutID: clockOutID, className: clockOutClasses})
       );
     } else {
       clockInBtn = (
@@ -1712,25 +1769,29 @@ var Timesheet = React.createClass({displayName: "Timesheet",
 
     return (
       React.createElement("section", {className: "modal-sheet timesheet"}, 
-        React.createElement("div", {className: "flex-center flex-row"}, 
-          React.createElement("h2", null, "Timesheet")
-        ), 
-        React.createElement("div", {className: "filter-btns"}, 
-          React.createElement("span", {className: "switch"}, 
-            React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'week', value: "week"}), 
-            React.createElement("label", null, "Week")
+        React.createElement("div", {className: "fixed-top"}, 
+          React.createElement("div", {className: "flex-center flex-row"}, 
+            React.createElement("h2", null, "Timesheet")
           ), 
-          React.createElement("span", {className: "switch"}, 
-            React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'month', value: "month"}), 
-            React.createElement("label", null, "Month")
-          ), 
-          React.createElement("span", {className: "switch"}, 
-            React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'all', value: "all"}), 
-            React.createElement("label", null, "All")
+          React.createElement("div", {className: "filter-btns"}, 
+            React.createElement("span", {className: "switch"}, 
+              React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'week', value: "week"}), 
+              React.createElement("label", null, "Week")
+            ), 
+            React.createElement("span", {className: "switch"}, 
+              React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'month', value: "month"}), 
+              React.createElement("label", null, "Month")
+            ), 
+            React.createElement("span", {className: "switch"}, 
+              React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'all', value: "all"}), 
+              React.createElement("label", null, "All")
+            )
           )
         ), 
-        React.createElement("div", {className: "flex-center flex-row"}, 
-          React.createElement(Table, {className: "timesheet-table", columns: columns, data: this.state.timeLogs})
+        React.createElement("div", {className: "middle"}, 
+          React.createElement("div", {className: "flex-center flex-row"}, 
+            React.createElement(Table, {className: "timesheet-table", columns: columns, data: this.state.timeLogs})
+          )
         ), 
         React.createElement("div", {key: 'div-timesheet-action-sheet', className: "fixed-bottom translucent-bg flex-center flex-col"}, 
           React.createElement("div", {key: 'div-timesheet-quick-btns', className: "timesheet-btn-container flex-center flex-row"}, 
@@ -1745,12 +1806,14 @@ var Timesheet = React.createClass({displayName: "Timesheet",
 
 module.exports = Timesheet;
 
-},{"../stores/time-log-store":20,"classnames":26,"lodash":31,"moment-timezone":33,"react":252,"react-router":64,"reactabular":264}],15:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/time-log-store":20,"classnames":26,"lodash":31,"moment-timezone":33,"react":252,"react-router":64,"reactabular":264}],15:[function(require,module,exports){
 'use strict';
 var keyMirror = require('keymirror');
 
 module.exports = {
   ActionTypes: keyMirror({
+    CLOCKED_IN: null,
+    CLOCKED_OUT: null,
     RECEIVE_EVENTS: null,
     RECEIVE_BABIES: null,
     RECEIVE_FEEDERS: null,
@@ -2167,6 +2230,7 @@ var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _ = require('lodash');
 var moment = require('moment-timezone');
+var _rawLogs = ls.get('raw-time-logs') || [];
 var _timeLogs = ls.get('time-logs') || [];
 var _weeklyTimeLogs = ls.get('weekly-time-logs') || {};
 var _monthlyTimeLogs = ls.get('monthly-time-logs') || {};
@@ -2196,49 +2260,71 @@ var TimeLogStore = assign({}, EventEmitter.prototype, {
   }
 });
 
+var updateStore = function () {
+  _timeLogs = _.chain(_rawLogs)
+    .map(function (tl) {
+      var timeIn = moment(tl.timeIn);
+      var timeOut = tl.timeOut ? moment(tl.timeOut) : null;
+      return {
+        _id: tl._id,
+        date: moment(tl.date).format('M/D/YY'),
+        timeIn: timeIn.format('h:mma'),
+        timeOut: timeOut ? timeOut.format('h:mma') : null,
+        hours: (tl.hours || tl.hours === 0) ? tl.hours: null,
+        weekOf: timeIn.startOf('week').format('M/D'),
+        monthOf: timeIn.startOf('month').format('MMMM')
+      };
+    })
+    .value();
+
+  _isClockedIn = !(_timeLogs[0].timeOut);
+
+  var now = moment(new Date());
+  var thisWeek = now.startOf('week').format('M/D');
+  var thisMonth = now.startOf('month').format('MMMM');
+  _weeklyTimeLogs = _.groupBy(_timeLogs, 'weekOf');
+  _monthlyTimeLogs = _.groupBy(_timeLogs, 'monthOf');
+  _thisWeekLog = _weeklyTimeLogs[thisWeek];
+  _thisMonthLog = _monthlyTimeLogs[thisMonth];
+  ls.set('weekly-time-logs', _weeklyTimeLogs);
+  ls.set('monthly-time-logs', _monthlyTimeLogs);
+  console.log(_weeklyTimeLogs);
+  console.log(_monthlyTimeLogs);
+  console.log(_thisWeekLog);
+  console.log(_thisMonthLog);
+  ls.set('time-logs', _timeLogs);
+  TimeLogStore.emitChange();
+};
+
+var needsUpdating = function (logs) {
+  return ((!logs) || (logs.length === 0) || (JSON.stringify(_rawLogs) !== JSON.stringify(logs)));
+};
+
 TimeLogStore.dispatchToken = Dispatcher.register(function (payload) {
   var action;
   action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_TIME_LOGS:
-      _timeLogs = _.chain(action.data)
-        .sortBy(function (tl) {
-          return new Date(tl.timeIn);
-        })
-        .reverse()
-        .map(function (tl) {
-          var timeIn = moment(tl.timeIn);
-          var timeOut = moment(tl.timeOut);
-          return {
-            date: moment(tl.date).format('M/D/YY'),
-            timeIn: timeIn.format('h:mma'),
-            timeOut: timeOut.format('h:mma'),
-            hours: tl.hours,
-            weekOf: timeIn.startOf('week').format('M/D'),
-            monthOf: timeIn.startOf('month').format('MMMM')
-          };
-        })
-        .value();
+      if (needsUpdating(action.data)) {
+        _rawLogs = _.chain(action.data)
+          .sortBy(function (tl) {
+            return new Date(tl.timeIn);
+          })
+          .reverse()
+          .value();
 
-      _isClockedIn = !(_timeLogs[0].timeOut);
-
-      var now = moment(new Date());
-      var thisWeek = now.startOf('week').format('M/D');
-      var thisMonth = now.startOf('month').format('MMMM');
-      _weeklyTimeLogs = _.groupBy(_timeLogs, 'weekOf');
-      _monthlyTimeLogs = _.groupBy(_timeLogs, 'monthOf');
-      _thisWeekLog = _weeklyTimeLogs[thisWeek];
-      _thisMonthLog = _monthlyTimeLogs[thisMonth];
-      ls.set('weekly-time-logs', _weeklyTimeLogs);
-      ls.set('monthly-time-logs', _monthlyTimeLogs);
-      console.log(_weeklyTimeLogs);
-      console.log(_monthlyTimeLogs);
-      console.log(_thisWeekLog);
-      console.log(_thisMonthLog);
-      ls.set('time-logs', _timeLogs);
+        updateStore();
+      }
+      break;
+    case ActionTypes.CLOCKED_IN:
+      _rawLogs.unshift(action.data);
+      updateStore();
+      break;
+    case ActionTypes.CLOCKED_OUT:
+      _rawLogs[0] = action.data;
+      updateStore();
       break;
   }
-  TimeLogStore.emitChange();
 });
 
 module.exports = TimeLogStore;
@@ -2300,6 +2386,18 @@ module.exports = {
   editEvent: function (info) {
     return Rest.put('/api/events/' + info._id, info).then(function (res) {
       ServerActions.successfulEventEdit(getJSON(res.response));
+    });
+  },
+
+  clockIn: function (timeLog) {
+    return Rest.post('/api/time-logs', timeLog).then(function (res) {
+      ServerActions.clockedIn(getJSON(res.response));
+    });
+  },
+
+  clockOut: function (id, timeLog) {
+    return Rest.put('/api/time-logs/' + id, timeLog).then(function (res) {
+      ServerActions.clockedOut(getJSON(res.response));
     });
   }
 };

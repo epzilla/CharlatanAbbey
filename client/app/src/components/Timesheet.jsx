@@ -8,6 +8,23 @@ var moment = require('moment-timezone');
 var cx = require('classnames');
 var Table = require('reactabular').Table;
 var TimeLogStore = require('../stores/time-log-store');
+var Actions = require('../actions/view-actions');
+
+var ClockOutBtn = React.createClass({
+  _clockOut: function () {
+    Actions.clockOut(this.props.clockOutID, {timeOut: new Date()});
+  },
+
+  render: function () {
+    return (
+      <button key={'clock-in-timesheet'}
+        className={this.props.className}
+        onClick={this._clockOut}>
+        <i className="fa fa-sign-out"></i> Clock Out
+      </button>
+    );
+  }
+});
 
 var Timesheet = React.createClass({
 
@@ -21,12 +38,31 @@ var Timesheet = React.createClass({
     };
   },
 
+  componentDidMount: function () {
+    TimeLogStore.addChangeListener(this._onChange);
+  },
+
+  componentDidUnmount: function () {
+    TimeLogStore.removeChangeListener(this._onChange);
+  },
+
+  _onChange: function () {
+    this.setState({
+      timeLogs: TimeLogStore.getTimeLogs(),
+      isClockedIn: TimeLogStore.isClockedIn()
+    });
+  },
+
   _clockIn: function () {
-    alert('Clocked in!');
+    var now = new Date();
+    Actions.clockIn({
+      date: now,
+      timeIn: now
+    });
   },
 
   _clockOut: function () {
-    alert('Clocked out!');
+    alert('Clocked out!' + this.props.clockOutID);
   },
 
   _setFilter: function (e) {
@@ -71,13 +107,9 @@ var Timesheet = React.createClass({
     });
 
     if (this.state.isClockedIn) {
+      var clockOutID = this.state.timeLogs[0]._id;
       clockOutBtn = (
-        <button key={'clock-in-timesheet'}
-          className={clockOutClasses}
-          onClick={this._clockOut}
-          disabled={!this.state.isClockedIn}>
-          <i className="fa fa-sign-out"></i> Clock Out
-        </button>
+        <ClockOutBtn key={'clock-out-timesheet'} clockOutID={clockOutID} className={clockOutClasses}/>
       );
     } else {
       clockInBtn = (
@@ -92,25 +124,29 @@ var Timesheet = React.createClass({
 
     return (
       <section className='modal-sheet timesheet'>
-        <div className="flex-center flex-row">
-          <h2>Timesheet</h2>
+        <div className="fixed-top">
+          <div className="flex-center flex-row">
+            <h2>Timesheet</h2>
+          </div>
+          <div className="filter-btns">
+            <span className='switch'>
+              <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'week'} value='week'/>
+              <label>Week</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'month'} value='month'/>
+              <label>Month</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'all'} value='all'/>
+              <label>All</label>
+            </span>
+          </div>
         </div>
-        <div className="filter-btns">
-          <span className='switch'>
-            <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'week'} value='week'/>
-            <label>Week</label>
-          </span>
-          <span className='switch'>
-            <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'month'} value='month'/>
-            <label>Month</label>
-          </span>
-          <span className='switch'>
-            <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'all'} value='all'/>
-            <label>All</label>
-          </span>
-        </div>
-        <div className="flex-center flex-row">
-          <Table className="timesheet-table" columns={columns} data={this.state.timeLogs} />
+        <div className="middle">
+          <div className="flex-center flex-row">
+            <Table className="timesheet-table" columns={columns} data={this.state.timeLogs} />
+          </div>
         </div>
         <div key={'div-timesheet-action-sheet'} className="fixed-bottom translucent-bg flex-center flex-col">
           <div key={'div-timesheet-quick-btns'} className='timesheet-btn-container flex-center flex-row'>

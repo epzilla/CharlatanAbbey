@@ -3,6 +3,8 @@ var keyMirror = require('keymirror');
 
 module.exports = {
   ActionTypes: keyMirror({
+    CLOCKED_IN: null,
+    CLOCKED_OUT: null,
     RECEIVE_EVENTS: null,
     RECEIVE_BABIES: null,
     RECEIVE_FEEDERS: null,

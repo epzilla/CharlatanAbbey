@@ -1,7 +1,4 @@
 'use strict';
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var AppConstants = require('../constants/constants');
-var ActionTypes = AppConstants.ActionTypes;
 var API = require('../utils/api');
 
 var ViewActions = {
@@ -14,8 +11,15 @@ var ViewActions = {
   },
 
   editEventForm: function (formValues) {
-    console.log(formValues);
     API.editEvent(formValues);
+  },
+
+  clockIn: function (timeLog) {
+    API.clockIn(timeLog);
+  },
+
+  clockOut: function (id, timeLog) {
+    API.clockOut(id, timeLog);
   }
 };
 

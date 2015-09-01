@@ -19,7 +19,11 @@ var Log = React.createClass({
 
   _submit: function (e) {
     e.preventDefault();
-    console.log(this.state);
+
+    this.setState({
+      submitting: true
+    });
+
     Actions.submitEventForm({
       name: this.state.baby,
       eventType: this.state.eventType,
@@ -337,7 +341,10 @@ var Log = React.createClass({
 
           {spitField}
 
-          <input type='submit' className='btn btn-invert submit-btn' />
+          <input type='submit'
+            className='btn btn-invert submit-btn'
+            disabled={this.state.submitting ? 'disabled' : false}
+            value={this.state.submitting ? 'Submitting...' : 'Submit'}/>
           <Link to="/" className='btn btn-cancel btn-invert' >Cancel</Link>
         </form>
       </section>

@@ -11,6 +11,7 @@
 
 var _ = require('lodash');
 var timeLog = require('./time-log.model');
+var moment = require('moment-timezone');
 
 // Get list of time-logs
 exports.index = function (req, res) {
@@ -39,16 +40,35 @@ exports.create = function (req, res) {
 
 // Updates an existing time-log in the DB.
 exports.update = function (req, res) {
-  if(req.body._id) { delete req.body._id; }
-  timeLog.findById(req.params.id, function (err, timeLogEvent) {
-    if (err) { return handleError(res, err); }
-    if(!timeLogEvent) { return res.send(404); }
-    var updated = _.merge(timeLogEvent, req.body);
-    updated.save(function (err) {
+  if (req.body._id) { delete req.body._id; }
+
+  if (req.body.hours) {
+    // This is an edit
+    timeLog.findById(req.params.id, function (err, timeLogEvent) {
       if (err) { return handleError(res, err); }
-      return res.json(200, timeLogEvent);
+      if(!timeLogEvent) { return res.send(404); }
+      var updated = _.merge(timeLogEvent, req.body);
+      updated.save(function (err) {
+        if (err) { return handleError(res, err); }
+        return res.json(200, timeLogEvent);
+      });
     });
-  });
+  } else {
+    // This is a clock-out
+    timeLog.findById(req.params.id, function (err, timeLogEvent) {
+      if (err) { return handleError(res, err); }
+      if(!timeLogEvent) { return res.send(404); }
+
+      var updated = _.merge(timeLogEvent, req.body);
+      var hours = moment(updated.timeOut).diff(moment(updated.timeIn), 'hours', true);
+      updated.hours = hours.toFixed(2);
+
+      updated.save(function (err) {
+        if (err) { return handleError(res, err); }
+        return res.json(200, timeLogEvent);
+      });
+    });
+  }
 };
 
 // Deletes a time-log from the DB.

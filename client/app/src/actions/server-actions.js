@@ -51,6 +51,20 @@ var ServerActions = {
       type: ActionTypes.SUCCESSFUL_EVENT_EDIT,
       data: data
     });
+  },
+
+  clockedIn: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.CLOCKED_IN,
+      data: data
+    });
+  },
+
+  clockedOut: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.CLOCKED_OUT,
+      data: data
+    });
   }
 };
 
