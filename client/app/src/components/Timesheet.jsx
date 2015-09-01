@@ -2,7 +2,9 @@
 'use strict';
 
 var React = require('react');
-var Navigation = require('react-router').Navigation;
+var Router = require('react-router');
+var Navigation = Router.Navigation;
+var Link = Router.Link;
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var cx = require('classnames');
@@ -40,9 +42,10 @@ var Timesheet = React.createClass({
 
   componentDidMount: function () {
     TimeLogStore.addChangeListener(this._onChange);
+    Actions.getTimeLogs();
   },
 
-  componentDidUnmount: function () {
+  componentWillUnmount: function () {
     TimeLogStore.removeChangeListener(this._onChange);
   },
 
@@ -63,6 +66,10 @@ var Timesheet = React.createClass({
 
   _clockOut: function () {
     alert('Clocked out!' + this.props.clockOutID);
+  },
+
+  _goHome: function () {
+    this.transitionTo('/');
   },
 
   _setFilter: function (e) {
@@ -94,27 +101,15 @@ var Timesheet = React.createClass({
       }
     ];
 
-    var clockInClasses = cx({
-      'btn': true,
-      'feed-btn': true,
-      'full-width': !this.state.isClockedIn
-    });
-
-    var clockOutClasses = cx({
-      'btn': true,
-      'feed-btn': true,
-      'full-width': this.state.isClockedIn
-    });
-
     if (this.state.isClockedIn) {
       var clockOutID = this.state.timeLogs[0]._id;
       clockOutBtn = (
-        <ClockOutBtn key={'clock-out-timesheet'} clockOutID={clockOutID} className={clockOutClasses}/>
+        <ClockOutBtn key={'clock-out-timesheet'} clockOutID={clockOutID} className='btn feed-btn' />
       );
     } else {
       clockInBtn = (
         <button key={'clock-in-timesheet'}
-          className={clockInClasses}
+          className='btn feed-btn'
           onClick={this._clockIn}
           disabled={this.state.isClockedIn}>
           <i className="fa fa-sign-in"></i> Clock In
@@ -152,6 +147,10 @@ var Timesheet = React.createClass({
           <div key={'div-timesheet-quick-btns'} className='timesheet-btn-container flex-center flex-row'>
             {clockInBtn}
             {clockOutBtn}
+            <button className="btn home-btn feed-btn"
+              onClick={this._goHome}>
+              <i className="fa fa-home"></i> Home
+            </button>
           </div>
         </div>
       </section>

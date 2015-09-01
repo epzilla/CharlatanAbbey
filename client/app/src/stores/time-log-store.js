@@ -65,10 +65,6 @@ var updateStore = function () {
   _thisMonthLog = _monthlyTimeLogs[thisMonth];
   ls.set('weekly-time-logs', _weeklyTimeLogs);
   ls.set('monthly-time-logs', _monthlyTimeLogs);
-  console.log(_weeklyTimeLogs);
-  console.log(_monthlyTimeLogs);
-  console.log(_thisWeekLog);
-  console.log(_thisMonthLog);
   ls.set('time-logs', _timeLogs);
   TimeLogStore.emitChange();
 };

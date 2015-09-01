@@ -131,6 +131,14 @@ var ViewActions = {
     API.getFeeders();
   },
 
+  getEvents: function () {
+    API.getEvents();
+  },
+
+  getTimeLogs: function () {
+    API.getTimeLogs();
+  },
+
   submitEventForm: function (formValues) {
     API.submitEvent(formValues);
   },
@@ -720,6 +728,7 @@ var Router = require('react-router');
 var Link = Router.Link;
 var Navigation = Router.Navigation;
 var EventStore = require('../stores/event-store');
+var Actions = require('../actions/view-actions');
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var Swipeable = require('react-swipeable');
@@ -813,6 +822,7 @@ var History = React.createClass({displayName: "History",
 
   componentDidMount: function () {
     EventStore.addChangeListener(this._onChange);
+    Actions.getEvents();
   },
 
   componentWillUnmount: function () {
@@ -884,7 +894,7 @@ var History = React.createClass({displayName: "History",
 module.exports = History;
 
 
-},{"../stores/event-store":18,"lodash":31,"moment-timezone":33,"react":252,"react-router":64,"react-swipeable":79}],9:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/event-store":18,"lodash":31,"moment-timezone":33,"react":252,"react-router":64,"react-swipeable":79}],9:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -1647,7 +1657,9 @@ module.exports = TimeStepper;
 'use strict';
 
 var React = require('react');
-var Navigation = require('react-router').Navigation;
+var Router = require('react-router');
+var Navigation = Router.Navigation;
+var Link = Router.Link;
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var cx = require('classnames');
@@ -1685,9 +1697,10 @@ var Timesheet = React.createClass({displayName: "Timesheet",
 
   componentDidMount: function () {
     TimeLogStore.addChangeListener(this._onChange);
+    Actions.getTimeLogs();
   },
 
-  componentDidUnmount: function () {
+  componentWillUnmount: function () {
     TimeLogStore.removeChangeListener(this._onChange);
   },
 
@@ -1708,6 +1721,10 @@ var Timesheet = React.createClass({displayName: "Timesheet",
 
   _clockOut: function () {
     alert('Clocked out!' + this.props.clockOutID);
+  },
+
+  _goHome: function () {
+    this.transitionTo('/');
   },
 
   _setFilter: function (e) {
@@ -1739,27 +1756,15 @@ var Timesheet = React.createClass({displayName: "Timesheet",
       }
     ];
 
-    var clockInClasses = cx({
-      'btn': true,
-      'feed-btn': true,
-      'full-width': !this.state.isClockedIn
-    });
-
-    var clockOutClasses = cx({
-      'btn': true,
-      'feed-btn': true,
-      'full-width': this.state.isClockedIn
-    });
-
     if (this.state.isClockedIn) {
       var clockOutID = this.state.timeLogs[0]._id;
       clockOutBtn = (
-        React.createElement(ClockOutBtn, {key: 'clock-out-timesheet', clockOutID: clockOutID, className: clockOutClasses})
+        React.createElement(ClockOutBtn, {key: 'clock-out-timesheet', clockOutID: clockOutID, className: "btn feed-btn"})
       );
     } else {
       clockInBtn = (
         React.createElement("button", {key: 'clock-in-timesheet', 
-          className: clockInClasses, 
+          className: "btn feed-btn", 
           onClick: this._clockIn, 
           disabled: this.state.isClockedIn}, 
           React.createElement("i", {className: "fa fa-sign-in"}), " Clock In"
@@ -1796,7 +1801,11 @@ var Timesheet = React.createClass({displayName: "Timesheet",
         React.createElement("div", {key: 'div-timesheet-action-sheet', className: "fixed-bottom translucent-bg flex-center flex-col"}, 
           React.createElement("div", {key: 'div-timesheet-quick-btns', className: "timesheet-btn-container flex-center flex-row"}, 
             clockInBtn, 
-            clockOutBtn
+            clockOutBtn, 
+            React.createElement("button", {className: "btn home-btn feed-btn", 
+              onClick: this._goHome}, 
+              React.createElement("i", {className: "fa fa-home"}), " Home"
+            )
           )
         )
       )
@@ -2288,10 +2297,6 @@ var updateStore = function () {
   _thisMonthLog = _monthlyTimeLogs[thisMonth];
   ls.set('weekly-time-logs', _weeklyTimeLogs);
   ls.set('monthly-time-logs', _monthlyTimeLogs);
-  console.log(_weeklyTimeLogs);
-  console.log(_monthlyTimeLogs);
-  console.log(_thisWeekLog);
-  console.log(_thisMonthLog);
   ls.set('time-logs', _timeLogs);
   TimeLogStore.emitChange();
 };

@@ -6,6 +6,14 @@ var ViewActions = {
     API.getFeeders();
   },
 
+  getEvents: function () {
+    API.getEvents();
+  },
+
+  getTimeLogs: function () {
+    API.getTimeLogs();
+  },
+
   submitEventForm: function (formValues) {
     API.submitEvent(formValues);
   },

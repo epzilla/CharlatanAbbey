@@ -6,6 +6,7 @@ var Router = require('react-router');
 var Link = Router.Link;
 var Navigation = Router.Navigation;
 var EventStore = require('../stores/event-store');
+var Actions = require('../actions/view-actions');
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var Swipeable = require('react-swipeable');
@@ -99,6 +100,7 @@ var History = React.createClass({
 
   componentDidMount: function () {
     EventStore.addChangeListener(this._onChange);
+    Actions.getEvents();
   },
 
   componentWillUnmount: function () {
