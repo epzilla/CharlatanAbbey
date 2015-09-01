@@ -37,7 +37,7 @@ var Timesheet = React.createClass({
 
   render: function () {
 
-    var clockInBtn;
+    var clockInBtn, clockOutBtn;
     var filter = this.state.filter;
     var columns = [
       {
@@ -58,16 +58,31 @@ var Timesheet = React.createClass({
       }
     ];
 
+    var clockInClasses = cx({
+      'btn': true,
+      'feed-btn': true,
+      'full-width': !this.state.isClockedIn
+    });
+
     var clockOutClasses = cx({
       'btn': true,
       'feed-btn': true,
       'full-width': this.state.isClockedIn
     });
 
-    if (!this.state.isClockedIn) {
+    if (this.state.isClockedIn) {
+      clockOutBtn = (
+        <button key={'clock-in-timesheet'}
+          className={clockOutClasses}
+          onClick={this._clockOut}
+          disabled={!this.state.isClockedIn}>
+          <i className="fa fa-sign-out"></i> Clock Out
+        </button>
+      );
+    } else {
       clockInBtn = (
         <button key={'clock-in-timesheet'}
-          className="btn feed-btn"
+          className={clockInClasses}
           onClick={this._clockIn}
           disabled={this.state.isClockedIn}>
           <i className="fa fa-sign-in"></i> Clock In
@@ -80,17 +95,14 @@ var Timesheet = React.createClass({
         <div className="flex-center flex-row">
           <h2>Timesheet</h2>
         </div>
-        <div className="flex-center flex-row">
-          <h4>Display:</h4>
-        </div>
         <div className="filter-btns">
           <span className='switch'>
             <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'week'} value='week'/>
-            <label>Weekly</label>
+            <label>Week</label>
           </span>
           <span className='switch'>
             <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'month'} value='month'/>
-            <label>Monthly</label>
+            <label>Month</label>
           </span>
           <span className='switch'>
             <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'all'} value='all'/>
@@ -103,11 +115,7 @@ var Timesheet = React.createClass({
         <div key={'div-timesheet-action-sheet'} className="fixed-bottom translucent-bg flex-center flex-col">
           <div key={'div-timesheet-quick-btns'} className='timesheet-btn-container flex-center flex-row'>
             {clockInBtn}
-            <button key={'clock-out-timesheet'}
-              className={clockOutClasses}
-              onClick={this._clockOut}>
-              Clock Out <i className="fa fa-sign-out after"></i>
-            </button>
+            {clockOutBtn}
           </div>
         </div>
       </section>

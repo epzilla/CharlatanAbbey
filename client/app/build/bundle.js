@@ -1657,7 +1657,7 @@ var Timesheet = React.createClass({displayName: "Timesheet",
 
   render: function () {
 
-    var clockInBtn;
+    var clockInBtn, clockOutBtn;
     var filter = this.state.filter;
     var columns = [
       {
@@ -1678,16 +1678,31 @@ var Timesheet = React.createClass({displayName: "Timesheet",
       }
     ];
 
+    var clockInClasses = cx({
+      'btn': true,
+      'feed-btn': true,
+      'full-width': !this.state.isClockedIn
+    });
+
     var clockOutClasses = cx({
       'btn': true,
       'feed-btn': true,
       'full-width': this.state.isClockedIn
     });
 
-    if (!this.state.isClockedIn) {
+    if (this.state.isClockedIn) {
+      clockOutBtn = (
+        React.createElement("button", {key: 'clock-in-timesheet', 
+          className: clockOutClasses, 
+          onClick: this._clockOut, 
+          disabled: !this.state.isClockedIn}, 
+          React.createElement("i", {className: "fa fa-sign-out"}), " Clock Out"
+        )
+      );
+    } else {
       clockInBtn = (
         React.createElement("button", {key: 'clock-in-timesheet', 
-          className: "btn feed-btn", 
+          className: clockInClasses, 
           onClick: this._clockIn, 
           disabled: this.state.isClockedIn}, 
           React.createElement("i", {className: "fa fa-sign-in"}), " Clock In"
@@ -1700,17 +1715,14 @@ var Timesheet = React.createClass({displayName: "Timesheet",
         React.createElement("div", {className: "flex-center flex-row"}, 
           React.createElement("h2", null, "Timesheet")
         ), 
-        React.createElement("div", {className: "flex-center flex-row"}, 
-          React.createElement("h4", null, "Display:")
-        ), 
         React.createElement("div", {className: "filter-btns"}, 
           React.createElement("span", {className: "switch"}, 
             React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'week', value: "week"}), 
-            React.createElement("label", null, "Weekly")
+            React.createElement("label", null, "Week")
           ), 
           React.createElement("span", {className: "switch"}, 
             React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'month', value: "month"}), 
-            React.createElement("label", null, "Monthly")
+            React.createElement("label", null, "Month")
           ), 
           React.createElement("span", {className: "switch"}, 
             React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'all', value: "all"}), 
@@ -1723,11 +1735,7 @@ var Timesheet = React.createClass({displayName: "Timesheet",
         React.createElement("div", {key: 'div-timesheet-action-sheet', className: "fixed-bottom translucent-bg flex-center flex-col"}, 
           React.createElement("div", {key: 'div-timesheet-quick-btns', className: "timesheet-btn-container flex-center flex-row"}, 
             clockInBtn, 
-            React.createElement("button", {key: 'clock-out-timesheet', 
-              className: clockOutClasses, 
-              onClick: this._clockOut}, 
-              "Clock Out ", React.createElement("i", {className: "fa fa-sign-out after"})
-            )
+            clockOutBtn
           )
         )
       )
