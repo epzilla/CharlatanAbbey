@@ -1881,8 +1881,8 @@ var Timesheet = React.createClass({displayName: "Timesheet",
           React.createElement("div", {className: "flex-center flex-row"}, 
             React.createElement("h2", null, "Timesheet")
           ), 
-          React.createElement("div", {className: "flex-center flex-row"}, 
-            React.createElement("section", {className: "width-50"}, 
+          React.createElement("div", {className: "flex-center flex-row space-between"}, 
+            React.createElement("section", {className: "width-50 text-left"}, 
               React.createElement("div", {className: "filter-btns"}, 
                 React.createElement("span", {className: "switch"}, 
                   React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'weekly', value: "weekly"}), 
@@ -1898,7 +1898,7 @@ var Timesheet = React.createClass({displayName: "Timesheet",
                 )
               )
             ), 
-            React.createElement("section", {className: "width-50"}, 
+            React.createElement("section", {className: "width-35 text-right"}, 
               React.createElement(FilterStepper, {options: Object.keys(dataSet).reverse(), onChange: this._setSubFilter})
             )
           )

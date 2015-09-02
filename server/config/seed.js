@@ -91,6 +91,24 @@ TimeLog.find(function (err, timeLogEvents) {
         timeOut: '2015-08-29T18:00:10.000Z',
         hours: 4
       },
+      {
+        date: '2015-08-31T15:00:10.000Z',
+        timeIn: '2015-08-31T15:00:10.000Z',
+        timeOut: '2015-09-01T01:00:10.000Z',
+        hours: 10
+      },
+      {
+        date: '2015-09-01T15:00:10.000Z',
+        timeIn: '2015-09-01T15:00:10.000Z',
+        timeOut: '2015-09-01T23:00:10.000Z',
+        hours: 8
+      },
+      {
+        date: '2015-09-02T15:00:10.000Z',
+        timeIn: '2015-09-02T15:00:10.000Z',
+        timeOut: '2015-09-02T23:00:10.000Z',
+        hours: 8
+      },
       function () {
         console.log('Time Logs created!');
       });

@@ -2,14 +2,43 @@
   width: 50%;
 }
 
+.width-65 {
+  width: 65%;
+}
+
+.width-35 {
+  width: 35%;
+}
+
+.pad-0-5-em {
+  padding: 0.5em;
+}
+
 .flex-center {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  &.space-between {
+    justify-content: space-between;
+  }
 }
 
 .flex-right {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+.flex-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
 }

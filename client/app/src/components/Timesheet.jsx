@@ -193,8 +193,8 @@ var Timesheet = React.createClass({
           <div className="flex-center flex-row">
             <h2>Timesheet</h2>
           </div>
-          <div className="flex-center flex-row">
-            <section className="width-50">
+          <div className="flex-center flex-row space-between">
+            <section className="width-50 text-left">
               <div className="filter-btns">
                 <span className='switch'>
                   <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'weekly'} value='weekly'/>
@@ -210,7 +210,7 @@ var Timesheet = React.createClass({
                 </span>
               </div>
             </section>
-            <section className="width-50">
+            <section className="width-35 text-right">
               <FilterStepper options={Object.keys(dataSet).reverse()} onChange={this._setSubFilter} />
             </section>
           </div>
