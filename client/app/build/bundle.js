@@ -840,7 +840,7 @@ var History = React.createClass({displayName: "History",
       React.createElement("section", {className: "right-sheet", id: "right-sheet"}, 
         React.createElement(Swipeable, {
           onSwipedRight: this._swipedRight, 
-          delta: 1
+          delta: 100
         }, 
           React.createElement("h2", null, "Event History"), 
           React.createElement(Link, {to: "/", className: "close-btn flex-center"}, 

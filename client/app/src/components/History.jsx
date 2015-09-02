@@ -118,7 +118,7 @@ var History = React.createClass({
       <section className="right-sheet" id="right-sheet">
         <Swipeable
           onSwipedRight={this._swipedRight}
-          delta={1}
+          delta={100}
         >
           <h2>Event History</h2>
           <Link to="/" className="close-btn flex-center">
