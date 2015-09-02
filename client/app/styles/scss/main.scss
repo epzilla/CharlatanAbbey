@@ -2,6 +2,7 @@
 @import 'normalize';
 @import '../../../../node_modules/font-awesome/scss/font-awesome.scss';
 @import 'variables';
+@import 'helpers';
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400italic,400,700);
 
 * {
@@ -240,12 +241,6 @@ h4 {
 
 .main-container {
   height: 100%;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
 }
 
 .close-btn {
@@ -513,7 +508,7 @@ h4 {
     // font-weight: normal;
     height: 45%;
     width: 45%;
-    background-color: #124D88;
+    background-color: $navy;
     color: white;
     min-height: 3em;
   }
@@ -545,6 +540,7 @@ h4 {
 
 .filter-btns {
   width: 100%;
+  position: relative;
   .switch {
     width: 33.333%;
     margin-right: 0;
@@ -560,6 +556,9 @@ h4 {
     label, input, input:checked, input:checked~label {
       width: 100%;
       min-width: initial;
+    }
+    input, input:checked {
+      width: 33%;
     }
     label {
       background: #00BFFF;
@@ -660,6 +659,29 @@ table {
           background-color: darken(#319C61, 15%);
         }
       }
+    }
+  }
+}
+
+.filter-stepper {
+  margin-bottom: 1em;
+  h4 {
+    width: 5em;
+    text-align: center;
+  }
+  .btn-filter-stepper {
+    background: $navy;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    color: white;
+    font-size: 32px;
+    padding: 0 9px;
+    @media(max-width: $phoneish) {
+      width: 35px;
+      height: 35px;
+      border-radius: 18px;
+      font-size: 20px;
     }
   }
 }

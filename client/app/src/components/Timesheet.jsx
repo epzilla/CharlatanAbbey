@@ -28,15 +28,70 @@ var ClockOutBtn = React.createClass({
   }
 });
 
+var FilterStepper = React.createClass({
+  getInitialState: function () {
+    return {
+      currentStep: this.props.options[this.props.options.length - 1],
+      options: this.props.options,
+      pointer: this.props.options.length - 1,
+      moreNext: false,
+      morePrev: this.props.options.length > 1
+    };
+  },
+
+  _prev: function () {
+    var newPtr = this.state.pointer - 1;
+    this.setState({
+      pointer: newPtr,
+      currentStep: this.state.options[newPtr]
+    }, function () {
+      this.props.onChange(this.state.currentStep);
+    });
+  },
+
+  _next: function () {
+    var newPtr = this.state.pointer + 1;
+    this.setState({
+      pointer: newPtr,
+      currentStep: this.state.options[newPtr]
+    }, function () {
+      this.props.onChange(this.state.currentStep);
+    });
+  },
+
+  render: function () {
+    return (
+      <div className="filter-stepper flex-right flex-row">
+        <button className="btn btn-filter-stepper btn-prev" onClick={this._prev}>
+          <i className="fa fa-angle-left"></i>
+        </button>
+        <h4>{this.state.currentStep}</h4>
+        <button className="btn btn-filter-stepper btn-next" onClick={this._next}>
+          <i className="fa fa-angle-right"></i>
+        </button>
+      </div>
+    );
+  }
+});
+
 var Timesheet = React.createClass({
 
   mixins: [ Navigation ],
 
   getInitialState: function () {
+    var now = moment(new Date());
+    var thisWeek = now.startOf('week').format('M/D');
+    var logs = TimeLogStore.getEverything();
+
+    if (!logs.weekly[thisWeek]) {
+      thisWeek = this._findMostRecentWeek(logs.weekly);
+    }
+
     return {
-      timeLogs: TimeLogStore.getTimeLogs(),
+      timeLogs: logs,
       isClockedIn: TimeLogStore.isClockedIn(),
-      filter: 'week'
+      timeFilter: 'weekly',
+      subFilter: thisWeek
     };
   },
 
@@ -49,9 +104,13 @@ var Timesheet = React.createClass({
     TimeLogStore.removeChangeListener(this._onChange);
   },
 
+  _findMostRecentWeek: function (weeklyLogs) {
+    return Object.keys(weeklyLogs).sort().reverse()[0];
+  },
+
   _onChange: function () {
     this.setState({
-      timeLogs: TimeLogStore.getTimeLogs(),
+      timeLogs: TimeLogStore.getEverything(),
       isClockedIn: TimeLogStore.isClockedIn()
     });
   },
@@ -74,14 +133,25 @@ var Timesheet = React.createClass({
 
   _setFilter: function (e) {
     this.setState({
-      filter: e.target.value
+      timeFilter: e.target.value
+    });
+  },
+
+  _setSubFilter: function (val) {
+    this.setState({
+      subFilter: val
     });
   },
 
   render: function () {
 
     var clockInBtn, clockOutBtn;
-    var filter = this.state.filter;
+    var filter = this.state.timeFilter;
+    var subFilter = this.state.subFilter;
+
+    var dataSet = this.state.timeLogs[filter];
+    var specificData = dataSet[subFilter];
+
     var columns = [
       {
         property: 'date',
@@ -123,24 +193,31 @@ var Timesheet = React.createClass({
           <div className="flex-center flex-row">
             <h2>Timesheet</h2>
           </div>
-          <div className="filter-btns">
-            <span className='switch'>
-              <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'week'} value='week'/>
-              <label>Week</label>
-            </span>
-            <span className='switch'>
-              <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'month'} value='month'/>
-              <label>Month</label>
-            </span>
-            <span className='switch'>
-              <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'all'} value='all'/>
-              <label>All</label>
-            </span>
+          <div className="flex-center flex-row">
+            <section className="width-50">
+              <div className="filter-btns">
+                <span className='switch'>
+                  <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'weekly'} value='weekly'/>
+                  <label>Week</label>
+                </span>
+                <span className='switch'>
+                  <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'monthly'} value='monthly'/>
+                  <label>Month</label>
+                </span>
+                <span className='switch'>
+                  <input type='radio' name='filter' onChange={this._setFilter} defaultChecked={filter === 'all'} value='all'/>
+                  <label>All</label>
+                </span>
+              </div>
+            </section>
+            <section className="width-50">
+              <FilterStepper options={Object.keys(dataSet).reverse()} onChange={this._setSubFilter} />
+            </section>
           </div>
         </div>
         <div className="middle">
           <div className="flex-center flex-row">
-            <Table className="timesheet-table" columns={columns} data={this.state.timeLogs} />
+            <Table className="timesheet-table" columns={columns} data={specificData} />
           </div>
         </div>
         <div key={'div-timesheet-action-sheet'} className="fixed-bottom translucent-bg flex-center flex-col">

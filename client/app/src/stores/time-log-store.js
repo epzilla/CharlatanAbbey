@@ -32,6 +32,14 @@ var TimeLogStore = assign({}, EventEmitter.prototype, {
     return _timeLogs;
   },
 
+  getEverything: function () {
+    return {
+      weekly: _weeklyTimeLogs,
+      monthly: _monthlyTimeLogs,
+      all: _timeLogs
+    };
+  },
+
   isClockedIn: function () {
     return _isClockedIn;
   }

@@ -1683,15 +1683,70 @@ var ClockOutBtn = React.createClass({displayName: "ClockOutBtn",
   }
 });
 
+var FilterStepper = React.createClass({displayName: "FilterStepper",
+  getInitialState: function () {
+    return {
+      currentStep: this.props.options[this.props.options.length - 1],
+      options: this.props.options,
+      pointer: this.props.options.length - 1,
+      moreNext: false,
+      morePrev: this.props.options.length > 1
+    };
+  },
+
+  _prev: function () {
+    var newPtr = this.state.pointer - 1;
+    this.setState({
+      pointer: newPtr,
+      currentStep: this.state.options[newPtr]
+    }, function () {
+      this.props.onChange(this.state.currentStep);
+    });
+  },
+
+  _next: function () {
+    var newPtr = this.state.pointer + 1;
+    this.setState({
+      pointer: newPtr,
+      currentStep: this.state.options[newPtr]
+    }, function () {
+      this.props.onChange(this.state.currentStep);
+    });
+  },
+
+  render: function () {
+    return (
+      React.createElement("div", {className: "filter-stepper flex-right flex-row"}, 
+        React.createElement("button", {className: "btn btn-filter-stepper btn-prev", onClick: this._prev}, 
+          React.createElement("i", {className: "fa fa-angle-left"})
+        ), 
+        React.createElement("h4", null, this.state.currentStep), 
+        React.createElement("button", {className: "btn btn-filter-stepper btn-next", onClick: this._next}, 
+          React.createElement("i", {className: "fa fa-angle-right"})
+        )
+      )
+    );
+  }
+});
+
 var Timesheet = React.createClass({displayName: "Timesheet",
 
   mixins: [ Navigation ],
 
   getInitialState: function () {
+    var now = moment(new Date());
+    var thisWeek = now.startOf('week').format('M/D');
+    var logs = TimeLogStore.getEverything();
+
+    if (!logs.weekly[thisWeek]) {
+      thisWeek = this._findMostRecentWeek(logs.weekly);
+    }
+
     return {
-      timeLogs: TimeLogStore.getTimeLogs(),
+      timeLogs: logs,
       isClockedIn: TimeLogStore.isClockedIn(),
-      filter: 'week'
+      timeFilter: 'weekly',
+      subFilter: thisWeek
     };
   },
 
@@ -1704,9 +1759,13 @@ var Timesheet = React.createClass({displayName: "Timesheet",
     TimeLogStore.removeChangeListener(this._onChange);
   },
 
+  _findMostRecentWeek: function (weeklyLogs) {
+    return Object.keys(weeklyLogs).sort().reverse()[0];
+  },
+
   _onChange: function () {
     this.setState({
-      timeLogs: TimeLogStore.getTimeLogs(),
+      timeLogs: TimeLogStore.getEverything(),
       isClockedIn: TimeLogStore.isClockedIn()
     });
   },
@@ -1729,14 +1788,25 @@ var Timesheet = React.createClass({displayName: "Timesheet",
 
   _setFilter: function (e) {
     this.setState({
-      filter: e.target.value
+      timeFilter: e.target.value
+    });
+  },
+
+  _setSubFilter: function (val) {
+    this.setState({
+      subFilter: val
     });
   },
 
   render: function () {
 
     var clockInBtn, clockOutBtn;
-    var filter = this.state.filter;
+    var filter = this.state.timeFilter;
+    var subFilter = this.state.subFilter;
+
+    var dataSet = this.state.timeLogs[filter];
+    var specificData = dataSet[subFilter];
+
     var columns = [
       {
         property: 'date',
@@ -1778,24 +1848,31 @@ var Timesheet = React.createClass({displayName: "Timesheet",
           React.createElement("div", {className: "flex-center flex-row"}, 
             React.createElement("h2", null, "Timesheet")
           ), 
-          React.createElement("div", {className: "filter-btns"}, 
-            React.createElement("span", {className: "switch"}, 
-              React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'week', value: "week"}), 
-              React.createElement("label", null, "Week")
+          React.createElement("div", {className: "flex-center flex-row"}, 
+            React.createElement("section", {className: "width-50"}, 
+              React.createElement("div", {className: "filter-btns"}, 
+                React.createElement("span", {className: "switch"}, 
+                  React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'weekly', value: "weekly"}), 
+                  React.createElement("label", null, "Week")
+                ), 
+                React.createElement("span", {className: "switch"}, 
+                  React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'monthly', value: "monthly"}), 
+                  React.createElement("label", null, "Month")
+                ), 
+                React.createElement("span", {className: "switch"}, 
+                  React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'all', value: "all"}), 
+                  React.createElement("label", null, "All")
+                )
+              )
             ), 
-            React.createElement("span", {className: "switch"}, 
-              React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'month', value: "month"}), 
-              React.createElement("label", null, "Month")
-            ), 
-            React.createElement("span", {className: "switch"}, 
-              React.createElement("input", {type: "radio", name: "filter", onChange: this._setFilter, defaultChecked: filter === 'all', value: "all"}), 
-              React.createElement("label", null, "All")
+            React.createElement("section", {className: "width-50"}, 
+              React.createElement(FilterStepper, {options: Object.keys(dataSet).reverse(), onChange: this._setSubFilter})
             )
           )
         ), 
         React.createElement("div", {className: "middle"}, 
           React.createElement("div", {className: "flex-center flex-row"}, 
-            React.createElement(Table, {className: "timesheet-table", columns: columns, data: this.state.timeLogs})
+            React.createElement(Table, {className: "timesheet-table", columns: columns, data: specificData})
           )
         ), 
         React.createElement("div", {key: 'div-timesheet-action-sheet', className: "fixed-bottom translucent-bg flex-center flex-col"}, 
@@ -2262,6 +2339,14 @@ var TimeLogStore = assign({}, EventEmitter.prototype, {
 
   getTimeLogs: function () {
     return _timeLogs;
+  },
+
+  getEverything: function () {
+    return {
+      weekly: _weeklyTimeLogs,
+      monthly: _monthlyTimeLogs,
+      all: _timeLogs
+    };
   },
 
   isClockedIn: function () {
