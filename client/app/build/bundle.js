@@ -1010,7 +1010,7 @@ var Log = React.createClass({displayName: "Log",
       });
     } else {
       this.setState({
-        fracAmount: val.amount.actualValue
+        fracAmount: val.amount
       });
     }
   },

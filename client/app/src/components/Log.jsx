@@ -56,7 +56,7 @@ var Log = React.createClass({
       });
     } else {
       this.setState({
-        fracAmount: val.amount.actualValue
+        fracAmount: val.amount
       });
     }
   },
