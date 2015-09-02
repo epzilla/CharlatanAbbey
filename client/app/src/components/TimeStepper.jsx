@@ -1,13 +1,12 @@
 var React = require('react');
 var Stepper = require('./Stepper.jsx');
-var moment = require('moment-timezone');
 var TimeStepper = React.createClass({
 
   _setHours: function (e) {
     var newTime = this.state.time;
-    var newHours = e.amount;
+    var newHours = parseInt(e.amount);
 
-    if (this.state.amPm === 'pm' && newHours > 12) {
+    if (this.state.amPm === 'pm') {
       newHours += 12;
     }
 
@@ -23,7 +22,7 @@ var TimeStepper = React.createClass({
 
   _setMins: function (e) {
     var newTime = this.state.time;
-    newTime.minutes(e.amount);
+    newTime.minutes(parseInt(e.amount));
     this.setState({
       time: newTime,
       minutes: e.amount
@@ -34,10 +33,11 @@ var TimeStepper = React.createClass({
 
   _setAmPm: function (e) {
     var newTime = this.state.time;
+    var currentAmPm = newTime.format('a');
     if (e.target.value === 'pm') {
-      newTime = newTime.add(12, 'hours');
+      newTime = currentAmPm === 'am' ? newTime.add(12, 'hours') : newTime;
     } else {
-      newTime = newTime.subtract(12, 'hours');
+      newTime = currentAmPm === 'pm' ? newTime.subtract(12, 'hours') : newTime;
     }
 
     this.setState({
@@ -52,9 +52,9 @@ var TimeStepper = React.createClass({
     var t = this.props.time;
     var h = t.hours();
     var m = t.minutes();
-    var pm = t.format('a') === 'pm';
+    var pm = t.format('a');
 
-    if (pm) {
+    if (pm === 'pm') {
       h -= 12;
     }
 
@@ -62,7 +62,7 @@ var TimeStepper = React.createClass({
       time: this.props.time,
       hours: h,
       minutes: m,
-      pm: pm
+      amPm: pm
     };
   },
 
@@ -86,11 +86,11 @@ var TimeStepper = React.createClass({
           wrap={true}/>
         <div className='ampm'>
           <span className='switch'>
-            <input type='radio' name='pm' onChange={this._setAmPm} defaultChecked={!this.state.pm} value='am'/>
+            <input type='radio' name='pm' onChange={this._setAmPm} defaultChecked={this.state.amPm === 'am'} value='am'/>
             <label>AM</label>
           </span>
           <span className='switch'>
-            <input type='radio' name='pm' onChange={this._setAmPm} defaultChecked={this.state.pm} value='pm' />
+            <input type='radio' name='pm' onChange={this._setAmPm} defaultChecked={this.state.amPm === 'pm'} value='pm' />
             <label>PM</label>
           </span>
         </div>

@@ -1583,14 +1583,13 @@ module.exports = Stepper;
 },{"classnames":26,"react":252}],13:[function(require,module,exports){
 var React = require('react');
 var Stepper = require('./Stepper.jsx');
-var moment = require('moment-timezone');
 var TimeStepper = React.createClass({displayName: "TimeStepper",
 
   _setHours: function (e) {
     var newTime = this.state.time;
-    var newHours = e.amount;
+    var newHours = parseInt(e.amount);
 
-    if (this.state.amPm === 'pm' && newHours > 12) {
+    if (this.state.amPm === 'pm') {
       newHours += 12;
     }
 
@@ -1606,7 +1605,7 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
 
   _setMins: function (e) {
     var newTime = this.state.time;
-    newTime.minutes(e.amount);
+    newTime.minutes(parseInt(e.amount));
     this.setState({
       time: newTime,
       minutes: e.amount
@@ -1617,10 +1616,11 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
 
   _setAmPm: function (e) {
     var newTime = this.state.time;
+    var currentAmPm = newTime.format('a');
     if (e.target.value === 'pm') {
-      newTime = newTime.add(12, 'hours');
+      newTime = currentAmPm === 'am' ? newTime.add(12, 'hours') : newTime;
     } else {
-      newTime = newTime.subtract(12, 'hours');
+      newTime = currentAmPm === 'pm' ? newTime.subtract(12, 'hours') : newTime;
     }
 
     this.setState({
@@ -1635,9 +1635,9 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
     var t = this.props.time;
     var h = t.hours();
     var m = t.minutes();
-    var pm = t.format('a') === 'pm';
+    var pm = t.format('a');
 
-    if (pm) {
+    if (pm === 'pm') {
       h -= 12;
     }
 
@@ -1645,7 +1645,7 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
       time: this.props.time,
       hours: h,
       minutes: m,
-      pm: pm
+      amPm: pm
     };
   },
 
@@ -1669,11 +1669,11 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
           wrap: true}), 
         React.createElement("div", {className: "ampm"}, 
           React.createElement("span", {className: "switch"}, 
-            React.createElement("input", {type: "radio", name: "pm", onChange: this._setAmPm, defaultChecked: !this.state.pm, value: "am"}), 
+            React.createElement("input", {type: "radio", name: "pm", onChange: this._setAmPm, defaultChecked: this.state.amPm === 'am', value: "am"}), 
             React.createElement("label", null, "AM")
           ), 
           React.createElement("span", {className: "switch"}, 
-            React.createElement("input", {type: "radio", name: "pm", onChange: this._setAmPm, defaultChecked: this.state.pm, value: "pm"}), 
+            React.createElement("input", {type: "radio", name: "pm", onChange: this._setAmPm, defaultChecked: this.state.amPm === 'pm', value: "pm"}), 
             React.createElement("label", null, "PM")
           )
         )
@@ -1685,7 +1685,7 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
 
 module.exports = TimeStepper;
 
-},{"./Stepper.jsx":12,"moment-timezone":33,"react":252}],14:[function(require,module,exports){
+},{"./Stepper.jsx":12,"react":252}],14:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
