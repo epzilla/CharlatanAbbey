@@ -69,8 +69,20 @@ var Stepper = React.createClass({
   },
 
   _stepUpFull: function () {
-    var curVal = this.state.val;
-    curVal++;
+    var curVal = parseInt(this.state.val);
+
+    if (this.props.max !== undefined && curVal === this.props.max) {
+      if (this.props.wrap) {
+        curVal = this.props.min;
+      }
+    } else {
+      curVal++;
+    }
+
+    if (this.props.padSingleDigits && curVal < 10) {
+      curVal = '0' + curVal;
+    }
+
     this.setState({
       val: curVal
     });
@@ -100,12 +112,18 @@ var Stepper = React.createClass({
   },
 
   _stepDownFull: function () {
-    var curVal = this.state.val;
+    var curVal = parseInt(this.state.val);
 
-    if (curVal > 0) {
-      curVal--;
+    if (this.props.min !== undefined && curVal === this.props.min) {
+      if (this.props.wrap) {
+        curVal = this.props.max;
+      }
     } else {
-      curVal = 0;
+      curVal--;
+    }
+
+    if (this.props.padSingleDigits && curVal < 10) {
+      curVal = '0' + curVal;
     }
 
     this.setState({
@@ -138,8 +156,12 @@ var Stepper = React.createClass({
 
   getInitialState: function () {
     if (this.props.full) {
+      var val = this.props.initialValue ? this.props.initialValue : 2;
+      if (this.props.padSingleDigits && val < 10) {
+        val = '0' + val;
+      }
       return {
-        val: this.props.initialValue ? this.props.initialValue : 2,
+        val: val,
         fraction: 0
       };
     } else if (this.props.initialValue === 0.25) {
