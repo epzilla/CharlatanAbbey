@@ -24,6 +24,8 @@ var Log = React.createClass({
       submitting: true
     });
 
+    var frac = this.state.fracAmount.actualValue ? this.state.fracAmount.actualValue : this.state.fracAmount;
+
     Actions.submitEventForm({
       name: this.state.baby,
       eventType: this.state.eventType,
@@ -31,7 +33,7 @@ var Log = React.createClass({
       diaper: this.state.diaper.join(' + '),
       feeder: this.state.feeder,
       time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
-      amount: this.state.fullAmount + this.state.fracAmount,
+      amount: this.state.fullAmount + frac,
       medicine: this.state.medicine.join(', '),
       spit: this.state.spit
     });

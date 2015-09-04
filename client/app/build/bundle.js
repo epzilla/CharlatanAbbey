@@ -978,6 +978,8 @@ var Log = React.createClass({displayName: "Log",
       submitting: true
     });
 
+    var frac = this.state.fracAmount.actualValue ? this.state.fracAmount.actualValue : this.state.fracAmount;
+
     Actions.submitEventForm({
       name: this.state.baby,
       eventType: this.state.eventType,
@@ -985,7 +987,7 @@ var Log = React.createClass({displayName: "Log",
       diaper: this.state.diaper.join(' + '),
       feeder: this.state.feeder,
       time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
-      amount: this.state.fullAmount + this.state.fracAmount,
+      amount: this.state.fullAmount + frac,
       medicine: this.state.medicine.join(', '),
       spit: this.state.spit
     });
@@ -1860,7 +1862,7 @@ var Timesheet = React.createClass({displayName: "Timesheet",
     ];
 
     if (this.state.isClockedIn) {
-      var clockOutID = this.state.timeLogs[0]._id;
+      var clockOutID = this.state.timeLogs.all[0]._id;
       clockOutBtn = (
         React.createElement(ClockOutBtn, {key: 'clock-out-timesheet', clockOutID: clockOutID, className: "btn feed-btn"})
       );

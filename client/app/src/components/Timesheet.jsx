@@ -172,7 +172,7 @@ var Timesheet = React.createClass({
     ];
 
     if (this.state.isClockedIn) {
-      var clockOutID = this.state.timeLogs[0]._id;
+      var clockOutID = this.state.timeLogs.all[0]._id;
       clockOutBtn = (
         <ClockOutBtn key={'clock-out-timesheet'} clockOutID={clockOutID} className='btn feed-btn' />
       );

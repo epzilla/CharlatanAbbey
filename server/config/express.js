@@ -36,7 +36,7 @@ module.exports = function(app) {
     app.use(favicon(path.join(config.root, 'img', 'favicon.ico')));
     app.use(express.static(path.join(config.root)));
     app.set('appPath', config.root);
-    app.use(morgan('prod'));
+    app.use(morgan('dev'));
   } else {
     app.set('views', config.root + '/server/views');
     app.use(express.static(path.join(config.root, '.tmp')));
