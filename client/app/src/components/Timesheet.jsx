@@ -32,31 +32,43 @@ var FilterStepper = React.createClass({
   getInitialState: function () {
     return {
       currentStep: this.props.options[this.props.options.length - 1],
-      options: this.props.options,
       pointer: this.props.options.length - 1,
-      moreNext: false,
-      morePrev: this.props.options.length > 1
     };
   },
 
+  componentWillReceiveProps: function (nextProps) {
+    if (!_.isEqual(this.props.options, nextProps.options)) {
+      this.setState({
+        currentStep: nextProps.options[nextProps.options.length - 1],
+        pointer: nextProps.options.length - 1
+      });
+    }
+  },
+
   _prev: function () {
-    var newPtr = this.state.pointer - 1;
-    this.setState({
-      pointer: newPtr,
-      currentStep: this.state.options[newPtr]
-    }, function () {
-      this.props.onChange(this.state.currentStep);
-    });
+    var ptr = this.state.pointer;
+    if (ptr !== 0) {
+      var newPtr = this.state.pointer - 1;
+      this.setState({
+        pointer: newPtr,
+        currentStep: this.props.options[newPtr]
+      }, function () {
+        this.props.onChange(this.state.currentStep);
+      });
+    }
   },
 
   _next: function () {
-    var newPtr = this.state.pointer + 1;
-    this.setState({
-      pointer: newPtr,
-      currentStep: this.state.options[newPtr]
-    }, function () {
-      this.props.onChange(this.state.currentStep);
-    });
+    var ptr = this.state.pointer;
+    if (ptr !== this.props.options.length - 1) {
+      var newPtr = this.state.pointer + 1;
+      this.setState({
+        pointer: newPtr,
+        currentStep: this.props.options[newPtr]
+      }, function () {
+        this.props.onChange(this.state.currentStep);
+      });
+    }
   },
 
   render: function () {
@@ -84,7 +96,7 @@ var Timesheet = React.createClass({
     var logs = TimeLogStore.getEverything();
 
     if (!logs.weekly[thisWeek]) {
-      thisWeek = this._findMostRecentWeek(logs.weekly);
+      thisWeek = this._findMostRecent(logs.weekly);
     }
 
     return {
@@ -104,8 +116,8 @@ var Timesheet = React.createClass({
     TimeLogStore.removeChangeListener(this._onChange);
   },
 
-  _findMostRecentWeek: function (weeklyLogs) {
-    return Object.keys(weeklyLogs).sort().reverse()[0];
+  _findMostRecent: function (logs) {
+    return Object.keys(logs).sort().reverse()[0];
   },
 
   _onChange: function () {
@@ -132,9 +144,19 @@ var Timesheet = React.createClass({
   },
 
   _setFilter: function (e) {
-    this.setState({
-      timeFilter: e.target.value
-    });
+    var filter = e.target.value;
+    if (filter === 'all') {
+      this.setState({
+        timeFilter: filter,
+        subFilter: null
+      });
+    } else {
+      this.setState({
+        timeFilter: filter,
+        subFilter: this._findMostRecent(this.state.timeLogs[filter])
+      });
+    }
+
   },
 
   _setSubFilter: function (val) {
@@ -145,12 +167,12 @@ var Timesheet = React.createClass({
 
   render: function () {
 
-    var clockInBtn, clockOutBtn;
+    var clockInBtn, clockOutBtn, filterStepper, totalHours;
     var filter = this.state.timeFilter;
     var subFilter = this.state.subFilter;
 
     var dataSet = this.state.timeLogs[filter];
-    var specificData = dataSet[subFilter];
+    var specificData = subFilter ? dataSet[subFilter] : dataSet;
 
     var columns = [
       {
@@ -187,6 +209,19 @@ var Timesheet = React.createClass({
       );
     }
 
+    if (filter !== 'all') {
+      var totalTime = _.reduce(specificData, function (total, n) {
+        return total + n.hours;
+      }, 0).toFixed(2);
+
+      filterStepper = <FilterStepper options={Object.keys(dataSet).reverse()} onChange={this._setSubFilter} />;
+      totalHours = (
+        <div className="text-center">
+          <h3>Total: {totalTime} hrs.</h3>
+        </div>
+      );
+    }
+
     return (
       <section className='modal-sheet timesheet'>
         <div className="fixed-top">
@@ -211,7 +246,7 @@ var Timesheet = React.createClass({
               </div>
             </section>
             <section className="width-35 text-right">
-              <FilterStepper options={Object.keys(dataSet).reverse()} onChange={this._setSubFilter} />
+              {filterStepper}
             </section>
           </div>
         </div>
@@ -219,6 +254,7 @@ var Timesheet = React.createClass({
           <div className="flex-center flex-row">
             <Table className="timesheet-table" columns={columns} data={specificData} />
           </div>
+          {totalHours}
         </div>
         <div key={'div-timesheet-action-sheet'} className="fixed-bottom translucent-bg flex-center flex-col">
           <div key={'div-timesheet-quick-btns'} className='timesheet-btn-container flex-center flex-row'>

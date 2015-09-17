@@ -675,7 +675,17 @@ var cx = require('classnames');
 
 var FeedingInfo = React.createClass({displayName: "FeedingInfo",
 
+  _getFormattedAmount: function () {
+    var amt = this.props.feeding.amount;
+    if (amt % 1 === 0) {
+      return Math.floor(amt);
+    } else {
+      return amt.toFixed(2);
+    }
+  },
+
   render: function () {
+    var medsEmoji, medsLi, spitLi, feederLi;
     var feeding = this.props.feeding;
     var poopEmojiClass = cx({
       'emojifier': true,
@@ -690,26 +700,58 @@ var FeedingInfo = React.createClass({displayName: "FeedingInfo",
       )
     );
 
+    if (feeding.zantacFlag) {
+      medsEmoji = (
+        React.createElement("span", {className: "emojifier", style: {display: 'inline'}}, 
+          React.createElement("img", {align: "absmiddle", alt: ":pill:", className: "emoji", src: "/img/pill.png", title: ":pill:"})
+        )
+      );
+    }
+
+    if (feeding.medicine) {
+      medsLi = (
+        React.createElement("li", null, 
+          "Medicine: ",  _.capitalize(feeding.medicine) 
+        )
+      );
+    }
+
+    if (feeding.spit) {
+      spitLi = (
+        React.createElement("li", null, 
+           _.capitalize(feeding.spit), " spit-up"
+        )
+      );
+    }
+
+    if (feeding.feeder) {
+      feederLi = (
+        React.createElement("li", null, 
+          "Fed by ",  _.capitalize(feeding.feeder) 
+        )
+      );
+    }
+
     return (
       React.createElement("article", {key: this.props.key, className: "list-group-item"}, 
-        React.createElement("h2", null,  feeding.name, " ", poopEmoji), 
+        React.createElement("h2", null,  feeding.name, " ", poopEmoji, " ", medsEmoji), 
         React.createElement("em", null, "Next feeding at ~", 
            moment(new Date(feeding.time)).add(3, 'hours').format('h:mma') 
         ), 
         React.createElement("p", null, "Last Feeding"), 
         React.createElement("ul", null, 
           React.createElement("li", null, 
-            "Burp: ",  _.capitalize(feeding.burp) 
+            this._getFormattedAmount(), " oz."
           ), 
           React.createElement("li", null, 
-            "Diaper: ",  _.capitalize(feeding.diaper) 
+             _.capitalize(feeding.burp), " burp"
           ), 
           React.createElement("li", null, 
-            "Medicine: ",  _.capitalize(feeding.medicine) 
+             _.capitalize(feeding.diaper), " diaper"
           ), 
-          React.createElement("li", null, 
-            "Spit-up: ",  _.capitalize(feeding.spit) 
-          )
+          medsLi, 
+          spitLi, 
+          feederLi
         )
       )
     );
@@ -1722,31 +1764,43 @@ var FilterStepper = React.createClass({displayName: "FilterStepper",
   getInitialState: function () {
     return {
       currentStep: this.props.options[this.props.options.length - 1],
-      options: this.props.options,
       pointer: this.props.options.length - 1,
-      moreNext: false,
-      morePrev: this.props.options.length > 1
     };
   },
 
+  componentWillReceiveProps: function (nextProps) {
+    if (!_.isEqual(this.props.options, nextProps.options)) {
+      this.setState({
+        currentStep: nextProps.options[nextProps.options.length - 1],
+        pointer: nextProps.options.length - 1
+      });
+    }
+  },
+
   _prev: function () {
-    var newPtr = this.state.pointer - 1;
-    this.setState({
-      pointer: newPtr,
-      currentStep: this.state.options[newPtr]
-    }, function () {
-      this.props.onChange(this.state.currentStep);
-    });
+    var ptr = this.state.pointer;
+    if (ptr !== 0) {
+      var newPtr = this.state.pointer - 1;
+      this.setState({
+        pointer: newPtr,
+        currentStep: this.props.options[newPtr]
+      }, function () {
+        this.props.onChange(this.state.currentStep);
+      });
+    }
   },
 
   _next: function () {
-    var newPtr = this.state.pointer + 1;
-    this.setState({
-      pointer: newPtr,
-      currentStep: this.state.options[newPtr]
-    }, function () {
-      this.props.onChange(this.state.currentStep);
-    });
+    var ptr = this.state.pointer;
+    if (ptr !== this.props.options.length - 1) {
+      var newPtr = this.state.pointer + 1;
+      this.setState({
+        pointer: newPtr,
+        currentStep: this.props.options[newPtr]
+      }, function () {
+        this.props.onChange(this.state.currentStep);
+      });
+    }
   },
 
   render: function () {
@@ -1774,7 +1828,7 @@ var Timesheet = React.createClass({displayName: "Timesheet",
     var logs = TimeLogStore.getEverything();
 
     if (!logs.weekly[thisWeek]) {
-      thisWeek = this._findMostRecentWeek(logs.weekly);
+      thisWeek = this._findMostRecent(logs.weekly);
     }
 
     return {
@@ -1794,8 +1848,8 @@ var Timesheet = React.createClass({displayName: "Timesheet",
     TimeLogStore.removeChangeListener(this._onChange);
   },
 
-  _findMostRecentWeek: function (weeklyLogs) {
-    return Object.keys(weeklyLogs).sort().reverse()[0];
+  _findMostRecent: function (logs) {
+    return Object.keys(logs).sort().reverse()[0];
   },
 
   _onChange: function () {
@@ -1822,9 +1876,19 @@ var Timesheet = React.createClass({displayName: "Timesheet",
   },
 
   _setFilter: function (e) {
-    this.setState({
-      timeFilter: e.target.value
-    });
+    var filter = e.target.value;
+    if (filter === 'all') {
+      this.setState({
+        timeFilter: filter,
+        subFilter: null
+      });
+    } else {
+      this.setState({
+        timeFilter: filter,
+        subFilter: this._findMostRecent(this.state.timeLogs[filter])
+      });
+    }
+
   },
 
   _setSubFilter: function (val) {
@@ -1835,12 +1899,12 @@ var Timesheet = React.createClass({displayName: "Timesheet",
 
   render: function () {
 
-    var clockInBtn, clockOutBtn;
+    var clockInBtn, clockOutBtn, filterStepper, totalHours;
     var filter = this.state.timeFilter;
     var subFilter = this.state.subFilter;
 
     var dataSet = this.state.timeLogs[filter];
-    var specificData = dataSet[subFilter];
+    var specificData = subFilter ? dataSet[subFilter] : dataSet;
 
     var columns = [
       {
@@ -1877,6 +1941,19 @@ var Timesheet = React.createClass({displayName: "Timesheet",
       );
     }
 
+    if (filter !== 'all') {
+      var totalTime = _.reduce(specificData, function (total, n) {
+        return total + n.hours;
+      }, 0).toFixed(2);
+
+      filterStepper = React.createElement(FilterStepper, {options: Object.keys(dataSet).reverse(), onChange: this._setSubFilter});
+      totalHours = (
+        React.createElement("div", {className: "text-center"}, 
+          React.createElement("h3", null, "Total: ", totalTime, " hrs.")
+        )
+      );
+    }
+
     return (
       React.createElement("section", {className: "modal-sheet timesheet"}, 
         React.createElement("div", {className: "fixed-top"}, 
@@ -1901,14 +1978,15 @@ var Timesheet = React.createClass({displayName: "Timesheet",
               )
             ), 
             React.createElement("section", {className: "width-35 text-right"}, 
-              React.createElement(FilterStepper, {options: Object.keys(dataSet).reverse(), onChange: this._setSubFilter})
+              filterStepper
             )
           )
         ), 
         React.createElement("div", {className: "middle"}, 
           React.createElement("div", {className: "flex-center flex-row"}, 
             React.createElement(Table, {className: "timesheet-table", columns: columns, data: specificData})
-          )
+          ), 
+          totalHours
         ), 
         React.createElement("div", {key: 'div-timesheet-action-sheet', className: "fixed-bottom translucent-bg flex-center flex-col"}, 
           React.createElement("div", {key: 'div-timesheet-quick-btns', className: "timesheet-btn-container flex-center flex-row"}, 
@@ -2046,6 +2124,7 @@ var _spits = ls.get('spits') || [];
 var _poops = ls.get('poops') || [];
 var _latest = ls.get('latest') || [];
 var _latestPoops = ls.get('latest-poops') || {};
+var _latestZantac = ls.get('latest-zantac') || {};
 var _lastDayFeedings = ls.get('last-day-feedings') || {};
 var _lastDayEvents = ls.get('last-day-events') || {};
 var _lastDayMeds = ls.get('last-day-meds') || {};
@@ -2227,6 +2306,14 @@ var updateStore = function () {
     .groupBy('name')
     .value();
 
+  _latestZantac = _.chain(_events)
+    .filter(function (e) {
+      return e.medicine && _.contains(e.medicine, 'zantac');
+    })
+    .sortByOrder(['name', 'time'], ['asc', 'desc'])
+    .groupBy('name')
+    .value();
+
   _.map(_latestPoops, function (baby) {
     var hoursSincePoop = moment(Date.now()).diff(baby[0].time, 'hours');
     if (hoursSincePoop < 24) {
@@ -2235,6 +2322,13 @@ var updateStore = function () {
       _groupedFeedings[baby[0].name][0].poopFlag = 1;
     } else {
       _groupedFeedings[baby[0].name][0].poopFlag = 2;
+    }
+  });
+
+  _.map(_latestZantac, function (baby) {
+    var hoursSinceZantac = moment(Date.now()).diff(baby[0].time, 'hours');
+    if (hoursSinceZantac > 8) {
+      _groupedFeedings[baby[0].name][0].zantacFlag = true;
     }
   });
 
@@ -2392,16 +2486,14 @@ var TimeLogStore = assign({}, EventEmitter.prototype, {
 var updateStore = function () {
   _timeLogs = _.chain(_rawLogs)
     .map(function (tl) {
-      var timeIn = moment(tl.timeIn);
-      var timeOut = tl.timeOut ? moment(tl.timeOut) : null;
       return {
         _id: tl._id,
         date: moment(tl.date).format('M/D/YY'),
-        timeIn: timeIn.format('h:mma'),
-        timeOut: timeOut ? timeOut.format('h:mma') : null,
+        timeIn: moment(tl.timeIn).format('h:mma'),
+        timeOut: tl.timeOut ? moment(tl.timeOut).format('h:mma') : null,
         hours: (tl.hours || tl.hours === 0) ? tl.hours: null,
-        weekOf: timeIn.startOf('week').format('M/D'),
-        monthOf: timeIn.startOf('month').format('MMMM')
+        weekOf: moment(tl.timeIn).startOf('week').format('M/D'),
+        monthOf: moment(tl.timeIn).startOf('month').format('MMM')
       };
     })
     .value();
@@ -2410,7 +2502,7 @@ var updateStore = function () {
 
   var now = moment(new Date());
   var thisWeek = now.startOf('week').format('M/D');
-  var thisMonth = now.startOf('month').format('MMMM');
+  var thisMonth = now.startOf('month').format('MMM');
   _weeklyTimeLogs = _.groupBy(_timeLogs, 'weekOf');
   _monthlyTimeLogs = _.groupBy(_timeLogs, 'monthOf');
   _thisWeekLog = _weeklyTimeLogs[thisWeek];

@@ -15,6 +15,7 @@ var _spits = ls.get('spits') || [];
 var _poops = ls.get('poops') || [];
 var _latest = ls.get('latest') || [];
 var _latestPoops = ls.get('latest-poops') || {};
+var _latestZantac = ls.get('latest-zantac') || {};
 var _lastDayFeedings = ls.get('last-day-feedings') || {};
 var _lastDayEvents = ls.get('last-day-events') || {};
 var _lastDayMeds = ls.get('last-day-meds') || {};
@@ -196,6 +197,14 @@ var updateStore = function () {
     .groupBy('name')
     .value();
 
+  _latestZantac = _.chain(_events)
+    .filter(function (e) {
+      return e.medicine && _.contains(e.medicine, 'zantac');
+    })
+    .sortByOrder(['name', 'time'], ['asc', 'desc'])
+    .groupBy('name')
+    .value();
+
   _.map(_latestPoops, function (baby) {
     var hoursSincePoop = moment(Date.now()).diff(baby[0].time, 'hours');
     if (hoursSincePoop < 24) {
@@ -204,6 +213,13 @@ var updateStore = function () {
       _groupedFeedings[baby[0].name][0].poopFlag = 1;
     } else {
       _groupedFeedings[baby[0].name][0].poopFlag = 2;
+    }
+  });
+
+  _.map(_latestZantac, function (baby) {
+    var hoursSinceZantac = moment(Date.now()).diff(baby[0].time, 'hours');
+    if (hoursSinceZantac > 8) {
+      _groupedFeedings[baby[0].name][0].zantacFlag = true;
     }
   });
 

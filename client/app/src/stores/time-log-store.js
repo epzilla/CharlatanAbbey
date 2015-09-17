@@ -48,16 +48,14 @@ var TimeLogStore = assign({}, EventEmitter.prototype, {
 var updateStore = function () {
   _timeLogs = _.chain(_rawLogs)
     .map(function (tl) {
-      var timeIn = moment(tl.timeIn);
-      var timeOut = tl.timeOut ? moment(tl.timeOut) : null;
       return {
         _id: tl._id,
         date: moment(tl.date).format('M/D/YY'),
-        timeIn: timeIn.format('h:mma'),
-        timeOut: timeOut ? timeOut.format('h:mma') : null,
+        timeIn: moment(tl.timeIn).format('h:mma'),
+        timeOut: tl.timeOut ? moment(tl.timeOut).format('h:mma') : null,
         hours: (tl.hours || tl.hours === 0) ? tl.hours: null,
-        weekOf: timeIn.startOf('week').format('M/D'),
-        monthOf: timeIn.startOf('month').format('MMMM')
+        weekOf: moment(tl.timeIn).startOf('week').format('M/D'),
+        monthOf: moment(tl.timeIn).startOf('month').format('MMM')
       };
     })
     .value();
@@ -66,7 +64,7 @@ var updateStore = function () {
 
   var now = moment(new Date());
   var thisWeek = now.startOf('week').format('M/D');
-  var thisMonth = now.startOf('month').format('MMMM');
+  var thisMonth = now.startOf('month').format('MMM');
   _weeklyTimeLogs = _.groupBy(_timeLogs, 'weekOf');
   _monthlyTimeLogs = _.groupBy(_timeLogs, 'monthOf');
   _thisWeekLog = _weeklyTimeLogs[thisWeek];
