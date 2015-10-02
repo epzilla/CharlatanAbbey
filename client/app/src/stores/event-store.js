@@ -15,7 +15,7 @@ var _spits = ls.get('spits') || [];
 var _poops = ls.get('poops') || [];
 var _latest = ls.get('latest') || [];
 var _latestPoops = ls.get('latest-poops') || {};
-var _latestZantac = ls.get('latest-zantac') || {};
+var _latestPrevacid = ls.get('latest-prevacid') || {};
 var _lastDayFeedings = ls.get('last-day-feedings') || {};
 var _lastDayEvents = ls.get('last-day-events') || {};
 var _lastDayMeds = ls.get('last-day-meds') || {};
@@ -197,9 +197,9 @@ var updateStore = function () {
     .groupBy('name')
     .value();
 
-  _latestZantac = _.chain(_events)
+  _latestPrevacid = _.chain(_events)
     .filter(function (e) {
-      return e.medicine && _.contains(e.medicine, 'zantac');
+      return e.medicine && _.contains(e.medicine, 'prevacid');
     })
     .sortByOrder(['name', 'time'], ['asc', 'desc'])
     .groupBy('name')
@@ -216,11 +216,9 @@ var updateStore = function () {
     }
   });
 
-  _.map(_latestZantac, function (baby) {
-    var hoursSinceZantac = moment(Date.now()).diff(baby[0].time, 'hours');
-    if (hoursSinceZantac > 8) {
-      _groupedFeedings[baby[0].name][0].zantacFlag = true;
-    }
+  _.map(_latestPrevacid, function (baby) {
+    var hoursSincePrevacid = moment(Date.now()).diff(baby[0].time, 'hours');
+    _groupedFeedings[baby[0].name][0].prevacidFlag = (hoursSincePrevacid > 8);
   });
 
   _latest = _.map(_groupedFeedings, function (baby) {
@@ -252,15 +250,14 @@ EventStore.dispatchToken = Dispatcher.register(function (payload) {
   action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_EVENTS:
-      // if (JSON.stringify(action.data) !== JSON.stringify(_events)) {
-        _events = action.data;
-        ls.set('events', _events);
-        updateStore();
-      // }
+      _events = action.data;
+      ls.set('events', _events);
+      updateStore();
       break;
 
     case ActionTypes.SUCCESSFUL_EVENT_POST:
       _events.push(action.data);
+      ls.set('events', _events);
       updateStore();
       break;
 

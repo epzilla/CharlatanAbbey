@@ -47,7 +47,6 @@ var Edit = React.createClass({
   },
 
   _setEventTime: function (e) {
-    console.log(e);
     this.setState({
       time: e
     });
@@ -226,8 +225,8 @@ var Edit = React.createClass({
             </span>
             <span className='switch'>
               <input type='checkbox' name='medicine' onChange={this._setMeds}
-                     defaultChecked={_.contains(logEvent.medicine, 'zantac')} value='zantac'/>
-              <label>Zantac</label>
+                     defaultChecked={_.contains(logEvent.medicine, 'prevacid')} value='prevacid'/>
+              <label>Prevacid</label>
             </span>
             <span className='switch'>
               <input type='checkbox' name='medicine' onChange={this._setMeds}
@@ -340,7 +339,7 @@ var Edit = React.createClass({
 
           <div className='pad-bottom-1em'>
             <h3>What Time?</h3>
-            <TimeStepper time={time} onChange={this._setEventTime}/>
+            <TimeStepper identifier='event-time-stepper' time={time} onChange={this._setEventTime}/>
           </div>
 
           {ounceField}

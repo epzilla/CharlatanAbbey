@@ -8,7 +8,7 @@ var BabyStore = require('../stores/baby-store');
 var TimeLogStore = require('../stores/time-log-store');
 var ActionButtons = require('./ActionButtons.jsx');
 
-var APP = React.createClass({
+var Home = React.createClass({
   getInitialState: function(){
     return {
       feedings: EventStore.getLatestFeedings(),
@@ -51,4 +51,4 @@ var APP = React.createClass({
   }
 });
 
-module.exports = APP;
+module.exports = Home;

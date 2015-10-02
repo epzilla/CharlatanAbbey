@@ -33,7 +33,7 @@ var FeedingInfo = React.createClass({
       </span>
     );
 
-    if (feeding.zantacFlag) {
+    if (feeding.prevacidFlag) {
       medsEmoji = (
         <span className="emojifier" style={{display: 'inline'}}>
           <img align="absmiddle" alt=":pill:" className="emoji" src="/img/pill.png" title=":pill:" />

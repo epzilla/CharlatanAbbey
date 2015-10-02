@@ -346,7 +346,6 @@ var Edit = React.createClass({displayName: "Edit",
   },
 
   _setEventTime: function (e) {
-    console.log(e);
     this.setState({
       time: e
     });
@@ -525,8 +524,8 @@ var Edit = React.createClass({displayName: "Edit",
             ), 
             React.createElement("span", {className: "switch"}, 
               React.createElement("input", {type: "checkbox", name: "medicine", onChange: this._setMeds, 
-                     defaultChecked: _.contains(logEvent.medicine, 'zantac'), value: "zantac"}), 
-              React.createElement("label", null, "Zantac")
+                     defaultChecked: _.contains(logEvent.medicine, 'prevacid'), value: "prevacid"}), 
+              React.createElement("label", null, "Prevacid")
             ), 
             React.createElement("span", {className: "switch"}, 
               React.createElement("input", {type: "checkbox", name: "medicine", onChange: this._setMeds, 
@@ -639,7 +638,7 @@ var Edit = React.createClass({displayName: "Edit",
 
           React.createElement("div", {className: "pad-bottom-1em"}, 
             React.createElement("h3", null, "What Time?"), 
-            React.createElement(TimeStepper, {time: time, onChange: this._setEventTime})
+            React.createElement(TimeStepper, {identifier: "event-time-stepper", time: time, onChange: this._setEventTime})
           ), 
 
           ounceField, 
@@ -700,7 +699,7 @@ var FeedingInfo = React.createClass({displayName: "FeedingInfo",
       )
     );
 
-    if (feeding.zantacFlag) {
+    if (feeding.prevacidFlag) {
       medsEmoji = (
         React.createElement("span", {className: "emojifier", style: {display: 'inline'}}, 
           React.createElement("img", {align: "absmiddle", alt: ":pill:", className: "emoji", src: "/img/pill.png", title: ":pill:"})
@@ -771,6 +770,7 @@ var Link = Router.Link;
 var Navigation = Router.Navigation;
 var EventStore = require('../stores/event-store');
 var Actions = require('../actions/view-actions');
+var EventTypes = require('../constants/constants').EventTypes;
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var Swipeable = require('react-swipeable');
@@ -780,22 +780,53 @@ var FeedingCell = React.createClass({displayName: "FeedingCell",
   mixins: [ Navigation ],
 
   _edit: function () {
-    console.log(this.props.feeding);
     this.transitionTo('edit', {logEvent: this.props.feeding._id});
   },
 
   render: function () {
     var feeding = this.props.feeding;
+    var amount, diaper, burp, meds, spit, nap;
+
+    if (feeding.diaper) {
+      diaper = React.createElement("li", null,  _.capitalize(feeding.diaper), " diaper");
+    }
+
+    if (feeding.burp) {
+      burp = React.createElement("li", null,  _.capitalize(feeding.burp), " burp");
+    }
+
+    if (feeding.medicine) {
+      meds = React.createElement("li", null,  _.capitalize(feeding.medicine) );
+    }
+
+    if (feeding.spit) {
+      spit = React.createElement("li", null,  _.capitalize(feeding.spit), " spit");
+    }
+
+    if (feeding.amount) {
+      amount = React.createElement("li", null, "Drank ",  feeding.amount, "oz.");
+    }
+
+    if (feeding.eventType === EventTypes.NAP) {
+      var napStart = feeding.startTime ? moment(feeding.startTime).format('h:mma') : null;
+      var napEnd = feeding.startTime ? moment(feeding.endTime).format('h:mma') : null;
+      var duration = feeding.duration || napEnd.diff(napStart, 'minutes');
+      var formattedDuration = moment.duration(duration, 'minutes').asHours().toFixed(2) + ' hr.';
+      nap = (
+        React.createElement("li", null, "Napped from ", napStart, " to ", napEnd, " (", React.createElement("em", null, formattedDuration), ")")
+      );
+    }
 
     return (
       React.createElement("div", {className: "cell"}, 
         React.createElement("h5", null,  moment(feeding.time).format('M/DD - h:mma') ), 
         React.createElement("ul", null, 
-          React.createElement("li", null, "Drank ",  feeding.amount, "oz."), 
-          React.createElement("li", null,  _.capitalize(feeding.diaper), " diaper"), 
-          React.createElement("li", null,  _.capitalize(feeding.burp), " burp"), 
-          React.createElement("li", null,  _.capitalize(feeding.medicine) ), 
-          React.createElement("li", null,  _.capitalize(feeding.spit), " spit-up")
+          amount, 
+          diaper, 
+          meds, 
+          burp, 
+          spit, 
+          nap
         ), 
         React.createElement("button", {className: "btn btn-edit-cell", onClick: this._edit}, 
           React.createElement("i", {className: "fa fa-edit"}), " Edit"
@@ -842,7 +873,6 @@ var History = React.createClass({displayName: "History",
     this.setState({
       timeFilter: e.target.value
     }, function () {
-      console.log(this.state);
     });
   },
 
@@ -850,7 +880,6 @@ var History = React.createClass({displayName: "History",
     this.setState({
       typeFilter: e.target.value
     }, function () {
-      console.log(this.state);
     });
   },
 
@@ -936,7 +965,7 @@ var History = React.createClass({displayName: "History",
 module.exports = History;
 
 
-},{"../actions/view-actions":3,"../stores/event-store":18,"lodash":31,"moment-timezone":33,"react":252,"react-router":64,"react-swipeable":79}],9:[function(require,module,exports){
+},{"../actions/view-actions":3,"../constants/constants":15,"../stores/event-store":18,"lodash":31,"moment-timezone":33,"react":252,"react-router":64,"react-swipeable":79}],9:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -947,7 +976,7 @@ var BabyStore = require('../stores/baby-store');
 var TimeLogStore = require('../stores/time-log-store');
 var ActionButtons = require('./ActionButtons.jsx');
 
-var APP = React.createClass({displayName: "APP",
+var Home = React.createClass({displayName: "Home",
   getInitialState: function(){
     return {
       feedings: EventStore.getLatestFeedings(),
@@ -990,7 +1019,7 @@ var APP = React.createClass({displayName: "APP",
   }
 });
 
-module.exports = APP;
+module.exports = Home;
 
 
 },{"../stores/baby-store":17,"../stores/event-store":18,"../stores/time-log-store":20,"./ActionButtons.jsx":4,"./FeedingInfo.jsx":7,"react":252}],10:[function(require,module,exports){
@@ -1005,9 +1034,11 @@ var Navigation = Router.Navigation;
 var FeederStore = require('../stores/feeder-store');
 var EventStore = require('../stores/event-store');
 var Actions = require('../actions/view-actions');
+var EventTypes = require('../constants/constants').EventTypes;
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var OunceStepper = require('./OunceStepper.jsx');
+var TimeStepper = require('./TimeStepper.jsx');
 
 var Log = React.createClass({displayName: "Log",
 
@@ -1022,17 +1053,61 @@ var Log = React.createClass({displayName: "Log",
 
     var frac = this.state.fracAmount.actualValue ? this.state.fracAmount.actualValue : this.state.fracAmount;
 
-    Actions.submitEventForm({
-      name: this.state.baby,
-      eventType: this.state.eventType,
-      burp: this.state.burp,
-      diaper: this.state.diaper.join(' + '),
-      feeder: this.state.feeder,
-      time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
-      amount: this.state.fullAmount + frac,
-      medicine: this.state.medicine.join(', '),
-      spit: this.state.spit
-    });
+    switch (this.state.eventType) {
+      case EventTypes.BURP:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          burp: this.state.burp,
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+        });
+        break;
+      case EventTypes.DIAPER:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          diaper: this.state.diaper.join(' + '),
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+        });
+        break;
+      case EventTypes.MEDS:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          medicine: this.state.medicine.join(', '),
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+        });
+        break;
+      case EventTypes.SPIT_UP:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          spit: this.state.spit,
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+        });
+        break;
+      case EventTypes.NAP:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          startTime: this.state.napStart.format(),
+          endTime: this.state.napEnd.format(),
+          duration: this.state.napEnd.diff(this.state.napStart, 'minutes')
+        });
+        break;
+      default:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          burp: this.state.burp,
+          diaper: this.state.diaper.join(' + '),
+          feeder: this.state.feeder,
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
+          amount: this.state.fullAmount + frac,
+          medicine: this.state.medicine.join(', '),
+          spit: this.state.spit
+        });
+    }
   },
 
   _setEventType: function (e) {
@@ -1107,6 +1182,18 @@ var Log = React.createClass({displayName: "Log",
     });
   },
 
+  _setNapStart: function (e) {
+    this.setState({
+      napStart: e
+    });
+  },
+
+  _setNapEnd: function (e) {
+    this.setState({
+      napEnd: e
+    });
+  },
+
   _onChange: function () {
     this.transitionTo('/');
   },
@@ -1130,16 +1217,19 @@ var Log = React.createClass({displayName: "Log",
       burp: 'big',
       spit: 'no',
       eventType: 'feeding',
-      baby: this.props.params.name
+      baby: this.props.params.name,
+      napStart: moment(new Date()),
+      napEnd: moment(new Date()),
     };
   },
 
   render: function () {
     var that = this;
     var baby = this.props.params.name;
-    var ounceField, feederField, medField, burpField, diaperField, spitField;
+    var ounceField, feederField, medField, burpField, diaperField,
+        spitField, eventTypeField, napTimeField, timeAgoField;
 
-    if (this.state.eventType === 'feeding') {
+    if (this.state.eventType === EventTypes.FEEDING) {
       ounceField = (
         React.createElement("div", {className: "pad-bottom-1em ounce-field"}, 
           React.createElement("h3", null, "How much did she eat?"), 
@@ -1166,7 +1256,7 @@ var Log = React.createClass({displayName: "Log",
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'burp') {
+    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.BURP) {
       burpField = (
         React.createElement("div", {className: "pad-bottom-1em burp-field"}, 
           React.createElement("h3", null, "Any burp?"), 
@@ -1198,8 +1288,8 @@ var Log = React.createClass({displayName: "Log",
               React.createElement("label", null, "Gas Drops")
             ), 
             React.createElement("span", {className: "switch"}, 
-              React.createElement("input", {type: "checkbox", name: "medicine", onChange: this._setMeds, value: "zantac"}), 
-              React.createElement("label", null, "Zantac")
+              React.createElement("input", {type: "checkbox", name: "medicine", onChange: this._setMeds, value: "prevacid"}), 
+              React.createElement("label", null, "Prevacid")
             ), 
             React.createElement("span", {className: "switch"}, 
               React.createElement("input", {type: "checkbox", name: "medicine", onChange: this._setMeds, value: "eye drops"}), 
@@ -1214,7 +1304,7 @@ var Log = React.createClass({displayName: "Log",
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'diaper') {
+    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.DIAPER) {
       diaperField = (
         React.createElement("div", {className: "pad-bottom-1em diaper-field"}, 
           React.createElement("h3", null, "How was the diaper? ", React.createElement("small", null, "(Check all that apply)")), 
@@ -1250,7 +1340,7 @@ var Log = React.createClass({displayName: "Log",
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'spit') {
+    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.SPIT_UP) {
       spitField = (
         React.createElement("div", {className: "pad-bottom-1em spit-field"}, 
           React.createElement("h3", null, "Any spit-up?"), 
@@ -1272,6 +1362,60 @@ var Log = React.createClass({displayName: "Log",
       );
     }
 
+    if (this.state.eventType === EventTypes.NAP) {
+      napTimeField = (
+        React.createElement("div", null, 
+          React.createElement("div", {className: "pad-bottom-1em nap-field"}, 
+            React.createElement("h3", null, "When did the nap start?"), 
+            React.createElement(TimeStepper, {identifier: 'nap-start-time-stepper', time: this.state.napStart, onChange: this._setNapStart})
+          ), 
+          React.createElement("div", {className: "pad-bottom-1em nap-field"}, 
+            React.createElement("h3", null, "When did it end?"), 
+            React.createElement(TimeStepper, {identifier: 'nap-end-time-stepper', time: this.state.napEnd, onChange: this._setNapEnd})
+          )
+        )
+      );
+    } else {
+      timeAgoField = (
+        React.createElement("div", {className: "pad-bottom-1em"}, 
+          React.createElement("h3", null, "How long ago?"), 
+          React.createElement("div", null, 
+            React.createElement("span", {className: "switch"}, 
+              React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, value: "0"}), 
+              React.createElement("label", null, "Just Now")
+            ), 
+            React.createElement("span", {className: "switch"}, 
+              React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, value: "15"}), 
+              React.createElement("label", null, "15 mins")
+            ), 
+            React.createElement("span", {className: "switch"}, 
+              React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, defaultChecked: true, value: "30"}), 
+              React.createElement("label", null, "30 mins")
+            )
+          ), 
+          React.createElement("div", null, 
+            React.createElement("span", {className: "switch"}, 
+              React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, value: "45"}), 
+              React.createElement("label", null, "45 mins")
+            ), 
+            React.createElement("span", {className: "switch"}, 
+              React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, value: "60"}), 
+              React.createElement("label", null, "An hour")
+            )
+          )
+        )
+      );
+    }
+
+    eventTypeField = _.map(EventTypes, function (etype) {
+      return (
+        React.createElement("span", {className: "switch", key: etype}, 
+          React.createElement("input", {type: "radio", name: "eventType", onChange: this._setEventType, defaultChecked: etype === EventTypes.FEEDING, value: etype}), 
+          React.createElement("label", null, etype === EventTypes.SPIT_UP ? 'Spit-Up' : _.capitalize(etype))
+        )
+      );
+    }, this);
+
     return (
       React.createElement("section", {className: "modal-sheet"}, 
         React.createElement("form", {id: "feed-form", "data-baby": baby, onSubmit: this._submit}, 
@@ -1280,52 +1424,11 @@ var Log = React.createClass({displayName: "Log",
           React.createElement("div", {className: "pad-bottom-1em"}, 
             React.createElement("h3", null, "What type of event is this?"), 
             React.createElement("div", null, 
-              React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "eventType", onChange: this._setEventType, defaultChecked: true, value: "feeding"}), 
-                React.createElement("label", null, "Feeding")
-              ), 
-              React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "eventType", onChange: this._setEventType, value: "meds"}), 
-                React.createElement("label", null, "Meds")
-              ), 
-              React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "eventType", onChange: this._setEventType, value: "diaper"}), 
-                React.createElement("label", null, "Diaper")
-              ), 
-              React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "eventType", onChange: this._setEventType, value: "spit"}), 
-                React.createElement("label", null, "Spit-up")
-              )
+              eventTypeField
             )
           ), 
 
-          React.createElement("div", {className: "pad-bottom-1em"}, 
-            React.createElement("h3", null, "How long ago?"), 
-            React.createElement("div", null, 
-              React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, value: "0"}), 
-                React.createElement("label", null, "Just Now")
-              ), 
-              React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, value: "15"}), 
-                React.createElement("label", null, "15 mins")
-              ), 
-              React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, defaultChecked: true, value: "30"}), 
-                React.createElement("label", null, "30 mins")
-              )
-            ), 
-            React.createElement("div", null, 
-              React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, value: "45"}), 
-                React.createElement("label", null, "45 mins")
-              ), 
-              React.createElement("span", {className: "switch"}, 
-                React.createElement("input", {type: "radio", name: "time", onChange: this._setEventTime, value: "60"}), 
-                React.createElement("label", null, "An hour")
-              )
-            )
-          ), 
+          timeAgoField, 
 
           ounceField, 
 
@@ -1338,6 +1441,8 @@ var Log = React.createClass({displayName: "Log",
           diaperField, 
 
           spitField, 
+
+          napTimeField, 
 
           React.createElement("input", {type: "submit", 
             className: "btn btn-invert submit-btn", 
@@ -1353,7 +1458,7 @@ var Log = React.createClass({displayName: "Log",
 module.exports = Log;
 
 
-},{"../actions/view-actions":3,"../stores/event-store":18,"../stores/feeder-store":19,"./OunceStepper.jsx":11,"lodash":31,"moment-timezone":33,"react":252,"react-router":64}],11:[function(require,module,exports){
+},{"../actions/view-actions":3,"../constants/constants":15,"../stores/event-store":18,"../stores/feeder-store":19,"./OunceStepper.jsx":11,"./TimeStepper.jsx":13,"lodash":31,"moment-timezone":33,"react":252,"react-router":64}],11:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -1633,7 +1738,7 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
     var newTime = this.state.time;
     var newHours = parseInt(e.amount);
 
-    if (this.state.amPm === 'pm') {
+    if (this.state.amPm === 'pm' && newHours < 12) {
       newHours += 12;
     }
 
@@ -1713,11 +1818,11 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
           wrap: true}), 
         React.createElement("div", {className: "ampm"}, 
           React.createElement("span", {className: "switch"}, 
-            React.createElement("input", {type: "radio", name: "pm", onChange: this._setAmPm, defaultChecked: this.state.amPm === 'am', value: "am"}), 
+            React.createElement("input", {type: "radio", name: 'pm' + this.props.identifier, onChange: this._setAmPm, defaultChecked: this.state.amPm === 'am', value: "am"}), 
             React.createElement("label", null, "AM")
           ), 
           React.createElement("span", {className: "switch"}, 
-            React.createElement("input", {type: "radio", name: "pm", onChange: this._setAmPm, defaultChecked: this.state.amPm === 'pm', value: "pm"}), 
+            React.createElement("input", {type: "radio", name: 'pm' + this.props.identifier, onChange: this._setAmPm, defaultChecked: this.state.amPm === 'pm', value: "pm"}), 
             React.createElement("label", null, "PM")
           )
         )
@@ -2026,7 +2131,16 @@ module.exports = {
     SERVER_ACTION: null,
     VIEW_ACTION: null,
     REQUEST_ACTION: null
-  })
+  }),
+
+  EventTypes: {
+    FEEDING: 'feeding',
+    SPIT_UP: 'spit',
+    BURP: 'burp',
+    MEDS: 'meds',
+    DIAPER: 'diaper',
+    NAP: 'nap'
+  }
 };
 
 },{"keymirror":30}],16:[function(require,module,exports){
@@ -2124,7 +2238,7 @@ var _spits = ls.get('spits') || [];
 var _poops = ls.get('poops') || [];
 var _latest = ls.get('latest') || [];
 var _latestPoops = ls.get('latest-poops') || {};
-var _latestZantac = ls.get('latest-zantac') || {};
+var _latestPrevacid = ls.get('latest-prevacid') || {};
 var _lastDayFeedings = ls.get('last-day-feedings') || {};
 var _lastDayEvents = ls.get('last-day-events') || {};
 var _lastDayMeds = ls.get('last-day-meds') || {};
@@ -2306,9 +2420,9 @@ var updateStore = function () {
     .groupBy('name')
     .value();
 
-  _latestZantac = _.chain(_events)
+  _latestPrevacid = _.chain(_events)
     .filter(function (e) {
-      return e.medicine && _.contains(e.medicine, 'zantac');
+      return e.medicine && _.contains(e.medicine, 'prevacid');
     })
     .sortByOrder(['name', 'time'], ['asc', 'desc'])
     .groupBy('name')
@@ -2325,11 +2439,9 @@ var updateStore = function () {
     }
   });
 
-  _.map(_latestZantac, function (baby) {
-    var hoursSinceZantac = moment(Date.now()).diff(baby[0].time, 'hours');
-    if (hoursSinceZantac > 8) {
-      _groupedFeedings[baby[0].name][0].zantacFlag = true;
-    }
+  _.map(_latestPrevacid, function (baby) {
+    var hoursSincePrevacid = moment(Date.now()).diff(baby[0].time, 'hours');
+    _groupedFeedings[baby[0].name][0].prevacidFlag = (hoursSincePrevacid > 8);
   });
 
   _latest = _.map(_groupedFeedings, function (baby) {
@@ -2361,15 +2473,14 @@ EventStore.dispatchToken = Dispatcher.register(function (payload) {
   action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_EVENTS:
-      // if (JSON.stringify(action.data) !== JSON.stringify(_events)) {
-        _events = action.data;
-        ls.set('events', _events);
-        updateStore();
-      // }
+      _events = action.data;
+      ls.set('events', _events);
+      updateStore();
       break;
 
     case ActionTypes.SUCCESSFUL_EVENT_POST:
       _events.push(action.data);
+      ls.set('events', _events);
       updateStore();
       break;
 

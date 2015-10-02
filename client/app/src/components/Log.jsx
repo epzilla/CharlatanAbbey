@@ -9,9 +9,11 @@ var Navigation = Router.Navigation;
 var FeederStore = require('../stores/feeder-store');
 var EventStore = require('../stores/event-store');
 var Actions = require('../actions/view-actions');
+var EventTypes = require('../constants/constants').EventTypes;
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var OunceStepper = require('./OunceStepper.jsx');
+var TimeStepper = require('./TimeStepper.jsx');
 
 var Log = React.createClass({
 
@@ -26,17 +28,61 @@ var Log = React.createClass({
 
     var frac = this.state.fracAmount.actualValue ? this.state.fracAmount.actualValue : this.state.fracAmount;
 
-    Actions.submitEventForm({
-      name: this.state.baby,
-      eventType: this.state.eventType,
-      burp: this.state.burp,
-      diaper: this.state.diaper.join(' + '),
-      feeder: this.state.feeder,
-      time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
-      amount: this.state.fullAmount + frac,
-      medicine: this.state.medicine.join(', '),
-      spit: this.state.spit
-    });
+    switch (this.state.eventType) {
+      case EventTypes.BURP:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          burp: this.state.burp,
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+        });
+        break;
+      case EventTypes.DIAPER:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          diaper: this.state.diaper.join(' + '),
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+        });
+        break;
+      case EventTypes.MEDS:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          medicine: this.state.medicine.join(', '),
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+        });
+        break;
+      case EventTypes.SPIT_UP:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          spit: this.state.spit,
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+        });
+        break;
+      case EventTypes.NAP:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          startTime: this.state.napStart.format(),
+          endTime: this.state.napEnd.format(),
+          duration: this.state.napEnd.diff(this.state.napStart, 'minutes')
+        });
+        break;
+      default:
+        Actions.submitEventForm({
+          name: this.state.baby,
+          eventType: this.state.eventType,
+          burp: this.state.burp,
+          diaper: this.state.diaper.join(' + '),
+          feeder: this.state.feeder,
+          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
+          amount: this.state.fullAmount + frac,
+          medicine: this.state.medicine.join(', '),
+          spit: this.state.spit
+        });
+    }
   },
 
   _setEventType: function (e) {
@@ -111,6 +157,18 @@ var Log = React.createClass({
     });
   },
 
+  _setNapStart: function (e) {
+    this.setState({
+      napStart: e
+    });
+  },
+
+  _setNapEnd: function (e) {
+    this.setState({
+      napEnd: e
+    });
+  },
+
   _onChange: function () {
     this.transitionTo('/');
   },
@@ -134,16 +192,19 @@ var Log = React.createClass({
       burp: 'big',
       spit: 'no',
       eventType: 'feeding',
-      baby: this.props.params.name
+      baby: this.props.params.name,
+      napStart: moment(new Date()),
+      napEnd: moment(new Date()),
     };
   },
 
   render: function () {
     var that = this;
     var baby = this.props.params.name;
-    var ounceField, feederField, medField, burpField, diaperField, spitField;
+    var ounceField, feederField, medField, burpField, diaperField,
+        spitField, eventTypeField, napTimeField, timeAgoField;
 
-    if (this.state.eventType === 'feeding') {
+    if (this.state.eventType === EventTypes.FEEDING) {
       ounceField = (
         <div className='pad-bottom-1em ounce-field'>
           <h3>How much did she eat?</h3>
@@ -170,7 +231,7 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'burp') {
+    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.BURP) {
       burpField = (
         <div className='pad-bottom-1em burp-field'>
           <h3>Any burp?</h3>
@@ -202,8 +263,8 @@ var Log = React.createClass({
               <label>Gas Drops</label>
             </span>
             <span className='switch'>
-              <input type='checkbox' name='medicine' onChange={this._setMeds} value='zantac'/>
-              <label>Zantac</label>
+              <input type='checkbox' name='medicine' onChange={this._setMeds} value='prevacid'/>
+              <label>Prevacid</label>
             </span>
             <span className='switch'>
               <input type='checkbox' name='medicine' onChange={this._setMeds} value='eye drops'/>
@@ -218,7 +279,7 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'diaper') {
+    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.DIAPER) {
       diaperField = (
         <div className='pad-bottom-1em diaper-field'>
           <h3>How was the diaper? <small>(Check all that apply)</small></h3>
@@ -254,7 +315,7 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'spit') {
+    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.SPIT_UP) {
       spitField = (
         <div className='pad-bottom-1em spit-field'>
           <h3>Any spit-up?</h3>
@@ -276,6 +337,60 @@ var Log = React.createClass({
       );
     }
 
+    if (this.state.eventType === EventTypes.NAP) {
+      napTimeField = (
+        <div>
+          <div className='pad-bottom-1em nap-field'>
+            <h3>When did the nap start?</h3>
+            <TimeStepper identifier={'nap-start-time-stepper'} time={this.state.napStart} onChange={this._setNapStart} />
+          </div>
+          <div className='pad-bottom-1em nap-field'>
+            <h3>When did it end?</h3>
+            <TimeStepper identifier={'nap-end-time-stepper'} time={this.state.napEnd} onChange={this._setNapEnd} />
+          </div>
+        </div>
+      );
+    } else {
+      timeAgoField = (
+        <div className='pad-bottom-1em'>
+          <h3>How long ago?</h3>
+          <div>
+            <span className='switch'>
+              <input type='radio' name='time' onChange={this._setEventTime} value='0'/>
+              <label>Just Now</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='time' onChange={this._setEventTime} value='15'/>
+              <label>15 mins</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='time' onChange={this._setEventTime} defaultChecked value='30'/>
+              <label>30 mins</label>
+            </span>
+          </div>
+          <div>
+            <span className='switch'>
+              <input type='radio' name='time' onChange={this._setEventTime} value='45'/>
+              <label>45 mins</label>
+            </span>
+            <span className='switch'>
+              <input type='radio' name='time' onChange={this._setEventTime} value='60'/>
+              <label>An hour</label>
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    eventTypeField = _.map(EventTypes, function (etype) {
+      return (
+        <span className='switch' key={etype}>
+          <input type='radio' name='eventType' onChange={this._setEventType} defaultChecked={etype === EventTypes.FEEDING} value={etype}/>
+          <label>{etype === EventTypes.SPIT_UP ? 'Spit-Up' : _.capitalize(etype)}</label>
+        </span>
+      );
+    }, this);
+
     return (
       <section className='modal-sheet'>
         <form id='feed-form' data-baby={baby} onSubmit={this._submit}>
@@ -284,52 +399,11 @@ var Log = React.createClass({
           <div className='pad-bottom-1em'>
             <h3>What type of event is this?</h3>
             <div>
-              <span className='switch'>
-                <input type='radio' name='eventType' onChange={this._setEventType} defaultChecked value='feeding'/>
-                <label>Feeding</label>
-              </span>
-              <span className='switch'>
-                <input type='radio' name='eventType' onChange={this._setEventType} value='meds' />
-                <label>Meds</label>
-              </span>
-              <span className='switch'>
-                <input type='radio' name='eventType' onChange={this._setEventType} value='diaper'/>
-                <label>Diaper</label>
-              </span>
-              <span className='switch'>
-                <input type='radio' name='eventType' onChange={this._setEventType} value='spit'/>
-                <label>Spit-up</label>
-              </span>
+              {eventTypeField}
             </div>
           </div>
 
-          <div className='pad-bottom-1em'>
-            <h3>How long ago?</h3>
-            <div>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} value='0'/>
-                <label>Just Now</label>
-              </span>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} value='15'/>
-                <label>15 mins</label>
-              </span>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} defaultChecked value='30'/>
-                <label>30 mins</label>
-              </span>
-            </div>
-            <div>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} value='45'/>
-                <label>45 mins</label>
-              </span>
-              <span className='switch'>
-                <input type='radio' name='time' onChange={this._setEventTime} value='60'/>
-                <label>An hour</label>
-              </span>
-            </div>
-          </div>
+          {timeAgoField}
 
           {ounceField}
 
@@ -342,6 +416,8 @@ var Log = React.createClass({
           {diaperField}
 
           {spitField}
+
+          {napTimeField}
 
           <input type='submit'
             className='btn btn-invert submit-btn'

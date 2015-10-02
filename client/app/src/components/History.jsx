@@ -7,6 +7,7 @@ var Link = Router.Link;
 var Navigation = Router.Navigation;
 var EventStore = require('../stores/event-store');
 var Actions = require('../actions/view-actions');
+var EventTypes = require('../constants/constants').EventTypes;
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var Swipeable = require('react-swipeable');
@@ -16,22 +17,53 @@ var FeedingCell = React.createClass({
   mixins: [ Navigation ],
 
   _edit: function () {
-    console.log(this.props.feeding);
     this.transitionTo('edit', {logEvent: this.props.feeding._id});
   },
 
   render: function () {
     var feeding = this.props.feeding;
+    var amount, diaper, burp, meds, spit, nap;
+
+    if (feeding.diaper) {
+      diaper = <li>{ _.capitalize(feeding.diaper) } diaper</li>;
+    }
+
+    if (feeding.burp) {
+      burp = <li>{ _.capitalize(feeding.burp) } burp</li>;
+    }
+
+    if (feeding.medicine) {
+      meds = <li>{ _.capitalize(feeding.medicine) }</li>;
+    }
+
+    if (feeding.spit) {
+      spit = <li>{ _.capitalize(feeding.spit) } spit</li>;
+    }
+
+    if (feeding.amount) {
+      amount = <li>Drank { feeding.amount }oz.</li>;
+    }
+
+    if (feeding.eventType === EventTypes.NAP) {
+      var napStart = feeding.startTime ? moment(feeding.startTime).format('h:mma') : null;
+      var napEnd = feeding.startTime ? moment(feeding.endTime).format('h:mma') : null;
+      var duration = feeding.duration || napEnd.diff(napStart, 'minutes');
+      var formattedDuration = moment.duration(duration, 'minutes').asHours().toFixed(2) + ' hr.';
+      nap = (
+        <li>Napped from {napStart} to {napEnd} (<em>{formattedDuration}</em>)</li>
+      );
+    }
 
     return (
       <div className="cell">
         <h5>{ moment(feeding.time).format('M/DD - h:mma') }</h5>
         <ul>
-          <li>Drank { feeding.amount }oz.</li>
-          <li>{ _.capitalize(feeding.diaper) } diaper</li>
-          <li>{ _.capitalize(feeding.burp) } burp</li>
-          <li>{ _.capitalize(feeding.medicine) }</li>
-          <li>{ _.capitalize(feeding.spit) } spit-up</li>
+          {amount}
+          {diaper}
+          {meds}
+          {burp}
+          {spit}
+          {nap}
         </ul>
         <button className="btn btn-edit-cell" onClick={this._edit}>
           <i className="fa fa-edit"></i> Edit
@@ -78,7 +110,6 @@ var History = React.createClass({
     this.setState({
       timeFilter: e.target.value
     }, function () {
-      console.log(this.state);
     });
   },
 
@@ -86,7 +117,6 @@ var History = React.createClass({
     this.setState({
       typeFilter: e.target.value
     }, function () {
-      console.log(this.state);
     });
   },
 

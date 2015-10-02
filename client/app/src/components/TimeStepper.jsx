@@ -6,7 +6,7 @@ var TimeStepper = React.createClass({
     var newTime = this.state.time;
     var newHours = parseInt(e.amount);
 
-    if (this.state.amPm === 'pm') {
+    if (this.state.amPm === 'pm' && newHours < 12) {
       newHours += 12;
     }
 
@@ -86,11 +86,11 @@ var TimeStepper = React.createClass({
           wrap={true}/>
         <div className='ampm'>
           <span className='switch'>
-            <input type='radio' name='pm' onChange={this._setAmPm} defaultChecked={this.state.amPm === 'am'} value='am'/>
+            <input type='radio' name={'pm' + this.props.identifier} onChange={this._setAmPm} defaultChecked={this.state.amPm === 'am'} value='am'/>
             <label>AM</label>
           </span>
           <span className='switch'>
-            <input type='radio' name='pm' onChange={this._setAmPm} defaultChecked={this.state.amPm === 'pm'} value='pm' />
+            <input type='radio' name={'pm' + this.props.identifier} onChange={this._setAmPm} defaultChecked={this.state.amPm === 'pm'} value='pm' />
             <label>PM</label>
           </span>
         </div>

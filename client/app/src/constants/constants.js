@@ -18,5 +18,14 @@ module.exports = {
     SERVER_ACTION: null,
     VIEW_ACTION: null,
     REQUEST_ACTION: null
-  })
+  }),
+
+  EventTypes: {
+    FEEDING: 'feeding',
+    SPIT_UP: 'spit',
+    BURP: 'burp',
+    MEDS: 'meds',
+    DIAPER: 'diaper',
+    NAP: 'nap'
+  }
 };
