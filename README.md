@@ -4,4 +4,4 @@ Twin tracker
 Live site: http://charlatan-abbey.herokuapp.com
 
 ## TODOs
-- Add Alarm/Timer for holding/burping
+- Improve layout on non-mobile devices. Right now it's basically "mobile-only", layout-wise.
