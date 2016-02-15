@@ -8,13 +8,27 @@ var cx = require('classnames');
 
 var FeedingInfo = React.createClass({
 
-  _getFormattedAmount: function () {
+  _getFormattedFood: function () {
+    var foodList;
+    var food = this.props.feeding.food;
     var amt = this.props.feeding.amount;
+    var bottleEmoji = <span className='emojifier'><img src='/img/bottle.png' className='emoji' /></span>;
+
     if (amt % 1 === 0) {
-      return Math.floor(amt);
+      amt = Math.floor(amt) + ' oz.';
     } else {
-      return amt.toFixed(2);
+      amt = amt.toFixed(2) + ' oz.';
     }
+
+    if (food) {
+      foodList = ' + ' + food;
+    }
+
+    return (
+      <li>
+        {amt}{bottleEmoji}{foodList}
+      </li>
+    );
   },
 
   render: function () {
@@ -73,9 +87,7 @@ var FeedingInfo = React.createClass({
         </em>
         <p>Last Feeding</p>
         <ul>
-          <li>
-            {this._getFormattedAmount()} oz.
-          </li>
+          {this._getFormattedFood()}
           <li>
             { _.capitalize(feeding.burp) } burp
           </li>

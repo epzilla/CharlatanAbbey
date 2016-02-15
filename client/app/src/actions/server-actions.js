@@ -25,6 +25,13 @@ var ServerActions = {
     });
   },
 
+  receiveFoodTypes: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.RECEIVE_FOOD_TYPES,
+      data: data
+    });
+  },
+
   receiveFeeders: function (data) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_FEEDERS,

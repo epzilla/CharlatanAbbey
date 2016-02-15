@@ -11,6 +11,7 @@ var LogEventSchema = new Schema({
   endTime: Date,
   diaper: String,
   feeder: String,
+  food: String,
   medicine: String,
   eventType: String,
   spit: String

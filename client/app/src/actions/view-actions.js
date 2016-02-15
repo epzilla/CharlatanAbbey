@@ -6,6 +6,10 @@ var ViewActions = {
     API.getFeeders();
   },
 
+  getFoodTypes: function () {
+    API.getFoodTypes();
+  },
+
   getEvents: function () {
     API.getEvents();
   },

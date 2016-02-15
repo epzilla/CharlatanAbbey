@@ -7,6 +7,7 @@ var Link = Router.Link;
 var State = Router.State;
 var Navigation = Router.Navigation;
 var FeederStore = require('../stores/feeder-store');
+var FoodTypeStore = require('../stores/food-type-store');
 var EventStore = require('../stores/event-store');
 var Actions = require('../actions/view-actions');
 var EventTypes = require('../constants/constants').EventTypes;
@@ -14,6 +15,7 @@ var _ = require('lodash');
 var moment = require('moment-timezone');
 var OunceStepper = require('./OunceStepper.jsx');
 var TimeStepper = require('./TimeStepper.jsx');
+var SwitchButton = require('./SwitchButton.jsx');
 
 var Log = React.createClass({
 
@@ -77,6 +79,7 @@ var Log = React.createClass({
           burp: this.state.burp,
           diaper: this.state.diaper.join(' + '),
           feeder: this.state.feeder,
+          food: this.state.foods.join(', '),
           time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
           amount: this.state.fullAmount + frac,
           medicine: this.state.medicine.join(', '),
@@ -136,6 +139,21 @@ var Log = React.createClass({
     });
   },
 
+  _setFoods: function (e) {
+    var foods = this.state.foods;
+    var val = e.target.value;
+
+    if (_.contains(foods, val)) {
+      foods = _.without(foods, val);
+    } else {
+      foods.push(val);
+    }
+
+    this.setState({
+      foods: foods
+    });
+  },
+
   _setDiaper: function (e) {
     var diapers = this.state.diaper;
     var val = e.target.value;
@@ -186,6 +204,8 @@ var Log = React.createClass({
       fullAmount: 2,
       fracAmount: 0,
       feeders: FeederStore.getFeeders(),
+      foods: [],
+      foodTypes: FoodTypeStore.getFoodTypes(),
       medicine: [],
       diaper: ['wet'],
       time: 30,
@@ -201,16 +221,21 @@ var Log = React.createClass({
   render: function () {
     var that = this;
     var baby = this.props.params.name;
-    var ounceField, feederField, medField, burpField, diaperField,
+    var ounceField, feederField, medField, burpField, diaperField, foodField,
         spitField, eventTypeField, napTimeField, timeAgoField;
 
     if (this.state.eventType === EventTypes.FEEDING) {
-      ounceField = (
-        <div className='pad-bottom-1em ounce-field'>
-          <h3>How much did she eat?</h3>
-          <OunceStepper onChange={this._setAmount} />
-        </div>
-      );
+      var foods = _.map(this.state.foodTypes, function (f) {
+        return (
+          <SwitchButton
+            type='checkbox'
+            name='foods'
+            onChange={that._setFoods}
+            value={f.name}
+            emoji={f.img}
+          />
+        );
+      });
 
       var feeders = _.map(this.state.feeders, function (f) {
         return (
@@ -221,12 +246,28 @@ var Log = React.createClass({
         );
       });
 
+      foodField = (
+        <div className='pad-bottom-1em meds-field'>
+          <h3>Any solid food? <small>(Check all that apply)</small></h3>
+          <div>
+            {foods}
+          </div>
+        </div>
+      );
+
       feederField = (
         <div className='pad-bottom-1em feeder-field'>
           <h3>Who fed her?</h3>
           <div>
             {feeders}
           </div>
+        </div>
+      );
+
+      ounceField = (
+        <div className='pad-bottom-1em ounce-field'>
+          <h3>How much did she eat?</h3>
+          <OunceStepper onChange={this._setAmount} />
         </div>
       );
     }
@@ -253,7 +294,7 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === 'feeding' || this.state.eventType === 'meds') {
+    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.MEDS) {
       medField = (
         <div className='pad-bottom-1em meds-field'>
           <h3>Did she take any medicine? <small>(Check all that apply)</small></h3>
@@ -406,6 +447,8 @@ var Log = React.createClass({
           {timeAgoField}
 
           {ounceField}
+
+          {foodField}
 
           {feederField}
 

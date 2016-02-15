@@ -39,6 +39,12 @@ module.exports = {
     });
   },
 
+  getFoodTypes: function () {
+    return Rest.get('/api/food-types').then(function (res) {
+      ServerActions.receiveFoodTypes(getJSON(res.response));
+    });
+  },
+
   getTimeLogs: function () {
     return Rest.get('/api/time-logs').then(function (res) {
       ServerActions.receiveTimeLogs(getJSON(res.response));
