@@ -9,7 +9,7 @@ var TimeLogStore = require('../stores/time-log-store');
 var ActionButtons = require('./ActionButtons.jsx');
 
 var Home = React.createClass({
-  getInitialState: function(){
+  getInitialState: function () {
     return {
       feedings: EventStore.getLatestFeedings(),
       babies: BabyStore.getBabies(),
@@ -17,24 +17,24 @@ var Home = React.createClass({
     };
   },
 
-  _onChange: function(){
+  _onChange: function () {
     this.setState({
       feedings: EventStore.getLatestFeedings(),
       babies: BabyStore.getBabies()
     });
   },
 
-  componentDidMount: function(){
+  componentDidMount: function () {
     EventStore.addChangeListener(this._onChange);
     BabyStore.addChangeListener(this._onChange);
   },
 
-  componentWillUnmount: function(){
+  componentWillUnmount: function () {
     EventStore.removeChangeListener(this._onChange);
     BabyStore.removeChangeListener(this._onChange);
   },
 
-  render: function(){
+  render: function () {
     var feedings = [];
     this.state.feedings.forEach(function (feeding) {
       feedings.push( <FeedingInfo key={feeding._id} feeding={feeding} /> );

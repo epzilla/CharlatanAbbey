@@ -8,27 +8,27 @@ var BabyForm = require('./BabyForm.jsx');
 var BabiesSummaryView = require('./BabiesSummaryView.jsx');
 
 var Home = React.createClass({
-  getInitialState: function(){
+  getInitialState: function () {
     return {
       babies: ls.get('babies')
     };
   },
 
-  _onChange: function(){
+  _onChange: function () {
     this.setState({
       babies: BabyStore.getBabies()
     });
   },
 
-  componentDidMount: function(){
+  componentDidMount: function () {
     BabyStore.addChangeListener(this._onChange);
   },
 
-  componentWillUnmount: function(){
+  componentWillUnmount: function () {
     BabyStore.removeChangeListener(this._onChange);
   },
 
-  render: function(){
+  render: function () {
     if (this.state.babies) {
       return (
         <BabiesSummaryView babies={this.state.babies} />
