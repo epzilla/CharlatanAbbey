@@ -2,20 +2,17 @@
 var API = require('../utils/api');
 
 var ViewActions = {
-  getFeeders: function () {
-    API.getFeeders();
-  },
 
   getFoodTypes: function () {
     API.getFoodTypes();
   },
 
-  getEvents: function () {
-    API.getEvents();
+  getEvents: function (babyID) {
+    API.getEvents(babyID);
   },
 
-  getTimeLogs: function () {
-    API.getTimeLogs();
+  getTimeLogs: function (babyID) {
+    API.getTimeLogs(babyID);
   },
 
   submitEventForm: function (formValues) {

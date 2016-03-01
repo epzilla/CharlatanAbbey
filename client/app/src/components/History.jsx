@@ -130,7 +130,7 @@ var History = React.createClass({
 
   componentDidMount: function () {
     EventStore.addChangeListener(this._onChange);
-    Actions.getEvents();
+    // Actions.getEvents();
   },
 
   componentWillUnmount: function () {

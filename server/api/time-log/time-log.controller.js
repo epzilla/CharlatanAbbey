@@ -13,9 +13,9 @@ var _ = require('lodash');
 var timeLog = require('./time-log.model');
 var moment = require('moment-timezone');
 
-// Get list of time-logs
+// Get list of time-logs by baby ID
 exports.index = function (req, res) {
-  timeLog.find(function (err, timeLogEvent) {
+  timeLog.find({ babyID: { '$in': req.params.id.split(',') }}, function (err, timeLogEvent) {
     if(err) { return handleError(res, err); }
     return res.json(timeLogEvent);
   });

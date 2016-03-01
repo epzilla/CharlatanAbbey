@@ -7,7 +7,6 @@
 
 var LogEvent = require('../api/log-event/log-event.model');
 var DeprecatedFeeding = require('../api/log-event/feeding-deprecated.model');
-var Feeder = require('../api/feeder/feeder.model');
 var Baby = require('../api/baby/baby.model');
 var TimeLog = require('../api/time-log/time-log.model');
 
@@ -27,25 +26,6 @@ Baby.find(function (err, babies) {
   }, function () {
     console.log('Babies created! <wink wink>');
   });
-});
-
-Feeder.find(function (err, feeders) {
-  if (feeders && feeders.length > 0) {
-    return;
-  }
-
-  Feeder.create(
-    { name: 'Mommy' },
-    { name: 'Daddy' },
-    { name: 'Gigi' },
-    { name: 'Nana' },
-    { name: 'Papa Joe' },
-    { name: 'Aunt Tree' },
-    { name: 'Harmony' },
-    { name: 'Paula' },
-    function () {
-      console.log('Feeders created!');
-    });
 });
 
 LogEvent.find(function (err, logEvents) {

@@ -15,8 +15,8 @@ var getJSON = function (json) {
 };
 
 module.exports = {
-  getEvents: function () {
-    return Rest.get('/api/events').then(function (res) {
+  getEvents: function (babyIDs) {
+    return Rest.get('/api/events/babies/' + babyIDs).then(function (res) {
       ServerActions.receiveEvents(getJSON(res.response));
     });
   },
@@ -33,20 +33,14 @@ module.exports = {
     });
   },
 
-  getFeeders: function () {
-    return Rest.get('/api/feeders').then(function (res) {
-      ServerActions.receiveFeeders(getJSON(res.response));
-    });
-  },
-
   getFoodTypes: function () {
     return Rest.get('/api/food-types').then(function (res) {
       ServerActions.receiveFoodTypes(getJSON(res.response));
     });
   },
 
-  getTimeLogs: function () {
-    return Rest.get('/api/time-logs').then(function (res) {
+  getTimeLogs: function (babyIDs) {
+    return Rest.get('/api/time-logs/babies/' + babyIDs).then(function (res) {
       ServerActions.receiveTimeLogs(getJSON(res.response));
     });
   },

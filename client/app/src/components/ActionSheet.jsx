@@ -11,7 +11,7 @@ var EventBtn = React.createClass({
 
   _logEvent: function () {
     this.props.dismiss();
-    this.transitionTo('log-event', {name: this.props.baby.name});
+    this.transitionTo('log-event', {id: this.props.baby._id });
   },
 
   render: function () {

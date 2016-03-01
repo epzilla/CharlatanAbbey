@@ -5,11 +5,11 @@ var controller = require('./log-event.controller');
 
 var router = express.Router();
 
-router.get('/', controller.index);
-router.get('/feedings', controller.findAllFeedings);
-router.get('/diapers', controller.findAllDiapers);
-router.get('/meds', controller.findAllMedications);
-router.get('/spits', controller.findAllSpitups);
+router.get('/babies/:id', controller.index);
+router.get('/feedings/babies/:id', controller.findAllFeedings);
+router.get('/diapers/babies/:id', controller.findAllDiapers);
+router.get('/meds/babies/:id', controller.findAllMedications);
+router.get('/spits/babies/:id', controller.findAllSpitups);
 router.get('/:id', controller.show);
 
 router.post('/', controller.create);

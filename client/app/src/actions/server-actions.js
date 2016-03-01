@@ -32,13 +32,6 @@ var ServerActions = {
     });
   },
 
-  receiveFeeders: function (data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_FEEDERS,
-      data: data
-    });
-  },
-
   receiveTimeLogs: function (data) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_TIME_LOGS,

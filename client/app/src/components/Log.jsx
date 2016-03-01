@@ -6,7 +6,7 @@ var Router = require('react-router');
 var Link = Router.Link;
 var State = Router.State;
 var Navigation = Router.Navigation;
-var FeederStore = require('../stores/feeder-store');
+var BabyStore = require('../stores/baby-store');
 var FoodTypeStore = require('../stores/food-type-store');
 var EventStore = require('../stores/event-store');
 var Actions = require('../actions/view-actions');
@@ -203,7 +203,6 @@ var Log = React.createClass({
     return {
       fullAmount: 2,
       fracAmount: 0,
-      feeders: FeederStore.getFeeders(),
       foods: [],
       foodTypes: FoodTypeStore.getFoodTypes(),
       medicine: [],
@@ -212,7 +211,7 @@ var Log = React.createClass({
       burp: 'big',
       spit: 'no',
       eventType: 'feeding',
-      baby: this.props.params.name,
+      baby: BabyStore.getBaby(this.props.params.id),
       napStart: moment(new Date()),
       napEnd: moment(new Date()),
     };
@@ -220,7 +219,7 @@ var Log = React.createClass({
 
   render: function () {
     var that = this;
-    var baby = this.props.params.name;
+    var baby = this.state.baby ? this.state.baby.name : null;
     var ounceField, feederField, medField, burpField, diaperField, foodField,
         spitField, eventTypeField, napTimeField, timeAgoField;
 
@@ -237,29 +236,31 @@ var Log = React.createClass({
         );
       });
 
-      var feeders = _.map(this.state.feeders, function (f) {
-        return (
-          <span className='switch' key={f.name}>
-            <input type='radio' name='feeder' onChange={that._setFeeder} value={f.name}/>
-            <label>{f.name}</label>
-          </span>
+      if (this.state.baby) {
+        var feeders = _.map(this.state.baby.feeders, function (f) {
+          return (
+            <span className='switch' key={f.name}>
+              <input type='radio' name='feeder' onChange={that._setFeeder} value={f.name}/>
+              <label>{f.name}</label>
+            </span>
+          );
+        });
+
+        feederField = (
+          <div className='pad-bottom-1em feeder-field'>
+            <h3>Who fed her?</h3>
+            <div>
+              {feeders}
+            </div>
+          </div>
         );
-      });
+      }
 
       foodField = (
         <div className='pad-bottom-1em meds-field'>
           <h3>Any solid food? <small>(Check all that apply)</small></h3>
           <div>
             {foods}
-          </div>
-        </div>
-      );
-
-      feederField = (
-        <div className='pad-bottom-1em feeder-field'>
-          <h3>Who fed her?</h3>
-          <div>
-            {feeders}
           </div>
         </div>
       );

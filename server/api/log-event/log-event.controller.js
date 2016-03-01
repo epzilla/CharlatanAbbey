@@ -19,9 +19,9 @@ var sortedGroupedList = function (things) {
       .value();
 };
 
-// Get list of logEvents
+// Get list of logEvents by array of baby IDs
 exports.index = function (req, res) {
-  logEvent.find(function (err, logEvents) {
+  logEvent.find({babyID: {'$in': req.params.id.split(',')}}, function (err, logEvents) {
     if(err) { return handleError(res, err); }
     return res.json(_.sortByOrder(logEvents, ['time', 'desc']));
   });
@@ -71,14 +71,16 @@ exports.destroy = function (req, res) {
 };
 
 exports.findAllFeedings = function (req, res) {
-  logEvent.find({eventType: 'feeding'}, function (err, feedings) {
+  logEvent.find({
+    babyID: { '$in': req.params.id.split(',') },
+    eventType: 'feeding'}, function (err, feedings) {
     if(err) { return handleError(res, err); }
     return res.json(sortedGroupedList(feedings));
   });
 };
 
 exports.findAllDiapers = function (req, res) {
-  logEvent.find()
+  logEvent.find({ babyID: { '$in': req.params.id.split(',') }})
     .exists('diaper')
     .exec(function (err, diapers) {
       if(err) { return handleError(res, err); }
@@ -87,7 +89,7 @@ exports.findAllDiapers = function (req, res) {
 };
 
 exports.findAllMedications = function (req, res) {
-  logEvent.find()
+  logEvent.find({ babyID: { '$in': req.params.id.split(',') }})
     .exists('medicine')
     .exec(function (err, meds) {
       if(err) { return handleError(res, err); }
@@ -96,7 +98,7 @@ exports.findAllMedications = function (req, res) {
 };
 
 exports.findAllSpitups = function (req, res) {
-  logEvent.find()
+  logEvent.find({ babyID: { '$in': req.params.id.split(',') }})
     .where('spit')
     .nin([null, 'no', 'none'])
     .exec(function (err, spits) {

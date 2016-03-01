@@ -85,7 +85,9 @@ TimeLogStore.dispatchToken = Dispatcher.register(function (payload) {
   switch (action.type) {
     case ActionTypes.RECEIVE_TIME_LOGS:
       if (needsUpdating(action.data)) {
+        var newLogs = action.data;
         _rawLogs = _.chain(action.data)
+          .concat(newLogs)
           .sortBy(function (tl) {
             return new Date(tl.timeIn);
           })

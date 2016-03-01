@@ -5,8 +5,8 @@ var React = require('react');
 var Router = require('react-router');
 var State = Router.State;
 var Navigation = Router.Navigation;
-var FeederStore = require('../stores/feeder-store');
 var EventStore = require('../stores/event-store');
+var BabyStore = require('../stores/baby-store');
 var Actions = require('../actions/view-actions');
 var _ = require('lodash');
 var moment = require('moment-timezone');
@@ -144,7 +144,7 @@ var Edit = React.createClass({
       name: e.name,
       diaper: diaper || [],
       feeder: e.feeder,
-      feeders: FeederStore.getFeeders(),
+      feeders: BabyStore.getFeeders(),
       medicine: meds || [],
       burp: e.burp,
       spit: e.spit,

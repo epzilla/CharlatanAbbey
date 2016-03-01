@@ -25,7 +25,6 @@ var ActionButtons = React.createClass({
     this.setState({
       logEvent: true
     });
-    Actions.getFeeders();
     Actions.getFoodTypes();
   },
 

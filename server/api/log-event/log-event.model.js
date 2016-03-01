@@ -14,7 +14,11 @@ var LogEventSchema = new Schema({
   food: String,
   medicine: String,
   eventType: String,
-  spit: String
+  spit: String,
+  babyID: {
+    type: Schema.Types.ObjectId,
+    ref: 'Baby'
+  }
 }, { collection: 'logEvents' });
 
 module.exports = mongoose.model('LogEvent', LogEventSchema);
