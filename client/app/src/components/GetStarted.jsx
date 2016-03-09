@@ -5,56 +5,52 @@ var React = require('react');
 var BabyStore = require('../stores/baby-store');
 var Actions = require('../actions/view-actions');
 var Navigation = require('react-router').Navigation;
+var Wizard = require('./Wizard.jsx');
+
+var View1 = React.createClass({
+  render: function () {
+
+    return (
+      <div className="get-started">
+        <h3>First things first. What are their names?</h3>
+        <input type="text" placeholder="Last Name" onChange={this._setLastname} />
+        <input type="text" placeholder="Baby A" onChange={this._setBabyA} />
+        <input type="text" placeholder="Baby B" onChange={this._setBabyB} />
+      </div>
+    );
+  }
+});
+
+var View2 = React.createClass({
+  render: function () {
+
+    return (
+      <div></div>
+    );
+  }
+});
+
+var View3 = React.createClass({
+  render: function () {
+
+    return (
+      <div></div>
+    );
+  }
+});
 
 var GetStarted = React.createClass({
   mixins: [Navigation],
 
-  componentDidMount: function () {
-    BabyStore.addChangeListener(this._onChange);
-  },
-
-  componentWillUnmount: function () {
-    BabyStore.removeChangeListenter(this._onChange);
-  },
-
-  _lookUpBabies: function (e) {
-    e.preventDefault();
-    Actions.findBabies(this.state);
-  },
-
-  _setValue: function (e) {
-    var obj = {};
-    obj[e.target.name] = e.target.value;
-    console.log(obj);
-    this.setState(obj);
-  },
-
-  _onChange: function () {
-    if (BabyStore.getSearchFailed()) {
-      this.transitionTo('/get-started');
-    } else {
-      this.setState({
-        babies: BabyStore.getBabies(),
-        failedSearch: BabyStore.getSearchFailed()
-      });
-    }
-  },
-
   render: function () {
     return (
-      <form onSubmit={this._lookUpBabies} className="login-form">
-        <h4>Hi there!</h4>
-        <p>
-          Let’s get started. Please enter the last name and birthdate of
-          the babies you’d like to start tracking. If someone has already
-          entered them into the system, you can start tracking them right
-          away. If not, we’ll just ask you a few more questions to get things
-          set up.
-        </p>
-        <input type="text" name="lastname" placeholder="Last Name" onChange={this._setValue} />
-        <input type="date" name="birthdate" onChange={this._setValue} />
-        <button>Submit</button>
-      </form>
+      <Wizard
+        views={[
+          <View1 />,
+          <View2 />,
+          <View3 />
+        ]}
+      />
     );
   }
 });

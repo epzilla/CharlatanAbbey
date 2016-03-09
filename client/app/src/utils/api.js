@@ -1,5 +1,6 @@
 var Rest = require('./rest-service');
 var ServerActions = require('../actions/server-actions');
+var _ = require('lodash');
 
 if (!String.prototype.includes) {
   String.prototype.includes = function() {
@@ -36,7 +37,11 @@ module.exports = {
   findBabies: function (obj) {
     return Rest.post('/api/babies/search', obj)
       .then(function (res) {
-        ServerActions.receiveBabies(getJSON(res.response));
+        if (!_.isEmpty(res.response)) {
+          ServerActions.receiveBabies(getJSON(res.response));
+        } else {
+          ServerActions.noBabiesFound();
+        }
       })
       .catch(function () {
         ServerActions.noBabiesFound();

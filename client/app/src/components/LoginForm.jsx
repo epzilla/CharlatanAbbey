@@ -31,7 +31,7 @@ var LoginForm = React.createClass({
 
   _onChange: function () {
     if (BabyStore.getSearchFailed()) {
-      this.transitionTo('/get-started');
+      this.transitionTo('get-started');
     } else {
       this.setState({
         babies: BabyStore.getBabies(),

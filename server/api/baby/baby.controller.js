@@ -5,6 +5,7 @@
  * GET     /babies/:id          ->  show
  * PUT     /babies/:id          ->  update
  * DELETE  /babies/:id          ->  destroy
+ * GET     /babies/search       ->  find
  */
 
 'use strict';
@@ -29,7 +30,6 @@ exports.find = function (req, res) {
     birth: req.body.birthdate
   }, function (err, babies) {
     if (err) { return handleError(res, err); }
-    if (!babies.length) { return res.send(400); }
     return res.json(
       _.sortBy(babies, 'firstname')
     );

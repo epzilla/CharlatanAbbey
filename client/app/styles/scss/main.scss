@@ -733,3 +733,22 @@ table {
     color: #333;
   }
 }
+
+.get-started, .login-form {
+  &.routechange-enter {
+    transform: translateY(0%);
+    transition: all $transitionTime ease;
+    &.routechange-enter-active {
+      transform: translateY(0%);
+      transition: transform $transitionTime ease;
+    }
+  }
+  &.routechange-leave {
+    transform: translateY(0%);
+    transition: all $transitionTime ease;
+    &.routechange-leave-active {
+      transform: translateY(0%);
+      transition: transform $transitionTime ease;
+    }
+  }
+}
