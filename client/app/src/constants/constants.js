@@ -5,6 +5,7 @@ module.exports = {
   ActionTypes: keyMirror({
     CLOCKED_IN: null,
     CLOCKED_OUT: null,
+    NO_BABIES_FOUND: null,
     RECEIVE_EVENTS: null,
     RECEIVE_BABIES: null,
     RECEIVE_FEEDERS: null,

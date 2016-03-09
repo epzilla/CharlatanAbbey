@@ -21,7 +21,7 @@ var EventBtn = React.createClass({
         key={'button' + baby.birth}
         className="btn feed-btn"
         onClick={this._logEvent}>
-        Log {baby.name}
+        Log {baby.firstname}
       </button>
     );
   }
@@ -39,7 +39,7 @@ var ActionSheet = React.createClass({
   render: function () {
     var that = this;
     var babies = _.map(this.props.babies, function (baby) {
-      return <EventBtn key={'EventBtn' + baby.name} baby={baby} dismiss={that.props.dismiss}/>;
+      return <EventBtn key={'EventBtn' + baby.firstname} baby={baby} dismiss={that.props.dismiss}/>;
     });
 
     return (

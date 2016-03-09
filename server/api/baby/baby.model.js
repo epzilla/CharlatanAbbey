@@ -2,8 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var BabySchema = new Schema({
-  name: String,
-  birth: Date,
+  firstname: String,
+  lastname: String,
+  birth: String,
   weight: String,
   feeders: [{
   	name: String

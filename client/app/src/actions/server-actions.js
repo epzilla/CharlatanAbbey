@@ -25,6 +25,12 @@ var ServerActions = {
     });
   },
 
+  noBabiesFound: function () {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.NO_BABIES_FOUND
+    });
+  },
+
   receiveFoodTypes: function (data) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_FOOD_TYPES,

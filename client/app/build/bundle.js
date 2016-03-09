@@ -6,6 +6,7 @@ var _ = require('lodash');
 var Router = require('react-router');
 var Route = Router.Route;
 var Handler = Router.RouteHandler;
+var GetStarted = require('./components/GetStarted.jsx');
 var Home = require('./components/Home.jsx');
 var History = require('./components/History.jsx');
 var Log = require('./components/Log.jsx');
@@ -33,6 +34,7 @@ var App = React.createClass({displayName: "App",
 var routes = (
   React.createElement(Route, {handler: App, location: "history"}, 
     React.createElement(Route, {name: "home", path: "/", handler: Home}), 
+    React.createElement(Route, {name: "get-started", path: "/get-started", handler: GetStarted}), 
     React.createElement(Route, {name: "history", path: "/history", handler: History}), 
     React.createElement(Route, {name: "log-event", path: "/log-event/:id", handler: Log}), 
     React.createElement(Route, {name: "timesheet", path: "/timesheet", handler: Timesheet}), 
@@ -53,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-},{"./components/Edit.jsx":8,"./components/History.jsx":10,"./components/Home.jsx":11,"./components/Log.jsx":12,"./components/Timesheet.jsx":17,"./utils/api":25,"./utils/local-storage":26,"lodash":35,"react-router":68,"react/addons":87}],2:[function(require,module,exports){
+},{"./components/Edit.jsx":7,"./components/GetStarted.jsx":9,"./components/History.jsx":10,"./components/Home.jsx":11,"./components/Log.jsx":12,"./components/Timesheet.jsx":18,"./utils/api":25,"./utils/local-storage":26,"lodash":35,"react-router":68,"react/addons":87}],2:[function(require,module,exports){
 'use strict';
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var AppConstants = require('../constants/constants');
@@ -78,6 +80,12 @@ var ServerActions = {
     AppDispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_BABIES,
       data: data
+    });
+  },
+
+  noBabiesFound: function () {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.NO_BABIES_FOUND
     });
   },
 
@@ -130,8 +138,14 @@ module.exports = ServerActions;
 },{"../constants/constants":19,"../dispatcher/app-dispatcher":20}],3:[function(require,module,exports){
 'use strict';
 var API = require('../utils/api');
+var moment = require('moment-timezone');
 
 var ViewActions = {
+
+  findBabies: function (obj) {
+    obj.birthdate = moment(obj.birthdate).format("MM-DD-YYYY");
+    API.findBabies(obj);
+  },
 
   getFoodTypes: function () {
     API.getFoodTypes();
@@ -165,7 +179,7 @@ var ViewActions = {
 module.exports = ViewActions;
 
 
-},{"../utils/api":25}],4:[function(require,module,exports){
+},{"../utils/api":25,"moment-timezone":37}],4:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -253,7 +267,7 @@ var EventBtn = React.createClass({displayName: "EventBtn",
         key: 'button' + baby.birth, 
         className: "btn feed-btn", 
         onClick: this._logEvent}, 
-        "Log ", baby.name
+        "Log ", baby.firstname
       )
     );
   }
@@ -271,7 +285,7 @@ var ActionSheet = React.createClass({displayName: "ActionSheet",
   render: function () {
     var that = this;
     var babies = _.map(this.props.babies, function (baby) {
-      return React.createElement(EventBtn, {key: 'EventBtn' + baby.name, baby: baby, dismiss: that.props.dismiss});
+      return React.createElement(EventBtn, {key: 'EventBtn' + baby.firstname, baby: baby, dismiss: that.props.dismiss});
     });
 
     return (
@@ -358,82 +372,7 @@ var Home = React.createClass({displayName: "Home",
 module.exports = Home;
 
 
-},{"../actions/view-actions":3,"../stores/event-store":22,"../stores/time-log-store":24,"./ActionButtons.jsx":4,"./FeedingInfo.jsx":9,"lodash":35,"react":259}],7:[function(require,module,exports){
-/** @jsx React.DOM */
-'use strict';
-
-var React = require('react');
-var BabyStore = require('../stores/baby-store');
-var Wizard = require('./Wizard.jsx');
-
-var First = React.createClass({displayName: "First",
-  _lookUpBabies: function (e) {
-    e.preventDefault();
-    alert('fdsafasd');
-  },
-
-  render: function () {
-    return (
-      React.createElement("div", null, 
-        React.createElement("h4", null, "Hi there!"), 
-        React.createElement("p", null, 
-          "Let’s get started. Please enter the last name and birthdate of" + ' ' +
-          "the babies you’d like to start tracking. If someone has already" + ' ' +
-          "entered them into the system, you can start tracking them right" + ' ' +
-          "away. If not, we’ll just ask you a few more questions to get things" + ' ' +
-          "set up."
-        ), 
-        React.createElement("input", {type: "text", name: "lastname", placeholder: "Last Name"}), 
-        React.createElement("input", {type: "date", name: "birthdate"}), 
-        React.createElement("button", {onClick: this._lookUpBabies}, "Submit")
-      )
-    );
-  }
-});
-
-var Second = React.createClass({displayName: "Second",
-  render: function() {
-    return React.createElement("div", null, "Step 2");
-  }
-});
-
-var Third = React.createClass({displayName: "Third",
-  render: function() {
-    return React.createElement("div", null, "Step 3");
-  }
-});
-
-var BabyForm = React.createClass({displayName: "BabyForm",
-  getInitialState: function () {
-    return {
-      step: 0
-    };
-  },
-
-  _submit: function (e) {
-    e.preventDefault();
-    alert('asdf');
-  },
-
-  render: function () {
-
-    return (
-      React.createElement(Wizard, {
-        onSubmit: this._submit, 
-        views: [
-          React.createElement(First, null),
-          React.createElement(Second, null),
-          React.createElement(Third, null)
-        ]}
-      )
-    );
-  }
-});
-
-module.exports = BabyForm;
-
-
-},{"../stores/baby-store":21,"./Wizard.jsx":18,"react":259}],8:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/event-store":22,"../stores/time-log-store":24,"./ActionButtons.jsx":4,"./FeedingInfo.jsx":8,"lodash":35,"react":259}],7:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -800,7 +739,7 @@ var Edit = React.createClass({displayName: "Edit",
 
 module.exports = Edit;
 
-},{"../actions/view-actions":3,"../stores/baby-store":21,"../stores/event-store":22,"./OunceStepper.jsx":13,"./TimeStepper.jsx":16,"lodash":35,"moment-timezone":37,"react":259,"react-router":68}],9:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/baby-store":21,"../stores/event-store":22,"./OunceStepper.jsx":14,"./TimeStepper.jsx":17,"lodash":35,"moment-timezone":37,"react":259,"react-router":68}],8:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -909,7 +848,72 @@ var FeedingInfo = React.createClass({displayName: "FeedingInfo",
 module.exports = FeedingInfo;
 
 
-},{"classnames":30,"lodash":35,"moment-timezone":37,"react":259}],10:[function(require,module,exports){
+},{"classnames":30,"lodash":35,"moment-timezone":37,"react":259}],9:[function(require,module,exports){
+/** @jsx React.DOM */
+'use strict';
+
+var React = require('react');
+var BabyStore = require('../stores/baby-store');
+var Actions = require('../actions/view-actions');
+var Navigation = require('react-router').Navigation;
+
+var GetStarted = React.createClass({displayName: "GetStarted",
+  mixins: [Navigation],
+
+  componentDidMount: function () {
+    BabyStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function () {
+    BabyStore.removeChangeListenter(this._onChange);
+  },
+
+  _lookUpBabies: function (e) {
+    e.preventDefault();
+    Actions.findBabies(this.state);
+  },
+
+  _setValue: function (e) {
+    var obj = {};
+    obj[e.target.name] = e.target.value;
+    console.log(obj);
+    this.setState(obj);
+  },
+
+  _onChange: function () {
+    if (BabyStore.getSearchFailed()) {
+      this.transitionTo('/get-started');
+    } else {
+      this.setState({
+        babies: BabyStore.getBabies(),
+        failedSearch: BabyStore.getSearchFailed()
+      });
+    }
+  },
+
+  render: function () {
+    return (
+      React.createElement("form", {onSubmit: this._lookUpBabies, className: "login-form"}, 
+        React.createElement("h4", null, "Hi there!"), 
+        React.createElement("p", null, 
+          "Let’s get started. Please enter the last name and birthdate of" + ' ' +
+          "the babies you’d like to start tracking. If someone has already" + ' ' +
+          "entered them into the system, you can start tracking them right" + ' ' +
+          "away. If not, we’ll just ask you a few more questions to get things" + ' ' +
+          "set up."
+        ), 
+        React.createElement("input", {type: "text", name: "lastname", placeholder: "Last Name", onChange: this._setValue}), 
+        React.createElement("input", {type: "date", name: "birthdate", onChange: this._setValue}), 
+        React.createElement("button", null, "Submit")
+      )
+    );
+  }
+});
+
+module.exports = GetStarted;
+
+
+},{"../actions/view-actions":3,"../stores/baby-store":21,"react":259,"react-router":68}],10:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -1121,7 +1125,7 @@ module.exports = History;
 var React = require('react');
 var ls = require('../utils/local-storage');
 var BabyStore = require('../stores/baby-store');
-var BabyForm = require('./BabyForm.jsx');
+var LoginForm = require('./LoginForm.jsx');
 var BabiesSummaryView = require('./BabiesSummaryView.jsx');
 
 var Home = React.createClass({displayName: "Home",
@@ -1153,7 +1157,7 @@ var Home = React.createClass({displayName: "Home",
     }
 
     return (
-      React.createElement(BabyForm, null)
+      React.createElement(LoginForm, null)
     );
   }
 });
@@ -1161,7 +1165,7 @@ var Home = React.createClass({displayName: "Home",
 module.exports = Home;
 
 
-},{"../stores/baby-store":21,"../utils/local-storage":26,"./BabiesSummaryView.jsx":6,"./BabyForm.jsx":7,"react":259}],12:[function(require,module,exports){
+},{"../stores/baby-store":21,"../utils/local-storage":26,"./BabiesSummaryView.jsx":6,"./LoginForm.jsx":13,"react":259}],12:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -1383,7 +1387,7 @@ var Log = React.createClass({displayName: "Log",
 
   render: function () {
     var that = this;
-    var baby = this.state.baby ? this.state.baby.name : null;
+    var baby = this.state.baby ? this.state.baby.firstname : null;
     var ounceField, feederField, medField, burpField, diaperField, foodField,
         spitField, eventTypeField, napTimeField, timeAgoField;
 
@@ -1641,7 +1645,72 @@ var Log = React.createClass({displayName: "Log",
 module.exports = Log;
 
 
-},{"../actions/view-actions":3,"../constants/constants":19,"../stores/baby-store":21,"../stores/event-store":22,"../stores/food-type-store":23,"./OunceStepper.jsx":13,"./SwitchButton.jsx":15,"./TimeStepper.jsx":16,"lodash":35,"moment-timezone":37,"react":259,"react-router":68}],13:[function(require,module,exports){
+},{"../actions/view-actions":3,"../constants/constants":19,"../stores/baby-store":21,"../stores/event-store":22,"../stores/food-type-store":23,"./OunceStepper.jsx":14,"./SwitchButton.jsx":16,"./TimeStepper.jsx":17,"lodash":35,"moment-timezone":37,"react":259,"react-router":68}],13:[function(require,module,exports){
+/** @jsx React.DOM */
+'use strict';
+
+var React = require('react');
+var BabyStore = require('../stores/baby-store');
+var Actions = require('../actions/view-actions');
+var Navigation = require('react-router').Navigation;
+
+var LoginForm = React.createClass({displayName: "LoginForm",
+  mixins: [Navigation],
+
+  componentDidMount: function () {
+    BabyStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function () {
+    BabyStore.removeChangeListenter(this._onChange);
+  },
+
+  _lookUpBabies: function (e) {
+    e.preventDefault();
+    Actions.findBabies(this.state);
+  },
+
+  _setValue: function (e) {
+    var obj = {};
+    obj[e.target.name] = e.target.value;
+    console.log(obj);
+    this.setState(obj);
+  },
+
+  _onChange: function () {
+    if (BabyStore.getSearchFailed()) {
+      this.transitionTo('/get-started');
+    } else {
+      this.setState({
+        babies: BabyStore.getBabies(),
+        failedSearch: BabyStore.getSearchFailed()
+      });
+    }
+  },
+
+  render: function () {
+    return (
+      React.createElement("form", {onSubmit: this._lookUpBabies, className: "login-form"}, 
+        React.createElement("h4", null, "Hi there!"), 
+        React.createElement("p", null, 
+          "Let’s get started. Please enter the last name and birthdate of" + ' ' +
+          "the babies you’d like to start tracking. If someone has already" + ' ' +
+          "entered them into the system, you can start tracking them right" + ' ' +
+          "away. If not, we’ll just ask you a few more questions to get things" + ' ' +
+          "set up."
+        ), 
+        React.createElement("input", {type: "text", name: "lastname", placeholder: "Last Name", onChange: this._setValue}), 
+        React.createElement("input", {type: "date", name: "birthdate", onChange: this._setValue}), 
+        React.createElement("button", null, "Submit")
+      )
+    );
+  }
+});
+
+module.exports = LoginForm;
+
+
+},{"../actions/view-actions":3,"../stores/baby-store":21,"react":259,"react-router":68}],14:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -1692,7 +1761,7 @@ var OunceStepper = React.createClass({displayName: "OunceStepper",
 
 module.exports = OunceStepper;
 
-},{"./Stepper.jsx":14,"react":259}],14:[function(require,module,exports){
+},{"./Stepper.jsx":15,"react":259}],15:[function(require,module,exports){
 var React = require('react');
 var cx = require('classnames');
 
@@ -1912,7 +1981,7 @@ var Stepper = React.createClass({displayName: "Stepper",
 
 module.exports = Stepper;
 
-},{"classnames":30,"react":259}],15:[function(require,module,exports){
+},{"classnames":30,"react":259}],16:[function(require,module,exports){
 var React = require('react');
 var _ = require('lodash');
 
@@ -1954,7 +2023,7 @@ var SwitchButton = React.createClass({displayName: "SwitchButton",
 
 module.exports = SwitchButton;
 
-},{"lodash":35,"react":259}],16:[function(require,module,exports){
+},{"lodash":35,"react":259}],17:[function(require,module,exports){
 var React = require('react');
 var Stepper = require('./Stepper.jsx');
 var TimeStepper = React.createClass({displayName: "TimeStepper",
@@ -2059,7 +2128,7 @@ var TimeStepper = React.createClass({displayName: "TimeStepper",
 
 module.exports = TimeStepper;
 
-},{"./Stepper.jsx":14,"react":259}],17:[function(require,module,exports){
+},{"./Stepper.jsx":15,"react":259}],18:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -2335,49 +2404,7 @@ var Timesheet = React.createClass({displayName: "Timesheet",
 
 module.exports = Timesheet;
 
-},{"../actions/view-actions":3,"../stores/time-log-store":24,"classnames":30,"lodash":35,"moment-timezone":37,"react":259,"react-router":68,"reactabular":271}],18:[function(require,module,exports){
-/** @jsx React.DOM */
-'use strict';
-
-var React = require('react');
-
-var Wizard = React.createClass({displayName: "Wizard",
-  getInitialState: function () {
-    return {
-      step: 0
-    };
-  },
-
-  _next: function (e) {
-    e.preventDefault();
-    this.setState({
-      step: this.state.step + 1
-    });
-  },
-
-  _prev: function (e) {
-    e.preventDefault();
-    this.setState({
-      step: this.state.step - 1
-    });
-  },
-
-  render: function () {
-
-    return (
-      React.createElement("form", {onSubmit: this.props.onSubmit}, 
-        this.props.views[this.state.step], 
-        React.createElement("button", {onClick: this._prev, disabled: this.state.step === 0}, "Back"), 
-        React.createElement("button", {onClick: this._next, disabled: this.state.step === this.props.views.length - 1}, "Next")
-      )
-    );
-  }
-});
-
-module.exports = Wizard;
-
-
-},{"react":259}],19:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/time-log-store":24,"classnames":30,"lodash":35,"moment-timezone":37,"react":259,"react-router":68,"reactabular":271}],19:[function(require,module,exports){
 'use strict';
 var keyMirror = require('keymirror');
 
@@ -2385,6 +2412,7 @@ module.exports = {
   ActionTypes: keyMirror({
     CLOCKED_IN: null,
     CLOCKED_OUT: null,
+    NO_BABIES_FOUND: null,
     RECEIVE_EVENTS: null,
     RECEIVE_BABIES: null,
     RECEIVE_FEEDERS: null,
@@ -2457,6 +2485,7 @@ var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _babies = ls.get('babies') || [];
 var _feeders = ls.get('feeders') || [];
+var _failedSearch;
 
 var BabyStore = assign({}, EventEmitter.prototype, {
   emitChange: function () {
@@ -2481,6 +2510,10 @@ var BabyStore = assign({}, EventEmitter.prototype, {
 
   getFeeders: function () {
     return _feeders;
+  },
+
+  getSearchFailed: function () {
+    return _failedSearch;
   }
 });
 
@@ -2494,6 +2527,8 @@ BabyStore.dispatchToken = Dispatcher.register(function (payload) {
       ls.set('babies', _babies);
       ls.set('feeders', _feeders);
       break;
+    case ActionTypes.NO_BABIES_FOUND:
+      _failedSearch = true;
   }
   BabyStore.emitChange();
 });
@@ -2973,6 +3008,16 @@ module.exports = {
     return Rest.get('/api/babies').then(function (res) {
       ServerActions.receiveBabies(getJSON(res.response));
     });
+  },
+
+  findBabies: function (obj) {
+    return Rest.post('/api/babies/search', obj)
+      .then(function (res) {
+        ServerActions.receiveBabies(getJSON(res.response));
+      })
+      .catch(function () {
+        ServerActions.noBabiesFound();
+      });
   },
 
   getFoodTypes: function () {

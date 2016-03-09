@@ -219,7 +219,7 @@ var Log = React.createClass({
 
   render: function () {
     var that = this;
-    var baby = this.state.baby ? this.state.baby.name : null;
+    var baby = this.state.baby ? this.state.baby.firstname : null;
     var ounceField, feederField, medField, burpField, diaperField, foodField,
         spitField, eventTypeField, napTimeField, timeAgoField;
 

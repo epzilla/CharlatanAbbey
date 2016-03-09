@@ -22,6 +22,20 @@ exports.index = function (req, res) {
   });
 };
 
+// Lookup babies by Lastname and DoB
+exports.find = function (req, res) {
+  baby.find({
+    lastname: req.body.lastname,
+    birth: req.body.birthdate
+  }, function (err, babies) {
+    if (err) { return handleError(res, err); }
+    if (!babies.length) { return res.send(400); }
+    return res.json(
+      _.sortBy(babies, 'firstname')
+    );
+  });
+};
+
 // Get a single baby
 exports.show = function (req, res) {
   baby.findById(req.params.id, function (err, baby) {

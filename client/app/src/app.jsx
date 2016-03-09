@@ -5,6 +5,7 @@ var _ = require('lodash');
 var Router = require('react-router');
 var Route = Router.Route;
 var Handler = Router.RouteHandler;
+var GetStarted = require('./components/GetStarted.jsx');
 var Home = require('./components/Home.jsx');
 var History = require('./components/History.jsx');
 var Log = require('./components/Log.jsx');
@@ -32,6 +33,7 @@ var App = React.createClass({
 var routes = (
   <Route handler={App} location="history">
     <Route name="home" path="/" handler={Home}/>
+    <Route name="get-started" path="/get-started" handler={GetStarted}/>
     <Route name="history" path="/history" handler={History}/>
     <Route name="log-event" path="/log-event/:id" handler={Log}/>
     <Route name="timesheet" path="/timesheet" handler={Timesheet}/>

@@ -8,6 +8,7 @@ var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _babies = ls.get('babies') || [];
 var _feeders = ls.get('feeders') || [];
+var _failedSearch;
 
 var BabyStore = assign({}, EventEmitter.prototype, {
   emitChange: function () {
@@ -32,6 +33,10 @@ var BabyStore = assign({}, EventEmitter.prototype, {
 
   getFeeders: function () {
     return _feeders;
+  },
+
+  getSearchFailed: function () {
+    return _failedSearch;
   }
 });
 
@@ -45,6 +50,8 @@ BabyStore.dispatchToken = Dispatcher.register(function (payload) {
       ls.set('babies', _babies);
       ls.set('feeders', _feeders);
       break;
+    case ActionTypes.NO_BABIES_FOUND:
+      _failedSearch = true;
   }
   BabyStore.emitChange();
 });

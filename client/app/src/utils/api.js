@@ -33,6 +33,16 @@ module.exports = {
     });
   },
 
+  findBabies: function (obj) {
+    return Rest.post('/api/babies/search', obj)
+      .then(function (res) {
+        ServerActions.receiveBabies(getJSON(res.response));
+      })
+      .catch(function () {
+        ServerActions.noBabiesFound();
+      });
+  },
+
   getFoodTypes: function () {
     return Rest.get('/api/food-types').then(function (res) {
       ServerActions.receiveFoodTypes(getJSON(res.response));

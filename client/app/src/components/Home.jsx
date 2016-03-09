@@ -4,7 +4,7 @@
 var React = require('react');
 var ls = require('../utils/local-storage');
 var BabyStore = require('../stores/baby-store');
-var BabyForm = require('./BabyForm.jsx');
+var LoginForm = require('./LoginForm.jsx');
 var BabiesSummaryView = require('./BabiesSummaryView.jsx');
 
 var Home = React.createClass({
@@ -36,7 +36,7 @@ var Home = React.createClass({
     }
 
     return (
-      <BabyForm />
+      <LoginForm />
     );
   }
 });
