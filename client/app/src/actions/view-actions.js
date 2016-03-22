@@ -1,6 +1,9 @@
 'use strict';
 var API = require('../utils/api');
 var moment = require('moment-timezone');
+var AppDispatcher = require('../dispatcher/app-dispatcher');
+var AppConstants = require('../constants/constants');
+var ActionTypes = AppConstants.ActionTypes;
 
 var ViewActions = {
 
@@ -35,6 +38,24 @@ var ViewActions = {
 
   clockOut: function (id, timeLog) {
     API.clockOut(id, timeLog);
+  },
+
+  wizardNext: function () {
+    AppDispatcher.handleViewAction({
+      type: ActionTypes.WIZARD_NEXT
+    });
+  },
+
+  wizardPrev: function () {
+    AppDispatcher.handleViewAction({
+      type: ActionTypes.WIZARD_PREV
+    });
+  },
+
+  wizardDone: function () {
+    AppDispatcher.handleViewAction({
+      type: ActionTypes.WIZARD_DONE
+    });
   }
 };
 

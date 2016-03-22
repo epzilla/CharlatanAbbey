@@ -11,7 +11,7 @@ var Actions = require('../actions/view-actions');
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var TimeStepper = require('./TimeStepper.jsx');
-var OunceStepper = require('./OunceStepper.jsx');
+var FractionalStepper = require('./FractionalStepper.jsx');
 
 var Edit = React.createClass({
 
@@ -164,7 +164,11 @@ var Edit = React.createClass({
       ounceField = (
         <div className='pad-bottom-1em ounce-field'>
           <h3>How much did she eat?</h3>
-          <OunceStepper onChange={this._setAmount} initialValue={logEvent.amount}/>
+          <FractionalStepper
+            onChange={this._setAmount}
+            initialValue={logEvent.amount}
+            label="Oz."
+          />
         </div>
       );
 

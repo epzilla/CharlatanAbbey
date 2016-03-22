@@ -2,6 +2,7 @@
 'use strict';
 
 var React = require('react');
+var _ = require('lodash');
 var ls = require('../utils/local-storage');
 var BabyStore = require('../stores/baby-store');
 var LoginForm = require('./LoginForm.jsx');
@@ -29,7 +30,7 @@ var Home = React.createClass({
   },
 
   render: function () {
-    if (this.state.babies) {
+    if (!_.isEmpty(this.state.babies)) {
       return (
         <BabiesSummaryView babies={this.state.babies} />
       );

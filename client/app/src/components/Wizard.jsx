@@ -2,35 +2,48 @@
 'use strict';
 
 var React = require('react');
+var _ = require('lodash');
+var Actions = require('../actions/view-actions');
+var WizardStore = require('../stores/wizard-store');
 
 var Wizard = React.createClass({
   getInitialState: function () {
-    return {
-      step: 0
-    };
+    var initialState = this.props.initialState || {};
+    return _.assign(initialState, WizardStore.getAll());
+  },
+
+  componentDidMount: function () {
+    WizardStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function () {
+    WizardStore.removeChangeListener(this._onChange);
+  },
+
+  _onChange: function () {
+    this.setState(WizardStore.getAll());
   },
 
   _next: function (e) {
     e.preventDefault();
-    this.setState({
-      step: this.state.step + 1
-    });
+    Actions.wizardNext();
   },
 
   _prev: function (e) {
     e.preventDefault();
-    this.setState({
-      step: this.state.step - 1
-    });
+    Actions.wizardPrev();
   },
 
   render: function () {
+    var nextBtn = this.props.onFinish ?
+      <button onClick={this.props.onFinish}>Done</button> :
+      <button onClick={this._next} disabled={this.state.step === this.props.views.length - 1}>Next</button>;
 
     return (
       <form onSubmit={this.props.onSubmit}>
         {this.props.views[this.state.step]}
         <button onClick={this._prev} disabled={this.state.step === 0}>Back</button>
-        <button onClick={this._next} disabled={this.state.step === this.props.views.length - 1}>Next</button>
+        {nextBtn}
       </form>
     );
   }

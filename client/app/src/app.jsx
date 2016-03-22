@@ -43,7 +43,7 @@ var routes = (
 
 document.addEventListener('DOMContentLoaded', function () {
   var babies = ls.get('babies');
-  if (babies) {
+  if (!_.isEmpty(babies)) {
     var babyIDs = _.map(babies, '_id');
     API.getEvents(babyIDs);
     API.getTimeLogs(babyIDs);

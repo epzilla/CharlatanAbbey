@@ -4,7 +4,7 @@
 var React = require('react');
 var Stepper = require('./Stepper.jsx');
 
-var OunceStepper = React.createClass({
+var FractionalStepper = React.createClass({
 
   getInitialState: function () {
     var initial = this.props.initialValue ? parseFloat(this.props.initialValue) : 6.0;
@@ -34,11 +34,11 @@ var OunceStepper = React.createClass({
     var remainder = this.state.initialValue % 1;
 
     return (
-      <section className='ounce-stepper'>
+      <section className='frac-stepper'>
         <Stepper full onChange={this.props.onChange} initialValue={fullNumber}/>
         <Stepper onChange={this.props.onChange} initialValue={remainder}/>
-        <div className='ounce-label'>
-          <label>Oz.</label>
+        <div className='frac-stepper-label'>
+          <label>{this.props.label}</label>
         </div>
       </section>
     );
@@ -46,4 +46,4 @@ var OunceStepper = React.createClass({
 
 });
 
-module.exports = OunceStepper;
+module.exports = FractionalStepper;

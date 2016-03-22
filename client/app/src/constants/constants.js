@@ -13,7 +13,10 @@ module.exports = {
     RECEIVE_FOOD_TYPES: null,
     RECEIVE_TIME_LOGS: null,
     SUCCESSFUL_EVENT_POST: null,
-    SUCCESSFUL_EVENT_EDIT: null
+    SUCCESSFUL_EVENT_EDIT: null,
+    WIZARD_NEXT: null,
+    WIZARD_PREV: null,
+    WIZARD_DONE: null
   }),
 
   PayloadSources: keyMirror({

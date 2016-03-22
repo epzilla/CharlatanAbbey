@@ -13,7 +13,7 @@ var Actions = require('../actions/view-actions');
 var EventTypes = require('../constants/constants').EventTypes;
 var _ = require('lodash');
 var moment = require('moment-timezone');
-var OunceStepper = require('./OunceStepper.jsx');
+var FractionalStepper = require('./FractionalStepper.jsx');
 var TimeStepper = require('./TimeStepper.jsx');
 var SwitchButton = require('./SwitchButton.jsx');
 
@@ -268,7 +268,7 @@ var Log = React.createClass({
       ounceField = (
         <div className='pad-bottom-1em ounce-field'>
           <h3>How much did she eat?</h3>
-          <OunceStepper onChange={this._setAmount} />
+          <FractionalStepper onChange={this._setAmount} label="Oz."/>
         </div>
       );
     }

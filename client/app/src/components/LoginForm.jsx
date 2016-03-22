@@ -14,7 +14,7 @@ var LoginForm = React.createClass({
   },
 
   componentWillUnmount: function () {
-    BabyStore.removeChangeListenter(this._onChange);
+    BabyStore.removeChangeListener(this._onChange);
   },
 
   _lookUpBabies: function (e) {
@@ -25,13 +25,12 @@ var LoginForm = React.createClass({
   _setValue: function (e) {
     var obj = {};
     obj[e.target.name] = e.target.value;
-    console.log(obj);
     this.setState(obj);
   },
 
   _onChange: function () {
     if (BabyStore.getSearchFailed()) {
-      this.transitionTo('get-started');
+      this.transitionTo('get-started', null, this.state);
     } else {
       this.setState({
         babies: BabyStore.getBabies(),
