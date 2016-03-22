@@ -939,7 +939,7 @@ var View1 = React.createClass({displayName: "View1",
   _setValue: function (e) {
     var obj = {};
     obj[e.target.name] = e.target.value;
-    this.props.setParentState(obj);
+    this.props.onChange(obj);
   },
 
   render: function () {
@@ -973,16 +973,12 @@ var View1 = React.createClass({displayName: "View1",
 var View2 = React.createClass({displayName: "View2",
   _onChange: function (val) {
     if (val.full) {
-      this.setState({
+      this.props.onChange({
         fullHours: val.amount
-      }, function () {
-        console.log(this.state);
       });
     } else {
-      this.setState({
+      this.props.onChange({
         fracHours: val.amount
-      }, function () {
-        console.log(this.state);
       });
     }
   },
@@ -991,15 +987,23 @@ var View2 = React.createClass({displayName: "View2",
 
     return (
       React.createElement("div", {className: "get-started"}, 
-        React.createElement("h3", null, "Next, tell us about how often they usually eat/take a bottle."), 
+        React.createElement("h3", null, "Next, tell us about how often ", this.props.initialState.babyA, " and ", this.props.initialState.babyB, " usually eat/take a bottle."), 
         React.createElement("div", null, 
-          React.createElement("span", null, "About every "), 
+          React.createElement("h4", null, "About every"), 
           React.createElement(FractionalStepper, {
             onChange: this._onChange, 
             label: "Hrs.", 
             initialValue: 2}
-          ), 
-          React.createElement("span", null, " hours")
+          )
+        ), 
+        React.createElement("h3", null, "And how much milk/formula, on average, do they take per feeding?"), 
+        React.createElement("div", null, 
+          React.createElement("h4", null, "About"), 
+          React.createElement(FractionalStepper, {
+            onChange: this._onChange, 
+            label: "Oz.", 
+            initialValue: 4}
+          )
         )
       )
     );
@@ -1033,9 +1037,9 @@ var GetStarted = React.createClass({displayName: "GetStarted",
       React.createElement(Wizard, {
         initialState: this.props.query, 
         views: [
-          React.createElement(View1, {initialState: this.state, setParentState: this._setStateFromChildren}),
-          React.createElement(View2, {initialState: this.state, setParentState: this._setStateFromChildren}),
-          React.createElement(View3, {initialState: this.state, setParentState: this._setStateFromChildren})
+          React.createElement(View1, {initialState: this.state, onChange: this._setStateFromChildren}),
+          React.createElement(View2, {initialState: this.state, onChange: this._setStateFromChildren}),
+          React.createElement(View3, {initialState: this.state, onChange: this._setStateFromChildren})
         ]}
       )
     );

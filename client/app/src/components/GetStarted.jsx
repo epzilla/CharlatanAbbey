@@ -12,7 +12,7 @@ var View1 = React.createClass({
   _setValue: function (e) {
     var obj = {};
     obj[e.target.name] = e.target.value;
-    this.props.setParentState(obj);
+    this.props.onChange(obj);
   },
 
   render: function () {
@@ -46,16 +46,12 @@ var View1 = React.createClass({
 var View2 = React.createClass({
   _onChange: function (val) {
     if (val.full) {
-      this.setState({
+      this.props.onChange({
         fullHours: val.amount
-      }, function () {
-        console.log(this.state);
       });
     } else {
-      this.setState({
+      this.props.onChange({
         fracHours: val.amount
-      }, function () {
-        console.log(this.state);
       });
     }
   },
@@ -64,15 +60,23 @@ var View2 = React.createClass({
 
     return (
       <div className="get-started">
-        <h3>Next, tell us about how often they usually eat/take a bottle.</h3>
+        <h3>Next, tell us about how often {this.props.initialState.babyA} and {this.props.initialState.babyB} usually eat/take a bottle.</h3>
         <div>
-          <span>About every </span>
+          <h4>About every</h4>
           <FractionalStepper
             onChange={this._onChange}
             label="Hrs."
             initialValue={2}
           />
-          <span> hours</span>
+        </div>
+        <h3>And how much milk/formula, on average, do they take per feeding?</h3>
+        <div>
+          <h4>About</h4>
+          <FractionalStepper
+            onChange={this._onChange}
+            label="Oz."
+            initialValue={4}
+          />
         </div>
       </div>
     );
@@ -106,9 +110,9 @@ var GetStarted = React.createClass({
       <Wizard
         initialState={this.props.query}
         views={[
-          <View1 initialState={this.state} setParentState={this._setStateFromChildren}/>,
-          <View2 initialState={this.state} setParentState={this._setStateFromChildren}/>,
-          <View3 initialState={this.state} setParentState={this._setStateFromChildren}/>
+          <View1 initialState={this.state} onChange={this._setStateFromChildren}/>,
+          <View2 initialState={this.state} onChange={this._setStateFromChildren}/>,
+          <View3 initialState={this.state} onChange={this._setStateFromChildren}/>
         ]}
       />
     );
