@@ -7,6 +7,7 @@ var Actions = require('../actions/view-actions');
 var Navigation = require('react-router').Navigation;
 var FractionalStepper = require('./FractionalStepper.jsx');
 var Wizard = require('./Wizard.jsx');
+var FeederList = require('./FeederList.jsx');
 
 var View1 = React.createClass({
   _setValue: function (e) {
@@ -87,7 +88,10 @@ var View3 = React.createClass({
   render: function () {
 
     return (
-      <div></div>
+      <div className="get-started">
+        <h3>Last, but not least, give us the names of a few people who will be taking care of them and might want to use this app.</h3>
+        <FeederList />
+      </div>
     );
   }
 });
