@@ -7,6 +7,7 @@ var Actions = require('../actions/view-actions');
 var Navigation = require('react-router').Navigation;
 var FractionalStepper = require('./FractionalStepper.jsx');
 var Wizard = require('./Wizard.jsx');
+var FeederList = require('./FeederList.jsx');
 
 var View1 = React.createClass({
   _setValue: function (e) {
@@ -44,7 +45,7 @@ var View1 = React.createClass({
 });
 
 var View2 = React.createClass({
-  _onChange: function (val) {
+  _updateHours: function (val) {
     if (val.full) {
       this.props.onChange({
         fullHours: val.amount
@@ -52,6 +53,18 @@ var View2 = React.createClass({
     } else {
       this.props.onChange({
         fracHours: val.amount
+      });
+    }
+  },
+
+  _updateOunces: function (val) {
+    if (val.full) {
+      this.props.onChange({
+        fullOunces: val.amount
+      });
+    } else {
+      this.props.onChange({
+        fracOunces: val.amount
       });
     }
   },
@@ -64,7 +77,7 @@ var View2 = React.createClass({
         <div>
           <h4>About every</h4>
           <FractionalStepper
-            onChange={this._onChange}
+            onChange={this._updateHours}
             label="Hrs."
             initialValue={2}
           />
@@ -73,7 +86,7 @@ var View2 = React.createClass({
         <div>
           <h4>About</h4>
           <FractionalStepper
-            onChange={this._onChange}
+            onChange={this._updateOunces}
             label="Oz."
             initialValue={4}
           />
@@ -84,10 +97,20 @@ var View2 = React.createClass({
 });
 
 var View3 = React.createClass({
+  _onChange: function (val) {
+    this.props.onChange({ feeders: val })
+  },
+
   render: function () {
 
     return (
-      <div></div>
+      <div className="get-started">
+        <h3>Last, but not least, give us the names of a few people who will be taking care of them and might want to use this app.</h3>
+        <FeederList
+          onChange={this._onChange}
+          feeders={this.props.initialState.feeders ? this.props.initialState.feeders : this.props.initialFeeders}
+        />
+      </div>
     );
   }
 });
@@ -112,7 +135,7 @@ var GetStarted = React.createClass({
         views={[
           <View1 initialState={this.state} onChange={this._setStateFromChildren}/>,
           <View2 initialState={this.state} onChange={this._setStateFromChildren}/>,
-          <View3 initialState={this.state} onChange={this._setStateFromChildren}/>
+          <View3 initialState={this.state} initialFeeders={['Mommy', 'Daddy', '']}onChange={this._setStateFromChildren}/>
         ]}
       />
     );
