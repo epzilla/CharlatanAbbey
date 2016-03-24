@@ -2,12 +2,14 @@
 'use strict';
 
 var React = require('react');
+var _ = require('lodash');
 var BabyStore = require('../stores/baby-store');
 var Actions = require('../actions/view-actions');
 var Navigation = require('react-router').Navigation;
 var FractionalStepper = require('./FractionalStepper.jsx');
 var Wizard = require('./Wizard.jsx');
 var FeederList = require('./FeederList.jsx');
+var uuid = require('../utils/uuid');
 
 var View1 = React.createClass({
   _setValue: function (e) {
@@ -119,7 +121,20 @@ var GetStarted = React.createClass({
   mixins: [Navigation],
 
   getInitialState: function () {
-    return this.props.query;
+    return {
+      feeders: [
+        {
+          id: uuid.getUUID(),
+          name: 'Mommy',
+        },
+        {
+          id: uuid.getUUID(),
+          name: 'Daddy',
+        }
+      ],
+      query: this.props.query,
+      editing: null
+    }
   },
 
   _setStateFromChildren: function (state) {
@@ -133,9 +148,10 @@ var GetStarted = React.createClass({
       <Wizard
         initialState={this.props.query}
         views={[
-          <View1 initialState={this.state} onChange={this._setStateFromChildren}/>,
-          <View2 initialState={this.state} onChange={this._setStateFromChildren}/>,
-          <View3 initialState={this.state} initialFeeders={['Mommy', 'Daddy', '']}onChange={this._setStateFromChildren}/>
+          <View1 initialState={this.props.query} onChange={this._setStateFromChildren}/>,
+          <View2 initialState={this.props.query} onChange={this._setStateFromChildren}/>,
+          <View3 initialState={this.props.query} initialFeeders={this.state.feeders} onChange={this._setStateFromChildren}
+          />
         ]}
       />
     );
