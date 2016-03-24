@@ -10,6 +10,22 @@ var FractionalStepper = require('./FractionalStepper.jsx');
 var Wizard = require('./Wizard.jsx');
 var FeederList = require('./FeederList.jsx');
 var uuid = require('../utils/uuid');
+var fractions = require('../utils/fractions');
+
+var getFractionalDisplay = function (whole, frac) {
+  if (frac === 0) {
+    return whole.toString();
+  }
+
+  var fractionalDisplay;
+  if (_.isObject(frac)) {
+    fractionalDisplay = frac.displayValue;
+  } else {
+    fractionalDisplay = _.find(fractions, {actualValue: frac}).displayValue;
+  }
+
+  return whole + fractionalDisplay;
+}
 
 var View1 = React.createClass({
   _setValue: function (e) {
@@ -85,18 +101,20 @@ var View2 = React.createClass({
 
   render: function () {
     var initialOunces, initialHours;
-
-    if (this.props.initialState.fullOunces) {
-      initialOunces = this.props.initialState.fullOunces + this.props.initialState.fracOunces.actualValue;
+    var _state = this.props.initialState;
+    if (_state.fullOunces) {
+      var fracOunces = _.isObject(_state.fracOunces) ? _state.fracOunces.actualValue : _state.fracOunces;
+      initialOunces = _state.fullOunces + fracOunces;
     }
 
-    if (this.props.initialState.fullOunces) {
-      initialHours = this.props.initialState.fullHours + this.props.initialState.fracHours.actualValue;
+    if (_state.fullOunces) {
+      var fracHours = _.isObject(_state.fracHours) ? _state.fracHours.actualValue : _state.fracHours;
+      initialHours = _state.fullHours + fracHours;
     }
 
     return (
       <div className="get-started">
-        <h3>Next, tell us about how often {this.props.initialState.babyA} and {this.props.initialState.babyB} usually eat/take a bottle.</h3>
+        <h3>Next, tell us about how often {_state.babyA} and {_state.babyB} usually eat/take a bottle.</h3>
         <div>
           <h4>About every</h4>
           <FractionalStepper
@@ -147,7 +165,7 @@ var View4 = React.createClass({
         <h3>OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!</h3>
         <h4>{info.babyA} and {info.babyB} {info.query.lastname}</h4>
         <ul>
-          <li>Eat about {info.fullOunces}{info.fracOunces.displayValue} ounces, every {info.fullHours}{info.fracHours.displayValue} hours.</li>
+          <li>Eat about {getFractionalDisplay(info.fullOunces, info.fracOunces)} ounces, every {getFractionalDisplay(info.fullHours, info.fracHours)} hours.</li>
           <li>The people who should show up in the caretakers list are:
             <ul>
               {_.map(info.feeders, function (feeder) {
