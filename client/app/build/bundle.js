@@ -777,12 +777,11 @@ var ENTER_KEY = 13;
 var Feeder = React.createClass({displayName: "Feeder",
 
   handleSubmit: function (e) {
+    e.preventDefault();
     var val = this.state.editText.trim();
     if (val) {
       this.props.onSave(val);
-      this.setState({editText: val}, function () {
-        console.log(this.state);
-      });
+      this.setState({editText: val});
     } else {
       this.props.onDestroy(e);
     }
@@ -790,16 +789,12 @@ var Feeder = React.createClass({displayName: "Feeder",
 
   handleEdit: function () {
     this.props.onEdit();
-    this.setState({editText: this.props.feeder.name}, function () {
-      console.log(this.state);
-    });
+    this.setState({editText: this.props.feeder.name});
   },
 
   handleKeyDown: function (e) {
     if (e.which === ESCAPE_KEY) {
-      this.setState({editText: this.props.feeder.name}, function () {
-        console.log(this.state);
-      });
+      this.setState({editText: this.props.feeder.name});
       this.props.onCancel(e);
     } else if (e.which === ENTER_KEY) {
       this.handleSubmit(e);
@@ -808,9 +803,7 @@ var Feeder = React.createClass({displayName: "Feeder",
 
   handleChange: function (e) {
     if (this.props.editing) {
-      this.setState({editText: e.target.value}, function () {
-        console.log(this.state);
-      });
+      this.setState({editText: e.target.value});
     }
   },
 
@@ -910,9 +903,7 @@ var FeederList = React.createClass({displayName: "FeederList",
   },
 
   _edit: function (feeder) {
-    this.setState({editing: feeder.id}, function () {
-      console.log(this.state);
-    });
+    this.setState({editing: feeder.id});
   },
 
   _save: function (feederToSave, text) {
@@ -929,9 +920,7 @@ var FeederList = React.createClass({displayName: "FeederList",
   },
 
   _cancel: function () {
-    this.setState({editing: null}, function () {
-      console.log(this.state);
-    });
+    this.setState({editing: null});
   },
 
   render: function () {
@@ -1157,17 +1146,29 @@ var View1 = React.createClass({displayName: "View1",
             type: "text", 
             name: "lastname", 
             placeholder: "Last Name", 
-            defaultValue: this.props.initialState ? this.props.initialState.lastname : '', 
+            defaultValue: this.props.initialState ? this.props.initialState.query.lastname : '', 
             onChange: this._setValue}
           )
         ), 
         React.createElement("div", null, 
           React.createElement("label", {htmlFor: "babyA"}, "Baby A"), 
-          React.createElement("input", {type: "text", name: "babyA", placeholder: "First Name", onChange: this._setValue})
+          React.createElement("input", {
+            type: "text", 
+            name: "babyA", 
+            placeholder: "First Name", 
+            defaultValue: this.props.initialState ? this.props.initialState.babyA : '', 
+            onChange: this._setValue}
+          )
         ), 
         React.createElement("div", null, 
           React.createElement("label", {htmlFor: "babyB"}, "Baby B"), 
-          React.createElement("input", {type: "text", name: "babyB", placeholder: "First Name", onChange: this._setValue})
+          React.createElement("input", {
+            type: "text", 
+            name: "babyB", 
+            placeholder: "First Name", 
+            defaultValue: this.props.initialState ? this.props.initialState.babyB : '', 
+            onChange: this._setValue}
+          )
         )
       )
     );
@@ -1200,6 +1201,15 @@ var View2 = React.createClass({displayName: "View2",
   },
 
   render: function () {
+    var initialOunces, initialHours;
+
+    if (this.props.initialState.fullOunces) {
+      initialOunces = this.props.initialState.fullOunces + this.props.initialState.fracOunces.actualValue;
+    }
+
+    if (this.props.initialState.fullOunces) {
+      initialHours = this.props.initialState.fullHours + this.props.initialState.fracHours.actualValue;
+    }
 
     return (
       React.createElement("div", {className: "get-started"}, 
@@ -1209,7 +1219,7 @@ var View2 = React.createClass({displayName: "View2",
           React.createElement(FractionalStepper, {
             onChange: this._updateHours, 
             label: "Hrs.", 
-            initialValue: 2}
+            initialValue: initialHours ? initialHours : 2}
           )
         ), 
         React.createElement("h3", null, "And how much milk/formula, on average, do they take per feeding?"), 
@@ -1218,7 +1228,7 @@ var View2 = React.createClass({displayName: "View2",
           React.createElement(FractionalStepper, {
             onChange: this._updateOunces, 
             label: "Oz.", 
-            initialValue: 4}
+            initialValue: initialOunces ? initialOunces : 4}
           )
         )
       )
@@ -1239,6 +1249,29 @@ var View3 = React.createClass({displayName: "View3",
         React.createElement(FeederList, {
           onChange: this._onChange, 
           feeders: this.props.initialState.feeders ? this.props.initialState.feeders : this.props.initialFeeders}
+        )
+      )
+    );
+  }
+});
+
+var View4 = React.createClass({displayName: "View4",
+  render: function () {
+    var info = this.props.info;
+
+    return (
+      React.createElement("div", {className: "get-started"}, 
+        React.createElement("h3", null, "OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!"), 
+        React.createElement("h4", null, info.babyA, " and ", info.babyB, " ", info.query.lastname), 
+        React.createElement("ul", null, 
+          React.createElement("li", null, "Eat about ", info.fullOunces, info.fracOunces.displayValue, " ounces, every ", info.fullHours, info.fracHours.displayValue, " hours."), 
+          React.createElement("li", null, "The people who should show up in the caretakers list are:", 
+            React.createElement("ul", null, 
+              _.map(info.feeders, function (feeder) {
+                return React.createElement("li", null, feeder.name);
+              })
+            )
+          )
         )
       )
     );
@@ -1271,15 +1304,24 @@ var GetStarted = React.createClass({displayName: "GetStarted",
     });
   },
 
+  _logItOut: function (e) {
+    e.preventDefault();
+    console.log(this.state);
+  },
+
   render: function () {
     return (
       React.createElement(Wizard, {
         initialState: this.props.query, 
         views: [
-          React.createElement(View1, {initialState: this.props.query, onChange: this._setStateFromChildren}),
-          React.createElement(View2, {initialState: this.props.query, onChange: this._setStateFromChildren}),
-          React.createElement(View3, {initialState: this.props.query, initialFeeders: this.state.feeders, onChange: this._setStateFromChildren}
-          )
+          React.createElement(View1, {initialState: this.state, onChange: this._setStateFromChildren}),
+          React.createElement(View2, {initialState: this.state, onChange: this._setStateFromChildren}),
+          React.createElement(View3, {
+            initialState: this.state, 
+            initialFeeders: this.state.feeders, 
+            onChange: this._setStateFromChildren}
+          ),
+          React.createElement(View4, {info: this.state, onFinish: this._logItOut})
         ]}
       )
     );
@@ -2767,8 +2809,9 @@ var Wizard = React.createClass({displayName: "Wizard",
   },
 
   render: function () {
-    var nextBtn = this.props.onFinish ?
-      React.createElement("button", {onClick: this.props.onFinish}, "Done") :
+    var currentView = this.props.views[this.state.step];
+    var nextBtn = currentView.props.onFinish ?
+      React.createElement("button", {onClick: currentView.props.onFinish}, "Done") :
       React.createElement("button", {onClick: this._next, disabled: this.state.step === this.props.views.length - 1}, "Next");
 
     return (

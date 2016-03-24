@@ -29,17 +29,29 @@ var View1 = React.createClass({
             type="text"
             name="lastname"
             placeholder="Last Name"
-            defaultValue={this.props.initialState ? this.props.initialState.lastname : ''}
+            defaultValue={this.props.initialState ? this.props.initialState.query.lastname : ''}
             onChange={this._setValue}
           />
         </div>
         <div>
           <label htmlFor="babyA">Baby A</label>
-          <input type="text" name="babyA" placeholder="First Name" onChange={this._setValue} />
+          <input
+            type="text"
+            name="babyA"
+            placeholder="First Name"
+            defaultValue={this.props.initialState ? this.props.initialState.babyA : ''}
+            onChange={this._setValue}
+          />
         </div>
         <div>
           <label htmlFor="babyB">Baby B</label>
-          <input type="text" name="babyB" placeholder="First Name" onChange={this._setValue} />
+          <input
+            type="text"
+            name="babyB"
+            placeholder="First Name"
+            defaultValue={this.props.initialState ? this.props.initialState.babyB : ''}
+            onChange={this._setValue}
+          />
         </div>
       </div>
     );
@@ -72,6 +84,15 @@ var View2 = React.createClass({
   },
 
   render: function () {
+    var initialOunces, initialHours;
+
+    if (this.props.initialState.fullOunces) {
+      initialOunces = this.props.initialState.fullOunces + this.props.initialState.fracOunces.actualValue;
+    }
+
+    if (this.props.initialState.fullOunces) {
+      initialHours = this.props.initialState.fullHours + this.props.initialState.fracHours.actualValue;
+    }
 
     return (
       <div className="get-started">
@@ -81,7 +102,7 @@ var View2 = React.createClass({
           <FractionalStepper
             onChange={this._updateHours}
             label="Hrs."
-            initialValue={2}
+            initialValue={initialHours ? initialHours : 2}
           />
         </div>
         <h3>And how much milk/formula, on average, do they take per feeding?</h3>
@@ -90,7 +111,7 @@ var View2 = React.createClass({
           <FractionalStepper
             onChange={this._updateOunces}
             label="Oz."
-            initialValue={4}
+            initialValue={initialOunces ? initialOunces : 4}
           />
         </div>
       </div>
@@ -112,6 +133,29 @@ var View3 = React.createClass({
           onChange={this._onChange}
           feeders={this.props.initialState.feeders ? this.props.initialState.feeders : this.props.initialFeeders}
         />
+      </div>
+    );
+  }
+});
+
+var View4 = React.createClass({
+  render: function () {
+    var info = this.props.info;
+
+    return (
+      <div className="get-started">
+        <h3>OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!</h3>
+        <h4>{info.babyA} and {info.babyB} {info.query.lastname}</h4>
+        <ul>
+          <li>Eat about {info.fullOunces}{info.fracOunces.displayValue} ounces, every {info.fullHours}{info.fracHours.displayValue} hours.</li>
+          <li>The people who should show up in the caretakers list are:
+            <ul>
+              {_.map(info.feeders, function (feeder) {
+                return <li>{feeder.name}</li>;
+              })}
+            </ul>
+          </li>
+        </ul>
       </div>
     );
   }
@@ -143,15 +187,24 @@ var GetStarted = React.createClass({
     });
   },
 
+  _logItOut: function (e) {
+    e.preventDefault();
+    console.log(this.state);
+  },
+
   render: function () {
     return (
       <Wizard
         initialState={this.props.query}
         views={[
-          <View1 initialState={this.props.query} onChange={this._setStateFromChildren}/>,
-          <View2 initialState={this.props.query} onChange={this._setStateFromChildren}/>,
-          <View3 initialState={this.props.query} initialFeeders={this.state.feeders} onChange={this._setStateFromChildren}
-          />
+          <View1 initialState={this.state} onChange={this._setStateFromChildren}/>,
+          <View2 initialState={this.state} onChange={this._setStateFromChildren}/>,
+          <View3
+            initialState={this.state}
+            initialFeeders={this.state.feeders}
+            onChange={this._setStateFromChildren}
+          />,
+          <View4 info={this.state} onFinish={this._logItOut}/>
         ]}
       />
     );

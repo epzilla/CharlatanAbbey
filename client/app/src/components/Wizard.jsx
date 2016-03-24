@@ -35,8 +35,9 @@ var Wizard = React.createClass({
   },
 
   render: function () {
-    var nextBtn = this.props.onFinish ?
-      <button onClick={this.props.onFinish}>Done</button> :
+    var currentView = this.props.views[this.state.step];
+    var nextBtn = currentView.props.onFinish ?
+      <button onClick={currentView.props.onFinish}>Done</button> :
       <button onClick={this._next} disabled={this.state.step === this.props.views.length - 1}>Next</button>;
 
     return (

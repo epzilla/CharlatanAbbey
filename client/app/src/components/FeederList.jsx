@@ -45,9 +45,7 @@ var FeederList = React.createClass({
   },
 
   _edit: function (feeder) {
-    this.setState({editing: feeder.id}, function () {
-      console.log(this.state);
-    });
+    this.setState({editing: feeder.id});
   },
 
   _save: function (feederToSave, text) {
@@ -64,9 +62,7 @@ var FeederList = React.createClass({
   },
 
   _cancel: function () {
-    this.setState({editing: null}, function () {
-      console.log(this.state);
-    });
+    this.setState({editing: null});
   },
 
   render: function () {

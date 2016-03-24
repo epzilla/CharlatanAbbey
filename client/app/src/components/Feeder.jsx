@@ -10,12 +10,11 @@ var ENTER_KEY = 13;
 var Feeder = React.createClass({
 
   handleSubmit: function (e) {
+    e.preventDefault();
     var val = this.state.editText.trim();
     if (val) {
       this.props.onSave(val);
-      this.setState({editText: val}, function () {
-        console.log(this.state);
-      });
+      this.setState({editText: val});
     } else {
       this.props.onDestroy(e);
     }
@@ -23,16 +22,12 @@ var Feeder = React.createClass({
 
   handleEdit: function () {
     this.props.onEdit();
-    this.setState({editText: this.props.feeder.name}, function () {
-      console.log(this.state);
-    });
+    this.setState({editText: this.props.feeder.name});
   },
 
   handleKeyDown: function (e) {
     if (e.which === ESCAPE_KEY) {
-      this.setState({editText: this.props.feeder.name}, function () {
-        console.log(this.state);
-      });
+      this.setState({editText: this.props.feeder.name});
       this.props.onCancel(e);
     } else if (e.which === ENTER_KEY) {
       this.handleSubmit(e);
@@ -41,9 +36,7 @@ var Feeder = React.createClass({
 
   handleChange: function (e) {
     if (this.props.editing) {
-      this.setState({editText: e.target.value}, function () {
-        console.log(this.state);
-      });
+      this.setState({editText: e.target.value});
     }
   },
 
