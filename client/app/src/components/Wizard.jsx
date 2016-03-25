@@ -37,15 +37,23 @@ var Wizard = React.createClass({
   render: function () {
     var currentView = this.props.views[this.state.step];
     var nextBtn = currentView.props.onFinish ?
-      <button onClick={currentView.props.onFinish}>Done</button> :
-      <button onClick={this._next} disabled={this.state.step === this.props.views.length - 1}>Next</button>;
+      <button className="btn" onClick={currentView.props.onFinish}>Done</button> :
+      <button className="btn" onClick={this._next} disabled={this.state.step === this.props.views.length - 1}>Next</button>;
 
     return (
-      <form onSubmit={this.props.onSubmit}>
-        {this.props.views[this.state.step]}
-        <button onClick={this._prev} disabled={this.state.step === 0}>Back</button>
-        {nextBtn}
-      </form>
+      <div className="wizard-container">
+        <section className="wizard">
+          <form onSubmit={this.props.onSubmit}>
+            <div className="wizard-view">
+              {this.props.views[this.state.step]}
+            </div>
+            <div className="wizard-btns">
+              <button className="btn" onClick={this._prev} disabled={this.state.step === 0}>Back</button>
+              {nextBtn}
+            </div>
+          </form>
+        </section>
+      </div>
     );
   }
 });

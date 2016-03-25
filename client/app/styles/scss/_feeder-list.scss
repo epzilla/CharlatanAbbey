@@ -1,0 +1,123 @@
+.feeder-list-container {
+  .btn-container {
+    padding: 2em 0;
+    text-align: center;
+  }
+}
+.btn{
+  &.btn-add, &.btn-destroy {
+    width: 2em;
+    height: 2em;
+    border-radius: 1em;
+    border: 2px solid #efefef;
+    padding: 0;
+    color: white;
+    text-shadow: 0px 1px #333;
+    text-align: center;
+    i.fa {
+      margin: 1px 0 0 0;
+    }
+  }
+  &.btn-add {
+    background: green;
+    width: 2em;
+    height: 2em;
+    border-radius: 1em;
+    font-size: 24px;
+  }
+  &.btn-destroy {
+    background: $darkRed;
+    position: absolute;
+    font-size: 12px;
+    top: 0;
+    right: 10px;
+    bottom: 0;
+    margin: auto 0;
+    margin-bottom: 11px;
+  }
+}
+
+.feeder-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.feeder-list li {
+  position: relative;
+  border-top: 1px solid #ededed;
+  &:before {
+    font-family: 'FontAwesome';
+    content: '\f007';
+    top: 21%;
+    left: 16px;
+    position: absolute;
+  }
+}
+
+.feeder-list li:last-child {
+  // border-top: none;
+  border-bottom: 1px solid #ededed;
+}
+
+.feeder-list li.editing {
+  // border-bottom: none;
+  padding: 0;
+}
+
+.feeder-list li.editing .edit {
+  border: none;
+  display: block;
+  width: 100%;
+  padding: 12px 17px 12px 60px;
+  margin: 0;
+  background: darken($purps, 10%);
+}
+
+.feeder-list li.editing .view {
+  display: none;
+}
+
+// .feeder-list li .toggle {
+//   text-align: center;
+//   width: 40px;
+//   /* auto, since non-WebKit browsers doesn't support input styling */
+//   height: auto;
+//   position: absolute;
+//   top: 0;
+//   bottom: 0;
+//   margin: auto 0;
+//   border: none; /* Mobile Safari */
+//   -webkit-appearance: none;
+//   appearance: none;
+// }
+
+// .feeder-list li .toggle:after {
+//   content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#ededed" stroke-width="3"/></svg>');
+// }
+
+// .feeder-list li .toggle:checked:after {
+//   content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#bddad5" stroke-width="3"/><path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>');
+// }
+
+.feeder-list li label {
+  white-space: pre-line;
+  word-break: break-all;
+  padding: 15px 60px 15px 15px;
+  margin-left: 45px;
+  display: block;
+  line-height: 1.2;
+  transition: color 0.4s;
+}
+
+.feeder-list li.completed label {
+  color: #d9d9d9;
+  text-decoration: line-through;
+}
+
+.feeder-list li .edit {
+  display: none;
+}
+
+.feeder-list li.editing:last-child {
+  // margin-bottom: -1px;
+}

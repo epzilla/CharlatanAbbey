@@ -851,7 +851,7 @@ var Feeder = React.createClass({displayName: "Feeder",
     if (!prevProps.editing && this.props.editing) {
       var node = React.findDOMNode(this.refs.editField);
       node.focus();
-      node.setSelectionRange(node.value.length, node.value.length);
+      node.setSelectionRange(0, node.value.length);
     }
   },
 
@@ -865,7 +865,9 @@ var Feeder = React.createClass({displayName: "Feeder",
           React.createElement("label", {onClick: this.handleEdit}, 
             this.props.feeder.name
           ), 
-          React.createElement("button", {className: "destroy", onClick: this.props.onDestroy})
+          React.createElement("button", {className: "btn btn-destroy", onClick: this.props.onDestroy}, 
+            React.createElement("i", {className: "fa fa-times"})
+          )
         ), 
         React.createElement("input", {
           ref: "editField", 
@@ -968,11 +970,15 @@ var FeederList = React.createClass({displayName: "FeederList",
     });
 
     return(
-      React.createElement("div", null, 
-        React.createElement("ul", null, 
+      React.createElement("div", {className: "feeder-list-container"}, 
+        React.createElement("ul", {className: "feeder-list"}, 
           feeders
         ), 
-        React.createElement("button", {onClick: this._add}, "+")
+        React.createElement("div", {className: "btn-container"}, 
+          React.createElement("button", {className: "btn btn-add", onClick: this._add}, 
+            React.createElement("i", {className: "fa fa-plus"})
+          )
+        )
       )
     );
   }
@@ -1167,7 +1173,7 @@ var View1 = React.createClass({displayName: "View1",
   render: function () {
 
     return (
-      React.createElement("div", {className: "get-started"}, 
+      React.createElement("div", {className: "get-started-1"}, 
         React.createElement("h3", null, "First things first. What are their names?"), 
         React.createElement("div", null, 
           React.createElement("label", {htmlFor: "lastname"}, "Last Name"), 
@@ -1243,7 +1249,7 @@ var View2 = React.createClass({displayName: "View2",
     }
 
     return (
-      React.createElement("div", {className: "get-started"}, 
+      React.createElement("div", {className: "get-started-2"}, 
         React.createElement("h3", null, "Next, tell us about how often ", _state.babyA, " and ", _state.babyB, " usually eat/take a bottle."), 
         React.createElement("div", null, 
           React.createElement("h4", null, "About every"), 
@@ -1275,7 +1281,7 @@ var View3 = React.createClass({displayName: "View3",
   render: function () {
 
     return (
-      React.createElement("div", {className: "get-started"}, 
+      React.createElement("div", {className: "get-started-3"}, 
         React.createElement("h3", null, "Last, but not least, give us the names of a few people who will be taking care of them and might want to use this app."), 
         React.createElement(FeederList, {
           onChange: this._onChange, 
@@ -1291,7 +1297,7 @@ var View4 = React.createClass({displayName: "View4",
     var info = this.props.info;
 
     return (
-      React.createElement("div", {className: "get-started"}, 
+      React.createElement("div", {className: "get-started-4"}, 
         React.createElement("h3", null, "OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!"), 
         React.createElement("h4", null, info.babyA, " and ", info.babyB, " ", info.query.lastname), 
         React.createElement("ul", null, 
@@ -1356,18 +1362,20 @@ var GetStarted = React.createClass({displayName: "GetStarted",
 
   render: function () {
     return (
-      React.createElement(Wizard, {
-        initialState: this.props.query, 
-        views: [
-          React.createElement(View1, {initialState: this.state, onChange: this._setStateFromChildren}),
-          React.createElement(View2, {initialState: this.state, onChange: this._setStateFromChildren}),
-          React.createElement(View3, {
-            initialState: this.state, 
-            initialFeeders: this.state.feeders, 
-            onChange: this._setStateFromChildren}
-          ),
-          React.createElement(View4, {info: this.state, onFinish: this._submit})
-        ]}
+      React.createElement("section", {className: "get-started"}, 
+        React.createElement(Wizard, {
+          initialState: this.props.query, 
+          views: [
+            React.createElement(View1, {initialState: this.state, onChange: this._setStateFromChildren}),
+            React.createElement(View2, {initialState: this.state, onChange: this._setStateFromChildren}),
+            React.createElement(View3, {
+              initialState: this.state, 
+              initialFeeders: this.state.feeders, 
+              onChange: this._setStateFromChildren}
+            ),
+            React.createElement(View4, {info: this.state, onFinish: this._submit})
+          ]}
+        )
       )
     );
   }
@@ -2837,14 +2845,22 @@ var Wizard = React.createClass({displayName: "Wizard",
   render: function () {
     var currentView = this.props.views[this.state.step];
     var nextBtn = currentView.props.onFinish ?
-      React.createElement("button", {onClick: currentView.props.onFinish}, "Done") :
-      React.createElement("button", {onClick: this._next, disabled: this.state.step === this.props.views.length - 1}, "Next");
+      React.createElement("button", {className: "btn", onClick: currentView.props.onFinish}, "Done") :
+      React.createElement("button", {className: "btn", onClick: this._next, disabled: this.state.step === this.props.views.length - 1}, "Next");
 
     return (
-      React.createElement("form", {onSubmit: this.props.onSubmit}, 
-        this.props.views[this.state.step], 
-        React.createElement("button", {onClick: this._prev, disabled: this.state.step === 0}, "Back"), 
-        nextBtn
+      React.createElement("div", {className: "wizard-container"}, 
+        React.createElement("section", {className: "wizard"}, 
+          React.createElement("form", {onSubmit: this.props.onSubmit}, 
+            React.createElement("div", {className: "wizard-view"}, 
+              this.props.views[this.state.step]
+            ), 
+            React.createElement("div", {className: "wizard-btns"}, 
+              React.createElement("button", {className: "btn", onClick: this._prev, disabled: this.state.step === 0}, "Back"), 
+              nextBtn
+            )
+          )
+        )
       )
     );
   }

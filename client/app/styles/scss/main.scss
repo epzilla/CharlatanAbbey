@@ -3,6 +3,10 @@
 @import '../../../../node_modules/font-awesome/scss/font-awesome.scss';
 @import 'variables';
 @import 'helpers';
+@import 'wizard';
+@import 'feeder-list';
+@import 'get-started';
+
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400italic,400,700);
 
 * {

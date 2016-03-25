@@ -56,7 +56,7 @@ var Feeder = React.createClass({
     if (!prevProps.editing && this.props.editing) {
       var node = React.findDOMNode(this.refs.editField);
       node.focus();
-      node.setSelectionRange(node.value.length, node.value.length);
+      node.setSelectionRange(0, node.value.length);
     }
   },
 
@@ -70,7 +70,9 @@ var Feeder = React.createClass({
           <label onClick={this.handleEdit}>
             {this.props.feeder.name}
           </label>
-          <button className="destroy" onClick={this.props.onDestroy} />
+          <button className="btn btn-destroy" onClick={this.props.onDestroy}>
+            <i className="fa fa-times"></i>
+          </button>
         </div>
         <input
           ref="editField"

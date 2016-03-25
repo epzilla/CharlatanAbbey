@@ -82,11 +82,15 @@ var FeederList = React.createClass({
     });
 
     return(
-      <div>
-        <ul>
+      <div className="feeder-list-container">
+        <ul className="feeder-list">
           {feeders}
         </ul>
-        <button onClick={this._add}>+</button>
+        <div className="btn-container">
+          <button className="btn btn-add" onClick={this._add}>
+            <i className="fa fa-plus"></i>
+          </button>
+        </div>
       </div>
     );
   }

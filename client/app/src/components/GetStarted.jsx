@@ -22,7 +22,7 @@ var View1 = React.createClass({
   render: function () {
 
     return (
-      <div className="get-started">
+      <div className="get-started-1">
         <h3>First things first. What are their names?</h3>
         <div>
           <label htmlFor="lastname">Last Name</label>
@@ -98,7 +98,7 @@ var View2 = React.createClass({
     }
 
     return (
-      <div className="get-started">
+      <div className="get-started-2">
         <h3>Next, tell us about how often {_state.babyA} and {_state.babyB} usually eat/take a bottle.</h3>
         <div>
           <h4>About every</h4>
@@ -130,7 +130,7 @@ var View3 = React.createClass({
   render: function () {
 
     return (
-      <div className="get-started">
+      <div className="get-started-3">
         <h3>Last, but not least, give us the names of a few people who will be taking care of them and might want to use this app.</h3>
         <FeederList
           onChange={this._onChange}
@@ -146,7 +146,7 @@ var View4 = React.createClass({
     var info = this.props.info;
 
     return (
-      <div className="get-started">
+      <div className="get-started-4">
         <h3>OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!</h3>
         <h4>{info.babyA} and {info.babyB} {info.query.lastname}</h4>
         <ul>
@@ -211,19 +211,21 @@ var GetStarted = React.createClass({
 
   render: function () {
     return (
-      <Wizard
-        initialState={this.props.query}
-        views={[
-          <View1 initialState={this.state} onChange={this._setStateFromChildren}/>,
-          <View2 initialState={this.state} onChange={this._setStateFromChildren}/>,
-          <View3
-            initialState={this.state}
-            initialFeeders={this.state.feeders}
-            onChange={this._setStateFromChildren}
-          />,
-          <View4 info={this.state} onFinish={this._submit}/>
-        ]}
-      />
+      <section className="get-started">
+        <Wizard
+          initialState={this.props.query}
+          views={[
+            <View1 initialState={this.state} onChange={this._setStateFromChildren}/>,
+            <View2 initialState={this.state} onChange={this._setStateFromChildren}/>,
+            <View3
+              initialState={this.state}
+              initialFeeders={this.state.feeders}
+              onChange={this._setStateFromChildren}
+            />,
+            <View4 info={this.state} onFinish={this._submit}/>
+          ]}
+        />
+      </section>
     );
   }
 });
