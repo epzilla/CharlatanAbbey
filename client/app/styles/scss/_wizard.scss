@@ -3,16 +3,17 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: top;
   padding-top: 2em;
   @media(max-width: $tabletportrait) {
     padding: 2em 1em
+  }
+  @media(min-width: $tabletportrait) {
+    min-height: 50vh;
   }
   .wizard {
     position: relative;
     max-width: 600px;
     margin: 0 auto;
-    // min-height: 100vh;
     .wizard-btns {
       display: flex;
       justify-content: space-between;
