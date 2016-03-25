@@ -33,7 +33,8 @@ var Log = React.createClass({
     switch (this.state.eventType) {
       case EventTypes.BURP:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           burp: this.state.burp,
           time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
@@ -41,7 +42,8 @@ var Log = React.createClass({
         break;
       case EventTypes.DIAPER:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           diaper: this.state.diaper.join(' + '),
           time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
@@ -49,7 +51,8 @@ var Log = React.createClass({
         break;
       case EventTypes.MEDS:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           medicine: this.state.medicine.join(', '),
           time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
@@ -57,7 +60,8 @@ var Log = React.createClass({
         break;
       case EventTypes.SPIT_UP:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           spit: this.state.spit,
           time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
@@ -65,7 +69,8 @@ var Log = React.createClass({
         break;
       case EventTypes.NAP:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           startTime: this.state.napStart.format(),
           endTime: this.state.napEnd.format(),
@@ -74,7 +79,8 @@ var Log = React.createClass({
         break;
       default:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           burp: this.state.burp,
           diaper: this.state.diaper.join(' + '),

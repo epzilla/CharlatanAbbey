@@ -1,5 +1,6 @@
 var React = require('react');
 var cx = require('classnames');
+var fractions = require('../utils/fractions').fractions;
 
 var StepperBtn = React.createClass({
 
@@ -31,32 +32,6 @@ var StepperBtn = React.createClass({
 var Stepper = React.createClass({
 
   _fractionalPointer: 0,
-  _fractions: [
-    {
-      displayValue: '--',
-      actualValue: 0
-    },
-    {
-      displayValue: '¼',
-      actualValue: 0.25
-    },
-    {
-      displayValue: '⅓',
-      actualValue: 0.33
-    },
-    {
-      displayValue: '½',
-      actualValue: 0.5
-    },
-    {
-      displayValue: '⅔',
-      actualValue: 0.66
-    },
-    {
-      displayValue: '¾',
-      actualValue: 0.75
-    }
-  ],
 
   _stepDown: function (e) {
     e.preventDefault();
@@ -103,11 +78,11 @@ var Stepper = React.createClass({
 
     this.setState({
       fraction: fracPointer,
-      val: this._fractions[fracPointer].displayValue
+      val: fractions[fracPointer].displayValue
     });
     this.props.onChange({
       full: false,
-      amount: this._fractions[fracPointer]
+      amount: fractions[fracPointer]
     });
   },
 
@@ -146,11 +121,11 @@ var Stepper = React.createClass({
 
     this.setState({
       fraction: fracPointer,
-      val: this._fractions[fracPointer].displayValue
+      val: fractions[fracPointer].displayValue
     });
     this.props.onChange({
       full: false,
-      amount: this._fractions[fracPointer]
+      amount: fractions[fracPointer]
     });
   },
 

@@ -71,6 +71,13 @@ var ServerActions = {
       type: ActionTypes.CLOCKED_OUT,
       data: data
     });
+  },
+
+  initialized: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.RECEIVE_BABIES,
+      data: data
+    });
   }
 };
 

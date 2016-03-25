@@ -82,5 +82,11 @@ module.exports = {
     return Rest.put('/api/time-logs/' + id, timeLog).then(function (res) {
       ServerActions.clockedOut(getJSON(res.response));
     });
+  },
+
+  sendInitialConfig: function (info) {
+    return Rest.post('/api/babies/initialize', info).then(function (res) {
+      ServerActions.receiveBabies(getJSON(res.response));
+    });
   }
 };

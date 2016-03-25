@@ -36,7 +36,7 @@
     "lodash": "^3.10.0",
     "method-override": "~1.0.0",
     "moment-timezone": "^0.4.0",
-    "mongoose": "~3.8.8",
+    "mongoose": "~4.4.10",
     "morgan": "~1.0.0",
     "object-assign": "^3.0.0",
     "qwest": "^2.0.5",

@@ -12,5 +12,6 @@ router.post('/search', controller.find);
 router.put('/:id', controller.update);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
+router.post('/initialize', controller.initialize);
 
 module.exports = router;

@@ -1,8 +1,10 @@
 'use strict';
+var _ = require('lodash');
 var API = require('../utils/api');
 var moment = require('moment-timezone');
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var AppConstants = require('../constants/constants');
+var fractions = require('../utils/fractions');
 var ActionTypes = AppConstants.ActionTypes;
 
 var ViewActions = {
@@ -56,6 +58,25 @@ var ViewActions = {
     AppDispatcher.handleViewAction({
       type: ActionTypes.WIZARD_DONE
     });
+  },
+
+  sendInitialConfig: function (info) {
+    var babyA = {
+      firstname: info.babyA,
+      lastname: info.query.lastname,
+      birth: info.query.birthdate,
+      defaults: {
+        hours: fractions.getDecimal(info.fullHours, info.fracHours),
+        ounces: fractions.getDecimal(info.fullOunces, info.fracOunces)
+      },
+      feeders: _.map(info.feeders, function (feeder) {
+        return {name: feeder.name};
+      })
+    };
+
+    var babyB = _.assign({}, babyA, {firstname: info.babyB});
+
+    API.sendInitialConfig({ babies: [babyA, babyB] });
   }
 };
 

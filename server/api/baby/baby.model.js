@@ -8,7 +8,11 @@ var BabySchema = new Schema({
   weight: String,
   feeders: [{
   	name: String
-  }]
+  }],
+  defaults: {
+    hours: Number,
+    ounces: Number
+  }
 });
 
 module.exports = mongoose.model('Baby', BabySchema);

@@ -129,6 +129,13 @@ var ServerActions = {
       type: ActionTypes.CLOCKED_OUT,
       data: data
     });
+  },
+
+  initialized: function (data) {
+    AppDispatcher.handleServerAction({
+      type: ActionTypes.RECEIVE_BABIES,
+      data: data
+    });
   }
 };
 
@@ -137,10 +144,12 @@ module.exports = ServerActions;
 
 },{"../constants/constants":22,"../dispatcher/app-dispatcher":23}],3:[function(require,module,exports){
 'use strict';
+var _ = require('lodash');
 var API = require('../utils/api');
 var moment = require('moment-timezone');
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var AppConstants = require('../constants/constants');
+var fractions = require('../utils/fractions');
 var ActionTypes = AppConstants.ActionTypes;
 
 var ViewActions = {
@@ -194,13 +203,32 @@ var ViewActions = {
     AppDispatcher.handleViewAction({
       type: ActionTypes.WIZARD_DONE
     });
+  },
+
+  sendInitialConfig: function (info) {
+    var babyA = {
+      firstname: info.babyA,
+      lastname: info.query.lastname,
+      birth: info.query.birthdate,
+      defaults: {
+        hours: fractions.getDecimal(info.fullHours, info.fracHours),
+        ounces: fractions.getDecimal(info.fullOunces, info.fracOunces)
+      },
+      feeders: _.map(info.feeders, function (feeder) {
+        return {name: feeder.name};
+      })
+    };
+
+    var babyB = _.assign({}, babyA, {firstname: info.babyB});
+
+    API.sendInitialConfig({ babies: [babyA, babyB] });
   }
 };
 
 module.exports = ViewActions;
 
 
-},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/api":29,"moment-timezone":43}],4:[function(require,module,exports){
+},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/api":29,"../utils/fractions":30,"lodash":41,"moment-timezone":43}],4:[function(require,module,exports){
 /** @jsx React.DOM */
 'use strict';
 
@@ -1129,21 +1157,6 @@ var FeederList = require('./FeederList.jsx');
 var uuid = require('../utils/uuid');
 var fractions = require('../utils/fractions');
 
-var getFractionalDisplay = function (whole, frac) {
-  if (frac === 0) {
-    return whole.toString();
-  }
-
-  var fractionalDisplay;
-  if (_.isObject(frac)) {
-    fractionalDisplay = frac.displayValue;
-  } else {
-    fractionalDisplay = _.find(fractions, {actualValue: frac}).displayValue;
-  }
-
-  return whole + fractionalDisplay;
-}
-
 var View1 = React.createClass({displayName: "View1",
   _setValue: function (e) {
     var obj = {};
@@ -1282,7 +1295,7 @@ var View4 = React.createClass({displayName: "View4",
         React.createElement("h3", null, "OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!"), 
         React.createElement("h4", null, info.babyA, " and ", info.babyB, " ", info.query.lastname), 
         React.createElement("ul", null, 
-          React.createElement("li", null, "Eat about ", getFractionalDisplay(info.fullOunces, info.fracOunces), " ounces, every ", getFractionalDisplay(info.fullHours, info.fracHours), " hours."), 
+          React.createElement("li", null, "Eat about ", fractions.getFraction(info.fullOunces, info.fracOunces), " ounces, every ", fractions.getFraction(info.fullHours, info.fracHours), " hours."), 
           React.createElement("li", null, "The people who should show up in the caretakers list are:", 
             React.createElement("ul", null, 
               _.map(info.feeders, function (feeder) {
@@ -1316,15 +1329,29 @@ var GetStarted = React.createClass({displayName: "GetStarted",
     }
   },
 
+  componentDidMount: function () {
+    BabyStore.addChangeListener(this._onChange) ;
+  },
+
+  componentWillUnmount: function () {
+    BabyStore.removeChangeListener(this._onChange) ;
+  },
+
+  _onChange: function () {
+    if (!_.isEmpty(BabyStore.getBabies())) {
+      this.transitionTo('/');
+    }
+  },
+
   _setStateFromChildren: function (state) {
     this.setState(state, function () {
       console.log(this.state);
     });
   },
 
-  _logItOut: function (e) {
+  _submit: function (e) {
     e.preventDefault();
-    console.log(this.state);
+    Actions.sendInitialConfig(this.state);
   },
 
   render: function () {
@@ -1339,7 +1366,7 @@ var GetStarted = React.createClass({displayName: "GetStarted",
             initialFeeders: this.state.feeders, 
             onChange: this._setStateFromChildren}
           ),
-          React.createElement(View4, {info: this.state, onFinish: this._logItOut})
+          React.createElement(View4, {info: this.state, onFinish: this._submit})
         ]}
       )
     );
@@ -1638,7 +1665,8 @@ var Log = React.createClass({displayName: "Log",
     switch (this.state.eventType) {
       case EventTypes.BURP:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           burp: this.state.burp,
           time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
@@ -1646,7 +1674,8 @@ var Log = React.createClass({displayName: "Log",
         break;
       case EventTypes.DIAPER:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           diaper: this.state.diaper.join(' + '),
           time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
@@ -1654,7 +1683,8 @@ var Log = React.createClass({displayName: "Log",
         break;
       case EventTypes.MEDS:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           medicine: this.state.medicine.join(', '),
           time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
@@ -1662,7 +1692,8 @@ var Log = React.createClass({displayName: "Log",
         break;
       case EventTypes.SPIT_UP:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           spit: this.state.spit,
           time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
@@ -1670,7 +1701,8 @@ var Log = React.createClass({displayName: "Log",
         break;
       case EventTypes.NAP:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           startTime: this.state.napStart.format(),
           endTime: this.state.napEnd.format(),
@@ -1679,7 +1711,8 @@ var Log = React.createClass({displayName: "Log",
         break;
       default:
         Actions.submitEventForm({
-          name: this.state.baby,
+          babyID: this.state.baby._id,
+          name: this.state.baby.firstname,
           eventType: this.state.eventType,
           burp: this.state.burp,
           diaper: this.state.diaper.join(' + '),
@@ -2149,6 +2182,7 @@ module.exports = LoginForm;
 },{"../actions/view-actions":3,"../stores/baby-store":24,"react":265,"react-router":74}],17:[function(require,module,exports){
 var React = require('react');
 var cx = require('classnames');
+var fractions = require('../utils/fractions').fractions;
 
 var StepperBtn = React.createClass({displayName: "StepperBtn",
 
@@ -2180,32 +2214,6 @@ var StepperBtn = React.createClass({displayName: "StepperBtn",
 var Stepper = React.createClass({displayName: "Stepper",
 
   _fractionalPointer: 0,
-  _fractions: [
-    {
-      displayValue: '--',
-      actualValue: 0
-    },
-    {
-      displayValue: '¼',
-      actualValue: 0.25
-    },
-    {
-      displayValue: '⅓',
-      actualValue: 0.33
-    },
-    {
-      displayValue: '½',
-      actualValue: 0.5
-    },
-    {
-      displayValue: '⅔',
-      actualValue: 0.66
-    },
-    {
-      displayValue: '¾',
-      actualValue: 0.75
-    }
-  ],
 
   _stepDown: function (e) {
     e.preventDefault();
@@ -2252,11 +2260,11 @@ var Stepper = React.createClass({displayName: "Stepper",
 
     this.setState({
       fraction: fracPointer,
-      val: this._fractions[fracPointer].displayValue
+      val: fractions[fracPointer].displayValue
     });
     this.props.onChange({
       full: false,
-      amount: this._fractions[fracPointer]
+      amount: fractions[fracPointer]
     });
   },
 
@@ -2295,11 +2303,11 @@ var Stepper = React.createClass({displayName: "Stepper",
 
     this.setState({
       fraction: fracPointer,
-      val: this._fractions[fracPointer].displayValue
+      val: fractions[fracPointer].displayValue
     });
     this.props.onChange({
       full: false,
-      amount: this._fractions[fracPointer]
+      amount: fractions[fracPointer]
     });
   },
 
@@ -2366,7 +2374,7 @@ var Stepper = React.createClass({displayName: "Stepper",
 
 module.exports = Stepper;
 
-},{"classnames":36,"react":265}],18:[function(require,module,exports){
+},{"../utils/fractions":30,"classnames":36,"react":265}],18:[function(require,module,exports){
 var React = require('react');
 var _ = require('lodash');
 
@@ -2853,6 +2861,7 @@ module.exports = {
   ActionTypes: keyMirror({
     CLOCKED_IN: null,
     CLOCKED_OUT: null,
+    INITIALIZED: null,
     NO_BABIES_FOUND: null,
     RECEIVE_EVENTS: null,
     RECEIVE_BABIES: null,
@@ -3554,38 +3563,76 @@ module.exports = {
     return Rest.put('/api/time-logs/' + id, timeLog).then(function (res) {
       ServerActions.clockedOut(getJSON(res.response));
     });
+  },
+
+  sendInitialConfig: function (info) {
+    return Rest.post('/api/babies/initialize', info).then(function (res) {
+      ServerActions.receiveBabies(getJSON(res.response));
+    });
   }
 };
 
 },{"../actions/server-actions":2,"./rest-service":32,"lodash":41}],30:[function(require,module,exports){
-module.exports = [
-  {
-    displayValue: '--',
-    actualValue: 0
-  },
-  {
-    displayValue: '¼',
-    actualValue: 0.25
-  },
-  {
-    displayValue: '⅓',
-    actualValue: 0.33
-  },
-  {
-    displayValue: '½',
-    actualValue: 0.5
-  },
-  {
-    displayValue: '⅔',
-    actualValue: 0.66
-  },
-  {
-    displayValue: '¾',
-    actualValue: 0.75
-  }
-];
+var _ = require('lodash');
 
-},{}],31:[function(require,module,exports){
+module.exports = {
+  fractions: [
+    {
+      displayValue: '--',
+      actualValue: 0.00
+    },
+    {
+      displayValue: '¼',
+      actualValue: 0.25
+    },
+    {
+      displayValue: '⅓',
+      actualValue: 0.33
+    },
+    {
+      displayValue: '½',
+      actualValue: 0.50
+    },
+    {
+      displayValue: '⅔',
+      actualValue: 0.67
+    },
+    {
+      displayValue: '¾',
+      actualValue: 0.75
+    }
+  ],
+
+  getFraction: function (whole, frac) {
+    if (!frac) {
+      return whole.toString();
+    }
+
+    var fracDecimal = _.isObject(frac) ? frac.actualValue : frac.toPrecision(3);
+
+    if (!fracDecimal) {
+      return whole.toString();
+    }
+
+    var fracDisplay = _.find(this.fractions, {actualValue: fracDecimal}).displayValue;
+    return whole + fracDisplay;
+  },
+
+  getDecimal: function (whole, frac) {
+    var fracValue = _.isObject(frac) ? frac.actualValue : frac;
+    return !fracValue ? whole : (whole + fracValue);
+  },
+
+  getByActualValue: function (actualValue) {
+    return _.find(this.fractions, {actualValue: actualValue});
+  },
+
+  getByDisplayValue: function (displayValue) {
+    return _.find(this.fractions, {displayValue: displayValue});
+  }
+};
+
+},{"lodash":41}],31:[function(require,module,exports){
 module.exports = {
   prefix: 'charlatan',
   get: function (key) {

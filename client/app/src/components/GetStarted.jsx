@@ -12,21 +12,6 @@ var FeederList = require('./FeederList.jsx');
 var uuid = require('../utils/uuid');
 var fractions = require('../utils/fractions');
 
-var getFractionalDisplay = function (whole, frac) {
-  if (frac === 0) {
-    return whole.toString();
-  }
-
-  var fractionalDisplay;
-  if (_.isObject(frac)) {
-    fractionalDisplay = frac.displayValue;
-  } else {
-    fractionalDisplay = _.find(fractions, {actualValue: frac}).displayValue;
-  }
-
-  return whole + fractionalDisplay;
-}
-
 var View1 = React.createClass({
   _setValue: function (e) {
     var obj = {};
@@ -165,7 +150,7 @@ var View4 = React.createClass({
         <h3>OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!</h3>
         <h4>{info.babyA} and {info.babyB} {info.query.lastname}</h4>
         <ul>
-          <li>Eat about {getFractionalDisplay(info.fullOunces, info.fracOunces)} ounces, every {getFractionalDisplay(info.fullHours, info.fracHours)} hours.</li>
+          <li>Eat about {fractions.getFraction(info.fullOunces, info.fracOunces)} ounces, every {fractions.getFraction(info.fullHours, info.fracHours)} hours.</li>
           <li>The people who should show up in the caretakers list are:
             <ul>
               {_.map(info.feeders, function (feeder) {
@@ -199,15 +184,29 @@ var GetStarted = React.createClass({
     }
   },
 
+  componentDidMount: function () {
+    BabyStore.addChangeListener(this._onChange) ;
+  },
+
+  componentWillUnmount: function () {
+    BabyStore.removeChangeListener(this._onChange) ;
+  },
+
+  _onChange: function () {
+    if (!_.isEmpty(BabyStore.getBabies())) {
+      this.transitionTo('/');
+    }
+  },
+
   _setStateFromChildren: function (state) {
     this.setState(state, function () {
       console.log(this.state);
     });
   },
 
-  _logItOut: function (e) {
+  _submit: function (e) {
     e.preventDefault();
-    console.log(this.state);
+    Actions.sendInitialConfig(this.state);
   },
 
   render: function () {
@@ -222,7 +221,7 @@ var GetStarted = React.createClass({
             initialFeeders={this.state.feeders}
             onChange={this._setStateFromChildren}
           />,
-          <View4 info={this.state} onFinish={this._logItOut}/>
+          <View4 info={this.state} onFinish={this._submit}/>
         ]}
       />
     );

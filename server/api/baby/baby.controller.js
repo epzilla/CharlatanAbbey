@@ -79,6 +79,13 @@ exports.destroy = function (req, res) {
   });
 };
 
+exports.initialize = function (req, res) {
+  baby.insertMany(req.body.babies, function (err, babies) {
+    if (err) return handleError(res, err);
+    return res.json(201, babies);
+  });
+};
+
 function handleError(res, err) {
   return res.send(500, err);
 }
