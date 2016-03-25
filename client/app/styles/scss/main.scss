@@ -764,3 +764,25 @@ table {
     }
   }
 }
+
+.no-feedings {
+  padding-top: 5em;
+  h1 {
+    font-weight: 100;
+    text-align: center;
+  }
+  h3 {
+    margin-bottom: 3em;
+  }
+}
+.big-downward-arrow {
+  position: relative;
+  &:before {
+    content: '\f103';
+    font-family: 'FontAwesome';
+    font-size: 3em;
+    font-weight: 100;
+    position: absolute;
+    left: 45%;
+  }
+}

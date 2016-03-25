@@ -403,14 +403,30 @@ var Home = React.createClass({displayName: "Home",
   },
 
   render: function () {
-    var feedings = _.map(this.state.feedings, function (feeding) {
-      return React.createElement(FeedingInfo, {key: feeding._id, feeding: feeding});
-    });
+    var feedingsInfo;
+
+    if (_.isEmpty(this.state.feedings)) {
+      feedingsInfo = (
+        React.createElement("div", {className: "no-feedings"}, 
+          React.createElement("h1", null, "¯\\_(ツ)_/¯"), 
+          React.createElement("h3", null, 
+            "Looks like you haven’t logged any feedings yet. When you do, the most" + ' ' +
+            "recent ones will show up here on the home screen. Whenever you’re ready," + ' ' +
+            "go ahead and start logging down here!"
+          ), 
+          React.createElement("div", {className: "big-downward-arrow"})
+        )
+      );
+    } else {
+      feedingsInfo = _.map(this.state.feedings, function (feeding) {
+        return React.createElement(FeedingInfo, {key: feeding._id, feeding: feeding});
+      });
+    }
 
     return (
       React.createElement("article", {className: "home-screen"}, 
         React.createElement("section", {className: "baby-info"}, 
-           feedings 
+           feedingsInfo 
         ), 
         React.createElement(ActionButtons, {babies: this.props.babies})
       )
