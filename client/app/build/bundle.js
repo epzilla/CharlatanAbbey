@@ -3622,7 +3622,7 @@ module.exports = {
       return whole.toString();
     }
 
-    var fracDecimal = _.isObject(frac) ? frac.actualValue : frac.toPrecision(3);
+    var fracDecimal = _.isObject(frac) ? frac.actualValue : parseFloat(frac.toPrecision(2));
 
     if (!fracDecimal) {
       return whole.toString();
