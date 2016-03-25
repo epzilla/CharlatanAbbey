@@ -194,6 +194,10 @@ input[type="text"] {
   &:active {
     background: #AAA;
   }
+
+  &[disabled] {
+    color: #BBB;
+  }
 }
 
 .btn:active, input:active, label:active, .close-btn:active {
