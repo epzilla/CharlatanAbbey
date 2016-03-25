@@ -2,4 +2,59 @@
   h3 {
     margin-bottom: 1em;
   }
+
+  .get-started-1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .form-group {
+      margin-bottom: 1em;
+      width: 100%;
+      label, input {
+        display: block;
+        width: 100%;
+      }
+      input {
+        border-radius: 3px;
+        height: 2em;
+        padding-left: 5px;
+      }
+    }
+  }
+
+  .stepper {
+    font-size: 12px;
+  }
+
+  .frac-stepper-label {
+    font-size: 1em;
+    height: 7.5em;
+  }
+    // height: 10em;
+    // width: 5em;
+    // margin-right: 1em;
+    // .btn {
+    //   width: 100%;
+    //   height: 3em;
+    //   i {
+    //     margin-right: 0;
+    //   }
+    // }
+    // .top-btn {
+    //   top: 0;
+    // }
+    // .bottom-btn {
+    //   bottom: 0;
+    // }
+    // span {
+    //   width: 100%;
+    //   text-align: center;
+    //   font-size: 2em;
+    //   width: 100%;
+    //   height: 2em;
+    //   top: 1.88em;
+    //   left: 0;
+    //   padding-top: 0;
+    // }
 }

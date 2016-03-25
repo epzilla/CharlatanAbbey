@@ -24,7 +24,7 @@ var View1 = React.createClass({
     return (
       <div className="get-started-1">
         <h3>First things first. What are their names?</h3>
-        <div>
+        <div className="form-group">
           <label htmlFor="lastname">Last Name</label>
           <input
             type="text"
@@ -34,7 +34,7 @@ var View1 = React.createClass({
             onChange={this._setValue}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="babyA">Baby A</label>
           <input
             type="text"
@@ -44,7 +44,7 @@ var View1 = React.createClass({
             onChange={this._setValue}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="babyB">Baby B</label>
           <input
             type="text"
@@ -99,22 +99,20 @@ var View2 = React.createClass({
 
     return (
       <div className="get-started-2">
-        <h3>Next, tell us about how often {_state.babyA} and {_state.babyB} usually eat/take a bottle.</h3>
+        <h3>Next, tell us about how often {_state.babyA} and {_state.babyB} usually eat/take a bottle, and how much milk/formula per feeding.</h3>
+        <div>
+          <FractionalStepper
+            onChange={this._updateOunces}
+            label="Oz."
+            initialValue={initialOunces ? initialOunces : 4}
+          />
+        </div>
         <div>
           <h4>About every</h4>
           <FractionalStepper
             onChange={this._updateHours}
             label="Hrs."
             initialValue={initialHours ? initialHours : 2}
-          />
-        </div>
-        <h3>And how much milk/formula, on average, do they take per feeding?</h3>
-        <div>
-          <h4>About</h4>
-          <FractionalStepper
-            onChange={this._updateOunces}
-            label="Oz."
-            initialValue={initialOunces ? initialOunces : 4}
           />
         </div>
       </div>

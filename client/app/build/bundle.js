@@ -1175,7 +1175,7 @@ var View1 = React.createClass({displayName: "View1",
     return (
       React.createElement("div", {className: "get-started-1"}, 
         React.createElement("h3", null, "First things first. What are their names?"), 
-        React.createElement("div", null, 
+        React.createElement("div", {className: "form-group"}, 
           React.createElement("label", {htmlFor: "lastname"}, "Last Name"), 
           React.createElement("input", {
             type: "text", 
@@ -1185,7 +1185,7 @@ var View1 = React.createClass({displayName: "View1",
             onChange: this._setValue}
           )
         ), 
-        React.createElement("div", null, 
+        React.createElement("div", {className: "form-group"}, 
           React.createElement("label", {htmlFor: "babyA"}, "Baby A"), 
           React.createElement("input", {
             type: "text", 
@@ -1195,7 +1195,7 @@ var View1 = React.createClass({displayName: "View1",
             onChange: this._setValue}
           )
         ), 
-        React.createElement("div", null, 
+        React.createElement("div", {className: "form-group"}, 
           React.createElement("label", {htmlFor: "babyB"}, "Baby B"), 
           React.createElement("input", {
             type: "text", 
@@ -1250,22 +1250,20 @@ var View2 = React.createClass({displayName: "View2",
 
     return (
       React.createElement("div", {className: "get-started-2"}, 
-        React.createElement("h3", null, "Next, tell us about how often ", _state.babyA, " and ", _state.babyB, " usually eat/take a bottle."), 
+        React.createElement("h3", null, "Next, tell us about how often ", _state.babyA, " and ", _state.babyB, " usually eat/take a bottle, and how much milk/formula per feeding."), 
+        React.createElement("div", null, 
+          React.createElement(FractionalStepper, {
+            onChange: this._updateOunces, 
+            label: "Oz.", 
+            initialValue: initialOunces ? initialOunces : 4}
+          )
+        ), 
         React.createElement("div", null, 
           React.createElement("h4", null, "About every"), 
           React.createElement(FractionalStepper, {
             onChange: this._updateHours, 
             label: "Hrs.", 
             initialValue: initialHours ? initialHours : 2}
-          )
-        ), 
-        React.createElement("h3", null, "And how much milk/formula, on average, do they take per feeding?"), 
-        React.createElement("div", null, 
-          React.createElement("h4", null, "About"), 
-          React.createElement(FractionalStepper, {
-            onChange: this._updateOunces, 
-            label: "Oz.", 
-            initialValue: initialOunces ? initialOunces : 4}
           )
         )
       )
