@@ -30,15 +30,7 @@ var Home = React.createClass({
   },
 
   render: function () {
-    if (!_.isEmpty(this.state.babies)) {
-      return (
-        <BabiesSummaryView babies={this.state.babies} />
-      );
-    }
-
-    return (
-      <LoginForm />
-    );
+    return _.isEmpty(this.state.babies) ? <LoginForm /> : <BabiesSummaryView babies={this.state.babies} />;
   }
 });
 

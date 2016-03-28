@@ -1636,15 +1636,7 @@ var Home = React.createClass({displayName: "Home",
   },
 
   render: function () {
-    if (!_.isEmpty(this.state.babies)) {
-      return (
-        React.createElement(BabiesSummaryView, {babies: this.state.babies})
-      );
-    }
-
-    return (
-      React.createElement(LoginForm, null)
-    );
+    return _.isEmpty(this.state.babies) ? React.createElement(LoginForm, null) : React.createElement(BabiesSummaryView, {babies: this.state.babies});
   }
 });
 

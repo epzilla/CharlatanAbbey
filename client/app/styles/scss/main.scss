@@ -746,10 +746,11 @@ table {
   }
 }
 
-.get-started, .login-form {
+.get-started,
+.login-form-container {
   &.routechange-enter {
-    transform: translateY(0%);
-    transition: all $transitionTime ease;
+    transform: translateY(100%);
+    transition: transform $transitionTime ease;
     &.routechange-enter-active {
       transform: translateY(0%);
       transition: transform $transitionTime ease;
@@ -757,9 +758,9 @@ table {
   }
   &.routechange-leave {
     transform: translateY(0%);
-    transition: all $transitionTime ease;
+    transition: transform $transitionTime ease;
     &.routechange-leave-active {
-      transform: translateY(0%);
+      transform: translateY(-100%);
       transition: transform $transitionTime ease;
     }
   }
