@@ -46,6 +46,10 @@ gulp.task('browserify', function () {
   browserify(paths.app)
     .transform(reactify)
     .bundle()
+    .on('error', function (err) {
+      console.error(err);
+      this.emit('end');
+    })
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('./client/app/build/'))
     .pipe(reload({stream: true}));
