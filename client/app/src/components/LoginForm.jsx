@@ -41,19 +41,29 @@ var LoginForm = React.createClass({
 
   render: function () {
     return (
-      <form onSubmit={this._lookUpBabies} className="login-form">
-        <h4>Hi there!</h4>
-        <p>
-          Let’s get started. Please enter the last name and birthdate of
-          the babies you’d like to start tracking. If someone has already
-          entered them into the system, you can start tracking them right
-          away. If not, we’ll just ask you a few more questions to get things
-          set up.
-        </p>
-        <input type="text" name="lastname" placeholder="Last Name" onChange={this._setValue} />
-        <input type="date" name="birthdate" onChange={this._setValue} />
-        <button>Submit</button>
-      </form>
+      <div className="login-form-container">
+        <form onSubmit={this._lookUpBabies} className="login-form">
+          <h2>Hi there!</h2>
+          <p>
+            Let’s get started. Please enter the last name and birthdate of
+            the babies you’d like to start tracking. If someone has already
+            entered them into the system, you can start tracking them right
+            away. If not, we’ll just ask you a few more questions to get things
+            set up.
+          </p>
+          <div className="form-group">
+            <label htmlFor="lastname">Last Name</label>
+            <input type="text" name="lastname" placeholder="Last Name" onChange={this._setValue} />
+          </div>
+          <div className="form-group">
+            <label htmlFor="birthdate">Birthdate</label>
+            <input type="date" name="birthdate" onChange={this._setValue} />
+          </div>
+          <div className="form-group submit-btn-container">
+            <button className="btn submit-btn">Submit</button>
+          </div>
+        </form>
+      </div>
     );
   }
 });

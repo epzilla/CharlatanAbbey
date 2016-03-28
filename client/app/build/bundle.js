@@ -2181,18 +2181,28 @@ var LoginForm = React.createClass({displayName: "LoginForm",
 
   render: function () {
     return (
-      React.createElement("form", {onSubmit: this._lookUpBabies, className: "login-form"}, 
-        React.createElement("h4", null, "Hi there!"), 
-        React.createElement("p", null, 
-          "Let’s get started. Please enter the last name and birthdate of" + ' ' +
-          "the babies you’d like to start tracking. If someone has already" + ' ' +
-          "entered them into the system, you can start tracking them right" + ' ' +
-          "away. If not, we’ll just ask you a few more questions to get things" + ' ' +
-          "set up."
-        ), 
-        React.createElement("input", {type: "text", name: "lastname", placeholder: "Last Name", onChange: this._setValue}), 
-        React.createElement("input", {type: "date", name: "birthdate", onChange: this._setValue}), 
-        React.createElement("button", null, "Submit")
+      React.createElement("div", {className: "login-form-container"}, 
+        React.createElement("form", {onSubmit: this._lookUpBabies, className: "login-form"}, 
+          React.createElement("h2", null, "Hi there!"), 
+          React.createElement("p", null, 
+            "Let’s get started. Please enter the last name and birthdate of" + ' ' +
+            "the babies you’d like to start tracking. If someone has already" + ' ' +
+            "entered them into the system, you can start tracking them right" + ' ' +
+            "away. If not, we’ll just ask you a few more questions to get things" + ' ' +
+            "set up."
+          ), 
+          React.createElement("div", {className: "form-group"}, 
+            React.createElement("label", {htmlFor: "lastname"}, "Last Name"), 
+            React.createElement("input", {type: "text", name: "lastname", placeholder: "Last Name", onChange: this._setValue})
+          ), 
+          React.createElement("div", {className: "form-group"}, 
+            React.createElement("label", {htmlFor: "birthdate"}, "Birthdate"), 
+            React.createElement("input", {type: "date", name: "birthdate", onChange: this._setValue})
+          ), 
+          React.createElement("div", {className: "form-group submit-btn-container"}, 
+            React.createElement("button", {className: "btn submit-btn"}, "Submit")
+          )
+        )
       )
     );
   }
