@@ -1,0 +1,35 @@
+// Animate slide in/out from direction on route change
+@mixin slide ($transitionName, $inFrom, $outTo, $duration, $easing) {
+  &.#{$transitionName}-enter {
+    @if $inFrom == top {
+      transform: translateY(-100%);
+    } @else if $inFrom == bottom {
+      transform: translateY(100%);
+    } @else if $inFrom == left {
+      transform: translateX(-100%);
+    } @else {
+      transform: translateX(100%);
+    }
+    transition: transform $duration $easing;
+    &.#{$transitionName}-enter-active {
+      transform: translate(0%, 0%);
+      transition: transform $duration $easing;
+    }
+  }
+  &.#{$transitionName}-leave {
+    transform: translate(0%, 0%);
+    transition: transform $duration $easing;
+    &.#{$transitionName}-leave-active {
+       @if $outTo == top {
+        transform: translateY(-100%);
+      } @else if $outTo == bottom {
+        transform: translateY(100%);
+      } @else if $outTo == left {
+        transform: translateX(-100%);
+      } @else {
+        transform: translateX(100%);
+      }
+      transition: transform $duration $easing;
+    }
+  }
+}

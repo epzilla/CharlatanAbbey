@@ -152,7 +152,7 @@ var View4 = React.createClass({
           <li>The people who should show up in the caretakers list are:
             <ul>
               {_.map(info.feeders, function (feeder) {
-                return <li>{feeder.name}</li>;
+                return <li key={feeder.id}>{feeder.name}</li>;
               })}
             </ul>
           </li>
@@ -197,9 +197,7 @@ var GetStarted = React.createClass({
   },
 
   _setStateFromChildren: function (state) {
-    this.setState(state, function () {
-      console.log(this.state);
-    });
+    this.setState(state);
   },
 
   _submit: function (e) {

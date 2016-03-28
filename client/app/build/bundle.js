@@ -1319,7 +1319,7 @@ var View4 = React.createClass({displayName: "View4",
           React.createElement("li", null, "The people who should show up in the caretakers list are:", 
             React.createElement("ul", null, 
               _.map(info.feeders, function (feeder) {
-                return React.createElement("li", null, feeder.name);
+                return React.createElement("li", {key: feeder.id}, feeder.name);
               })
             )
           )
@@ -1364,9 +1364,7 @@ var GetStarted = React.createClass({displayName: "GetStarted",
   },
 
   _setStateFromChildren: function (state) {
-    this.setState(state, function () {
-      console.log(this.state);
-    });
+    this.setState(state);
   },
 
   _submit: function (e) {

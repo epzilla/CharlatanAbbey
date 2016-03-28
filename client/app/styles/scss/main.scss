@@ -3,6 +3,7 @@
 @import '../../../../node_modules/font-awesome/scss/font-awesome.scss';
 @import 'variables';
 @import 'helpers';
+@import 'mixins';
 @import 'wizard';
 @import 'feeder-list';
 @import 'get-started';
@@ -277,6 +278,25 @@ input[type="text"] {
   }
 }
 
+.home-screen {
+  &.routechange-enter {
+    transform: none;
+    transition: all $transitionTime ease;
+    &.routechange-enter-active {
+      transform: none;
+      transition: transform $transitionTime ease;
+    }
+  }
+  &.routechange-leave {
+    transform: none;
+    transition: all $transitionTime ease;
+    &.routechange-leave-active {
+      transform: none;
+      transition: transform $transitionTime ease;
+    }
+  }
+}
+
 .baby-info {
   width: 100%;
   padding: 1em;
@@ -290,12 +310,8 @@ input[type="text"] {
   position: fixed;
   bottom: 0;
   background: $translucentGrey;
-  // transition: opacity 0.1s ease;
   button {
     margin: 0 0.5em 0 0;
-  }
-  &.background {
-    // opacity: 0;
   }
 }
 
@@ -305,6 +321,7 @@ input[type="text"] {
 }
 
 .modal-sheet {
+  @include slide(routechange, bottom, bottom, $transitionTime, ease);
   min-height: 100%;
   top: 0;
   background: aliceblue;
@@ -391,25 +408,6 @@ input[type="text"] {
   }
 }
 
-.modal-sheet {
-  &.routechange-enter {
-    transform: translateY(100%);
-    transition: all $transitionTime ease;
-    &.routechange-enter-active {
-      transform: translateY(0%);
-      transition: transform $transitionTime ease;
-    }
-  }
-  &.routechange-leave {
-    transform: translateY(0%);
-    transition: all $transitionTime ease;
-    &.routechange-leave-active {
-      transform: translateY(100%);
-      transition: transform $transitionTime ease;
-    }
-  }
-}
-
 .modal-sheet.edit {
   &.routechange-enter {
     transform: scale(0.25);
@@ -430,6 +428,7 @@ input[type="text"] {
 }
 
 .right-sheet {
+  @include slide(routechange, right, right, $transitionTime, ease);
   &:first-child {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
@@ -445,22 +444,6 @@ input[type="text"] {
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
   z-index: 10;
-  &.routechange-enter {
-    transform: translateX(100%);
-    transition: all $transitionTime ease;
-    &.routechange-enter-active {
-      transform: translateX(0%);
-      transition: transform $transitionTime ease;
-    }
-  }
-  &.routechange-leave {
-    transform: translateX(0%);
-    transition: all $transitionTime ease;
-    &.routechange-leave-active {
-      transform: translateX(100%);
-      transition: transform $transitionTime ease;
-    }
-  }
 }
 
 .swipeable-action-sheet {
@@ -743,26 +726,6 @@ table {
 .login-form {
   input {
     color: #333;
-  }
-}
-
-.get-started,
-.login-form-container {
-  &.routechange-enter {
-    transform: translateY(100%);
-    transition: transform $transitionTime ease;
-    &.routechange-enter-active {
-      transform: translateY(0%);
-      transition: transform $transitionTime ease;
-    }
-  }
-  &.routechange-leave {
-    transform: translateY(0%);
-    transition: transform $transitionTime ease;
-    &.routechange-leave-active {
-      transform: translateY(-100%);
-      transition: transform $transitionTime ease;
-    }
   }
 }
 
