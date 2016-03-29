@@ -3726,6 +3726,10 @@ var _viewActions = require('../actions/view-actions');
 
 var _viewActions2 = _interopRequireDefault(_viewActions);
 
+var _localStorage = require('../utils/local-storage');
+
+var _localStorage2 = _interopRequireDefault(_localStorage);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ClockOutBtn = _react2.default.createClass({
@@ -3843,7 +3847,8 @@ var Timesheet = _react2.default.createClass({
 
   componentDidMount: function componentDidMount() {
     _timeLogStore2.default.addChangeListener(this._onChange);
-    _viewActions2.default.getTimeLogs();
+    var babyIDs = _lodash2.default.map(_localStorage2.default.get('babies') || [], '_id');
+    _viewActions2.default.getTimeLogs(babyIDs);
   },
 
   componentWillUnmount: function componentWillUnmount() {
@@ -3903,28 +3908,55 @@ var Timesheet = _react2.default.createClass({
     var clockInBtn = void 0,
         clockOutBtn = void 0,
         filterStepper = void 0,
-        totalHours = void 0;
+        totalHours = void 0,
+        table = void 0;
     var filter = this.state.timeFilter;
     var subFilter = this.state.subFilter;
 
     var dataSet = this.state.timeLogs[filter];
-    var specificData = subFilter ? dataSet[subFilter] : dataSet;
 
-    var columns = [{
-      property: 'date',
-      header: 'Date'
-    }, {
-      property: 'timeIn',
-      header: 'Time In'
-    }, {
-      property: 'timeOut',
-      header: 'Time Out'
-    }, {
-      property: 'hours',
-      header: 'Hours'
-    }];
+    if (_lodash2.default.isEmpty(dataSet)) {
+      table = _react2.default.createElement('div', null);
+    } else {
+      var specificData = subFilter ? dataSet[subFilter] : dataSet;
 
-    if (this.state.isClockedIn) {
+      var columns = [{
+        property: 'date',
+        header: 'Date'
+      }, {
+        property: 'timeIn',
+        header: 'Time In'
+      }, {
+        property: 'timeOut',
+        header: 'Time Out'
+      }, {
+        property: 'hours',
+        header: 'Hours'
+      }];
+
+      if (filter !== 'all') {
+        var totalTime = _lodash2.default.reduce(specificData, function (total, n) {
+          return total + n.hours;
+        }, 0).toFixed(2);
+
+        filterStepper = _react2.default.createElement(FilterStepper, { options: Object.keys(dataSet).reverse(), onChange: this._setSubFilter });
+        totalHours = _react2.default.createElement(
+          'div',
+          { className: 'text-center' },
+          _react2.default.createElement(
+            'h3',
+            null,
+            'Total: ',
+            totalTime,
+            ' hrs.'
+          )
+        );
+      }
+
+      table = _react2.default.createElement(_reactabular.Table, { className: 'timesheet-table', columns: columns, data: specificData });
+    }
+
+    if (this.state.isClockedIn && !_lodash2.default.isEmpty(dataSet)) {
       var clockOutID = this.state.timeLogs.all[0]._id;
       clockOutBtn = _react2.default.createElement(ClockOutBtn, { key: 'clock-out-timesheet', clockOutID: clockOutID, className: 'btn feed-btn' });
     } else {
@@ -3936,25 +3968,6 @@ var Timesheet = _react2.default.createClass({
           disabled: this.state.isClockedIn },
         _react2.default.createElement('i', { className: 'fa fa-sign-in' }),
         ' Clock In'
-      );
-    }
-
-    if (filter !== 'all') {
-      var totalTime = _lodash2.default.reduce(specificData, function (total, n) {
-        return total + n.hours;
-      }, 0).toFixed(2);
-
-      filterStepper = _react2.default.createElement(FilterStepper, { options: Object.keys(dataSet).reverse(), onChange: this._setSubFilter });
-      totalHours = _react2.default.createElement(
-        'div',
-        { className: 'text-center' },
-        _react2.default.createElement(
-          'h3',
-          null,
-          'Total: ',
-          totalTime,
-          ' hrs.'
-        )
       );
     }
 
@@ -4027,7 +4040,7 @@ var Timesheet = _react2.default.createClass({
         _react2.default.createElement(
           'div',
           { className: 'flex-center flex-row' },
-          _react2.default.createElement(_reactabular.Table, { className: 'timesheet-table', columns: columns, data: specificData })
+          table
         ),
         totalHours
       ),
@@ -4054,7 +4067,7 @@ var Timesheet = _react2.default.createClass({
 
 exports.default = Timesheet;
 
-},{"../actions/view-actions":3,"../stores/time-log-store":27,"classnames":36,"lodash":41,"moment-timezone":43,"react":273,"reactabular":286}],21:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/time-log-store":27,"../utils/local-storage":31,"classnames":36,"lodash":41,"moment-timezone":43,"react":273,"reactabular":286}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

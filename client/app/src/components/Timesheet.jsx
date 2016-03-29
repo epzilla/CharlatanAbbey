@@ -7,6 +7,7 @@ import cx from 'classnames';
 import { Table } from 'reactabular';
 import TimeLogStore from '../stores/time-log-store';
 import Actions from '../actions/view-actions';
+import ls from '../utils/local-storage';
 
 const ClockOutBtn = React.createClass({
 
@@ -108,7 +109,8 @@ const Timesheet = React.createClass({
 
   componentDidMount: function () {
     TimeLogStore.addChangeListener(this._onChange);
-    Actions.getTimeLogs();
+    let babyIDs = _.map(ls.get('babies') || [], '_id');
+    Actions.getTimeLogs(babyIDs);
   },
 
   componentWillUnmount: function () {
@@ -166,33 +168,53 @@ const Timesheet = React.createClass({
 
   render: function () {
 
-    let clockInBtn, clockOutBtn, filterStepper, totalHours;
+    let clockInBtn, clockOutBtn, filterStepper, totalHours, table;
     let filter = this.state.timeFilter;
     let subFilter = this.state.subFilter;
 
     let dataSet = this.state.timeLogs[filter];
-    let specificData = subFilter ? dataSet[subFilter] : dataSet;
 
-    let columns = [
-      {
-        property: 'date',
-        header: 'Date',
-      },
-      {
-        property: 'timeIn',
-        header: 'Time In',
-      },
-      {
-        property: 'timeOut',
-        header: 'Time Out',
-      },
-      {
-        property: 'hours',
-        header: 'Hours'
+    if (_.isEmpty(dataSet)) {
+      table = <div></div>;
+    } else {
+      let specificData = subFilter ? dataSet[subFilter] : dataSet;
+
+      let columns = [
+        {
+          property: 'date',
+          header: 'Date',
+        },
+        {
+          property: 'timeIn',
+          header: 'Time In',
+        },
+        {
+          property: 'timeOut',
+          header: 'Time Out',
+        },
+        {
+          property: 'hours',
+          header: 'Hours'
+        }
+      ];
+
+      if (filter !== 'all') {
+        let totalTime = _.reduce(specificData, function (total, n) {
+          return total + n.hours;
+        }, 0).toFixed(2);
+
+        filterStepper = <FilterStepper options={Object.keys(dataSet).reverse()} onChange={this._setSubFilter} />;
+        totalHours = (
+          <div className="text-center">
+            <h3>Total: {totalTime} hrs.</h3>
+          </div>
+        );
       }
-    ];
 
-    if (this.state.isClockedIn) {
+      table = <Table className="timesheet-table" columns={columns} data={specificData} />;
+    }
+
+    if (this.state.isClockedIn && !_.isEmpty(dataSet)) {
       let clockOutID = this.state.timeLogs.all[0]._id;
       clockOutBtn = (
         <ClockOutBtn key={'clock-out-timesheet'} clockOutID={clockOutID} className='btn feed-btn' />
@@ -205,19 +227,6 @@ const Timesheet = React.createClass({
           disabled={this.state.isClockedIn}>
           <i className="fa fa-sign-in"></i> Clock In
         </button>
-      );
-    }
-
-    if (filter !== 'all') {
-      let totalTime = _.reduce(specificData, function (total, n) {
-        return total + n.hours;
-      }, 0).toFixed(2);
-
-      filterStepper = <FilterStepper options={Object.keys(dataSet).reverse()} onChange={this._setSubFilter} />;
-      totalHours = (
-        <div className="text-center">
-          <h3>Total: {totalTime} hrs.</h3>
-        </div>
       );
     }
 
@@ -251,7 +260,7 @@ const Timesheet = React.createClass({
         </div>
         <div className="middle">
           <div className="flex-center flex-row">
-            <Table className="timesheet-table" columns={columns} data={specificData} />
+            {table}
           </div>
           {totalHours}
         </div>

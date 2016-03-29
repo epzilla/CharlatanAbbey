@@ -15,15 +15,15 @@ var Actions = {
 
   getFoodTypes: () => API.getFoodTypes(),
 
-  getEvents: (babyID) => API.getEvents(babyID),
+  getEvents: babyID => API.getEvents(babyID),
 
-  getTimeLogs: (babyID) => API.getTimeLogs(babyID),
+  getTimeLogs: babyID => API.getTimeLogs(babyID),
 
-  submitEventForm: (formValues) => API.submitEvent(formValues),
+  submitEventForm: formValues => API.submitEvent(formValues),
 
-  editEventForm: (formValues) => API.editEvent(formValues),
+  editEventForm: formValues => API.editEvent(formValues),
 
-  clockIn: (timeLog) => API.clockIn(timeLog),
+  clockIn: timeLog => API.clockIn(timeLog),
 
   clockOut: (id, timeLog) => API.clockOut(id, timeLog),
 
@@ -45,7 +45,7 @@ var Actions = {
     });
   },
 
-  sendInitialConfig: (info) => {
+  sendInitialConfig: info => {
     var babyA = {
       firstname: info.babyA,
       lastname: info.query.lastname,
