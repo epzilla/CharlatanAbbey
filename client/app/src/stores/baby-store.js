@@ -1,18 +1,18 @@
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var _ = require('lodash');
-var Dispatcher = require('../dispatcher/app-dispatcher');
+import { ActionTypes } from '../constants/constants';
+import { EventEmitter } from 'events';
+import assign from 'object-assign';
+import _ from 'lodash';
+import AppDispatcher from '../dispatcher/app-dispatcher';
 import ls from '../utils/local-storage';
-var ActionTypes = Constants.ActionTypes;
-var CHANGE_EVENT = 'change';
-var _babies = ls.get('babies') || [];
-var _feeders = ls.get('feeders') || [];
-var _failedSearch;
 
-var BabyStore = assign({}, EventEmitter.prototype, {
+const CHANGE_EVENT = 'change';
+let _babies = ls.get('babies') || [];
+let _feeders = ls.get('feeders') || [];
+let _failedSearch;
+
+const BabyStore = assign({}, EventEmitter.prototype, {
   emitChange: function () {
-    this.emit(CHANGE_EVENT);
+    this.emit(CHANGE_EVENT)
   },
 
   addChangeListener: function (callback) {
@@ -23,25 +23,18 @@ var BabyStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getBabies: function () {
-    return _babies;
-  },
+  getBabies: () => _babies,
 
-  getBaby: function (id) {
-    return _.find(_babies, {'_id': id});
-  },
+  getBaby: id => _.find(_babies, {'_id': id}),
 
-  getFeeders: function () {
-    return _feeders;
-  },
+  getFeeders: () => _feeders,
 
-  getSearchFailed: function () {
-    return _failedSearch;
-  }
+  getSearchFailed: () => _failedSearch
 });
 
-BabyStore.dispatchToken = Dispatcher.register(function (payload) {
-  var action;
+BabyStore.dispatchToken =
+AppDispatcher.register(function (payload) {
+  let action;
   action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_BABIES:
@@ -56,4 +49,4 @@ BabyStore.dispatchToken = Dispatcher.register(function (payload) {
   BabyStore.emitChange();
 });
 
-module.exports = BabyStore;
+export default BabyStore;

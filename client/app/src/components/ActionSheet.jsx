@@ -1,10 +1,10 @@
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var Swipeable = require('react-swipeable');
+import React from 'react';
+import _ from 'lodash';
+import Swipeable from 'react-swipeable';
 
-var EventBtn = React.createClass({
+const EventBtn = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
@@ -15,7 +15,7 @@ var EventBtn = React.createClass({
   },
 
   render: function () {
-    var baby = this.props.baby;
+    let baby = this.props.baby;
     return (
       <button
         key={'button' + baby.birth}
@@ -27,7 +27,7 @@ var EventBtn = React.createClass({
   }
 });
 
-var ActionSheet = React.createClass({
+const ActionSheet = React.createClass({
 
   contextTypes: {
     router: React.PropTypes.object.isRequired
@@ -39,8 +39,8 @@ var ActionSheet = React.createClass({
   },
 
   render: function () {
-    var that = this;
-    var babies = _.map(this.props.babies, function (baby) {
+    let that = this;
+    let babies = _.map(this.props.babies, function (baby) {
       return <EventBtn key={'EventBtn' + baby.firstname} baby={baby} dismiss={that.props.dismiss}/>;
     });
 
@@ -70,4 +70,4 @@ var ActionSheet = React.createClass({
   }
 });
 
-module.exports = ActionSheet;
+export default ActionSheet;

@@ -1,10 +1,11 @@
-var React = require('react');
-var Stepper = require('./Stepper.jsx');
-var TimeStepper = React.createClass({
+import React from 'react';
+import Stepper from './Stepper.jsx';
+
+const TimeStepper = React.createClass({
 
   _setHours: function (e) {
-    var newTime = this.state.time;
-    var newHours = parseInt(e.amount);
+    let newTime = this.state.time;
+    let newHours = parseInt(e.amount);
 
     if (this.state.amPm === 'pm' && newHours < 12) {
       newHours += 12;
@@ -21,7 +22,7 @@ var TimeStepper = React.createClass({
   },
 
   _setMins: function (e) {
-    var newTime = this.state.time;
+    let newTime = this.state.time;
     newTime.minutes(parseInt(e.amount));
     this.setState({
       time: newTime,
@@ -32,8 +33,8 @@ var TimeStepper = React.createClass({
   },
 
   _setAmPm: function (e) {
-    var newTime = this.state.time;
-    var currentAmPm = newTime.format('a');
+    let newTime = this.state.time;
+    let currentAmPm = newTime.format('a');
     if (e.target.value === 'pm') {
       newTime = currentAmPm === 'am' ? newTime.add(12, 'hours') : newTime;
     } else {
@@ -49,10 +50,10 @@ var TimeStepper = React.createClass({
   },
 
   getInitialState: function () {
-    var t = this.props.time;
-    var h = t.hours();
-    var m = t.minutes();
-    var pm = t.format('a');
+    let t = this.props.time;
+    let h = t.hours();
+    let m = t.minutes();
+    let pm = t.format('a');
 
     if (pm === 'pm') {
       h -= 12;
@@ -100,4 +101,4 @@ var TimeStepper = React.createClass({
 
 });
 
-module.exports = TimeStepper;
+export default TimeStepper;

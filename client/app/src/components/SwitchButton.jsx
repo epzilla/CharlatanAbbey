@@ -1,13 +1,13 @@
-var React = require('react');
-var _ = require('lodash');
+import React from 'react';
+import _ from 'lodash';
 
-var SwitchButton = React.createClass({
+const SwitchButton = React.createClass({
 
   render: function () {
-    var emoji;
+    let emoji;
 
     if (this.props.emoji) {
-      var label = this.props.label ? this.props.label : _.capitalize(this.props.value);
+      let label = this.props.label ? this.props.label : _.capitalize(this.props.value);
       emoji = (
         <span className='emojifier' style={{display: 'inline'}}>
           <img
@@ -37,4 +37,4 @@ var SwitchButton = React.createClass({
   }
 });
 
-module.exports = SwitchButton;
+export default SwitchButton;

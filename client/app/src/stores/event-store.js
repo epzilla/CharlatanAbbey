@@ -1,33 +1,34 @@
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Dispatcher = require('../dispatcher/app-dispatcher');
-var _ = require('lodash');
-var moment = require('moment-timezone');
+import { ActionTypes } from '../constants/constants';
+import { EventEmitter } from 'events';
+import assign from 'object-assign';
+import AppDispatcher from '../dispatcher/app-dispatcher';
+import _ from 'lodash';
+import moment from 'moment';
+import 'moment-timezone';
 import ls from '../utils/local-storage';
-var ActionTypes = Constants.ActionTypes;
-var CHANGE_EVENT = 'change';
-var _events = ls.get('events') || [];
-var _feedings = ls.get('feedings') || [];
-var _diapers = ls.get('diapers') || [];
-var _meds = ls.get('meds') || [];
-var _spits = ls.get('spits') || [];
-var _poops = ls.get('poops') || [];
-var _latest = ls.get('latest') || [];
-var _latestPoops = ls.get('latest-poops') || {};
-var _latestPrevacid = ls.get('latest-prevacid') || {};
-var _lastDayFeedings = ls.get('last-day-feedings') || {};
-var _lastDayEvents = ls.get('last-day-events') || {};
-var _lastDayMeds = ls.get('last-day-meds') || {};
-var _lastDayPoops= ls.get('last-day-poops') || {};
-var _lastWeekEvents = ls.get('last-week-events') || {};
-var _lastWeekFeedings = ls.get('last-week-feedings') || {};
-var _lastWeekMeds = ls.get('last-week-meds') || {};
-var _lastWeekPoops = ls.get('last-week-poops') || {};
-var _groupedEvents = ls.get('grouped-events') || {};
-var _groupedFeedings = ls.get('grouped-feedings') || {};
-var _groupedMeds = ls.get('grouped-meds') || {};
-var _groupedPoops= ls.get('grouped-poops') || {};
+
+let CHANGE_EVENT = 'change';
+let _events = ls.get('events') || [];
+let _feedings = ls.get('feedings') || [];
+let _diapers = ls.get('diapers') || [];
+let _meds = ls.get('meds') || [];
+let _spits = ls.get('spits') || [];
+let _poops = ls.get('poops') || [];
+let _latest = ls.get('latest') || [];
+let _latestPoops = ls.get('latest-poops') || {};
+let _latestPrevacid = ls.get('latest-prevacid') || {};
+let _lastDayFeedings = ls.get('last-day-feedings') || {};
+let _lastDayEvents = ls.get('last-day-events') || {};
+let _lastDayMeds = ls.get('last-day-meds') || {};
+let _lastDayPoops= ls.get('last-day-poops') || {};
+let _lastWeekEvents = ls.get('last-week-events') || {};
+let _lastWeekFeedings = ls.get('last-week-feedings') || {};
+let _lastWeekMeds = ls.get('last-week-meds') || {};
+let _lastWeekPoops = ls.get('last-week-poops') || {};
+let _groupedEvents = ls.get('grouped-events') || {};
+let _groupedFeedings = ls.get('grouped-feedings') || {};
+let _groupedMeds = ls.get('grouped-meds') || {};
+let _groupedPoops= ls.get('grouped-poops') || {};
 
 if (_groupedFeedings && _groupedFeedings.length > 0) {
   _latest = _.map(_groupedFeedings, function (baby) {
@@ -36,7 +37,7 @@ if (_groupedFeedings && _groupedFeedings.length > 0) {
 }
 
 
-var EventStore = assign({}, EventEmitter.prototype, {
+const EventStore = assign({}, EventEmitter.prototype, {
   emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
@@ -49,25 +50,15 @@ var EventStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getEvents: function () {
-    return _events;
-  },
+  getEvents: () => _events,
 
-  getEvent: function (id) {
-    return _.find(_events, {_id: id});
-  },
+  getEvent: id => _.find(_events, {_id: id}),
 
-  getLatestFeedings: function () {
-    return _latest;
-  },
+  getLatestFeedings: () => _latest,
 
-  getFeedings: function () {
-    return _groupedFeedings;
-  },
+  getFeedings: () => _groupedFeedings,
 
-  getLastDayFeedings: function () {
-    return _lastDayFeedings;
-  },
+  getLastDayFeedings: () => _lastDayFeedings,
 
   getEverything: function () {
     return {
@@ -93,14 +84,16 @@ var EventStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-var updateStore = function () {
+const updateStore = function () {
 
   _feedings = _.filter(_events, {eventType: 'feeding'});
   _diapers = _.filter(_events, {eventType: 'diaper'});
   _spits = _.filter(_events, {eventType: 'spit'});
+
   _poops = _.filter(_events, function (ev) {
     return _.contains(ev.diaper, 'poop');
   });
+
   _meds = _.filter(_events, function (ev) {
     return (ev.eventType === 'medicine' || !_.isEmpty(ev.medicine));
   });
@@ -245,7 +238,8 @@ var updateStore = function () {
   EventStore.emitChange();
 };
 
-EventStore.dispatchToken = Dispatcher.register(function (payload) {
+EventStore.dispatchToken =
+AppDispatcher.register(function (payload) {
   var action;
   action = payload.action;
   switch (action.type) {
@@ -278,4 +272,4 @@ EventStore.dispatchToken = Dispatcher.register(function (payload) {
   }
 });
 
-module.exports = EventStore;
+export default EventStore;

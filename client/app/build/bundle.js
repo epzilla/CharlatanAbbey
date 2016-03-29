@@ -1,13 +1,49 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
 var _reactDom = require('react-dom');
+
+var _reactAddonsCssTransitionGroup = require('react-addons-css-transition-group');
+
+var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
 
 var _reactRouter = require('react-router');
 
+var _GetStarted = require('./components/GetStarted.jsx');
+
+var _GetStarted2 = _interopRequireDefault(_GetStarted);
+
+var _Home = require('./components/Home.jsx');
+
+var _Home2 = _interopRequireDefault(_Home);
+
+var _History = require('./components/History.jsx');
+
+var _History2 = _interopRequireDefault(_History);
+
+var _Log = require('./components/Log.jsx');
+
+var _Log2 = _interopRequireDefault(_Log);
+
+var _Edit = require('./components/Edit.jsx');
+
+var _Edit2 = _interopRequireDefault(_Edit);
+
+var _Timesheet = require('./components/Timesheet.jsx');
+
+var _Timesheet2 = _interopRequireDefault(_Timesheet);
+
 var _api = require('./utils/api');
 
-var API = _interopRequireWildcard(_api);
+var _api2 = _interopRequireDefault(_api);
 
 var _localStorage = require('./utils/local-storage');
 
@@ -15,36 +51,21 @@ var _localStorage2 = _interopRequireDefault(_localStorage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-var React = require('react');
-
-var CSSTransitionGroup = require('react-addons-css-transition-group');
-var _ = require('lodash');
-
-var GetStarted = require('./components/GetStarted.jsx');
-var Home = require('./components/Home.jsx');
-var History = require('./components/History.jsx');
-var Log = require('./components/Log.jsx');
-var Edit = require('./components/Edit.jsx');
-var Timesheet = require('./components/Timesheet.jsx');
-
-
-var App = React.createClass({
+var App = _react2.default.createClass({
   displayName: 'App',
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   render: function render() {
-    return React.createElement(
-      CSSTransitionGroup,
+    return _react2.default.createElement(
+      _reactAddonsCssTransitionGroup2.default,
       {
         transitionName: 'routechange',
         transitionEnterTimeout: 0,
         transitionLeaveTimeout: 0 },
-      React.cloneElement(this.props.children, {
+      _react2.default.cloneElement(this.props.children, {
         key: this.props.location.pathname
       })
     );
@@ -53,181 +74,203 @@ var App = React.createClass({
 
 document.addEventListener('DOMContentLoaded', function () {
   var babies = _localStorage2.default.get('babies');
-  if (!_.isEmpty(babies)) {
-    var babyIDs = _.map(babies, '_id');
-    API.getEvents(babyIDs);
-    API.getTimeLogs(babyIDs);
+  if (!_lodash2.default.isEmpty(babies)) {
+    var babyIDs = _lodash2.default.map(babies, '_id');
+    _api2.default.getEvents(babyIDs);
+    _api2.default.getTimeLogs(babyIDs);
   }
-  (0, _reactDom.render)(React.createElement(
+  (0, _reactDom.render)(_react2.default.createElement(
     _reactRouter.Router,
     { history: _reactRouter.browserHistory },
-    React.createElement(
+    _react2.default.createElement(
       _reactRouter.Route,
       { path: '/', component: App },
-      React.createElement(_reactRouter.IndexRoute, { component: Home }),
-      React.createElement(_reactRouter.Route, { path: '/get-started', component: GetStarted }),
-      React.createElement(_reactRouter.Route, { path: '/history', component: History }),
-      React.createElement(_reactRouter.Route, { path: '/log-event/:id', component: Log }),
-      React.createElement(_reactRouter.Route, { path: '/timesheet', component: Timesheet }),
-      React.createElement(_reactRouter.Route, { path: '/edit/:logEvent', component: Edit })
+      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/get-started', component: _GetStarted2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/history', component: _History2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/log-event/:id', component: _Log2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/timesheet', component: _Timesheet2.default }),
+      _react2.default.createElement(_reactRouter.Route, { path: '/edit/:logEvent', component: _Edit2.default })
     )
   ), document.getElementById('reaction'));
 });
 
-},{"./components/Edit.jsx":7,"./components/GetStarted.jsx":12,"./components/History.jsx":13,"./components/Home.jsx":14,"./components/Log.jsx":15,"./components/Timesheet.jsx":20,"./utils/api":29,"./utils/local-storage":31,"lodash":41,"react":272,"react-addons-css-transition-group":50,"react-dom":51,"react-router":79}],2:[function(require,module,exports){
+},{"./components/Edit.jsx":7,"./components/GetStarted.jsx":12,"./components/History.jsx":13,"./components/Home.jsx":14,"./components/Log.jsx":15,"./components/Timesheet.jsx":20,"./utils/api":29,"./utils/local-storage":31,"lodash":41,"react":273,"react-addons-css-transition-group":51,"react-dom":52,"react-router":80}],2:[function(require,module,exports){
 'use strict';
 
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var AppConstants = require('../constants/constants');
-var ActionTypes = AppConstants.ActionTypes;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var ServerActions = {
+var _appDispatcher = require('../dispatcher/app-dispatcher');
+
+var _appDispatcher2 = _interopRequireDefault(_appDispatcher);
+
+var _constants = require('../constants/constants');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Actions = {
   receiveEvents: function receiveEvents(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_EVENTS,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.RECEIVE_EVENTS,
       data: data
     });
   },
 
   receiveFeedings: function receiveFeedings(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_FEEDINGS,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.RECEIVE_FEEDINGS,
       data: data
     });
   },
 
   receiveBabies: function receiveBabies(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_BABIES,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.RECEIVE_BABIES,
       data: data
     });
   },
 
   noBabiesFound: function noBabiesFound() {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.NO_BABIES_FOUND
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.NO_BABIES_FOUND
     });
   },
 
   receiveFoodTypes: function receiveFoodTypes(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_FOOD_TYPES,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.RECEIVE_FOOD_TYPES,
       data: data
     });
   },
 
   receiveTimeLogs: function receiveTimeLogs(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_TIME_LOGS,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.RECEIVE_TIME_LOGS,
       data: data
     });
   },
 
   successfulEventPost: function successfulEventPost(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.SUCCESSFUL_EVENT_POST,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.SUCCESSFUL_EVENT_POST,
       data: data
     });
   },
 
   successfulEventEdit: function successfulEventEdit(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.SUCCESSFUL_EVENT_EDIT,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.SUCCESSFUL_EVENT_EDIT,
       data: data
     });
   },
 
   clockedIn: function clockedIn(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.CLOCKED_IN,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.CLOCKED_IN,
       data: data
     });
   },
 
   clockedOut: function clockedOut(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.CLOCKED_OUT,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.CLOCKED_OUT,
       data: data
     });
   },
 
   initialized: function initialized(data) {
-    AppDispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_BABIES,
+    _appDispatcher2.default.handleServerAction({
+      type: _constants.ActionTypes.RECEIVE_BABIES,
       data: data
     });
   }
 };
 
-module.exports = ServerActions;
+exports.default = Actions;
 
 },{"../constants/constants":22,"../dispatcher/app-dispatcher":23}],3:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
 
 var _api = require('../utils/api');
 
 var _api2 = _interopRequireDefault(_api);
 
+var _momentTimezone = require('moment-timezone');
+
+var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
+
+var _appDispatcher = require('../dispatcher/app-dispatcher');
+
+var _appDispatcher2 = _interopRequireDefault(_appDispatcher);
+
+var _constants = require('../constants/constants');
+
+var _fractions = require('../utils/fractions');
+
+var _fractions2 = _interopRequireDefault(_fractions);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var _ = require('lodash');
-
-var moment = require('moment-timezone');
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var AppConstants = require('../constants/constants');
-var fractions = require('../utils/fractions');
-var ActionTypes = AppConstants.ActionTypes;
-
-var ViewActions = {
+var Actions = {
 
   findBabies: function findBabies(obj) {
-    obj.birthdate = moment(obj.birthdate).format("MM-DD-YYYY");
+    obj.birthdate = (0, _momentTimezone2.default)(obj.birthdate).format("MM-DD-YYYY");
     _api2.default.findBabies(obj);
   },
 
   getFoodTypes: function getFoodTypes() {
-    _api2.default.getFoodTypes();
+    return _api2.default.getFoodTypes();
   },
 
   getEvents: function getEvents(babyID) {
-    _api2.default.getEvents(babyID);
+    return _api2.default.getEvents(babyID);
   },
 
   getTimeLogs: function getTimeLogs(babyID) {
-    _api2.default.getTimeLogs(babyID);
+    return _api2.default.getTimeLogs(babyID);
   },
 
   submitEventForm: function submitEventForm(formValues) {
-    _api2.default.submitEvent(formValues);
+    return _api2.default.submitEvent(formValues);
   },
 
   editEventForm: function editEventForm(formValues) {
-    _api2.default.editEvent(formValues);
+    return _api2.default.editEvent(formValues);
   },
 
   clockIn: function clockIn(timeLog) {
-    _api2.default.clockIn(timeLog);
+    return _api2.default.clockIn(timeLog);
   },
 
   clockOut: function clockOut(id, timeLog) {
-    _api2.default.clockOut(id, timeLog);
+    return _api2.default.clockOut(id, timeLog);
   },
 
   wizardNext: function wizardNext() {
-    AppDispatcher.handleViewAction({
-      type: ActionTypes.WIZARD_NEXT
+    _appDispatcher2.default.handleViewAction({
+      type: _constants.ActionTypes.WIZARD_NEXT
     });
   },
 
   wizardPrev: function wizardPrev() {
-    AppDispatcher.handleViewAction({
-      type: ActionTypes.WIZARD_PREV
+    _appDispatcher2.default.handleViewAction({
+      type: _constants.ActionTypes.WIZARD_PREV
     });
   },
 
   wizardDone: function wizardDone() {
-    AppDispatcher.handleViewAction({
-      type: ActionTypes.WIZARD_DONE
+    _appDispatcher2.default.handleViewAction({
+      type: _constants.ActionTypes.WIZARD_DONE
     });
   },
 
@@ -237,32 +280,50 @@ var ViewActions = {
       lastname: info.query.lastname,
       birth: info.query.birthdate,
       defaults: {
-        hours: fractions.getDecimal(info.fullHours, info.fracHours),
-        ounces: fractions.getDecimal(info.fullOunces, info.fracOunces)
+        hours: _fractions2.default.getDecimal(info.fullHours, info.fracHours),
+        ounces: _fractions2.default.getDecimal(info.fullOunces, info.fracOunces)
       },
-      feeders: _.map(info.feeders, function (feeder) {
-        return { name: feeder.name };
+      feeders: _lodash2.default.map(info.feeders, function (feeder) {
+        name: feeder.name;
       })
     };
 
-    var babyB = _.assign({}, babyA, { firstname: info.babyB });
+    var babyB = _lodash2.default.assign({}, babyA, { firstname: info.babyB });
 
     _api2.default.sendInitialConfig({ babies: [babyA, babyB] });
   }
 };
 
-module.exports = ViewActions;
+exports.default = Actions;
 
 },{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/api":29,"../utils/fractions":30,"lodash":41,"moment-timezone":43}],4:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var Link = require('react-router').Link;
-var ActionSheet = require('./ActionSheet.jsx');
-var CSSTransitionGroup = require('react-addons-css-transition-group');
-var Actions = require('../actions/view-actions');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var ActionButtons = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _ActionSheet = require('./ActionSheet.jsx');
+
+var _ActionSheet2 = _interopRequireDefault(_ActionSheet);
+
+var _reactAddonsCssTransitionGroup = require('react-addons-css-transition-group');
+
+var _reactAddonsCssTransitionGroup2 = _interopRequireDefault(_reactAddonsCssTransitionGroup);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ActionButtons = _react2.default.createClass({
   displayName: 'ActionButtons',
 
 
@@ -282,44 +343,44 @@ var ActionButtons = React.createClass({
     this.setState({
       logEvent: true
     });
-    Actions.getFoodTypes();
+    _viewActions2.default.getFoodTypes();
   },
 
   render: function render() {
 
-    var actionSheet;
+    var actionSheet = void 0;
 
     if (this.state.logEvent) {
-      actionSheet = React.createElement(ActionSheet, {
+      actionSheet = _react2.default.createElement(_ActionSheet2.default, {
         key: this.state.logEvent,
         babies: this.props.babies,
         dismiss: this._dismissActionSheet });
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       null,
-      React.createElement(
-        CSSTransitionGroup,
+      _react2.default.createElement(
+        _reactAddonsCssTransitionGroup2.default,
         {
           transitionName: 'action-sheet',
           transitionEnterTimeout: 0,
           transitionLeaveTimeout: 0 },
         actionSheet
       ),
-      React.createElement(
+      _react2.default.createElement(
         'section',
         { className: 'action-btns flex-center', id: 'action-btns' },
-        React.createElement(
+        _react2.default.createElement(
           'button',
           { className: 'btn action-btn', id: 'log-btn', onClick: this._logEvent },
-          React.createElement('i', { className: 'fa fa-pencil' }),
+          _react2.default.createElement('i', { className: 'fa fa-pencil' }),
           'Log Event'
         ),
-        React.createElement(
-          Link,
+        _react2.default.createElement(
+          _reactRouter.Link,
           { to: '/history', className: 'btn action-btn', id: 'history-btn' },
-          React.createElement('i', { className: 'fa fa-history' }),
+          _react2.default.createElement('i', { className: 'fa fa-history' }),
           'View History'
         )
       )
@@ -327,20 +388,34 @@ var ActionButtons = React.createClass({
   }
 });
 
-module.exports = ActionButtons;
+exports.default = ActionButtons;
 
-},{"../actions/view-actions":3,"./ActionSheet.jsx":5,"react":272,"react-addons-css-transition-group":50,"react-router":79}],5:[function(require,module,exports){
+},{"../actions/view-actions":3,"./ActionSheet.jsx":5,"react":273,"react-addons-css-transition-group":51,"react-router":80}],5:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var Swipeable = require('react-swipeable');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var EventBtn = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _reactSwipeable = require('react-swipeable');
+
+var _reactSwipeable2 = _interopRequireDefault(_reactSwipeable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EventBtn = _react2.default.createClass({
   displayName: 'EventBtn',
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   _logEvent: function _logEvent() {
@@ -350,7 +425,7 @@ var EventBtn = React.createClass({
 
   render: function render() {
     var baby = this.props.baby;
-    return React.createElement(
+    return _react2.default.createElement(
       'button',
       {
         key: 'button' + baby.birth,
@@ -362,12 +437,12 @@ var EventBtn = React.createClass({
   }
 });
 
-var ActionSheet = React.createClass({
+var ActionSheet = _react2.default.createClass({
   displayName: 'ActionSheet',
 
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   _logTime: function _logTime() {
@@ -377,37 +452,37 @@ var ActionSheet = React.createClass({
 
   render: function render() {
     var that = this;
-    var babies = _.map(this.props.babies, function (baby) {
-      return React.createElement(EventBtn, { key: 'EventBtn' + baby.firstname, baby: baby, dismiss: that.props.dismiss });
+    var babies = _lodash2.default.map(this.props.babies, function (baby) {
+      return _react2.default.createElement(EventBtn, { key: 'EventBtn' + baby.firstname, baby: baby, dismiss: that.props.dismiss });
     });
 
-    return React.createElement(
-      Swipeable,
+    return _react2.default.createElement(
+      _reactSwipeable2.default,
       { className: 'swipeable-action-sheet', key: 'Swipeable' + this.props.babies[0].weight, onSwipedDown: this.props.dismiss },
-      React.createElement(
+      _react2.default.createElement(
         'section',
         { key: 'section' + this.props.babies[0].name, className: 'action-sheet flex-center flex-col', id: 'action-sheet' },
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { key: 'div-babies', className: 'baby-btn-container flex-center flex-row' },
           babies
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { key: 'div-timesheet-btn', className: 'baby-btn-container flex-center flex-row' },
-          React.createElement(
+          _react2.default.createElement(
             'button',
             { key: 'nanny' + this.props.babies[0].name,
               className: 'btn feed-btn timesheet-btn',
               onClick: this._logTime },
-            React.createElement('i', { className: 'fa fa-clock-o' }),
+            _react2.default.createElement('i', { className: 'fa fa-clock-o' }),
             ' Nanny Timesheet'
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { key: 'div-cancel-btn', className: 'baby-btn-container flex-center flex-row' },
-          React.createElement(
+          _react2.default.createElement(
             'button',
             { key: 'cancel' + this.props.babies[0].name,
               className: 'btn feed-btn cancel-btn',
@@ -420,111 +495,168 @@ var ActionSheet = React.createClass({
   }
 });
 
-module.exports = ActionSheet;
+exports.default = ActionSheet;
 
-},{"lodash":41,"react":272,"react-swipeable":109}],6:[function(require,module,exports){
+},{"lodash":41,"react":273,"react-swipeable":110}],6:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var Actions = require('../actions/view-actions');
-var FeedingInfo = require('./FeedingInfo.jsx');
-var EventStore = require('../stores/event-store');
-var TimeLogStore = require('../stores/time-log-store');
-var ActionButtons = require('./ActionButtons.jsx');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var BabiesSummaryView = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+var _FeedingInfo = require('./FeedingInfo.jsx');
+
+var _FeedingInfo2 = _interopRequireDefault(_FeedingInfo);
+
+var _eventStore = require('../stores/event-store');
+
+var _eventStore2 = _interopRequireDefault(_eventStore);
+
+var _timeLogStore = require('../stores/time-log-store');
+
+var _timeLogStore2 = _interopRequireDefault(_timeLogStore);
+
+var _ActionButtons = require('./ActionButtons.jsx');
+
+var _ActionButtons2 = _interopRequireDefault(_ActionButtons);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BabiesSummaryView = _react2.default.createClass({
   displayName: 'BabiesSummaryView',
 
   getInitialState: function getInitialState() {
     return {
-      babyIDs: _.map(this.props.babies, '_id'),
-      feedings: EventStore.getLatestFeedings(),
-      timeLogs: TimeLogStore.getTimeLogs()
+      babyIDs: _lodash2.default.map(this.props.babies, '_id'),
+      feedings: _eventStore2.default.getLatestFeedings(),
+      timeLogs: _timeLogStore2.default.getTimeLogs()
     };
   },
 
   _onChange: function _onChange() {
     this.setState({
-      feedings: EventStore.getLatestFeedings()
+      feedings: _eventStore2.default.getLatestFeedings()
     });
   },
 
   componentDidMount: function componentDidMount() {
-    EventStore.addChangeListener(this._onChange);
-    Actions.getEvents(this.state.babyIDs);
-    Actions.getTimeLogs(this.state.babyIDs);
+    _eventStore2.default.addChangeListener(this._onChange);
+    _viewActions2.default.getEvents(this.state.babyIDs);
+    _viewActions2.default.getTimeLogs(this.state.babyIDs);
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    EventStore.removeChangeListener(this._onChange);
+    _eventStore2.default.removeChangeListener(this._onChange);
   },
 
   render: function render() {
-    var feedingsInfo;
+    var feedingsInfo = void 0;
 
-    if (_.isEmpty(this.state.feedings)) {
-      feedingsInfo = React.createElement(
+    if (_lodash2.default.isEmpty(this.state.feedings)) {
+      feedingsInfo = _react2.default.createElement(
         'div',
         { className: 'no-feedings' },
-        React.createElement(
+        _react2.default.createElement(
           'h1',
           null,
           '¯\\_(ツ)_/¯'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Looks like you haven’t logged any feedings yet. When you do, the most recent ones will show up here on the home screen. Whenever you’re ready, go ahead and start logging down here!'
         ),
-        React.createElement('div', { className: 'big-downward-arrow' })
+        _react2.default.createElement('div', { className: 'big-downward-arrow' })
       );
     } else {
-      feedingsInfo = _.map(this.state.feedings, function (feeding) {
-        return React.createElement(FeedingInfo, { key: feeding._id, feeding: feeding });
+      feedingsInfo = _lodash2.default.map(this.state.feedings, function (feeding) {
+        return _react2.default.createElement(_FeedingInfo2.default, { key: feeding._id, feeding: feeding });
       });
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'article',
       { className: 'home-screen' },
-      React.createElement(
+      _react2.default.createElement(
         'section',
         { className: 'baby-info' },
         feedingsInfo
       ),
-      React.createElement(ActionButtons, { babies: this.props.babies })
+      _react2.default.createElement(_ActionButtons2.default, { babies: this.props.babies })
     );
   }
 });
 
-module.exports = BabiesSummaryView;
+exports.default = BabiesSummaryView;
 
-},{"../actions/view-actions":3,"../stores/event-store":25,"../stores/time-log-store":27,"./ActionButtons.jsx":4,"./FeedingInfo.jsx":10,"lodash":41,"react":272}],7:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/event-store":25,"../stores/time-log-store":27,"./ActionButtons.jsx":4,"./FeedingInfo.jsx":10,"lodash":41,"react":273}],7:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var EventStore = require('../stores/event-store');
-var BabyStore = require('../stores/baby-store');
-var Actions = require('../actions/view-actions');
-var _ = require('lodash');
-var moment = require('moment-timezone');
-var TimeStepper = require('./TimeStepper.jsx');
-var FractionalStepper = require('./FractionalStepper.jsx');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var Edit = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+require('moment-timezone');
+
+var _eventStore = require('../stores/event-store');
+
+var _eventStore2 = _interopRequireDefault(_eventStore);
+
+var _babyStore = require('../stores/baby-store');
+
+var _babyStore2 = _interopRequireDefault(_babyStore);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+var _TimeStepper = require('./TimeStepper.jsx');
+
+var _TimeStepper2 = _interopRequireDefault(_TimeStepper);
+
+var _FractionalStepper = require('./FractionalStepper.jsx');
+
+var _FractionalStepper2 = _interopRequireDefault(_FractionalStepper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Edit = _react2.default.createClass({
   displayName: 'Edit',
 
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   _submit: function _submit(e) {
     e.preventDefault();
     var amount = (this.state.fullAmount || 2) + (this.state.fracAmount || 0);
 
-    Actions.editEventForm({
+    _viewActions2.default.editEventForm({
       _id: this.props.params.logEvent,
       name: this.state.baby,
       eventType: this.state.eventType,
@@ -583,8 +715,8 @@ var Edit = React.createClass({
     var meds = this.state.medicine;
     var val = e.target.value;
 
-    if (_.contains(meds, val)) {
-      meds = _.without(meds, val);
+    if (_lodash2.default.contains(meds, val)) {
+      meds = _lodash2.default.without(meds, val);
     } else {
       meds.push(val);
     }
@@ -598,8 +730,8 @@ var Edit = React.createClass({
     var diapers = this.state.diaper;
     var val = e.target.value;
 
-    if (_.contains(diapers, val)) {
-      diapers = _.without(diapers, val);
+    if (_lodash2.default.contains(diapers, val)) {
+      diapers = _lodash2.default.without(diapers, val);
     } else {
       diapers.push(val);
     }
@@ -620,15 +752,15 @@ var Edit = React.createClass({
   },
 
   componentDidMount: function componentDidMount() {
-    EventStore.addChangeListener(this._onChange);
+    _eventStore2.default.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    EventStore.removeChangeListener(this._onChange);
+    _eventStore2.default.removeChangeListener(this._onChange);
   },
 
   getInitialState: function getInitialState() {
-    var e = EventStore.getEvent(this.props.params.logEvent);
+    var e = _eventStore2.default.getEvent(this.props.params.logEvent);
     var diaper = e.diaper;
     var meds = e.medicine;
 
@@ -647,11 +779,11 @@ var Edit = React.createClass({
       name: e.name,
       diaper: diaper || [],
       feeder: e.feeder,
-      feeders: BabyStore.getFeeders(),
+      feeders: _babyStore2.default.getFeeders(),
       medicine: meds || [],
       burp: e.burp,
       spit: e.spit,
-      time: moment(e.time)
+      time: (0, _moment2.default)(e.time)
     };
   },
 
@@ -659,36 +791,36 @@ var Edit = React.createClass({
     var that = this;
     var logEvent = this.state.logEvent;
     var baby = logEvent.name;
-    var time = moment(logEvent.time);
+    var time = (0, _moment2.default)(logEvent.time);
 
     var ounceField, feederField, medField, burpField, diaperField, spitField;
 
     if (logEvent.eventType === 'feeding') {
-      ounceField = React.createElement(
+      ounceField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em ounce-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'How much did she eat?'
         ),
-        React.createElement(FractionalStepper, {
+        _react2.default.createElement(_FractionalStepper2.default, {
           onChange: this._setAmount,
           initialValue: logEvent.amount,
           label: 'Oz.'
         })
       );
 
-      var feeders = _.map(this.state.feeders, function (f) {
-        return React.createElement(
+      var feeders = _lodash2.default.map(this.state.feeders, function (f) {
+        return _react2.default.createElement(
           'span',
           { className: 'switch', key: f.name },
-          React.createElement('input', { type: 'radio',
+          _react2.default.createElement('input', { type: 'radio',
             name: 'feeder',
             onChange: that._setFeeder,
             value: f.name,
             defaultChecked: logEvent.feeder === f.name }),
-          React.createElement(
+          _react2.default.createElement(
             'label',
             null,
             f.name
@@ -696,15 +828,15 @@ var Edit = React.createClass({
         );
       });
 
-      feederField = React.createElement(
+      feederField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em feeder-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Who fed her?'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
           feeders
@@ -713,42 +845,42 @@ var Edit = React.createClass({
     }
 
     if (logEvent.eventType === 'feeding' || logEvent.eventType === 'burp') {
-      burpField = React.createElement(
+      burpField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em burp-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Any burp?'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, defaultChecked: logEvent.burp === 'big', value: 'big' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, defaultChecked: logEvent.burp === 'big', value: 'big' }),
+            _react2.default.createElement(
               'label',
               null,
               'Big'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, defaultChecked: logEvent.burp === 'small', value: 'small' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, defaultChecked: logEvent.burp === 'small', value: 'small' }),
+            _react2.default.createElement(
               'label',
               null,
               'Small'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, defaultChecked: logEvent.burp === 'no', value: 'no' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, defaultChecked: logEvent.burp === 'no', value: 'no' }),
+            _react2.default.createElement(
               'label',
               null,
               'None'
@@ -759,56 +891,56 @@ var Edit = React.createClass({
     }
 
     if (logEvent.eventType === 'feeding' || logEvent.eventType === 'meds') {
-      medField = React.createElement(
+      medField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em meds-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Did she take any medicine?'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds,
-              defaultChecked: _.contains(logEvent.medicine, 'gas drops'), value: 'gas drops' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds,
+              defaultChecked: _lodash2.default.contains(logEvent.medicine, 'gas drops'), value: 'gas drops' }),
+            _react2.default.createElement(
               'label',
               null,
               'Gas Drops'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds,
-              defaultChecked: _.contains(logEvent.medicine, 'prevacid'), value: 'prevacid' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds,
+              defaultChecked: _lodash2.default.contains(logEvent.medicine, 'prevacid'), value: 'prevacid' }),
+            _react2.default.createElement(
               'label',
               null,
               'Prevacid'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds,
-              defaultChecked: _.contains(logEvent.medicine, 'eye drops'), value: 'eye drops' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds,
+              defaultChecked: _lodash2.default.contains(logEvent.medicine, 'eye drops'), value: 'eye drops' }),
+            _react2.default.createElement(
               'label',
               null,
               'Eye Drops'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds,
-              defaultChecked: _.contains(logEvent.medicine, 'tylenol'), value: 'tylenol' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds,
+              defaultChecked: _lodash2.default.contains(logEvent.medicine, 'tylenol'), value: 'tylenol' }),
+            _react2.default.createElement(
               'label',
               null,
               'Tylenol'
@@ -819,82 +951,82 @@ var Edit = React.createClass({
     }
 
     if (logEvent.eventType === 'feeding' || logEvent.eventType === 'diaper') {
-      diaperField = React.createElement(
+      diaperField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em diaper-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'How was the diaper?'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
-              defaultChecked: _.contains(logEvent.diaper, 'wet'), value: 'wet' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
+              defaultChecked: _lodash2.default.contains(logEvent.diaper, 'wet'), value: 'wet' }),
+            _react2.default.createElement(
               'label',
               null,
               'Wet'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
-              defaultChecked: _.contains(logEvent.diaper, 'small'), value: 'small poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
+              defaultChecked: _lodash2.default.contains(logEvent.diaper, 'small'), value: 'small poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Small Poop'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
-              defaultChecked: _.contains(logEvent.diaper, '+ poop'), value: 'poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
+              defaultChecked: _lodash2.default.contains(logEvent.diaper, '+ poop'), value: 'poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Normal Poop'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
-              defaultChecked: _.contains(logEvent.diaper, 'big'), value: 'big poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
+              defaultChecked: _lodash2.default.contains(logEvent.diaper, 'big'), value: 'big poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Big Poop'
             )
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'pad-bottom-1em' },
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
-              defaultChecked: _.contains(logEvent.diaper, 'runny'), value: 'runny poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
+              defaultChecked: _lodash2.default.contains(logEvent.diaper, 'runny'), value: 'runny poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Runny Poop'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
-              defaultChecked: _.contains(logEvent.diaper, 'dry'), value: 'dry poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper,
+              defaultChecked: _lodash2.default.contains(logEvent.diaper, 'dry'), value: 'dry poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Dry Poop'
@@ -905,45 +1037,45 @@ var Edit = React.createClass({
     }
 
     if (logEvent.eventType === 'feeding' || logEvent.eventType === 'spit') {
-      spitField = React.createElement(
+      spitField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em spit-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Any spit-up?'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit,
-              defaultChecked: _.contains(logEvent.spit, 'big'), value: 'big' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit,
+              defaultChecked: _lodash2.default.contains(logEvent.spit, 'big'), value: 'big' }),
+            _react2.default.createElement(
               'label',
               null,
               'Big'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit,
-              defaultChecked: _.contains(logEvent.spit, 'small'), value: 'small' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit,
+              defaultChecked: _lodash2.default.contains(logEvent.spit, 'small'), value: 'small' }),
+            _react2.default.createElement(
               'label',
               null,
               'Small'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit,
-              defaultChecked: _.contains(logEvent.spit, 'no'), value: 'no' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit,
+              defaultChecked: _lodash2.default.contains(logEvent.spit, 'no'), value: 'no' }),
+            _react2.default.createElement(
               'label',
               null,
               'None'
@@ -953,64 +1085,64 @@ var Edit = React.createClass({
       );
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       { className: 'modal-sheet edit' },
-      React.createElement(
+      _react2.default.createElement(
         'form',
         { id: 'feed-form', 'data-baby': baby, onSubmit: this._submit },
-        React.createElement(
+        _react2.default.createElement(
           'h1',
           null,
           'Edit Event for ',
           baby
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'pad-bottom-1em' },
-          React.createElement(
+          _react2.default.createElement(
             'h3',
             null,
             'What type of event was this?'
           ),
-          React.createElement(
+          _react2.default.createElement(
             'div',
             null,
-            React.createElement(
+            _react2.default.createElement(
               'span',
               { className: 'switch' },
-              React.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, defaultChecked: true, value: 'feeding' }),
-              React.createElement(
+              _react2.default.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, defaultChecked: true, value: 'feeding' }),
+              _react2.default.createElement(
                 'label',
                 null,
                 'Feeding'
               )
             ),
-            React.createElement(
+            _react2.default.createElement(
               'span',
               { className: 'switch' },
-              React.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, value: 'meds' }),
-              React.createElement(
+              _react2.default.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, value: 'meds' }),
+              _react2.default.createElement(
                 'label',
                 null,
                 'Meds'
               )
             ),
-            React.createElement(
+            _react2.default.createElement(
               'span',
               { className: 'switch' },
-              React.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, value: 'diaper' }),
-              React.createElement(
+              _react2.default.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, value: 'diaper' }),
+              _react2.default.createElement(
                 'label',
                 null,
                 'Diaper'
               )
             ),
-            React.createElement(
+            _react2.default.createElement(
               'span',
               { className: 'switch' },
-              React.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, value: 'spit' }),
-              React.createElement(
+              _react2.default.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, value: 'spit' }),
+              _react2.default.createElement(
                 'label',
                 null,
                 'Spit-up'
@@ -1018,15 +1150,15 @@ var Edit = React.createClass({
             )
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'pad-bottom-1em' },
-          React.createElement(
+          _react2.default.createElement(
             'h3',
             null,
             'What Time?'
           ),
-          React.createElement(TimeStepper, { identifier: 'event-time-stepper', time: time, onChange: this._setEventTime })
+          _react2.default.createElement(_TimeStepper2.default, { identifier: 'event-time-stepper', time: time, onChange: this._setEventTime })
         ),
         ounceField,
         feederField,
@@ -1034,8 +1166,8 @@ var Edit = React.createClass({
         medField,
         diaperField,
         spitField,
-        React.createElement('input', { type: 'submit', className: 'btn btn-invert submit-btn' }),
-        React.createElement(
+        _react2.default.createElement('input', { type: 'submit', className: 'btn btn-invert submit-btn' }),
+        _react2.default.createElement(
           'button',
           { onClick: this._cancel, className: 'btn btn-cancel btn-invert' },
           'Cancel'
@@ -1045,18 +1177,33 @@ var Edit = React.createClass({
   }
 });
 
-module.exports = Edit;
+exports.default = Edit;
 
-},{"../actions/view-actions":3,"../stores/baby-store":24,"../stores/event-store":25,"./FractionalStepper.jsx":11,"./TimeStepper.jsx":19,"lodash":41,"moment-timezone":43,"react":272}],8:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/baby-store":24,"../stores/event-store":25,"./FractionalStepper.jsx":11,"./TimeStepper.jsx":19,"lodash":41,"moment":46,"moment-timezone":43,"react":273}],8:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var cx = require('classnames');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ESCAPE_KEY = 27;
 var ENTER_KEY = 13;
 
-var Feeder = React.createClass({
+var Feeder = _react2.default.createClass({
   displayName: 'Feeder',
 
 
@@ -1101,7 +1248,7 @@ var Feeder = React.createClass({
 
   componentDidUpdate: function componentDidUpdate(prevProps) {
     if (!prevProps.editing && this.props.editing) {
-      var node = React.findDOMNode(this.refs.editField);
+      var node = _reactDom2.default.findDOMNode(this.refs.editField);
       node.focus();
       node.setSelectionRange(0, node.value.length);
     }
@@ -1110,15 +1257,15 @@ var Feeder = React.createClass({
   render: function render() {
     var that = this;
 
-    return React.createElement(
+    return _react2.default.createElement(
       'li',
-      { className: cx({
+      { className: (0, _classnames2.default)({
           editing: this.props.editing
         }) },
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'view' },
-        React.createElement(
+        _react2.default.createElement(
           'label',
           { onClick: this.handleEdit, onTouchEnd: function onTouchEnd(e) {
               e.preventDefault();
@@ -1127,13 +1274,13 @@ var Feeder = React.createClass({
             } },
           this.props.feeder.name
         ),
-        React.createElement(
+        _react2.default.createElement(
           'button',
           { className: 'btn btn-destroy', onClick: this.props.onDestroy },
-          React.createElement('i', { className: 'fa fa-times' })
+          _react2.default.createElement('i', { className: 'fa fa-times' })
         )
       ),
-      React.createElement('input', {
+      _react2.default.createElement('input', {
         ref: 'editField',
         className: 'edit',
         value: this.state.editText,
@@ -1145,21 +1292,46 @@ var Feeder = React.createClass({
   }
 });
 
-module.exports = Feeder;
+exports.default = Feeder;
 
-},{"classnames":36,"react":272}],9:[function(require,module,exports){
+},{"classnames":36,"react":273,"react-dom":52}],9:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var Feeder = require('./Feeder.jsx');
-var BabyStore = require('../stores/baby-store');
-var Actions = require('../actions/view-actions');
-var uuid = require('../utils/uuid');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _Feeder = require('./Feeder.jsx');
+
+var _Feeder2 = _interopRequireDefault(_Feeder);
+
+var _babyStore = require('../stores/baby-store');
+
+var _babyStore2 = _interopRequireDefault(_babyStore);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+var _uuid = require('../utils/uuid');
+
+var uuid = _interopRequireWildcard(_uuid);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ENTER_KEY = 13;
 
-var FeederList = React.createClass({
+var FeederList = _react2.default.createClass({
   displayName: 'FeederList',
 
 
@@ -1189,7 +1361,7 @@ var FeederList = React.createClass({
   _destroy: function _destroy(feeder, e) {
     e.preventDefault();
     this.setState({
-      feeders: _.reject(this.state.feeders, { id: feeder.id })
+      feeders: _lodash2.default.reject(this.state.feeders, { id: feeder.id })
     }, function () {
       this.props.onChange(this.state.feeders);
     });
@@ -1204,7 +1376,7 @@ var FeederList = React.createClass({
     //TODO save
     this.setState({
       editing: null,
-      feeders: _.map(this.state.feeders, function (feeder) {
+      feeders: _lodash2.default.map(this.state.feeders, function (feeder) {
         return feeder !== feederToSave ? feeder : { id: feeder.id, name: text };
       })
     }, function () {
@@ -1218,8 +1390,8 @@ var FeederList = React.createClass({
 
   render: function render() {
     var that = this;
-    var feeders = _.map(this.state.feeders, function (feeder) {
-      return React.createElement(Feeder, {
+    var feeders = _lodash2.default.map(this.state.feeders, function (feeder) {
+      return _react2.default.createElement(_Feeder2.default, {
         feeder: feeder,
         onDestroy: that._destroy.bind(that, feeder),
         onEdit: that._edit.bind(that, feeder),
@@ -1230,49 +1402,66 @@ var FeederList = React.createClass({
       });
     });
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'feeder-list-container' },
-      React.createElement(
+      _react2.default.createElement(
         'ul',
         { className: 'feeder-list' },
         feeders
       ),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'btn-container' },
-        React.createElement(
+        _react2.default.createElement(
           'button',
           { className: 'btn btn-add', onClick: this._add },
-          React.createElement('i', { className: 'fa fa-plus' })
+          _react2.default.createElement('i', { className: 'fa fa-plus' })
         )
       )
     );
   }
 });
 
-module.exports = FeederList;
+exports.default = FeederList;
 
-},{"../actions/view-actions":3,"../stores/baby-store":24,"../utils/uuid":33,"./Feeder.jsx":8,"lodash":41,"react":272}],10:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/baby-store":24,"../utils/uuid":33,"./Feeder.jsx":8,"lodash":41,"react":273}],10:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var moment = require('moment-timezone');
-var _ = require('lodash');
-var cx = require('classnames');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var FeedingInfo = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _momentTimezone = require('moment-timezone');
+
+var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FeedingInfo = _react2.default.createClass({
   displayName: 'FeedingInfo',
 
 
   _getFormattedFood: function _getFormattedFood() {
-    var foodList;
+    var foodList = void 0;
     var food = this.props.feeding.food;
     var amt = this.props.feeding.amount;
-    var bottleEmoji = React.createElement(
+    var bottleEmoji = _react2.default.createElement(
       'span',
       { className: 'emojifier' },
-      React.createElement('img', { src: '/img/bottle.png', className: 'emoji' })
+      _react2.default.createElement('img', { src: '/img/bottle.png', className: 'emoji' })
     );
 
     if (amt % 1 === 0) {
@@ -1285,7 +1474,7 @@ var FeedingInfo = React.createClass({
       foodList = ' + ' + food;
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'li',
       null,
       amt,
@@ -1295,60 +1484,63 @@ var FeedingInfo = React.createClass({
   },
 
   render: function render() {
-    var medsEmoji, medsLi, spitLi, feederLi;
+    var medsEmoji = void 0,
+        medsLi = void 0,
+        spitLi = void 0,
+        feederLi = void 0;
     var feeding = this.props.feeding;
-    var poopEmojiClass = cx({
+    var poopEmojiClass = (0, _classnames2.default)({
       'emojifier': true,
       'ok': feeding.poopFlag === 0,
       'warn': feeding.poopFlag === 1,
       'uh-oh': feeding.poopFlag === 2
     });
 
-    var poopEmoji = React.createElement(
+    var poopEmoji = _react2.default.createElement(
       'span',
       { className: poopEmojiClass, style: { display: 'inline' } },
-      React.createElement('img', { align: 'absmiddle', alt: ':poop:', className: 'emoji', src: '/img/poop.png', title: ':poop:' })
+      _react2.default.createElement('img', { align: 'absmiddle', alt: ':poop:', className: 'emoji', src: '/img/poop.png', title: ':poop:' })
     );
 
     if (feeding.prevacidFlag) {
-      medsEmoji = React.createElement(
+      medsEmoji = _react2.default.createElement(
         'span',
         { className: 'emojifier', style: { display: 'inline' } },
-        React.createElement('img', { align: 'absmiddle', alt: ':pill:', className: 'emoji', src: '/img/pill.png', title: ':pill:' })
+        _react2.default.createElement('img', { align: 'absmiddle', alt: ':pill:', className: 'emoji', src: '/img/pill.png', title: ':pill:' })
       );
     }
 
     if (feeding.medicine) {
-      medsLi = React.createElement(
+      medsLi = _react2.default.createElement(
         'li',
         null,
         'Medicine: ',
-        _.capitalize(feeding.medicine)
+        _lodash2.default.capitalize(feeding.medicine)
       );
     }
 
     if (feeding.spit) {
-      spitLi = React.createElement(
+      spitLi = _react2.default.createElement(
         'li',
         null,
-        _.capitalize(feeding.spit),
+        _lodash2.default.capitalize(feeding.spit),
         ' spit-up'
       );
     }
 
     if (feeding.feeder) {
-      feederLi = React.createElement(
+      feederLi = _react2.default.createElement(
         'li',
         null,
         'Fed by ',
-        _.capitalize(feeding.feeder)
+        _lodash2.default.capitalize(feeding.feeder)
       );
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'article',
       { key: this.props.key, className: 'list-group-item' },
-      React.createElement(
+      _react2.default.createElement(
         'h2',
         null,
         feeding.name,
@@ -1357,31 +1549,31 @@ var FeedingInfo = React.createClass({
         ' ',
         medsEmoji
       ),
-      React.createElement(
+      _react2.default.createElement(
         'em',
         null,
         'Next feeding at ~',
-        moment(new Date(feeding.time)).add(3, 'hours').format('h:mma')
+        (0, _momentTimezone2.default)(new Date(feeding.time)).add(3, 'hours').format('h:mma')
       ),
-      React.createElement(
+      _react2.default.createElement(
         'p',
         null,
         'Last Feeding'
       ),
-      React.createElement(
+      _react2.default.createElement(
         'ul',
         null,
         this._getFormattedFood(),
-        React.createElement(
+        _react2.default.createElement(
           'li',
           null,
-          _.capitalize(feeding.burp),
+          _lodash2.default.capitalize(feeding.burp),
           ' burp'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'li',
           null,
-          _.capitalize(feeding.diaper),
+          _lodash2.default.capitalize(feeding.diaper),
           ' diaper'
         ),
         medsLi,
@@ -1392,15 +1584,26 @@ var FeedingInfo = React.createClass({
   }
 });
 
-module.exports = FeedingInfo;
+exports.default = FeedingInfo;
 
-},{"classnames":36,"lodash":41,"moment-timezone":43,"react":272}],11:[function(require,module,exports){
+},{"classnames":36,"lodash":41,"moment-timezone":43,"react":273}],11:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var Stepper = require('./Stepper.jsx');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var FractionalStepper = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Stepper = require('./Stepper.jsx');
+
+var _Stepper2 = _interopRequireDefault(_Stepper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FractionalStepper = _react2.default.createClass({
   displayName: 'FractionalStepper',
 
 
@@ -1431,15 +1634,15 @@ var FractionalStepper = React.createClass({
     var fullNumber = Math.floor(this.state.initialValue);
     var remainder = this.state.initialValue % 1;
 
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       { className: 'frac-stepper' },
-      React.createElement(Stepper, { full: true, onChange: this.props.onChange, initialValue: fullNumber }),
-      React.createElement(Stepper, { onChange: this.props.onChange, initialValue: remainder }),
-      React.createElement(
+      _react2.default.createElement(_Stepper2.default, { full: true, onChange: this.props.onChange, initialValue: fullNumber }),
+      _react2.default.createElement(_Stepper2.default, { onChange: this.props.onChange, initialValue: remainder }),
+      _react2.default.createElement(
         'div',
         { className: 'frac-stepper-label' },
-        React.createElement(
+        _react2.default.createElement(
           'label',
           null,
           this.props.label
@@ -1450,10 +1653,42 @@ var FractionalStepper = React.createClass({
 
 });
 
-module.exports = FractionalStepper;
+exports.default = FractionalStepper;
 
-},{"./Stepper.jsx":17,"react":272}],12:[function(require,module,exports){
+},{"./Stepper.jsx":17,"react":273}],12:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _babyStore = require('../stores/baby-store');
+
+var _babyStore2 = _interopRequireDefault(_babyStore);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+var _FractionalStepper = require('./FractionalStepper.jsx');
+
+var _FractionalStepper2 = _interopRequireDefault(_FractionalStepper);
+
+var _Wizard = require('./Wizard.jsx');
+
+var _Wizard2 = _interopRequireDefault(_Wizard);
+
+var _FeederList = require('./FeederList.jsx');
+
+var _FeederList2 = _interopRequireDefault(_FeederList);
 
 var _uuid = require('../utils/uuid');
 
@@ -1465,16 +1700,9 @@ var fractions = _interopRequireWildcard(_fractions);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var React = require('react');
-var _ = require('lodash');
-var BabyStore = require('../stores/baby-store');
-var Actions = require('../actions/view-actions');
-var FractionalStepper = require('./FractionalStepper.jsx');
-var Wizard = require('./Wizard.jsx');
-var FeederList = require('./FeederList.jsx');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-
-var View1 = React.createClass({
+var View1 = _react2.default.createClass({
   displayName: 'View1',
 
   _setValue: function _setValue(e) {
@@ -1485,23 +1713,23 @@ var View1 = React.createClass({
 
   render: function render() {
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'get-started-1' },
-      React.createElement(
+      _react2.default.createElement(
         'h3',
         null,
         'First things first. What are their names?'
       ),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'form-group' },
-        React.createElement(
+        _react2.default.createElement(
           'label',
           { htmlFor: 'lastname' },
           'Last Name'
         ),
-        React.createElement('input', {
+        _react2.default.createElement('input', {
           type: 'text',
           name: 'lastname',
           placeholder: 'Last Name',
@@ -1509,15 +1737,15 @@ var View1 = React.createClass({
           onChange: this._setValue
         })
       ),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'form-group' },
-        React.createElement(
+        _react2.default.createElement(
           'label',
           { htmlFor: 'babyA' },
           'Baby A'
         ),
-        React.createElement('input', {
+        _react2.default.createElement('input', {
           type: 'text',
           name: 'babyA',
           placeholder: 'First Name',
@@ -1525,15 +1753,15 @@ var View1 = React.createClass({
           onChange: this._setValue
         })
       ),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'form-group' },
-        React.createElement(
+        _react2.default.createElement(
           'label',
           { htmlFor: 'babyB' },
           'Baby B'
         ),
-        React.createElement('input', {
+        _react2.default.createElement('input', {
           type: 'text',
           name: 'babyB',
           placeholder: 'First Name',
@@ -1545,7 +1773,7 @@ var View1 = React.createClass({
   }
 });
 
-var View2 = React.createClass({
+var View2 = _react2.default.createClass({
   displayName: 'View2',
 
   _updateHours: function _updateHours(val) {
@@ -1573,22 +1801,23 @@ var View2 = React.createClass({
   },
 
   render: function render() {
-    var initialOunces, initialHours;
+    var initialOunces = void 0,
+        initialHours = void 0;
     var _state = this.props.initialState;
     if (_state.fullOunces) {
-      var fracOunces = _.isObject(_state.fracOunces) ? _state.fracOunces.actualValue : _state.fracOunces;
+      var fracOunces = _lodash2.default.isObject(_state.fracOunces) ? _state.fracOunces.actualValue : _state.fracOunces;
       initialOunces = _state.fullOunces + fracOunces;
     }
 
     if (_state.fullOunces) {
-      var fracHours = _.isObject(_state.fracHours) ? _state.fracHours.actualValue : _state.fracHours;
+      var fracHours = _lodash2.default.isObject(_state.fracHours) ? _state.fracHours.actualValue : _state.fracHours;
       initialHours = _state.fullHours + fracHours;
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'get-started-2' },
-      React.createElement(
+      _react2.default.createElement(
         'h3',
         null,
         'Next, tell us about how often ',
@@ -1597,24 +1826,24 @@ var View2 = React.createClass({
         _state.babyB,
         ' usually eat/take a bottle, and how much milk/formula per feeding.'
       ),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         null,
-        React.createElement(FractionalStepper, {
+        _react2.default.createElement(_FractionalStepper2.default, {
           onChange: this._updateOunces,
           label: 'Oz.',
           initialValue: initialOunces ? initialOunces : 4
         })
       ),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         null,
-        React.createElement(
+        _react2.default.createElement(
           'h4',
           null,
           'About every'
         ),
-        React.createElement(FractionalStepper, {
+        _react2.default.createElement(_FractionalStepper2.default, {
           onChange: this._updateHours,
           label: 'Hrs.',
           initialValue: initialHours ? initialHours : 2
@@ -1624,7 +1853,7 @@ var View2 = React.createClass({
   }
 });
 
-var View3 = React.createClass({
+var View3 = _react2.default.createClass({
   displayName: 'View3',
 
   _onChange: function _onChange(val) {
@@ -1633,15 +1862,15 @@ var View3 = React.createClass({
 
   render: function render() {
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'get-started-3' },
-      React.createElement(
+      _react2.default.createElement(
         'h3',
         null,
         'Last, but not least, give us the names of a few people who will be taking care of them and might want to use this app.'
       ),
-      React.createElement(FeederList, {
+      _react2.default.createElement(_FeederList2.default, {
         onChange: this._onChange,
         feeders: this.props.initialState.feeders ? this.props.initialState.feeders : this.props.initialFeeders
       })
@@ -1649,21 +1878,21 @@ var View3 = React.createClass({
   }
 });
 
-var View4 = React.createClass({
+var View4 = _react2.default.createClass({
   displayName: 'View4',
 
   render: function render() {
     var info = this.props.info;
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'get-started-4' },
-      React.createElement(
+      _react2.default.createElement(
         'h3',
         null,
         'OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!'
       ),
-      React.createElement(
+      _react2.default.createElement(
         'h4',
         null,
         info.babyA,
@@ -1672,10 +1901,10 @@ var View4 = React.createClass({
         ' ',
         info.query.lastname
       ),
-      React.createElement(
+      _react2.default.createElement(
         'ul',
         null,
-        React.createElement(
+        _react2.default.createElement(
           'li',
           null,
           'Eat about ',
@@ -1684,15 +1913,15 @@ var View4 = React.createClass({
           fractions.getFraction(info.fullHours, info.fracHours),
           ' hours.'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'li',
           null,
           'The people who should show up in the caretakers list are:',
-          React.createElement(
+          _react2.default.createElement(
             'ul',
             null,
-            _.map(info.feeders, function (feeder) {
-              return React.createElement(
+            _lodash2.default.map(info.feeders, function (feeder) {
+              return _react2.default.createElement(
                 'li',
                 { key: feeder.id },
                 feeder.name
@@ -1705,11 +1934,11 @@ var View4 = React.createClass({
   }
 });
 
-var GetStarted = React.createClass({
+var GetStarted = _react2.default.createClass({
   displayName: 'GetStarted',
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   getInitialState: function getInitialState() {
@@ -1727,15 +1956,15 @@ var GetStarted = React.createClass({
   },
 
   componentDidMount: function componentDidMount() {
-    BabyStore.addChangeListener(this._onChange);
+    _babyStore2.default.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    BabyStore.removeChangeListener(this._onChange);
+    _babyStore2.default.removeChangeListener(this._onChange);
   },
 
   _onChange: function _onChange() {
-    if (!_.isEmpty(BabyStore.getBabies())) {
+    if (!_lodash2.default.isEmpty(_babyStore2.default.getBabies())) {
       this.context.router.push('/');
     }
   },
@@ -1746,51 +1975,75 @@ var GetStarted = React.createClass({
 
   _submit: function _submit(e) {
     e.preventDefault();
-    Actions.sendInitialConfig(this.state);
+    _viewActions2.default.sendInitialConfig(this.state);
   },
 
   render: function render() {
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       { className: 'get-started' },
-      React.createElement(Wizard, {
+      _react2.default.createElement(_Wizard2.default, {
         initialState: this.props.query,
-        views: [React.createElement(View1, {
+        views: [_react2.default.createElement(View1, {
           initialState: this.state,
           onChange: this._setStateFromChildren,
           back: this.context.router.goBack,
           enableBackBtn: true
-        }), React.createElement(View2, { initialState: this.state, onChange: this._setStateFromChildren }), React.createElement(View3, {
+        }), _react2.default.createElement(View2, { initialState: this.state, onChange: this._setStateFromChildren }), _react2.default.createElement(View3, {
           initialState: this.state,
           initialFeeders: this.state.feeders,
           onChange: this._setStateFromChildren
-        }), React.createElement(View4, { info: this.state, onFinish: this._submit })]
+        }), _react2.default.createElement(View4, { info: this.state, onFinish: this._submit })]
       })
     );
   }
 });
 
-module.exports = GetStarted;
+exports.default = GetStarted;
 
-},{"../actions/view-actions":3,"../stores/baby-store":24,"../utils/fractions":30,"../utils/uuid":33,"./FeederList.jsx":9,"./FractionalStepper.jsx":11,"./Wizard.jsx":21,"lodash":41,"react":272}],13:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/baby-store":24,"../utils/fractions":30,"../utils/uuid":33,"./FeederList.jsx":9,"./FractionalStepper.jsx":11,"./Wizard.jsx":21,"lodash":41,"react":273}],13:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var Router = require('react-router');
-var Link = Router.Link;
-var EventStore = require('../stores/event-store');
-var Actions = require('../actions/view-actions');
-var EventTypes = require('../constants/constants').EventTypes;
-var _ = require('lodash');
-var moment = require('moment-timezone');
-var Swipeable = require('react-swipeable');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var FeedingCell = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _momentTimezone = require('moment-timezone');
+
+var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
+
+var _reactSwipeable = require('react-swipeable');
+
+var _reactSwipeable2 = _interopRequireDefault(_reactSwipeable);
+
+var _eventStore = require('../stores/event-store');
+
+var _eventStore2 = _interopRequireDefault(_eventStore);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+var _constants = require('../constants/constants');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FeedingCell = _react2.default.createClass({
   displayName: 'FeedingCell',
 
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   _edit: function _edit() {
@@ -1799,45 +2052,50 @@ var FeedingCell = React.createClass({
 
   render: function render() {
     var feeding = this.props.feeding;
-    var amount, diaper, burp, meds, spit, nap;
+    var amount = void 0,
+        diaper = void 0,
+        burp = void 0,
+        meds = void 0,
+        spit = void 0,
+        nap = void 0;
 
     if (feeding.diaper) {
-      diaper = React.createElement(
+      diaper = _react2.default.createElement(
         'li',
         null,
-        _.capitalize(feeding.diaper),
+        _lodash2.default.capitalize(feeding.diaper),
         ' diaper'
       );
     }
 
     if (feeding.burp) {
-      burp = React.createElement(
+      burp = _react2.default.createElement(
         'li',
         null,
-        _.capitalize(feeding.burp),
+        _lodash2.default.capitalize(feeding.burp),
         ' burp'
       );
     }
 
     if (feeding.medicine) {
-      meds = React.createElement(
+      meds = _react2.default.createElement(
         'li',
         null,
-        _.capitalize(feeding.medicine)
+        _lodash2.default.capitalize(feeding.medicine)
       );
     }
 
     if (feeding.spit) {
-      spit = React.createElement(
+      spit = _react2.default.createElement(
         'li',
         null,
-        _.capitalize(feeding.spit),
+        _lodash2.default.capitalize(feeding.spit),
         ' spit'
       );
     }
 
     if (feeding.amount) {
-      amount = React.createElement(
+      amount = _react2.default.createElement(
         'li',
         null,
         'Drank ',
@@ -1846,12 +2104,12 @@ var FeedingCell = React.createClass({
       );
     }
 
-    if (feeding.eventType === EventTypes.NAP) {
-      var napStart = feeding.startTime ? moment(feeding.startTime).format('h:mma') : null;
-      var napEnd = feeding.startTime ? moment(feeding.endTime).format('h:mma') : null;
+    if (feeding.eventType === _constants.EventTypes.NAP) {
+      var napStart = feeding.startTime ? (0, _momentTimezone2.default)(feeding.startTime).format('h:mma') : null;
+      var napEnd = feeding.startTime ? (0, _momentTimezone2.default)(feeding.endTime).format('h:mma') : null;
       var duration = feeding.duration || napEnd.diff(napStart, 'minutes');
-      var formattedDuration = moment.duration(duration, 'minutes').asHours().toFixed(2) + ' hr.';
-      nap = React.createElement(
+      var formattedDuration = _momentTimezone2.default.duration(duration, 'minutes').asHours().toFixed(2) + ' hr.';
+      nap = _react2.default.createElement(
         'li',
         null,
         'Napped from ',
@@ -1859,7 +2117,7 @@ var FeedingCell = React.createClass({
         ' to ',
         napEnd,
         ' (',
-        React.createElement(
+        _react2.default.createElement(
           'em',
           null,
           formattedDuration
@@ -1868,15 +2126,15 @@ var FeedingCell = React.createClass({
       );
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'cell' },
-      React.createElement(
+      _react2.default.createElement(
         'h5',
         null,
-        moment(feeding.time).format('M/DD - h:mma')
+        (0, _momentTimezone2.default)(feeding.time).format('M/DD - h:mma')
       ),
-      React.createElement(
+      _react2.default.createElement(
         'ul',
         null,
         amount,
@@ -1886,17 +2144,17 @@ var FeedingCell = React.createClass({
         spit,
         nap
       ),
-      React.createElement(
+      _react2.default.createElement(
         'button',
         { className: 'btn btn-edit-cell', onClick: this._edit },
-        React.createElement('i', { className: 'fa fa-edit' }),
+        _react2.default.createElement('i', { className: 'fa fa-edit' }),
         ' Edit'
       )
     );
   }
 });
 
-var FeedingCol = React.createClass({
+var FeedingCol = _react2.default.createClass({
   displayName: 'FeedingCol',
 
   render: function render() {
@@ -1904,16 +2162,16 @@ var FeedingCol = React.createClass({
     var name = this.props.feedings[0].name;
 
     var feedings = feedingData.map(function (feeding) {
-      return React.createElement(FeedingCell, { key: feeding._id, feeding: feeding });
+      return _react2.default.createElement(FeedingCell, { key: feeding._id, feeding: feeding });
     });
 
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       { className: 'column' },
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'cell cell-header' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           name
@@ -1924,16 +2182,16 @@ var FeedingCol = React.createClass({
   }
 });
 
-var History = React.createClass({
+var History = _react2.default.createClass({
   displayName: 'History',
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   _onChange: function _onChange() {
     this.setState({
-      events: EventStore.getEverything()
+      events: _eventStore2.default.getEverything()
     });
   },
 
@@ -1955,139 +2213,139 @@ var History = React.createClass({
 
   getInitialState: function getInitialState() {
     return {
-      events: EventStore.getEverything(),
+      events: _eventStore2.default.getEverything(),
       timeFilter: 'lastDay',
       typeFilter: 'feedings'
     };
   },
 
   componentDidMount: function componentDidMount() {
-    EventStore.addChangeListener(this._onChange);
+    _eventStore2.default.addChangeListener(this._onChange);
     // Actions.getEvents();
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    EventStore.removeChangeListener(this._onChange);
+    _eventStore2.default.removeChangeListener(this._onChange);
   },
 
   render: function render() {
     var timeFilter = this.state.timeFilter;
     var typeFilter = this.state.typeFilter;
-    var feedingTable = _.map(this.state.events[timeFilter][typeFilter], function (feedingGroup) {
-      return React.createElement(FeedingCol, { key: feedingGroup[0]._id, feedings: feedingGroup });
+    var feedingTable = _lodash2.default.map(this.state.events[timeFilter][typeFilter], function (feedingGroup) {
+      return _react2.default.createElement(FeedingCol, { key: feedingGroup[0]._id, feedings: feedingGroup });
     });
 
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       { className: 'right-sheet', id: 'right-sheet' },
-      React.createElement(
-        Swipeable,
+      _react2.default.createElement(
+        _reactSwipeable2.default,
         {
           onSwipedRight: this._swipedRight,
           delta: 100
         },
-        React.createElement(
+        _react2.default.createElement(
           'h2',
           null,
           'Event History'
         ),
-        React.createElement(
-          Link,
+        _react2.default.createElement(
+          _reactRouter.Link,
           { to: '/', className: 'close-btn flex-center' },
-          React.createElement('i', { className: 'fa fa-close' })
+          _react2.default.createElement('i', { className: 'fa fa-close' })
         ),
-        React.createElement(
+        _react2.default.createElement(
           'h4',
           null,
           'Show Me:'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'section',
           { className: 'type-filter filter-btns' },
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'typeFilter', onChange: this._setTypeFilter, defaultChecked: typeFilter === 'feedings', value: 'feedings' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'typeFilter', onChange: this._setTypeFilter, defaultChecked: typeFilter === 'feedings', value: 'feedings' }),
+            _react2.default.createElement(
               'label',
               null,
               'Feedings'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'typeFilter', onChange: this._setTypeFilter, defaultChecked: typeFilter === 'poops', value: 'poops' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'typeFilter', onChange: this._setTypeFilter, defaultChecked: typeFilter === 'poops', value: 'poops' }),
+            _react2.default.createElement(
               'label',
               null,
               'Poops'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'typeFilter', onChange: this._setTypeFilter, defaultChecked: typeFilter === 'meds', value: 'meds' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'typeFilter', onChange: this._setTypeFilter, defaultChecked: typeFilter === 'meds', value: 'meds' }),
+            _react2.default.createElement(
               'label',
               null,
               'Medicine'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'typeFilter', onChange: this._setTypeFilter, defaultChecked: typeFilter === 'events', value: 'events' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'typeFilter', onChange: this._setTypeFilter, defaultChecked: typeFilter === 'events', value: 'events' }),
+            _react2.default.createElement(
               'label',
               null,
               'All'
             )
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'h4',
           null,
           'From:'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'section',
           { className: 'time-filter filter-btns' },
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'timeFilter', onChange: this._setTimeFilter, defaultChecked: timeFilter === 'lastDay', value: 'lastDay' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'timeFilter', onChange: this._setTimeFilter, defaultChecked: timeFilter === 'lastDay', value: 'lastDay' }),
+            _react2.default.createElement(
               'label',
               null,
               'Past Day'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'timeFilter', onChange: this._setTimeFilter, defaultChecked: timeFilter === 'lastWeek', value: 'lastWeek' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'timeFilter', onChange: this._setTimeFilter, defaultChecked: timeFilter === 'lastWeek', value: 'lastWeek' }),
+            _react2.default.createElement(
               'label',
               null,
               'Past Week'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'timeFilter', onChange: this._setTimeFilter, defaultChecked: timeFilter === 'all', value: 'all' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'timeFilter', onChange: this._setTimeFilter, defaultChecked: timeFilter === 'all', value: 'all' }),
+            _react2.default.createElement(
               'label',
               null,
               'All'
             )
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'section',
           { id: 'feeding-list' },
-          React.createElement(
+          _react2.default.createElement(
             'article',
             { className: 'table' },
             feedingTable
@@ -2098,10 +2356,14 @@ var History = React.createClass({
   }
 });
 
-module.exports = History;
+exports.default = History;
 
-},{"../actions/view-actions":3,"../constants/constants":22,"../stores/event-store":25,"lodash":41,"moment-timezone":43,"react":272,"react-router":79,"react-swipeable":109}],14:[function(require,module,exports){
+},{"../actions/view-actions":3,"../constants/constants":22,"../stores/event-store":25,"lodash":41,"moment-timezone":43,"react":273,"react-router":80,"react-swipeable":110}],14:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _react = require('react');
 
@@ -2157,31 +2419,69 @@ var Home = _react2.default.createClass({
   }
 });
 
-module.exports = Home;
+exports.default = Home;
 
-},{"../stores/baby-store":24,"../utils/local-storage":31,"./BabiesSummaryView.jsx":6,"./LoginForm.jsx":16,"lodash":41,"react":272}],15:[function(require,module,exports){
+},{"../stores/baby-store":24,"../utils/local-storage":31,"./BabiesSummaryView.jsx":6,"./LoginForm.jsx":16,"lodash":41,"react":273}],15:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var Router = require('react-router');
-var Link = Router.Link;
-var BabyStore = require('../stores/baby-store');
-var FoodTypeStore = require('../stores/food-type-store');
-var EventStore = require('../stores/event-store');
-var Actions = require('../actions/view-actions');
-var EventTypes = require('../constants/constants').EventTypes;
-var _ = require('lodash');
-var moment = require('moment-timezone');
-var FractionalStepper = require('./FractionalStepper.jsx');
-var TimeStepper = require('./TimeStepper.jsx');
-var SwitchButton = require('./SwitchButton.jsx');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var Log = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+require('moment-timezone');
+
+var _babyStore = require('../stores/baby-store');
+
+var _babyStore2 = _interopRequireDefault(_babyStore);
+
+var _foodTypeStore = require('../stores/food-type-store');
+
+var _foodTypeStore2 = _interopRequireDefault(_foodTypeStore);
+
+var _eventStore = require('../stores/event-store');
+
+var _eventStore2 = _interopRequireDefault(_eventStore);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+var _constants = require('../constants/constants');
+
+var _FractionalStepper = require('./FractionalStepper.jsx');
+
+var _FractionalStepper2 = _interopRequireDefault(_FractionalStepper);
+
+var _TimeStepper = require('./TimeStepper.jsx');
+
+var _TimeStepper2 = _interopRequireDefault(_TimeStepper);
+
+var _SwitchButton = require('./SwitchButton.jsx');
+
+var _SwitchButton2 = _interopRequireDefault(_SwitchButton);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Log = _react2.default.createClass({
   displayName: 'Log',
 
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   _submit: function _submit(e) {
@@ -2194,44 +2494,44 @@ var Log = React.createClass({
     var frac = this.state.fracAmount.actualValue ? this.state.fracAmount.actualValue : this.state.fracAmount;
 
     switch (this.state.eventType) {
-      case EventTypes.BURP:
-        Actions.submitEventForm({
+      case _constants.EventTypes.BURP:
+        _viewActions2.default.submitEventForm({
           babyID: this.state.baby._id,
           name: this.state.baby.firstname,
           eventType: this.state.eventType,
           burp: this.state.burp,
-          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+          time: (0, _moment2.default)(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
         });
         break;
-      case EventTypes.DIAPER:
-        Actions.submitEventForm({
+      case _constants.EventTypes.DIAPER:
+        _viewActions2.default.submitEventForm({
           babyID: this.state.baby._id,
           name: this.state.baby.firstname,
           eventType: this.state.eventType,
           diaper: this.state.diaper.join(' + '),
-          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+          time: (0, _moment2.default)(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
         });
         break;
-      case EventTypes.MEDS:
-        Actions.submitEventForm({
+      case _constants.EventTypes.MEDS:
+        _viewActions2.default.submitEventForm({
           babyID: this.state.baby._id,
           name: this.state.baby.firstname,
           eventType: this.state.eventType,
           medicine: this.state.medicine.join(', '),
-          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+          time: (0, _moment2.default)(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
         });
         break;
-      case EventTypes.SPIT_UP:
-        Actions.submitEventForm({
+      case _constants.EventTypes.SPIT_UP:
+        _viewActions2.default.submitEventForm({
           babyID: this.state.baby._id,
           name: this.state.baby.firstname,
           eventType: this.state.eventType,
           spit: this.state.spit,
-          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
+          time: (0, _moment2.default)(new Date()).subtract(parseInt(this.state.time), 'minutes').format()
         });
         break;
-      case EventTypes.NAP:
-        Actions.submitEventForm({
+      case _constants.EventTypes.NAP:
+        _viewActions2.default.submitEventForm({
           babyID: this.state.baby._id,
           name: this.state.baby.firstname,
           eventType: this.state.eventType,
@@ -2241,7 +2541,7 @@ var Log = React.createClass({
         });
         break;
       default:
-        Actions.submitEventForm({
+        _viewActions2.default.submitEventForm({
           babyID: this.state.baby._id,
           name: this.state.baby.firstname,
           eventType: this.state.eventType,
@@ -2249,7 +2549,7 @@ var Log = React.createClass({
           diaper: this.state.diaper.join(' + '),
           feeder: this.state.feeder,
           food: this.state.foods.join(', '),
-          time: moment(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
+          time: (0, _moment2.default)(new Date()).subtract(parseInt(this.state.time), 'minutes').format(),
           amount: this.state.fullAmount + frac,
           medicine: this.state.medicine.join(', '),
           spit: this.state.spit
@@ -2297,8 +2597,8 @@ var Log = React.createClass({
     var meds = this.state.medicine;
     var val = e.target.value;
 
-    if (_.contains(meds, val)) {
-      meds = _.without(meds, val);
+    if (_lodash2.default.contains(meds, val)) {
+      meds = _lodash2.default.without(meds, val);
     } else {
       meds.push(val);
     }
@@ -2312,8 +2612,8 @@ var Log = React.createClass({
     var foods = this.state.foods;
     var val = e.target.value;
 
-    if (_.contains(foods, val)) {
-      foods = _.without(foods, val);
+    if (_lodash2.default.contains(foods, val)) {
+      foods = _lodash2.default.without(foods, val);
     } else {
       foods.push(val);
     }
@@ -2327,8 +2627,8 @@ var Log = React.createClass({
     var diapers = this.state.diaper;
     var val = e.target.value;
 
-    if (_.contains(diapers, val)) {
-      diapers = _.without(diapers, val);
+    if (_lodash2.default.contains(diapers, val)) {
+      diapers = _lodash2.default.without(diapers, val);
     } else {
       diapers.push(val);
     }
@@ -2361,11 +2661,11 @@ var Log = React.createClass({
   },
 
   componentDidMount: function componentDidMount() {
-    EventStore.addChangeListener(this._onChange);
+    _eventStore2.default.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    EventStore.removeChangeListener(this._onChange);
+    _eventStore2.default.removeChangeListener(this._onChange);
   },
 
   getInitialState: function getInitialState() {
@@ -2373,27 +2673,36 @@ var Log = React.createClass({
       fullAmount: 2,
       fracAmount: 0,
       foods: [],
-      foodTypes: FoodTypeStore.getFoodTypes(),
+      foodTypes: _foodTypeStore2.default.getFoodTypes(),
       medicine: [],
       diaper: ['wet'],
       time: 30,
       burp: 'big',
       spit: 'no',
       eventType: 'feeding',
-      baby: BabyStore.getBaby(this.props.params.id),
-      napStart: moment(new Date()),
-      napEnd: moment(new Date())
+      baby: _babyStore2.default.getBaby(this.props.params.id),
+      napStart: (0, _moment2.default)(new Date()),
+      napEnd: (0, _moment2.default)(new Date())
     };
   },
 
   render: function render() {
     var that = this;
     var baby = this.state.baby ? this.state.baby.firstname : null;
-    var ounceField, feederField, medField, burpField, diaperField, foodField, spitField, eventTypeField, napTimeField, timeAgoField;
+    var ounceField = void 0,
+        feederField = void 0,
+        medField = void 0,
+        burpField = void 0,
+        diaperField = void 0,
+        foodField = void 0,
+        spitField = void 0,
+        eventTypeField = void 0,
+        napTimeField = void 0,
+        timeAgoField = void 0;
 
-    if (this.state.eventType === EventTypes.FEEDING) {
-      var foods = _.map(this.state.foodTypes, function (f) {
-        return React.createElement(SwitchButton, {
+    if (this.state.eventType === _constants.EventTypes.FEEDING) {
+      var foods = _lodash2.default.map(this.state.foodTypes, function (f) {
+        return _react2.default.createElement(_SwitchButton2.default, {
           type: 'checkbox',
           name: 'foods',
           onChange: that._setFoods,
@@ -2403,12 +2712,12 @@ var Log = React.createClass({
       });
 
       if (this.state.baby) {
-        var feeders = _.map(this.state.baby.feeders, function (f) {
-          return React.createElement(
+        var feeders = _lodash2.default.map(this.state.baby.feeders, function (f) {
+          return _react2.default.createElement(
             'span',
             { className: 'switch', key: f.name },
-            React.createElement('input', { type: 'radio', name: 'feeder', onChange: that._setFeeder, value: f.name }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'feeder', onChange: that._setFeeder, value: f.name }),
+            _react2.default.createElement(
               'label',
               null,
               f.name
@@ -2416,15 +2725,15 @@ var Log = React.createClass({
           );
         });
 
-        feederField = React.createElement(
+        feederField = _react2.default.createElement(
           'div',
           { className: 'pad-bottom-1em feeder-field' },
-          React.createElement(
+          _react2.default.createElement(
             'h3',
             null,
             'Who fed her?'
           ),
-          React.createElement(
+          _react2.default.createElement(
             'div',
             null,
             feeders
@@ -2432,75 +2741,75 @@ var Log = React.createClass({
         );
       }
 
-      foodField = React.createElement(
+      foodField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em meds-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Any solid food? ',
-          React.createElement(
+          _react2.default.createElement(
             'small',
             null,
             '(Check all that apply)'
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
           foods
         )
       );
 
-      ounceField = React.createElement(
+      ounceField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em ounce-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'How much did she eat?'
         ),
-        React.createElement(FractionalStepper, { onChange: this._setAmount, label: 'Oz.' })
+        _react2.default.createElement(_FractionalStepper2.default, { onChange: this._setAmount, label: 'Oz.' })
       );
     }
 
-    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.BURP) {
-      burpField = React.createElement(
+    if (this.state.eventType === _constants.EventTypes.FEEDING || this.state.eventType === _constants.EventTypes.BURP) {
+      burpField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em burp-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Any burp?'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, defaultChecked: true, value: 'big' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, defaultChecked: true, value: 'big' }),
+            _react2.default.createElement(
               'label',
               null,
               'Big'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, value: 'small' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, value: 'small' }),
+            _react2.default.createElement(
               'label',
               null,
               'Small'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, value: 'no' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'burp', onChange: this._setBurp, value: 'no' }),
+            _react2.default.createElement(
               'label',
               null,
               'None'
@@ -2510,58 +2819,58 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.MEDS) {
-      medField = React.createElement(
+    if (this.state.eventType === _constants.EventTypes.FEEDING || this.state.eventType === _constants.EventTypes.MEDS) {
+      medField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em meds-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Did she take any medicine? ',
-          React.createElement(
+          _react2.default.createElement(
             'small',
             null,
             '(Check all that apply)'
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds, value: 'gas drops' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds, value: 'gas drops' }),
+            _react2.default.createElement(
               'label',
               null,
               'Gas Drops'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds, value: 'prevacid' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds, value: 'prevacid' }),
+            _react2.default.createElement(
               'label',
               null,
               'Prevacid'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds, value: 'eye drops' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds, value: 'eye drops' }),
+            _react2.default.createElement(
               'label',
               null,
               'Eye Drops'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds, value: 'tylenol' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'medicine', onChange: this._setMeds, value: 'tylenol' }),
+            _react2.default.createElement(
               'label',
               null,
               'Tylenol'
@@ -2571,82 +2880,82 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.DIAPER) {
-      diaperField = React.createElement(
+    if (this.state.eventType === _constants.EventTypes.FEEDING || this.state.eventType === _constants.EventTypes.DIAPER) {
+      diaperField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em diaper-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'How was the diaper? ',
-          React.createElement(
+          _react2.default.createElement(
             'small',
             null,
             '(Check all that apply)'
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, defaultChecked: true, value: 'wet' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, defaultChecked: true, value: 'wet' }),
+            _react2.default.createElement(
               'label',
               null,
               'Wet'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'small poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'small poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Small Poop'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Normal Poop'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'big poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'big poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Big Poop'
             )
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'pad-bottom-1em' },
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'runny poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'runny poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Runny Poop'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'dry poop' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'checkbox', name: 'diaper', onChange: this._setDiaper, value: 'dry poop' }),
+            _react2.default.createElement(
               'label',
               null,
               'Dry Poop'
@@ -2656,43 +2965,43 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.SPIT_UP) {
-      spitField = React.createElement(
+    if (this.state.eventType === _constants.EventTypes.FEEDING || this.state.eventType === _constants.EventTypes.SPIT_UP) {
+      spitField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em spit-field' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Any spit-up?'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit, value: 'big' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit, value: 'big' }),
+            _react2.default.createElement(
               'label',
               null,
               'Big'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit, value: 'small' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit, value: 'small' }),
+            _react2.default.createElement(
               'label',
               null,
               'Small'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit, defaultChecked: true, value: 'no' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'spit', onChange: this._setSpit, defaultChecked: true, value: 'no' }),
+            _react2.default.createElement(
               'label',
               null,
               'None'
@@ -2702,92 +3011,92 @@ var Log = React.createClass({
       );
     }
 
-    if (this.state.eventType === EventTypes.NAP) {
-      napTimeField = React.createElement(
+    if (this.state.eventType === _constants.EventTypes.NAP) {
+      napTimeField = _react2.default.createElement(
         'div',
         null,
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'pad-bottom-1em nap-field' },
-          React.createElement(
+          _react2.default.createElement(
             'h3',
             null,
             'When did the nap start?'
           ),
-          React.createElement(TimeStepper, { identifier: 'nap-start-time-stepper', time: this.state.napStart, onChange: this._setNapStart })
+          _react2.default.createElement(_TimeStepper2.default, { identifier: 'nap-start-time-stepper', time: this.state.napStart, onChange: this._setNapStart })
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'pad-bottom-1em nap-field' },
-          React.createElement(
+          _react2.default.createElement(
             'h3',
             null,
             'When did it end?'
           ),
-          React.createElement(TimeStepper, { identifier: 'nap-end-time-stepper', time: this.state.napEnd, onChange: this._setNapEnd })
+          _react2.default.createElement(_TimeStepper2.default, { identifier: 'nap-end-time-stepper', time: this.state.napEnd, onChange: this._setNapEnd })
         )
       );
     } else {
-      timeAgoField = React.createElement(
+      timeAgoField = _react2.default.createElement(
         'div',
         { className: 'pad-bottom-1em' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'How long ago?'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, value: '0' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, value: '0' }),
+            _react2.default.createElement(
               'label',
               null,
               'Just Now'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, value: '15' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, value: '15' }),
+            _react2.default.createElement(
               'label',
               null,
               '15 mins'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, defaultChecked: true, value: '30' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, defaultChecked: true, value: '30' }),
+            _react2.default.createElement(
               'label',
               null,
               '30 mins'
             )
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           null,
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, value: '45' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, value: '45' }),
+            _react2.default.createElement(
               'label',
               null,
               '45 mins'
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'span',
             { className: 'switch' },
-            React.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, value: '60' }),
-            React.createElement(
+            _react2.default.createElement('input', { type: 'radio', name: 'time', onChange: this._setEventTime, value: '60' }),
+            _react2.default.createElement(
               'label',
               null,
               'An hour'
@@ -2797,40 +3106,40 @@ var Log = React.createClass({
       );
     }
 
-    eventTypeField = _.map(EventTypes, function (etype) {
-      return React.createElement(
+    eventTypeField = _lodash2.default.map(_constants.EventTypes, function (etype) {
+      return _react2.default.createElement(
         'span',
         { className: 'switch', key: etype },
-        React.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, defaultChecked: etype === EventTypes.FEEDING, value: etype }),
-        React.createElement(
+        _react2.default.createElement('input', { type: 'radio', name: 'eventType', onChange: this._setEventType, defaultChecked: etype === _constants.EventTypes.FEEDING, value: etype }),
+        _react2.default.createElement(
           'label',
           null,
-          etype === EventTypes.SPIT_UP ? 'Spit-Up' : _.capitalize(etype)
+          etype === _constants.EventTypes.SPIT_UP ? 'Spit-Up' : _lodash2.default.capitalize(etype)
         )
       );
     }, this);
 
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       { className: 'modal-sheet' },
-      React.createElement(
+      _react2.default.createElement(
         'form',
         { id: 'feed-form', 'data-baby': baby, onSubmit: this._submit },
-        React.createElement(
+        _react2.default.createElement(
           'h1',
           null,
           'Log Event for ',
           baby
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'pad-bottom-1em' },
-          React.createElement(
+          _react2.default.createElement(
             'h3',
             null,
             'What type of event is this?'
           ),
-          React.createElement(
+          _react2.default.createElement(
             'div',
             null,
             eventTypeField
@@ -2845,12 +3154,12 @@ var Log = React.createClass({
         diaperField,
         spitField,
         napTimeField,
-        React.createElement('input', { type: 'submit',
+        _react2.default.createElement('input', { type: 'submit',
           className: 'btn btn-invert submit-btn',
           disabled: this.state.submitting ? 'disabled' : false,
           value: this.state.submitting ? 'Submitting...' : 'Submit' }),
-        React.createElement(
-          Link,
+        _react2.default.createElement(
+          _reactRouter.Link,
           { to: '/', className: 'btn btn-cancel btn-invert' },
           'Cancel'
         )
@@ -2859,33 +3168,47 @@ var Log = React.createClass({
   }
 });
 
-module.exports = Log;
+exports.default = Log;
 
-},{"../actions/view-actions":3,"../constants/constants":22,"../stores/baby-store":24,"../stores/event-store":25,"../stores/food-type-store":26,"./FractionalStepper.jsx":11,"./SwitchButton.jsx":18,"./TimeStepper.jsx":19,"lodash":41,"moment-timezone":43,"react":272,"react-router":79}],16:[function(require,module,exports){
+},{"../actions/view-actions":3,"../constants/constants":22,"../stores/baby-store":24,"../stores/event-store":25,"../stores/food-type-store":26,"./FractionalStepper.jsx":11,"./SwitchButton.jsx":18,"./TimeStepper.jsx":19,"lodash":41,"moment":46,"moment-timezone":43,"react":273,"react-router":80}],16:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var BabyStore = require('../stores/baby-store');
-var Actions = require('../actions/view-actions');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var LoginForm = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _babyStore = require('../stores/baby-store');
+
+var _babyStore2 = _interopRequireDefault(_babyStore);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var LoginForm = _react2.default.createClass({
   displayName: 'LoginForm',
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   componentDidMount: function componentDidMount() {
-    BabyStore.addChangeListener(this._onChange);
+    _babyStore2.default.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    BabyStore.removeChangeListener(this._onChange);
+    _babyStore2.default.removeChangeListener(this._onChange);
   },
 
   _lookUpBabies: function _lookUpBabies(e) {
     e.preventDefault();
-    Actions.findBabies(this.state);
+    _viewActions2.default.findBabies(this.state);
   },
 
   _setValue: function _setValue(e) {
@@ -2895,57 +3218,57 @@ var LoginForm = React.createClass({
   },
 
   _onChange: function _onChange() {
-    if (BabyStore.getSearchFailed()) {
+    if (_babyStore2.default.getSearchFailed()) {
       this.context.router.push({ pathname: 'get-started', query: this.state });
     } else {
       this.setState({
-        babies: BabyStore.getBabies(),
-        failedSearch: BabyStore.getSearchFailed()
+        babies: _babyStore2.default.getBabies(),
+        failedSearch: _babyStore2.default.getSearchFailed()
       });
     }
   },
 
   render: function render() {
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'login-form-container' },
-      React.createElement(
+      _react2.default.createElement(
         'form',
         { onSubmit: this._lookUpBabies, className: 'login-form' },
-        React.createElement(
+        _react2.default.createElement(
           'h2',
           null,
           'Hi there!'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'p',
           null,
           'Let’s get started. Please enter the last name and birthdate of the babies you’d like to start tracking. If someone has already entered them into the system, you can start tracking them right away. If not, we’ll just ask you a few more questions to get things set up.'
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'form-group' },
-          React.createElement(
+          _react2.default.createElement(
             'label',
             { htmlFor: 'lastname' },
             'Last Name'
           ),
-          React.createElement('input', { type: 'text', name: 'lastname', placeholder: 'Last Name', onChange: this._setValue })
+          _react2.default.createElement('input', { type: 'text', name: 'lastname', placeholder: 'Last Name', onChange: this._setValue })
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'form-group' },
-          React.createElement(
+          _react2.default.createElement(
             'label',
             { htmlFor: 'birthdate' },
             'Birthdate'
           ),
-          React.createElement('input', { type: 'date', name: 'birthdate', onChange: this._setValue })
+          _react2.default.createElement('input', { type: 'date', name: 'birthdate', onChange: this._setValue })
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'form-group submit-btn-container' },
-          React.createElement(
+          _react2.default.createElement(
             'button',
             { className: 'btn submit-btn' },
             'Submit'
@@ -2956,23 +3279,33 @@ var LoginForm = React.createClass({
   }
 });
 
-module.exports = LoginForm;
+exports.default = LoginForm;
 
-},{"../actions/view-actions":3,"../stores/baby-store":24,"react":272}],17:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/baby-store":24,"react":273}],17:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
 
 var _fractions = require('../utils/fractions');
 
-var React = require('react');
-var cx = require('classnames');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-
-var StepperBtn = React.createClass({
+var StepperBtn = _react2.default.createClass({
   displayName: 'StepperBtn',
 
 
   render: function render() {
-    var btnClasses = cx({
+    var btnClasses = (0, _classnames2.default)({
       'btn': true,
       'btn-invert': true,
       'stepper-btn': true,
@@ -2980,7 +3313,7 @@ var StepperBtn = React.createClass({
       'bottom-btn': this.props.btnPos === 'bottom'
     });
 
-    var iClass = cx({
+    var iClass = (0, _classnames2.default)({
       'fa': true,
       'fa-angle-up': this.props.btnPos === 'top',
       'fa-angle-down': this.props.btnPos === 'bottom'
@@ -2988,15 +3321,15 @@ var StepperBtn = React.createClass({
 
     var dir = this.props.btnPos === 'top' ? 'up' : 'down';
 
-    return React.createElement(
+    return _react2.default.createElement(
       'button',
       { className: btnClasses, 'data-direction': dir, onClick: this.props.onClick },
-      React.createElement('i', { className: iClass })
+      _react2.default.createElement('i', { className: iClass })
     );
   }
 });
 
-var Stepper = React.createClass({
+var Stepper = _react2.default.createClass({
   displayName: 'Stepper',
 
 
@@ -3143,47 +3476,58 @@ var Stepper = React.createClass({
 
   render: function render() {
     var full = this.props.full;
-    var classes = cx({
+    var classes = (0, _classnames2.default)({
       'stepper': true,
       'stepper-full': full,
       'stepper-fractional': !full
     });
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: classes },
-      React.createElement(StepperBtn, { btnPos: 'top', onClick: this._stepUp }),
-      React.createElement(
+      _react2.default.createElement(StepperBtn, { btnPos: 'top', onClick: this._stepUp }),
+      _react2.default.createElement(
         'span',
         null,
         this.state.val
       ),
-      React.createElement(StepperBtn, { btnPos: 'bottom', onClick: this._stepDown })
+      _react2.default.createElement(StepperBtn, { btnPos: 'bottom', onClick: this._stepDown })
     );
   }
 });
 
-module.exports = Stepper;
+exports.default = Stepper;
 
-},{"../utils/fractions":30,"classnames":36,"react":272}],18:[function(require,module,exports){
+},{"../utils/fractions":30,"classnames":36,"react":273}],18:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var SwitchButton = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SwitchButton = _react2.default.createClass({
   displayName: 'SwitchButton',
 
 
   render: function render() {
-    var emoji;
+    var emoji = void 0;
 
     if (this.props.emoji) {
-      var label = this.props.label ? this.props.label : _.capitalize(this.props.value);
-      emoji = React.createElement(
+      var label = this.props.label ? this.props.label : _lodash2.default.capitalize(this.props.value);
+      emoji = _react2.default.createElement(
         'span',
         { className: 'emojifier', style: { display: 'inline' } },
-        React.createElement('img', {
+        _react2.default.createElement('img', {
           className: 'emoji',
           src: this.props.emoji,
           title: label,
@@ -3192,34 +3536,46 @@ var SwitchButton = React.createClass({
       );
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'span',
       { className: 'switch' },
-      React.createElement('input', {
+      _react2.default.createElement('input', {
         type: this.props.type,
         name: this.props.name,
         onChange: this.props.onChange,
         defaultChecked: this.props.defaultChecked,
         value: this.props.value
       }),
-      React.createElement(
+      _react2.default.createElement(
         'label',
         null,
-        this.props.label ? _.capitalize(this.props.label) : _.capitalize(this.props.value),
+        this.props.label ? _lodash2.default.capitalize(this.props.label) : _lodash2.default.capitalize(this.props.value),
         emoji
       )
     );
   }
 });
 
-module.exports = SwitchButton;
+exports.default = SwitchButton;
 
-},{"lodash":41,"react":272}],19:[function(require,module,exports){
+},{"lodash":41,"react":273}],19:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var Stepper = require('./Stepper.jsx');
-var TimeStepper = React.createClass({
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Stepper = require('./Stepper.jsx');
+
+var _Stepper2 = _interopRequireDefault(_Stepper);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var TimeStepper = _react2.default.createClass({
   displayName: 'TimeStepper',
 
 
@@ -3289,41 +3645,41 @@ var TimeStepper = React.createClass({
 
   render: function render() {
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       null,
-      React.createElement(Stepper, { full: true,
+      _react2.default.createElement(_Stepper2.default, { full: true,
         initialValue: this.state.hours,
         onChange: this._setHours,
         max: 12,
         min: 1,
         wrap: true }),
-      React.createElement('span', { className: 'big-colon' }),
-      React.createElement(Stepper, { full: true,
+      _react2.default.createElement('span', { className: 'big-colon' }),
+      _react2.default.createElement(_Stepper2.default, { full: true,
         initialValue: this.state.minutes,
         onChange: this._setMins,
         padSingleDigits: true,
         max: 59,
         min: 0,
         wrap: true }),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'ampm' },
-        React.createElement(
+        _react2.default.createElement(
           'span',
           { className: 'switch' },
-          React.createElement('input', { type: 'radio', name: 'pm' + this.props.identifier, onChange: this._setAmPm, defaultChecked: this.state.amPm === 'am', value: 'am' }),
-          React.createElement(
+          _react2.default.createElement('input', { type: 'radio', name: 'pm' + this.props.identifier, onChange: this._setAmPm, defaultChecked: this.state.amPm === 'am', value: 'am' }),
+          _react2.default.createElement(
             'label',
             null,
             'AM'
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'span',
           { className: 'switch' },
-          React.createElement('input', { type: 'radio', name: 'pm' + this.props.identifier, onChange: this._setAmPm, defaultChecked: this.state.amPm === 'pm', value: 'pm' }),
-          React.createElement(
+          _react2.default.createElement('input', { type: 'radio', name: 'pm' + this.props.identifier, onChange: this._setAmPm, defaultChecked: this.state.amPm === 'pm', value: 'pm' }),
+          _react2.default.createElement(
             'label',
             null,
             'PM'
@@ -3335,40 +3691,64 @@ var TimeStepper = React.createClass({
 
 });
 
-module.exports = TimeStepper;
+exports.default = TimeStepper;
 
-},{"./Stepper.jsx":17,"react":272}],20:[function(require,module,exports){
+},{"./Stepper.jsx":17,"react":273}],20:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var moment = require('moment-timezone');
-var cx = require('classnames');
-var Table = require('reactabular').Table;
-var TimeLogStore = require('../stores/time-log-store');
-var Actions = require('../actions/view-actions');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var ClockOutBtn = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _momentTimezone = require('moment-timezone');
+
+var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _reactabular = require('reactabular');
+
+var _timeLogStore = require('../stores/time-log-store');
+
+var _timeLogStore2 = _interopRequireDefault(_timeLogStore);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ClockOutBtn = _react2.default.createClass({
   displayName: 'ClockOutBtn',
 
 
   _clockOut: function _clockOut() {
-    Actions.clockOut(this.props.clockOutID, { timeOut: new Date() });
+    _viewActions2.default.clockOut(this.props.clockOutID, { timeOut: new Date() });
   },
 
   render: function render() {
-    return React.createElement(
+    return _react2.default.createElement(
       'button',
       { key: 'clock-in-timesheet',
         className: this.props.className,
         onClick: this._clockOut },
-      React.createElement('i', { className: 'fa fa-sign-out' }),
+      _react2.default.createElement('i', { className: 'fa fa-sign-out' }),
       ' Clock Out'
     );
   }
 });
 
-var FilterStepper = React.createClass({
+var FilterStepper = _react2.default.createClass({
   displayName: 'FilterStepper',
 
   getInitialState: function getInitialState() {
@@ -3379,7 +3759,7 @@ var FilterStepper = React.createClass({
   },
 
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(this.props.options, nextProps.options)) {
+    if (!_lodash2.default.isEqual(this.props.options, nextProps.options)) {
       this.setState({
         currentStep: nextProps.options[nextProps.options.length - 1],
         pointer: nextProps.options.length - 1
@@ -3414,40 +3794,40 @@ var FilterStepper = React.createClass({
   },
 
   render: function render() {
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'filter-stepper flex-right flex-row' },
-      React.createElement(
+      _react2.default.createElement(
         'button',
         { className: 'btn btn-filter-stepper btn-prev', onClick: this._prev },
-        React.createElement('i', { className: 'fa fa-angle-left' })
+        _react2.default.createElement('i', { className: 'fa fa-angle-left' })
       ),
-      React.createElement(
+      _react2.default.createElement(
         'h4',
         null,
         this.state.currentStep
       ),
-      React.createElement(
+      _react2.default.createElement(
         'button',
         { className: 'btn btn-filter-stepper btn-next', onClick: this._next },
-        React.createElement('i', { className: 'fa fa-angle-right' })
+        _react2.default.createElement('i', { className: 'fa fa-angle-right' })
       )
     );
   }
 });
 
-var Timesheet = React.createClass({
+var Timesheet = _react2.default.createClass({
   displayName: 'Timesheet',
 
 
   contextTypes: {
-    router: React.PropTypes.object.isRequired
+    router: _react2.default.PropTypes.object.isRequired
   },
 
   getInitialState: function getInitialState() {
-    var now = moment(new Date());
+    var now = (0, _momentTimezone2.default)(new Date());
     var thisWeek = now.startOf('week').format('M/D');
-    var logs = TimeLogStore.getEverything();
+    var logs = _timeLogStore2.default.getEverything();
 
     if (!logs.weekly[thisWeek]) {
       thisWeek = this._findMostRecent(logs.weekly);
@@ -3455,19 +3835,19 @@ var Timesheet = React.createClass({
 
     return {
       timeLogs: logs,
-      isClockedIn: TimeLogStore.isClockedIn(),
+      isClockedIn: _timeLogStore2.default.isClockedIn(),
       timeFilter: 'weekly',
       subFilter: thisWeek
     };
   },
 
   componentDidMount: function componentDidMount() {
-    TimeLogStore.addChangeListener(this._onChange);
-    Actions.getTimeLogs();
+    _timeLogStore2.default.addChangeListener(this._onChange);
+    _viewActions2.default.getTimeLogs();
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    TimeLogStore.removeChangeListener(this._onChange);
+    _timeLogStore2.default.removeChangeListener(this._onChange);
   },
 
   _findMostRecent: function _findMostRecent(logs) {
@@ -3476,14 +3856,14 @@ var Timesheet = React.createClass({
 
   _onChange: function _onChange() {
     this.setState({
-      timeLogs: TimeLogStore.getEverything(),
-      isClockedIn: TimeLogStore.isClockedIn()
+      timeLogs: _timeLogStore2.default.getEverything(),
+      isClockedIn: _timeLogStore2.default.isClockedIn()
     });
   },
 
   _clockIn: function _clockIn() {
     var now = new Date();
-    Actions.clockIn({
+    _viewActions2.default.clockIn({
       date: now,
       timeIn: now
     });
@@ -3520,7 +3900,10 @@ var Timesheet = React.createClass({
 
   render: function render() {
 
-    var clockInBtn, clockOutBtn, filterStepper, totalHours;
+    var clockInBtn = void 0,
+        clockOutBtn = void 0,
+        filterStepper = void 0,
+        totalHours = void 0;
     var filter = this.state.timeFilter;
     var subFilter = this.state.subFilter;
 
@@ -3543,29 +3926,29 @@ var Timesheet = React.createClass({
 
     if (this.state.isClockedIn) {
       var clockOutID = this.state.timeLogs.all[0]._id;
-      clockOutBtn = React.createElement(ClockOutBtn, { key: 'clock-out-timesheet', clockOutID: clockOutID, className: 'btn feed-btn' });
+      clockOutBtn = _react2.default.createElement(ClockOutBtn, { key: 'clock-out-timesheet', clockOutID: clockOutID, className: 'btn feed-btn' });
     } else {
-      clockInBtn = React.createElement(
+      clockInBtn = _react2.default.createElement(
         'button',
         { key: 'clock-in-timesheet',
           className: 'btn feed-btn',
           onClick: this._clockIn,
           disabled: this.state.isClockedIn },
-        React.createElement('i', { className: 'fa fa-sign-in' }),
+        _react2.default.createElement('i', { className: 'fa fa-sign-in' }),
         ' Clock In'
       );
     }
 
     if (filter !== 'all') {
-      var totalTime = _.reduce(specificData, function (total, n) {
+      var totalTime = _lodash2.default.reduce(specificData, function (total, n) {
         return total + n.hours;
       }, 0).toFixed(2);
 
-      filterStepper = React.createElement(FilterStepper, { options: Object.keys(dataSet).reverse(), onChange: this._setSubFilter });
-      totalHours = React.createElement(
+      filterStepper = _react2.default.createElement(FilterStepper, { options: Object.keys(dataSet).reverse(), onChange: this._setSubFilter });
+      totalHours = _react2.default.createElement(
         'div',
         { className: 'text-center' },
-        React.createElement(
+        _react2.default.createElement(
           'h3',
           null,
           'Total: ',
@@ -3575,55 +3958,55 @@ var Timesheet = React.createClass({
       );
     }
 
-    return React.createElement(
+    return _react2.default.createElement(
       'section',
       { className: 'modal-sheet timesheet' },
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'fixed-top' },
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'flex-center flex-row' },
-          React.createElement(
+          _react2.default.createElement(
             'h2',
             null,
             'Timesheet'
           )
         ),
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'flex-center flex-row space-between' },
-          React.createElement(
+          _react2.default.createElement(
             'section',
             { className: 'width-50 text-left' },
-            React.createElement(
+            _react2.default.createElement(
               'div',
               { className: 'filter-btns' },
-              React.createElement(
+              _react2.default.createElement(
                 'span',
                 { className: 'switch' },
-                React.createElement('input', { type: 'radio', name: 'filter', onChange: this._setFilter, defaultChecked: filter === 'weekly', value: 'weekly' }),
-                React.createElement(
+                _react2.default.createElement('input', { type: 'radio', name: 'filter', onChange: this._setFilter, defaultChecked: filter === 'weekly', value: 'weekly' }),
+                _react2.default.createElement(
                   'label',
                   null,
                   'Week'
                 )
               ),
-              React.createElement(
+              _react2.default.createElement(
                 'span',
                 { className: 'switch' },
-                React.createElement('input', { type: 'radio', name: 'filter', onChange: this._setFilter, defaultChecked: filter === 'monthly', value: 'monthly' }),
-                React.createElement(
+                _react2.default.createElement('input', { type: 'radio', name: 'filter', onChange: this._setFilter, defaultChecked: filter === 'monthly', value: 'monthly' }),
+                _react2.default.createElement(
                   'label',
                   null,
                   'Month'
                 )
               ),
-              React.createElement(
+              _react2.default.createElement(
                 'span',
                 { className: 'switch' },
-                React.createElement('input', { type: 'radio', name: 'filter', onChange: this._setFilter, defaultChecked: filter === 'all', value: 'all' }),
-                React.createElement(
+                _react2.default.createElement('input', { type: 'radio', name: 'filter', onChange: this._setFilter, defaultChecked: filter === 'all', value: 'all' }),
+                _react2.default.createElement(
                   'label',
                   null,
                   'All'
@@ -3631,36 +4014,36 @@ var Timesheet = React.createClass({
               )
             )
           ),
-          React.createElement(
+          _react2.default.createElement(
             'section',
             { className: 'width-35 text-right' },
             filterStepper
           )
         )
       ),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { className: 'middle' },
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { className: 'flex-center flex-row' },
-          React.createElement(Table, { className: 'timesheet-table', columns: columns, data: specificData })
+          _react2.default.createElement(_reactabular.Table, { className: 'timesheet-table', columns: columns, data: specificData })
         ),
         totalHours
       ),
-      React.createElement(
+      _react2.default.createElement(
         'div',
         { key: 'div-timesheet-action-sheet', className: 'fixed-bottom translucent-bg flex-center flex-col' },
-        React.createElement(
+        _react2.default.createElement(
           'div',
           { key: 'div-timesheet-quick-btns', className: 'timesheet-btn-container flex-center flex-row' },
           clockInBtn,
           clockOutBtn,
-          React.createElement(
+          _react2.default.createElement(
             'button',
             { className: 'btn home-btn feed-btn',
               onClick: this._goHome },
-            React.createElement('i', { className: 'fa fa-home' }),
+            _react2.default.createElement('i', { className: 'fa fa-home' }),
             ' Home'
           )
         )
@@ -3669,30 +4052,47 @@ var Timesheet = React.createClass({
   }
 });
 
-module.exports = Timesheet;
+exports.default = Timesheet;
 
-},{"../actions/view-actions":3,"../stores/time-log-store":27,"classnames":36,"lodash":41,"moment-timezone":43,"react":272,"reactabular":285}],21:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/time-log-store":27,"classnames":36,"lodash":41,"moment-timezone":43,"react":273,"reactabular":286}],21:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var Actions = require('../actions/view-actions');
-var WizardStore = require('../stores/wizard-store');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var Wizard = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _viewActions = require('../actions/view-actions');
+
+var _viewActions2 = _interopRequireDefault(_viewActions);
+
+var _wizardStore = require('../stores/wizard-store');
+
+var _wizardStore2 = _interopRequireDefault(_wizardStore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Wizard = _react2.default.createClass({
   displayName: 'Wizard',
 
   getInitialState: function getInitialState() {
     var initialState = this.props.initialState || {};
-    return _.assign(initialState, WizardStore.getAll());
+    return _lodash2.default.assign(initialState, _wizardStore2.default.getAll());
   },
 
   componentDidMount: function componentDidMount() {
-    WizardStore.addChangeListener(this._onChange);
+    _wizardStore2.default.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    WizardStore.removeChangeListener(this._onChange);
+    _wizardStore2.default.removeChangeListener(this._onChange);
   },
 
   _currentStep: function _currentStep() {
@@ -3700,12 +4100,12 @@ var Wizard = React.createClass({
   },
 
   _onChange: function _onChange() {
-    this.setState(WizardStore.getAll());
+    this.setState(_wizardStore2.default.getAll());
   },
 
   _next: function _next(e) {
     e.preventDefault();
-    Actions.wizardNext();
+    _viewActions2.default.wizardNext();
   },
 
   _prev: function _prev(e) {
@@ -3713,40 +4113,40 @@ var Wizard = React.createClass({
     if (this._currentStep().props.enableBackBtn) {
       this._currentStep().props.back();
     } else {
-      Actions.wizardPrev();
+      _viewActions2.default.wizardPrev();
     }
   },
 
   render: function render() {
     var currentView = this.props.views[this.state.step];
-    var nextBtn = currentView.props.onFinish ? React.createElement(
+    var nextBtn = currentView.props.onFinish ? _react2.default.createElement(
       'button',
       { className: 'btn', onClick: currentView.props.onFinish },
       'Done'
-    ) : React.createElement(
+    ) : _react2.default.createElement(
       'button',
       { className: 'btn', onClick: this._next, disabled: this.state.step === this.props.views.length - 1 },
       'Next'
     );
 
-    return React.createElement(
+    return _react2.default.createElement(
       'div',
       { className: 'wizard-container' },
-      React.createElement(
+      _react2.default.createElement(
         'section',
         { className: 'wizard' },
-        React.createElement(
+        _react2.default.createElement(
           'form',
           { onSubmit: this.props.onSubmit },
-          React.createElement(
+          _react2.default.createElement(
             'div',
             { className: 'wizard-view' },
             this.props.views[this.state.step]
           ),
-          React.createElement(
+          _react2.default.createElement(
             'div',
             { className: 'wizard-btns' },
-            React.createElement(
+            _react2.default.createElement(
               'button',
               {
                 className: 'btn',
@@ -3763,61 +4163,71 @@ var Wizard = React.createClass({
   }
 });
 
-module.exports = Wizard;
+exports.default = Wizard;
 
-},{"../actions/view-actions":3,"../stores/wizard-store":28,"lodash":41,"react":272}],22:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/wizard-store":28,"lodash":41,"react":273}],22:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 var keyMirror = require('keymirror');
 
-module.exports = {
-  ActionTypes: keyMirror({
-    CLOCKED_IN: null,
-    CLOCKED_OUT: null,
-    INITIALIZED: null,
-    NO_BABIES_FOUND: null,
-    RECEIVE_EVENTS: null,
-    RECEIVE_BABIES: null,
-    RECEIVE_FEEDERS: null,
-    RECEIVE_FEEDINGS: null,
-    RECEIVE_FOOD_TYPES: null,
-    RECEIVE_TIME_LOGS: null,
-    SUCCESSFUL_EVENT_POST: null,
-    SUCCESSFUL_EVENT_EDIT: null,
-    WIZARD_NEXT: null,
-    WIZARD_PREV: null,
-    WIZARD_DONE: null
-  }),
+var ActionTypes = exports.ActionTypes = keyMirror({
+  CLOCKED_IN: null,
+  CLOCKED_OUT: null,
+  INITIALIZED: null,
+  NO_BABIES_FOUND: null,
+  RECEIVE_EVENTS: null,
+  RECEIVE_BABIES: null,
+  RECEIVE_FEEDERS: null,
+  RECEIVE_FEEDINGS: null,
+  RECEIVE_FOOD_TYPES: null,
+  RECEIVE_TIME_LOGS: null,
+  SUCCESSFUL_EVENT_POST: null,
+  SUCCESSFUL_EVENT_EDIT: null,
+  WIZARD_NEXT: null,
+  WIZARD_PREV: null,
+  WIZARD_DONE: null
+});
 
-  PayloadSources: keyMirror({
-    SERVER_ACTION: null,
-    VIEW_ACTION: null,
-    REQUEST_ACTION: null
-  }),
+var PayloadSources = exports.PayloadSources = keyMirror({
+  SERVER_ACTION: null,
+  VIEW_ACTION: null,
+  REQUEST_ACTION: null
+});
 
-  EventTypes: {
-    FEEDING: 'feeding',
-    SPIT_UP: 'spit',
-    BURP: 'burp',
-    MEDS: 'meds',
-    DIAPER: 'diaper',
-    NAP: 'nap'
-  }
+var EventTypes = exports.EventTypes = {
+  FEEDING: 'feeding',
+  SPIT_UP: 'spit',
+  BURP: 'burp',
+  MEDS: 'meds',
+  DIAPER: 'diaper',
+  NAP: 'nap'
 };
 
 },{"keymirror":40}],23:[function(require,module,exports){
 'use strict';
 
-var Constants = require('..//constants/constants');
-var Dispatcher = require('flux').Dispatcher;
-var assign = require('object-assign');
-var PayloadSources = Constants.PayloadSources;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-var AppDispatcher = assign(new Dispatcher(), {
+var _objectAssign = require('object-assign');
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+var _flux = require('flux');
+
+var _constants = require('../constants/constants');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AppDispatcher = (0, _objectAssign2.default)(new _flux.Dispatcher(), {
 
   handleServerAction: function handleServerAction(action) {
     var payload = {
-      source: PayloadSources.SERVER_ACTION,
+      source: _constants.PayloadSources.SERVER_ACTION,
       action: action
     };
     this.dispatch(payload);
@@ -3825,7 +4235,7 @@ var AppDispatcher = assign(new Dispatcher(), {
 
   handleViewAction: function handleViewAction(action) {
     var payload = {
-      source: PayloadSources.VIEW_ACTION,
+      source: _constants.PayloadSources.VIEW_ACTION,
       action: action
     };
     this.dispatch(payload);
@@ -3833,17 +4243,37 @@ var AppDispatcher = assign(new Dispatcher(), {
 
   handleRequestAction: function handleRequestAction(action) {
     var payload = {
-      source: PayloadSources.REQUEST_ACTION,
+      source: _constants.PayloadSources.REQUEST_ACTION,
       action: action
     };
     this.dispatch(payload);
   }
 });
 
-module.exports = AppDispatcher;
+exports.default = AppDispatcher;
 
-},{"..//constants/constants":22,"flux":37,"object-assign":46}],24:[function(require,module,exports){
+},{"../constants/constants":22,"flux":37,"object-assign":47}],24:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = require('../constants/constants');
+
+var _events = require('events');
+
+var _objectAssign = require('object-assign');
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _appDispatcher = require('../dispatcher/app-dispatcher');
+
+var _appDispatcher2 = _interopRequireDefault(_appDispatcher);
 
 var _localStorage = require('../utils/local-storage');
 
@@ -3851,19 +4281,12 @@ var _localStorage2 = _interopRequireDefault(_localStorage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var _ = require('lodash');
-var Dispatcher = require('../dispatcher/app-dispatcher');
-
-var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _babies = _localStorage2.default.get('babies') || [];
 var _feeders = _localStorage2.default.get('feeders') || [];
-var _failedSearch;
+var _failedSearch = void 0;
 
-var BabyStore = assign({}, EventEmitter.prototype, {
+var BabyStore = (0, _objectAssign2.default)({}, _events.EventEmitter.prototype, {
   emitChange: function emitChange() {
     this.emit(CHANGE_EVENT);
   },
@@ -3881,7 +4304,7 @@ var BabyStore = assign({}, EventEmitter.prototype, {
   },
 
   getBaby: function getBaby(id) {
-    return _.find(_babies, { '_id': id });
+    return _lodash2.default.find(_babies, { '_id': id });
   },
 
   getFeeders: function getFeeders() {
@@ -3893,26 +4316,52 @@ var BabyStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-BabyStore.dispatchToken = Dispatcher.register(function (payload) {
-  var action;
+BabyStore.dispatchToken = _appDispatcher2.default.register(function (payload) {
+  var action = void 0;
   action = payload.action;
   switch (action.type) {
-    case ActionTypes.RECEIVE_BABIES:
+    case _constants.ActionTypes.RECEIVE_BABIES:
       _babies = action.data;
       _feeders = _babies[0].feeders;
       _localStorage2.default.set('babies', _babies);
       _localStorage2.default.set('feeders', _feeders);
       break;
-    case ActionTypes.NO_BABIES_FOUND:
+    case _constants.ActionTypes.NO_BABIES_FOUND:
       _failedSearch = true;
   }
   BabyStore.emitChange();
 });
 
-module.exports = BabyStore;
+exports.default = BabyStore;
 
-},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"lodash":41,"object-assign":46}],25:[function(require,module,exports){
+},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"lodash":41,"object-assign":47}],25:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = require('../constants/constants');
+
+var _events2 = require('events');
+
+var _objectAssign = require('object-assign');
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+var _appDispatcher = require('../dispatcher/app-dispatcher');
+
+var _appDispatcher2 = _interopRequireDefault(_appDispatcher);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+require('moment-timezone');
 
 var _localStorage = require('../utils/local-storage');
 
@@ -3920,14 +4369,6 @@ var _localStorage2 = _interopRequireDefault(_localStorage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Dispatcher = require('../dispatcher/app-dispatcher');
-var _ = require('lodash');
-var moment = require('moment-timezone');
-
-var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _events = _localStorage2.default.get('events') || [];
 var _feedings = _localStorage2.default.get('feedings') || [];
@@ -3952,12 +4393,12 @@ var _groupedMeds = _localStorage2.default.get('grouped-meds') || {};
 var _groupedPoops = _localStorage2.default.get('grouped-poops') || {};
 
 if (_groupedFeedings && _groupedFeedings.length > 0) {
-  _latest = _.map(_groupedFeedings, function (baby) {
+  _latest = _lodash2.default.map(_groupedFeedings, function (baby) {
     return baby[0];
   });
 }
 
-var EventStore = assign({}, EventEmitter.prototype, {
+var EventStore = (0, _objectAssign2.default)({}, _events2.EventEmitter.prototype, {
   emitChange: function emitChange() {
     this.emit(CHANGE_EVENT);
   },
@@ -3975,7 +4416,7 @@ var EventStore = assign({}, EventEmitter.prototype, {
   },
 
   getEvent: function getEvent(id) {
-    return _.find(_events, { _id: id });
+    return _lodash2.default.find(_events, { _id: id });
   },
 
   getLatestFeedings: function getLatestFeedings() {
@@ -4016,66 +4457,68 @@ var EventStore = assign({}, EventEmitter.prototype, {
 
 var updateStore = function updateStore() {
 
-  _feedings = _.filter(_events, { eventType: 'feeding' });
-  _diapers = _.filter(_events, { eventType: 'diaper' });
-  _spits = _.filter(_events, { eventType: 'spit' });
-  _poops = _.filter(_events, function (ev) {
-    return _.contains(ev.diaper, 'poop');
-  });
-  _meds = _.filter(_events, function (ev) {
-    return ev.eventType === 'medicine' || !_.isEmpty(ev.medicine);
+  _feedings = _lodash2.default.filter(_events, { eventType: 'feeding' });
+  _diapers = _lodash2.default.filter(_events, { eventType: 'diaper' });
+  _spits = _lodash2.default.filter(_events, { eventType: 'spit' });
+
+  _poops = _lodash2.default.filter(_events, function (ev) {
+    return _lodash2.default.contains(ev.diaper, 'poop');
   });
 
-  _lastWeekEvents = _.chain(_events).filter(function (ev) {
-    return moment(Date.now()).diff(ev.time, 'days') <= 7;
+  _meds = _lodash2.default.filter(_events, function (ev) {
+    return ev.eventType === 'medicine' || !_lodash2.default.isEmpty(ev.medicine);
+  });
+
+  _lastWeekEvents = _lodash2.default.chain(_events).filter(function (ev) {
+    return (0, _moment2.default)(Date.now()).diff(ev.time, 'days') <= 7;
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _lastWeekFeedings = _.chain(_feedings).filter(function (ev) {
-    return moment(Date.now()).diff(ev.time, 'days') <= 7;
+  _lastWeekFeedings = _lodash2.default.chain(_feedings).filter(function (ev) {
+    return (0, _moment2.default)(Date.now()).diff(ev.time, 'days') <= 7;
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _lastWeekPoops = _.chain(_poops).filter(function (ev) {
-    return moment(Date.now()).diff(ev.time, 'days') <= 7;
+  _lastWeekPoops = _lodash2.default.chain(_poops).filter(function (ev) {
+    return (0, _moment2.default)(Date.now()).diff(ev.time, 'days') <= 7;
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _lastWeekMeds = _.chain(_meds).filter(function (ev) {
-    return moment(Date.now()).diff(ev.time, 'days') <= 7;
+  _lastWeekMeds = _lodash2.default.chain(_meds).filter(function (ev) {
+    return (0, _moment2.default)(Date.now()).diff(ev.time, 'days') <= 7;
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _lastDayEvents = _.chain(_events).filter(function (ev) {
-    return moment(Date.now()).diff(ev.time, 'hours') <= 24;
+  _lastDayEvents = _lodash2.default.chain(_events).filter(function (ev) {
+    return (0, _moment2.default)(Date.now()).diff(ev.time, 'hours') <= 24;
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _lastDayFeedings = _.chain(_feedings).filter(function (ev) {
-    return moment(Date.now()).diff(ev.time, 'hours') <= 24;
+  _lastDayFeedings = _lodash2.default.chain(_feedings).filter(function (ev) {
+    return (0, _moment2.default)(Date.now()).diff(ev.time, 'hours') <= 24;
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _lastDayPoops = _.chain(_poops).filter(function (ev) {
-    return moment(Date.now()).diff(ev.time, 'hours') <= 24;
+  _lastDayPoops = _lodash2.default.chain(_poops).filter(function (ev) {
+    return (0, _moment2.default)(Date.now()).diff(ev.time, 'hours') <= 24;
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _lastDayMeds = _.chain(_meds).filter(function (ev) {
-    return moment(Date.now()).diff(ev.time, 'hours') <= 24;
+  _lastDayMeds = _lodash2.default.chain(_meds).filter(function (ev) {
+    return (0, _moment2.default)(Date.now()).diff(ev.time, 'hours') <= 24;
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _groupedFeedings = _.chain(_feedings).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
+  _groupedFeedings = _lodash2.default.chain(_feedings).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _groupedMeds = _.chain(_meds).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
+  _groupedMeds = _lodash2.default.chain(_meds).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _groupedPoops = _.chain(_poops).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
+  _groupedPoops = _lodash2.default.chain(_poops).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _groupedEvents = _.chain(_events).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
+  _groupedEvents = _lodash2.default.chain(_events).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _latestPoops = _.chain(_events).filter(function (e) {
-    return e.diaper && _.contains(e.diaper, 'poop');
+  _latestPoops = _lodash2.default.chain(_events).filter(function (e) {
+    return e.diaper && _lodash2.default.contains(e.diaper, 'poop');
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _latestPrevacid = _.chain(_events).filter(function (e) {
-    return e.medicine && _.contains(e.medicine, 'prevacid');
+  _latestPrevacid = _lodash2.default.chain(_events).filter(function (e) {
+    return e.medicine && _lodash2.default.contains(e.medicine, 'prevacid');
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _.map(_latestPoops, function (baby) {
-    var hoursSincePoop = moment(Date.now()).diff(baby[0].time, 'hours');
+  _lodash2.default.map(_latestPoops, function (baby) {
+    var hoursSincePoop = (0, _moment2.default)(Date.now()).diff(baby[0].time, 'hours');
     if (hoursSincePoop < 24) {
       _groupedFeedings[baby[0].name][0].poopFlag = 0;
     } else if (hoursSincePoop < 72) {
@@ -4085,12 +4528,12 @@ var updateStore = function updateStore() {
     }
   });
 
-  _.map(_latestPrevacid, function (baby) {
-    var hoursSincePrevacid = moment(Date.now()).diff(baby[0].time, 'hours');
+  _lodash2.default.map(_latestPrevacid, function (baby) {
+    var hoursSincePrevacid = (0, _moment2.default)(Date.now()).diff(baby[0].time, 'hours');
     _groupedFeedings[baby[0].name][0].prevacidFlag = hoursSincePrevacid > 8;
   });
 
-  _latest = _.map(_groupedFeedings, function (baby) {
+  _latest = _lodash2.default.map(_groupedFeedings, function (baby) {
     return baby[0];
   });
 
@@ -4114,23 +4557,23 @@ var updateStore = function updateStore() {
   EventStore.emitChange();
 };
 
-EventStore.dispatchToken = Dispatcher.register(function (payload) {
+EventStore.dispatchToken = _appDispatcher2.default.register(function (payload) {
   var action;
   action = payload.action;
   switch (action.type) {
-    case ActionTypes.RECEIVE_EVENTS:
+    case _constants.ActionTypes.RECEIVE_EVENTS:
       _events = action.data;
       _localStorage2.default.set('events', _events);
       updateStore();
       break;
 
-    case ActionTypes.SUCCESSFUL_EVENT_POST:
+    case _constants.ActionTypes.SUCCESSFUL_EVENT_POST:
       _events.push(action.data);
       _localStorage2.default.set('events', _events);
       updateStore();
       break;
 
-    case ActionTypes.SUCCESSFUL_EVENT_EDIT:
+    case _constants.ActionTypes.SUCCESSFUL_EVENT_EDIT:
       for (var i = 0; i < _events.length; i++) {
         if (_events[i]._id.toString() === action.data._id.toString()) {
           _events.splice(i, 1, action.data);
@@ -4147,10 +4590,26 @@ EventStore.dispatchToken = Dispatcher.register(function (payload) {
   }
 });
 
-module.exports = EventStore;
+exports.default = EventStore;
 
-},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"lodash":41,"moment-timezone":43,"object-assign":46}],26:[function(require,module,exports){
+},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"lodash":41,"moment":46,"moment-timezone":43,"object-assign":47}],26:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = require('../constants/constants');
+
+var _events = require('events');
+
+var _objectAssign = require('object-assign');
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+var _appDispatcher = require('../dispatcher/app-dispatcher');
+
+var _appDispatcher2 = _interopRequireDefault(_appDispatcher);
 
 var _localStorage = require('../utils/local-storage');
 
@@ -4158,16 +4617,10 @@ var _localStorage2 = _interopRequireDefault(_localStorage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Dispatcher = require('../dispatcher/app-dispatcher');
-
-var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _foodTypes = _localStorage2.default.get('foodTypes') || [];
 
-var FoodTypeStore = assign({}, EventEmitter.prototype, {
+var FoodTypeStore = (0, _objectAssign2.default)({}, _events.EventEmitter.prototype, {
   emitChange: function emitChange() {
     this.emit(CHANGE_EVENT);
   },
@@ -4185,11 +4638,11 @@ var FoodTypeStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-FoodTypeStore.dispatchToken = Dispatcher.register(function (payload) {
+FoodTypeStore.dispatchToken = _appDispatcher2.default.register(function (payload) {
   var action;
   action = payload.action;
   switch (action.type) {
-    case ActionTypes.RECEIVE_FOOD_TYPES:
+    case _constants.ActionTypes.RECEIVE_FOOD_TYPES:
       _foodTypes = action.data;
       _localStorage2.default.set('foodTypes', _foodTypes);
       break;
@@ -4197,35 +4650,53 @@ FoodTypeStore.dispatchToken = Dispatcher.register(function (payload) {
   FoodTypeStore.emitChange();
 });
 
-module.exports = FoodTypeStore;
+exports.default = FoodTypeStore;
 
-},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"object-assign":46}],27:[function(require,module,exports){
+},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"object-assign":47}],27:[function(require,module,exports){
 'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _events = require('events');
+
+var _objectAssign = require('object-assign');
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+var _appDispatcher = require('../dispatcher/app-dispatcher');
+
+var _appDispatcher2 = _interopRequireDefault(_appDispatcher);
 
 var _localStorage = require('../utils/local-storage');
 
 var _localStorage2 = _interopRequireDefault(_localStorage);
 
+var _constants = require('../constants/constants');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+require('moment-timezone');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Dispatcher = require('../dispatcher/app-dispatcher');
-
-var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
-var _ = require('lodash');
-var moment = require('moment-timezone');
 var _rawLogs = _localStorage2.default.get('raw-time-logs') || [];
 var _timeLogs = _localStorage2.default.get('time-logs') || [];
 var _weeklyTimeLogs = _localStorage2.default.get('weekly-time-logs') || {};
 var _monthlyTimeLogs = _localStorage2.default.get('monthly-time-logs') || {};
-var _thisWeekLog;
-var _thisMonthLog;
+var _thisWeekLog = void 0;
+var _thisMonthLog = void 0;
 var _isClockedIn = false;
 
-var TimeLogStore = assign({}, EventEmitter.prototype, {
+var TimeLogStore = (0, _objectAssign2.default)({}, _events.EventEmitter.prototype, {
   emitChange: function emitChange() {
     this.emit(CHANGE_EVENT);
   },
@@ -4256,25 +4727,25 @@ var TimeLogStore = assign({}, EventEmitter.prototype, {
 });
 
 var updateStore = function updateStore() {
-  _timeLogs = _.chain(_rawLogs).map(function (tl) {
+  _timeLogs = _lodash2.default.chain(_rawLogs).map(function (tl) {
     return {
       _id: tl._id,
-      date: moment(tl.date).format('M/D/YY'),
-      timeIn: moment(tl.timeIn).format('h:mma'),
-      timeOut: tl.timeOut ? moment(tl.timeOut).format('h:mma') : null,
+      date: (0, _moment2.default)(tl.date).format('M/D/YY'),
+      timeIn: (0, _moment2.default)(tl.timeIn).format('h:mma'),
+      timeOut: tl.timeOut ? (0, _moment2.default)(tl.timeOut).format('h:mma') : null,
       hours: tl.hours || tl.hours === 0 ? tl.hours : null,
-      weekOf: moment(tl.timeIn).startOf('week').format('M/D'),
-      monthOf: moment(tl.timeIn).startOf('month').format('MMM')
+      weekOf: (0, _moment2.default)(tl.timeIn).startOf('week').format('M/D'),
+      monthOf: (0, _moment2.default)(tl.timeIn).startOf('month').format('MMM')
     };
   }).value();
 
   _isClockedIn = !_timeLogs[0].timeOut;
 
-  var now = moment(new Date());
+  var now = (0, _moment2.default)(new Date());
   var thisWeek = now.startOf('week').format('M/D');
   var thisMonth = now.startOf('month').format('MMM');
-  _weeklyTimeLogs = _.groupBy(_timeLogs, 'weekOf');
-  _monthlyTimeLogs = _.groupBy(_timeLogs, 'monthOf');
+  _weeklyTimeLogs = _lodash2.default.groupBy(_timeLogs, 'weekOf');
+  _monthlyTimeLogs = _lodash2.default.groupBy(_timeLogs, 'monthOf');
   _thisWeekLog = _weeklyTimeLogs[thisWeek];
   _thisMonthLog = _monthlyTimeLogs[thisMonth];
   _localStorage2.default.set('weekly-time-logs', _weeklyTimeLogs);
@@ -4287,46 +4758,61 @@ var needsUpdating = function needsUpdating(logs) {
   return !logs || logs.length === 0 || JSON.stringify(_rawLogs) !== JSON.stringify(logs);
 };
 
-TimeLogStore.dispatchToken = Dispatcher.register(function (payload) {
-  var action;
+TimeLogStore.dispatchToken = _appDispatcher2.default.register(function (payload) {
+  var action = void 0;
   action = payload.action;
   switch (action.type) {
-    case ActionTypes.RECEIVE_TIME_LOGS:
+    case _constants.ActionTypes.RECEIVE_TIME_LOGS:
       if (needsUpdating(action.data)) {
         var newLogs = action.data;
-        _rawLogs = _.chain(action.data).concat(newLogs).sortBy(function (tl) {
+        _rawLogs = _lodash2.default.chain(action.data).concat(newLogs).sortBy(function (tl) {
           return new Date(tl.timeIn);
         }).reverse().value();
 
         updateStore();
       }
       break;
-    case ActionTypes.CLOCKED_IN:
+    case _constants.ActionTypes.CLOCKED_IN:
       _rawLogs.unshift(action.data);
       updateStore();
       break;
-    case ActionTypes.CLOCKED_OUT:
+    case _constants.ActionTypes.CLOCKED_OUT:
       _rawLogs[0] = action.data;
       updateStore();
       break;
   }
 });
 
-module.exports = TimeLogStore;
+exports.default = TimeLogStore;
 
-},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"lodash":41,"moment-timezone":43,"object-assign":46}],28:[function(require,module,exports){
+},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"lodash":41,"moment":46,"moment-timezone":43,"object-assign":47}],28:[function(require,module,exports){
 'use strict';
 
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Dispatcher = require('../dispatcher/app-dispatcher');
-var ActionTypes = Constants.ActionTypes;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _constants = require('../constants/constants');
+
+var _constants2 = _interopRequireDefault(_constants);
+
+var _events = require('events');
+
+var _objectAssign = require('object-assign');
+
+var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+var _appDispatcher = require('../dispatcher/app-dispatcher');
+
+var _appDispatcher2 = _interopRequireDefault(_appDispatcher);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var CHANGE_EVENT = 'change';
 
 var state = { step: 0 };
 
-var WizardStore = assign({}, EventEmitter.prototype, {
+var WizardStore = (0, _objectAssign2.default)({}, _events.EventEmitter.prototype, {
   emitChange: function emitChange() {
     this.emit(CHANGE_EVENT);
   },
@@ -4344,30 +4830,30 @@ var WizardStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-WizardStore.dispatchToken = Dispatcher.register(function (payload) {
-  var action;
+WizardStore.dispatchToken = _appDispatcher2.default.register(function (payload) {
+  var action = void 0;
   action = payload.action;
   switch (action.type) {
-    case ActionTypes.WIZARD_NEXT:
+    case _constants2.default.WIZARD_NEXT:
       state.step++;
       WizardStore.emitChange();
       break;
-    case ActionTypes.WIZARD_PREV:
+    case _constants2.default.WIZARD_PREV:
       if (state.step > 0) {
         state.step--;
         WizardStore.emitChange();
       }
       break;
-    case ActionTypes.WIZARD_DONE:
+    case _constants2.default.WIZARD_DONE:
       state = { step: 0 };
       WizardStore.emitChange();
       break;
   }
 });
 
-module.exports = WizardStore;
+exports.default = WizardStore;
 
-},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"events":34,"object-assign":46}],29:[function(require,module,exports){
+},{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"events":34,"object-assign":47}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4614,7 +5100,7 @@ exports.default = {
   }
 };
 
-},{"qwest":49}],33:[function(require,module,exports){
+},{"qwest":50}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22394,6 +22880,3695 @@ moment.tz.load(require('./data/packed/latest.json'));
 
 }));
 },{}],46:[function(require,module,exports){
+//! moment.js
+//! version : 2.12.0
+//! authors : Tim Wood, Iskren Chernev, Moment.js contributors
+//! license : MIT
+//! momentjs.com
+
+;(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+    typeof define === 'function' && define.amd ? define(factory) :
+    global.moment = factory()
+}(this, function () { 'use strict';
+
+    var hookCallback;
+
+    function utils_hooks__hooks () {
+        return hookCallback.apply(null, arguments);
+    }
+
+    // This is done to register the method called with moment()
+    // without creating circular dependencies.
+    function setHookCallback (callback) {
+        hookCallback = callback;
+    }
+
+    function isArray(input) {
+        return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
+    }
+
+    function isDate(input) {
+        return input instanceof Date || Object.prototype.toString.call(input) === '[object Date]';
+    }
+
+    function map(arr, fn) {
+        var res = [], i;
+        for (i = 0; i < arr.length; ++i) {
+            res.push(fn(arr[i], i));
+        }
+        return res;
+    }
+
+    function hasOwnProp(a, b) {
+        return Object.prototype.hasOwnProperty.call(a, b);
+    }
+
+    function extend(a, b) {
+        for (var i in b) {
+            if (hasOwnProp(b, i)) {
+                a[i] = b[i];
+            }
+        }
+
+        if (hasOwnProp(b, 'toString')) {
+            a.toString = b.toString;
+        }
+
+        if (hasOwnProp(b, 'valueOf')) {
+            a.valueOf = b.valueOf;
+        }
+
+        return a;
+    }
+
+    function create_utc__createUTC (input, format, locale, strict) {
+        return createLocalOrUTC(input, format, locale, strict, true).utc();
+    }
+
+    function defaultParsingFlags() {
+        // We need to deep clone this object.
+        return {
+            empty           : false,
+            unusedTokens    : [],
+            unusedInput     : [],
+            overflow        : -2,
+            charsLeftOver   : 0,
+            nullInput       : false,
+            invalidMonth    : null,
+            invalidFormat   : false,
+            userInvalidated : false,
+            iso             : false
+        };
+    }
+
+    function getParsingFlags(m) {
+        if (m._pf == null) {
+            m._pf = defaultParsingFlags();
+        }
+        return m._pf;
+    }
+
+    function valid__isValid(m) {
+        if (m._isValid == null) {
+            var flags = getParsingFlags(m);
+            m._isValid = !isNaN(m._d.getTime()) &&
+                flags.overflow < 0 &&
+                !flags.empty &&
+                !flags.invalidMonth &&
+                !flags.invalidWeekday &&
+                !flags.nullInput &&
+                !flags.invalidFormat &&
+                !flags.userInvalidated;
+
+            if (m._strict) {
+                m._isValid = m._isValid &&
+                    flags.charsLeftOver === 0 &&
+                    flags.unusedTokens.length === 0 &&
+                    flags.bigHour === undefined;
+            }
+        }
+        return m._isValid;
+    }
+
+    function valid__createInvalid (flags) {
+        var m = create_utc__createUTC(NaN);
+        if (flags != null) {
+            extend(getParsingFlags(m), flags);
+        }
+        else {
+            getParsingFlags(m).userInvalidated = true;
+        }
+
+        return m;
+    }
+
+    function isUndefined(input) {
+        return input === void 0;
+    }
+
+    // Plugins that add properties should also add the key here (null value),
+    // so we can properly clone ourselves.
+    var momentProperties = utils_hooks__hooks.momentProperties = [];
+
+    function copyConfig(to, from) {
+        var i, prop, val;
+
+        if (!isUndefined(from._isAMomentObject)) {
+            to._isAMomentObject = from._isAMomentObject;
+        }
+        if (!isUndefined(from._i)) {
+            to._i = from._i;
+        }
+        if (!isUndefined(from._f)) {
+            to._f = from._f;
+        }
+        if (!isUndefined(from._l)) {
+            to._l = from._l;
+        }
+        if (!isUndefined(from._strict)) {
+            to._strict = from._strict;
+        }
+        if (!isUndefined(from._tzm)) {
+            to._tzm = from._tzm;
+        }
+        if (!isUndefined(from._isUTC)) {
+            to._isUTC = from._isUTC;
+        }
+        if (!isUndefined(from._offset)) {
+            to._offset = from._offset;
+        }
+        if (!isUndefined(from._pf)) {
+            to._pf = getParsingFlags(from);
+        }
+        if (!isUndefined(from._locale)) {
+            to._locale = from._locale;
+        }
+
+        if (momentProperties.length > 0) {
+            for (i in momentProperties) {
+                prop = momentProperties[i];
+                val = from[prop];
+                if (!isUndefined(val)) {
+                    to[prop] = val;
+                }
+            }
+        }
+
+        return to;
+    }
+
+    var updateInProgress = false;
+
+    // Moment prototype object
+    function Moment(config) {
+        copyConfig(this, config);
+        this._d = new Date(config._d != null ? config._d.getTime() : NaN);
+        // Prevent infinite loop in case updateOffset creates new moment
+        // objects.
+        if (updateInProgress === false) {
+            updateInProgress = true;
+            utils_hooks__hooks.updateOffset(this);
+            updateInProgress = false;
+        }
+    }
+
+    function isMoment (obj) {
+        return obj instanceof Moment || (obj != null && obj._isAMomentObject != null);
+    }
+
+    function absFloor (number) {
+        if (number < 0) {
+            return Math.ceil(number);
+        } else {
+            return Math.floor(number);
+        }
+    }
+
+    function toInt(argumentForCoercion) {
+        var coercedNumber = +argumentForCoercion,
+            value = 0;
+
+        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+            value = absFloor(coercedNumber);
+        }
+
+        return value;
+    }
+
+    // compare two arrays, return the number of differences
+    function compareArrays(array1, array2, dontConvert) {
+        var len = Math.min(array1.length, array2.length),
+            lengthDiff = Math.abs(array1.length - array2.length),
+            diffs = 0,
+            i;
+        for (i = 0; i < len; i++) {
+            if ((dontConvert && array1[i] !== array2[i]) ||
+                (!dontConvert && toInt(array1[i]) !== toInt(array2[i]))) {
+                diffs++;
+            }
+        }
+        return diffs + lengthDiff;
+    }
+
+    function warn(msg) {
+        if (utils_hooks__hooks.suppressDeprecationWarnings === false &&
+                (typeof console !==  'undefined') && console.warn) {
+            console.warn('Deprecation warning: ' + msg);
+        }
+    }
+
+    function deprecate(msg, fn) {
+        var firstTime = true;
+
+        return extend(function () {
+            if (firstTime) {
+                warn(msg + '\nArguments: ' + Array.prototype.slice.call(arguments).join(', ') + '\n' + (new Error()).stack);
+                firstTime = false;
+            }
+            return fn.apply(this, arguments);
+        }, fn);
+    }
+
+    var deprecations = {};
+
+    function deprecateSimple(name, msg) {
+        if (!deprecations[name]) {
+            warn(msg);
+            deprecations[name] = true;
+        }
+    }
+
+    utils_hooks__hooks.suppressDeprecationWarnings = false;
+
+    function isFunction(input) {
+        return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
+    }
+
+    function isObject(input) {
+        return Object.prototype.toString.call(input) === '[object Object]';
+    }
+
+    function locale_set__set (config) {
+        var prop, i;
+        for (i in config) {
+            prop = config[i];
+            if (isFunction(prop)) {
+                this[i] = prop;
+            } else {
+                this['_' + i] = prop;
+            }
+        }
+        this._config = config;
+        // Lenient ordinal parsing accepts just a number in addition to
+        // number + (possibly) stuff coming from _ordinalParseLenient.
+        this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + (/\d{1,2}/).source);
+    }
+
+    function mergeConfigs(parentConfig, childConfig) {
+        var res = extend({}, parentConfig), prop;
+        for (prop in childConfig) {
+            if (hasOwnProp(childConfig, prop)) {
+                if (isObject(parentConfig[prop]) && isObject(childConfig[prop])) {
+                    res[prop] = {};
+                    extend(res[prop], parentConfig[prop]);
+                    extend(res[prop], childConfig[prop]);
+                } else if (childConfig[prop] != null) {
+                    res[prop] = childConfig[prop];
+                } else {
+                    delete res[prop];
+                }
+            }
+        }
+        return res;
+    }
+
+    function Locale(config) {
+        if (config != null) {
+            this.set(config);
+        }
+    }
+
+    // internal storage for locale config files
+    var locales = {};
+    var globalLocale;
+
+    function normalizeLocale(key) {
+        return key ? key.toLowerCase().replace('_', '-') : key;
+    }
+
+    // pick the locale from the array
+    // try ['en-au', 'en-gb'] as 'en-au', 'en-gb', 'en', as in move through the list trying each
+    // substring from most specific to least, but move to the next array item if it's a more specific variant than the current root
+    function chooseLocale(names) {
+        var i = 0, j, next, locale, split;
+
+        while (i < names.length) {
+            split = normalizeLocale(names[i]).split('-');
+            j = split.length;
+            next = normalizeLocale(names[i + 1]);
+            next = next ? next.split('-') : null;
+            while (j > 0) {
+                locale = loadLocale(split.slice(0, j).join('-'));
+                if (locale) {
+                    return locale;
+                }
+                if (next && next.length >= j && compareArrays(split, next, true) >= j - 1) {
+                    //the next array item is better than a shallower substring of this one
+                    break;
+                }
+                j--;
+            }
+            i++;
+        }
+        return null;
+    }
+
+    function loadLocale(name) {
+        var oldLocale = null;
+        // TODO: Find a better way to register and load all the locales in Node
+        if (!locales[name] && (typeof module !== 'undefined') &&
+                module && module.exports) {
+            try {
+                oldLocale = globalLocale._abbr;
+                require('./locale/' + name);
+                // because defineLocale currently also sets the global locale, we
+                // want to undo that for lazy loaded locales
+                locale_locales__getSetGlobalLocale(oldLocale);
+            } catch (e) { }
+        }
+        return locales[name];
+    }
+
+    // This function will load locale and then set the global locale.  If
+    // no arguments are passed in, it will simply return the current global
+    // locale key.
+    function locale_locales__getSetGlobalLocale (key, values) {
+        var data;
+        if (key) {
+            if (isUndefined(values)) {
+                data = locale_locales__getLocale(key);
+            }
+            else {
+                data = defineLocale(key, values);
+            }
+
+            if (data) {
+                // moment.duration._locale = moment._locale = data;
+                globalLocale = data;
+            }
+        }
+
+        return globalLocale._abbr;
+    }
+
+    function defineLocale (name, config) {
+        if (config !== null) {
+            config.abbr = name;
+            if (locales[name] != null) {
+                deprecateSimple('defineLocaleOverride',
+                        'use moment.updateLocale(localeName, config) to change ' +
+                        'an existing locale. moment.defineLocale(localeName, ' +
+                        'config) should only be used for creating a new locale');
+                config = mergeConfigs(locales[name]._config, config);
+            } else if (config.parentLocale != null) {
+                if (locales[config.parentLocale] != null) {
+                    config = mergeConfigs(locales[config.parentLocale]._config, config);
+                } else {
+                    // treat as if there is no base config
+                    deprecateSimple('parentLocaleUndefined',
+                            'specified parentLocale is not defined yet');
+                }
+            }
+            locales[name] = new Locale(config);
+
+            // backwards compat for now: also set the locale
+            locale_locales__getSetGlobalLocale(name);
+
+            return locales[name];
+        } else {
+            // useful for testing
+            delete locales[name];
+            return null;
+        }
+    }
+
+    function updateLocale(name, config) {
+        if (config != null) {
+            var locale;
+            if (locales[name] != null) {
+                config = mergeConfigs(locales[name]._config, config);
+            }
+            locale = new Locale(config);
+            locale.parentLocale = locales[name];
+            locales[name] = locale;
+
+            // backwards compat for now: also set the locale
+            locale_locales__getSetGlobalLocale(name);
+        } else {
+            // pass null for config to unupdate, useful for tests
+            if (locales[name] != null) {
+                if (locales[name].parentLocale != null) {
+                    locales[name] = locales[name].parentLocale;
+                } else if (locales[name] != null) {
+                    delete locales[name];
+                }
+            }
+        }
+        return locales[name];
+    }
+
+    // returns locale data
+    function locale_locales__getLocale (key) {
+        var locale;
+
+        if (key && key._locale && key._locale._abbr) {
+            key = key._locale._abbr;
+        }
+
+        if (!key) {
+            return globalLocale;
+        }
+
+        if (!isArray(key)) {
+            //short-circuit everything else
+            locale = loadLocale(key);
+            if (locale) {
+                return locale;
+            }
+            key = [key];
+        }
+
+        return chooseLocale(key);
+    }
+
+    function locale_locales__listLocales() {
+        return Object.keys(locales);
+    }
+
+    var aliases = {};
+
+    function addUnitAlias (unit, shorthand) {
+        var lowerCase = unit.toLowerCase();
+        aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
+    }
+
+    function normalizeUnits(units) {
+        return typeof units === 'string' ? aliases[units] || aliases[units.toLowerCase()] : undefined;
+    }
+
+    function normalizeObjectUnits(inputObject) {
+        var normalizedInput = {},
+            normalizedProp,
+            prop;
+
+        for (prop in inputObject) {
+            if (hasOwnProp(inputObject, prop)) {
+                normalizedProp = normalizeUnits(prop);
+                if (normalizedProp) {
+                    normalizedInput[normalizedProp] = inputObject[prop];
+                }
+            }
+        }
+
+        return normalizedInput;
+    }
+
+    function makeGetSet (unit, keepTime) {
+        return function (value) {
+            if (value != null) {
+                get_set__set(this, unit, value);
+                utils_hooks__hooks.updateOffset(this, keepTime);
+                return this;
+            } else {
+                return get_set__get(this, unit);
+            }
+        };
+    }
+
+    function get_set__get (mom, unit) {
+        return mom.isValid() ?
+            mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]() : NaN;
+    }
+
+    function get_set__set (mom, unit, value) {
+        if (mom.isValid()) {
+            mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
+        }
+    }
+
+    // MOMENTS
+
+    function getSet (units, value) {
+        var unit;
+        if (typeof units === 'object') {
+            for (unit in units) {
+                this.set(unit, units[unit]);
+            }
+        } else {
+            units = normalizeUnits(units);
+            if (isFunction(this[units])) {
+                return this[units](value);
+            }
+        }
+        return this;
+    }
+
+    function zeroFill(number, targetLength, forceSign) {
+        var absNumber = '' + Math.abs(number),
+            zerosToFill = targetLength - absNumber.length,
+            sign = number >= 0;
+        return (sign ? (forceSign ? '+' : '') : '-') +
+            Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
+    }
+
+    var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
+
+    var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
+
+    var formatFunctions = {};
+
+    var formatTokenFunctions = {};
+
+    // token:    'M'
+    // padded:   ['MM', 2]
+    // ordinal:  'Mo'
+    // callback: function () { this.month() + 1 }
+    function addFormatToken (token, padded, ordinal, callback) {
+        var func = callback;
+        if (typeof callback === 'string') {
+            func = function () {
+                return this[callback]();
+            };
+        }
+        if (token) {
+            formatTokenFunctions[token] = func;
+        }
+        if (padded) {
+            formatTokenFunctions[padded[0]] = function () {
+                return zeroFill(func.apply(this, arguments), padded[1], padded[2]);
+            };
+        }
+        if (ordinal) {
+            formatTokenFunctions[ordinal] = function () {
+                return this.localeData().ordinal(func.apply(this, arguments), token);
+            };
+        }
+    }
+
+    function removeFormattingTokens(input) {
+        if (input.match(/\[[\s\S]/)) {
+            return input.replace(/^\[|\]$/g, '');
+        }
+        return input.replace(/\\/g, '');
+    }
+
+    function makeFormatFunction(format) {
+        var array = format.match(formattingTokens), i, length;
+
+        for (i = 0, length = array.length; i < length; i++) {
+            if (formatTokenFunctions[array[i]]) {
+                array[i] = formatTokenFunctions[array[i]];
+            } else {
+                array[i] = removeFormattingTokens(array[i]);
+            }
+        }
+
+        return function (mom) {
+            var output = '';
+            for (i = 0; i < length; i++) {
+                output += array[i] instanceof Function ? array[i].call(mom, format) : array[i];
+            }
+            return output;
+        };
+    }
+
+    // format date using native date object
+    function formatMoment(m, format) {
+        if (!m.isValid()) {
+            return m.localeData().invalidDate();
+        }
+
+        format = expandFormat(format, m.localeData());
+        formatFunctions[format] = formatFunctions[format] || makeFormatFunction(format);
+
+        return formatFunctions[format](m);
+    }
+
+    function expandFormat(format, locale) {
+        var i = 5;
+
+        function replaceLongDateFormatTokens(input) {
+            return locale.longDateFormat(input) || input;
+        }
+
+        localFormattingTokens.lastIndex = 0;
+        while (i >= 0 && localFormattingTokens.test(format)) {
+            format = format.replace(localFormattingTokens, replaceLongDateFormatTokens);
+            localFormattingTokens.lastIndex = 0;
+            i -= 1;
+        }
+
+        return format;
+    }
+
+    var match1         = /\d/;            //       0 - 9
+    var match2         = /\d\d/;          //      00 - 99
+    var match3         = /\d{3}/;         //     000 - 999
+    var match4         = /\d{4}/;         //    0000 - 9999
+    var match6         = /[+-]?\d{6}/;    // -999999 - 999999
+    var match1to2      = /\d\d?/;         //       0 - 99
+    var match3to4      = /\d\d\d\d?/;     //     999 - 9999
+    var match5to6      = /\d\d\d\d\d\d?/; //   99999 - 999999
+    var match1to3      = /\d{1,3}/;       //       0 - 999
+    var match1to4      = /\d{1,4}/;       //       0 - 9999
+    var match1to6      = /[+-]?\d{1,6}/;  // -999999 - 999999
+
+    var matchUnsigned  = /\d+/;           //       0 - inf
+    var matchSigned    = /[+-]?\d+/;      //    -inf - inf
+
+    var matchOffset    = /Z|[+-]\d\d:?\d\d/gi; // +00:00 -00:00 +0000 -0000 or Z
+    var matchShortOffset = /Z|[+-]\d\d(?::?\d\d)?/gi; // +00 -00 +00:00 -00:00 +0000 -0000 or Z
+
+    var matchTimestamp = /[+-]?\d+(\.\d{1,3})?/; // 123456789 123456789.123
+
+    // any word (or two) characters or numbers including two/three word month in arabic.
+    // includes scottish gaelic two word and hyphenated months
+    var matchWord = /[0-9]*['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+|[\u0600-\u06FF\/]+(\s*?[\u0600-\u06FF]+){1,2}/i;
+
+
+    var regexes = {};
+
+    function addRegexToken (token, regex, strictRegex) {
+        regexes[token] = isFunction(regex) ? regex : function (isStrict, localeData) {
+            return (isStrict && strictRegex) ? strictRegex : regex;
+        };
+    }
+
+    function getParseRegexForToken (token, config) {
+        if (!hasOwnProp(regexes, token)) {
+            return new RegExp(unescapeFormat(token));
+        }
+
+        return regexes[token](config._strict, config._locale);
+    }
+
+    // Code from http://stackoverflow.com/questions/3561493/is-there-a-regexp-escape-function-in-javascript
+    function unescapeFormat(s) {
+        return regexEscape(s.replace('\\', '').replace(/\\(\[)|\\(\])|\[([^\]\[]*)\]|\\(.)/g, function (matched, p1, p2, p3, p4) {
+            return p1 || p2 || p3 || p4;
+        }));
+    }
+
+    function regexEscape(s) {
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    var tokens = {};
+
+    function addParseToken (token, callback) {
+        var i, func = callback;
+        if (typeof token === 'string') {
+            token = [token];
+        }
+        if (typeof callback === 'number') {
+            func = function (input, array) {
+                array[callback] = toInt(input);
+            };
+        }
+        for (i = 0; i < token.length; i++) {
+            tokens[token[i]] = func;
+        }
+    }
+
+    function addWeekParseToken (token, callback) {
+        addParseToken(token, function (input, array, config, token) {
+            config._w = config._w || {};
+            callback(input, config._w, config, token);
+        });
+    }
+
+    function addTimeToArrayFromToken(token, input, config) {
+        if (input != null && hasOwnProp(tokens, token)) {
+            tokens[token](input, config._a, config, token);
+        }
+    }
+
+    var YEAR = 0;
+    var MONTH = 1;
+    var DATE = 2;
+    var HOUR = 3;
+    var MINUTE = 4;
+    var SECOND = 5;
+    var MILLISECOND = 6;
+    var WEEK = 7;
+    var WEEKDAY = 8;
+
+    function daysInMonth(year, month) {
+        return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    }
+
+    // FORMATTING
+
+    addFormatToken('M', ['MM', 2], 'Mo', function () {
+        return this.month() + 1;
+    });
+
+    addFormatToken('MMM', 0, 0, function (format) {
+        return this.localeData().monthsShort(this, format);
+    });
+
+    addFormatToken('MMMM', 0, 0, function (format) {
+        return this.localeData().months(this, format);
+    });
+
+    // ALIASES
+
+    addUnitAlias('month', 'M');
+
+    // PARSING
+
+    addRegexToken('M',    match1to2);
+    addRegexToken('MM',   match1to2, match2);
+    addRegexToken('MMM',  function (isStrict, locale) {
+        return locale.monthsShortRegex(isStrict);
+    });
+    addRegexToken('MMMM', function (isStrict, locale) {
+        return locale.monthsRegex(isStrict);
+    });
+
+    addParseToken(['M', 'MM'], function (input, array) {
+        array[MONTH] = toInt(input) - 1;
+    });
+
+    addParseToken(['MMM', 'MMMM'], function (input, array, config, token) {
+        var month = config._locale.monthsParse(input, token, config._strict);
+        // if we didn't find a month name, mark the date as invalid.
+        if (month != null) {
+            array[MONTH] = month;
+        } else {
+            getParsingFlags(config).invalidMonth = input;
+        }
+    });
+
+    // LOCALES
+
+    var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s+)+MMMM?/;
+    var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
+    function localeMonths (m, format) {
+        return isArray(this._months) ? this._months[m.month()] :
+            this._months[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
+    }
+
+    var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
+    function localeMonthsShort (m, format) {
+        return isArray(this._monthsShort) ? this._monthsShort[m.month()] :
+            this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
+    }
+
+    function localeMonthsParse (monthName, format, strict) {
+        var i, mom, regex;
+
+        if (!this._monthsParse) {
+            this._monthsParse = [];
+            this._longMonthsParse = [];
+            this._shortMonthsParse = [];
+        }
+
+        for (i = 0; i < 12; i++) {
+            // make the regex if we don't have it already
+            mom = create_utc__createUTC([2000, i]);
+            if (strict && !this._longMonthsParse[i]) {
+                this._longMonthsParse[i] = new RegExp('^' + this.months(mom, '').replace('.', '') + '$', 'i');
+                this._shortMonthsParse[i] = new RegExp('^' + this.monthsShort(mom, '').replace('.', '') + '$', 'i');
+            }
+            if (!strict && !this._monthsParse[i]) {
+                regex = '^' + this.months(mom, '') + '|^' + this.monthsShort(mom, '');
+                this._monthsParse[i] = new RegExp(regex.replace('.', ''), 'i');
+            }
+            // test the regex
+            if (strict && format === 'MMMM' && this._longMonthsParse[i].test(monthName)) {
+                return i;
+            } else if (strict && format === 'MMM' && this._shortMonthsParse[i].test(monthName)) {
+                return i;
+            } else if (!strict && this._monthsParse[i].test(monthName)) {
+                return i;
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function setMonth (mom, value) {
+        var dayOfMonth;
+
+        if (!mom.isValid()) {
+            // No op
+            return mom;
+        }
+
+        if (typeof value === 'string') {
+            if (/^\d+$/.test(value)) {
+                value = toInt(value);
+            } else {
+                value = mom.localeData().monthsParse(value);
+                // TODO: Another silent failure?
+                if (typeof value !== 'number') {
+                    return mom;
+                }
+            }
+        }
+
+        dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
+        mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
+        return mom;
+    }
+
+    function getSetMonth (value) {
+        if (value != null) {
+            setMonth(this, value);
+            utils_hooks__hooks.updateOffset(this, true);
+            return this;
+        } else {
+            return get_set__get(this, 'Month');
+        }
+    }
+
+    function getDaysInMonth () {
+        return daysInMonth(this.year(), this.month());
+    }
+
+    var defaultMonthsShortRegex = matchWord;
+    function monthsShortRegex (isStrict) {
+        if (this._monthsParseExact) {
+            if (!hasOwnProp(this, '_monthsRegex')) {
+                computeMonthsParse.call(this);
+            }
+            if (isStrict) {
+                return this._monthsShortStrictRegex;
+            } else {
+                return this._monthsShortRegex;
+            }
+        } else {
+            return this._monthsShortStrictRegex && isStrict ?
+                this._monthsShortStrictRegex : this._monthsShortRegex;
+        }
+    }
+
+    var defaultMonthsRegex = matchWord;
+    function monthsRegex (isStrict) {
+        if (this._monthsParseExact) {
+            if (!hasOwnProp(this, '_monthsRegex')) {
+                computeMonthsParse.call(this);
+            }
+            if (isStrict) {
+                return this._monthsStrictRegex;
+            } else {
+                return this._monthsRegex;
+            }
+        } else {
+            return this._monthsStrictRegex && isStrict ?
+                this._monthsStrictRegex : this._monthsRegex;
+        }
+    }
+
+    function computeMonthsParse () {
+        function cmpLenRev(a, b) {
+            return b.length - a.length;
+        }
+
+        var shortPieces = [], longPieces = [], mixedPieces = [],
+            i, mom;
+        for (i = 0; i < 12; i++) {
+            // make the regex if we don't have it already
+            mom = create_utc__createUTC([2000, i]);
+            shortPieces.push(this.monthsShort(mom, ''));
+            longPieces.push(this.months(mom, ''));
+            mixedPieces.push(this.months(mom, ''));
+            mixedPieces.push(this.monthsShort(mom, ''));
+        }
+        // Sorting makes sure if one month (or abbr) is a prefix of another it
+        // will match the longer piece.
+        shortPieces.sort(cmpLenRev);
+        longPieces.sort(cmpLenRev);
+        mixedPieces.sort(cmpLenRev);
+        for (i = 0; i < 12; i++) {
+            shortPieces[i] = regexEscape(shortPieces[i]);
+            longPieces[i] = regexEscape(longPieces[i]);
+            mixedPieces[i] = regexEscape(mixedPieces[i]);
+        }
+
+        this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+        this._monthsShortRegex = this._monthsRegex;
+        this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')$', 'i');
+        this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')$', 'i');
+    }
+
+    function checkOverflow (m) {
+        var overflow;
+        var a = m._a;
+
+        if (a && getParsingFlags(m).overflow === -2) {
+            overflow =
+                a[MONTH]       < 0 || a[MONTH]       > 11  ? MONTH :
+                a[DATE]        < 1 || a[DATE]        > daysInMonth(a[YEAR], a[MONTH]) ? DATE :
+                a[HOUR]        < 0 || a[HOUR]        > 24 || (a[HOUR] === 24 && (a[MINUTE] !== 0 || a[SECOND] !== 0 || a[MILLISECOND] !== 0)) ? HOUR :
+                a[MINUTE]      < 0 || a[MINUTE]      > 59  ? MINUTE :
+                a[SECOND]      < 0 || a[SECOND]      > 59  ? SECOND :
+                a[MILLISECOND] < 0 || a[MILLISECOND] > 999 ? MILLISECOND :
+                -1;
+
+            if (getParsingFlags(m)._overflowDayOfYear && (overflow < YEAR || overflow > DATE)) {
+                overflow = DATE;
+            }
+            if (getParsingFlags(m)._overflowWeeks && overflow === -1) {
+                overflow = WEEK;
+            }
+            if (getParsingFlags(m)._overflowWeekday && overflow === -1) {
+                overflow = WEEKDAY;
+            }
+
+            getParsingFlags(m).overflow = overflow;
+        }
+
+        return m;
+    }
+
+    // iso 8601 regex
+    // 0000-00-00 0000-W00 or 0000-W00-0 + T + 00 or 00:00 or 00:00:00 or 00:00:00.000 + +00:00 or +0000 or +00)
+    var extendedIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})-(?:\d\d-\d\d|W\d\d-\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?::\d\d(?::\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?/;
+    var basicIsoRegex = /^\s*((?:[+-]\d{6}|\d{4})(?:\d\d\d\d|W\d\d\d|W\d\d|\d\d\d|\d\d))(?:(T| )(\d\d(?:\d\d(?:\d\d(?:[.,]\d+)?)?)?)([\+\-]\d\d(?::?\d\d)?|\s*Z)?)?/;
+
+    var tzRegex = /Z|[+-]\d\d(?::?\d\d)?/;
+
+    var isoDates = [
+        ['YYYYYY-MM-DD', /[+-]\d{6}-\d\d-\d\d/],
+        ['YYYY-MM-DD', /\d{4}-\d\d-\d\d/],
+        ['GGGG-[W]WW-E', /\d{4}-W\d\d-\d/],
+        ['GGGG-[W]WW', /\d{4}-W\d\d/, false],
+        ['YYYY-DDD', /\d{4}-\d{3}/],
+        ['YYYY-MM', /\d{4}-\d\d/, false],
+        ['YYYYYYMMDD', /[+-]\d{10}/],
+        ['YYYYMMDD', /\d{8}/],
+        // YYYYMM is NOT allowed by the standard
+        ['GGGG[W]WWE', /\d{4}W\d{3}/],
+        ['GGGG[W]WW', /\d{4}W\d{2}/, false],
+        ['YYYYDDD', /\d{7}/]
+    ];
+
+    // iso time formats and regexes
+    var isoTimes = [
+        ['HH:mm:ss.SSSS', /\d\d:\d\d:\d\d\.\d+/],
+        ['HH:mm:ss,SSSS', /\d\d:\d\d:\d\d,\d+/],
+        ['HH:mm:ss', /\d\d:\d\d:\d\d/],
+        ['HH:mm', /\d\d:\d\d/],
+        ['HHmmss.SSSS', /\d\d\d\d\d\d\.\d+/],
+        ['HHmmss,SSSS', /\d\d\d\d\d\d,\d+/],
+        ['HHmmss', /\d\d\d\d\d\d/],
+        ['HHmm', /\d\d\d\d/],
+        ['HH', /\d\d/]
+    ];
+
+    var aspNetJsonRegex = /^\/?Date\((\-?\d+)/i;
+
+    // date from iso format
+    function configFromISO(config) {
+        var i, l,
+            string = config._i,
+            match = extendedIsoRegex.exec(string) || basicIsoRegex.exec(string),
+            allowTime, dateFormat, timeFormat, tzFormat;
+
+        if (match) {
+            getParsingFlags(config).iso = true;
+
+            for (i = 0, l = isoDates.length; i < l; i++) {
+                if (isoDates[i][1].exec(match[1])) {
+                    dateFormat = isoDates[i][0];
+                    allowTime = isoDates[i][2] !== false;
+                    break;
+                }
+            }
+            if (dateFormat == null) {
+                config._isValid = false;
+                return;
+            }
+            if (match[3]) {
+                for (i = 0, l = isoTimes.length; i < l; i++) {
+                    if (isoTimes[i][1].exec(match[3])) {
+                        // match[2] should be 'T' or space
+                        timeFormat = (match[2] || ' ') + isoTimes[i][0];
+                        break;
+                    }
+                }
+                if (timeFormat == null) {
+                    config._isValid = false;
+                    return;
+                }
+            }
+            if (!allowTime && timeFormat != null) {
+                config._isValid = false;
+                return;
+            }
+            if (match[4]) {
+                if (tzRegex.exec(match[4])) {
+                    tzFormat = 'Z';
+                } else {
+                    config._isValid = false;
+                    return;
+                }
+            }
+            config._f = dateFormat + (timeFormat || '') + (tzFormat || '');
+            configFromStringAndFormat(config);
+        } else {
+            config._isValid = false;
+        }
+    }
+
+    // date from iso format or fallback
+    function configFromString(config) {
+        var matched = aspNetJsonRegex.exec(config._i);
+
+        if (matched !== null) {
+            config._d = new Date(+matched[1]);
+            return;
+        }
+
+        configFromISO(config);
+        if (config._isValid === false) {
+            delete config._isValid;
+            utils_hooks__hooks.createFromInputFallback(config);
+        }
+    }
+
+    utils_hooks__hooks.createFromInputFallback = deprecate(
+        'moment construction falls back to js Date. This is ' +
+        'discouraged and will be removed in upcoming major ' +
+        'release. Please refer to ' +
+        'https://github.com/moment/moment/issues/1407 for more info.',
+        function (config) {
+            config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
+        }
+    );
+
+    function createDate (y, m, d, h, M, s, ms) {
+        //can't just apply() to create a date:
+        //http://stackoverflow.com/questions/181348/instantiating-a-javascript-object-by-calling-prototype-constructor-apply
+        var date = new Date(y, m, d, h, M, s, ms);
+
+        //the date constructor remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0 && isFinite(date.getFullYear())) {
+            date.setFullYear(y);
+        }
+        return date;
+    }
+
+    function createUTCDate (y) {
+        var date = new Date(Date.UTC.apply(null, arguments));
+
+        //the Date.UTC function remaps years 0-99 to 1900-1999
+        if (y < 100 && y >= 0 && isFinite(date.getUTCFullYear())) {
+            date.setUTCFullYear(y);
+        }
+        return date;
+    }
+
+    // FORMATTING
+
+    addFormatToken('Y', 0, 0, function () {
+        var y = this.year();
+        return y <= 9999 ? '' + y : '+' + y;
+    });
+
+    addFormatToken(0, ['YY', 2], 0, function () {
+        return this.year() % 100;
+    });
+
+    addFormatToken(0, ['YYYY',   4],       0, 'year');
+    addFormatToken(0, ['YYYYY',  5],       0, 'year');
+    addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+    // ALIASES
+
+    addUnitAlias('year', 'y');
+
+    // PARSING
+
+    addRegexToken('Y',      matchSigned);
+    addRegexToken('YY',     match1to2, match2);
+    addRegexToken('YYYY',   match1to4, match4);
+    addRegexToken('YYYYY',  match1to6, match6);
+    addRegexToken('YYYYYY', match1to6, match6);
+
+    addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+    addParseToken('YYYY', function (input, array) {
+        array[YEAR] = input.length === 2 ? utils_hooks__hooks.parseTwoDigitYear(input) : toInt(input);
+    });
+    addParseToken('YY', function (input, array) {
+        array[YEAR] = utils_hooks__hooks.parseTwoDigitYear(input);
+    });
+    addParseToken('Y', function (input, array) {
+        array[YEAR] = parseInt(input, 10);
+    });
+
+    // HELPERS
+
+    function daysInYear(year) {
+        return isLeapYear(year) ? 366 : 365;
+    }
+
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    }
+
+    // HOOKS
+
+    utils_hooks__hooks.parseTwoDigitYear = function (input) {
+        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+    };
+
+    // MOMENTS
+
+    var getSetYear = makeGetSet('FullYear', false);
+
+    function getIsLeapYear () {
+        return isLeapYear(this.year());
+    }
+
+    // start-of-first-week - start-of-year
+    function firstWeekOffset(year, dow, doy) {
+        var // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+            fwd = 7 + dow - doy,
+            // first-week day local weekday -- which local weekday is fwd
+            fwdlw = (7 + createUTCDate(year, 0, fwd).getUTCDay() - dow) % 7;
+
+        return -fwdlw + fwd - 1;
+    }
+
+    //http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+    function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
+        var localWeekday = (7 + weekday - dow) % 7,
+            weekOffset = firstWeekOffset(year, dow, doy),
+            dayOfYear = 1 + 7 * (week - 1) + localWeekday + weekOffset,
+            resYear, resDayOfYear;
+
+        if (dayOfYear <= 0) {
+            resYear = year - 1;
+            resDayOfYear = daysInYear(resYear) + dayOfYear;
+        } else if (dayOfYear > daysInYear(year)) {
+            resYear = year + 1;
+            resDayOfYear = dayOfYear - daysInYear(year);
+        } else {
+            resYear = year;
+            resDayOfYear = dayOfYear;
+        }
+
+        return {
+            year: resYear,
+            dayOfYear: resDayOfYear
+        };
+    }
+
+    function weekOfYear(mom, dow, doy) {
+        var weekOffset = firstWeekOffset(mom.year(), dow, doy),
+            week = Math.floor((mom.dayOfYear() - weekOffset - 1) / 7) + 1,
+            resWeek, resYear;
+
+        if (week < 1) {
+            resYear = mom.year() - 1;
+            resWeek = week + weeksInYear(resYear, dow, doy);
+        } else if (week > weeksInYear(mom.year(), dow, doy)) {
+            resWeek = week - weeksInYear(mom.year(), dow, doy);
+            resYear = mom.year() + 1;
+        } else {
+            resYear = mom.year();
+            resWeek = week;
+        }
+
+        return {
+            week: resWeek,
+            year: resYear
+        };
+    }
+
+    function weeksInYear(year, dow, doy) {
+        var weekOffset = firstWeekOffset(year, dow, doy),
+            weekOffsetNext = firstWeekOffset(year + 1, dow, doy);
+        return (daysInYear(year) - weekOffset + weekOffsetNext) / 7;
+    }
+
+    // Pick the first defined of two or three arguments.
+    function defaults(a, b, c) {
+        if (a != null) {
+            return a;
+        }
+        if (b != null) {
+            return b;
+        }
+        return c;
+    }
+
+    function currentDateArray(config) {
+        // hooks is actually the exported moment object
+        var nowValue = new Date(utils_hooks__hooks.now());
+        if (config._useUTC) {
+            return [nowValue.getUTCFullYear(), nowValue.getUTCMonth(), nowValue.getUTCDate()];
+        }
+        return [nowValue.getFullYear(), nowValue.getMonth(), nowValue.getDate()];
+    }
+
+    // convert an array to a date.
+    // the array should mirror the parameters below
+    // note: all values past the year are optional and will default to the lowest possible value.
+    // [year, month, day , hour, minute, second, millisecond]
+    function configFromArray (config) {
+        var i, date, input = [], currentDate, yearToUse;
+
+        if (config._d) {
+            return;
+        }
+
+        currentDate = currentDateArray(config);
+
+        //compute day of the year from weeks and weekdays
+        if (config._w && config._a[DATE] == null && config._a[MONTH] == null) {
+            dayOfYearFromWeekInfo(config);
+        }
+
+        //if the day of the year is set, figure out what it is
+        if (config._dayOfYear) {
+            yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
+
+            if (config._dayOfYear > daysInYear(yearToUse)) {
+                getParsingFlags(config)._overflowDayOfYear = true;
+            }
+
+            date = createUTCDate(yearToUse, 0, config._dayOfYear);
+            config._a[MONTH] = date.getUTCMonth();
+            config._a[DATE] = date.getUTCDate();
+        }
+
+        // Default to current date.
+        // * if no year, month, day of month are given, default to today
+        // * if day of month is given, default month and year
+        // * if month is given, default only year
+        // * if year is given, don't default anything
+        for (i = 0; i < 3 && config._a[i] == null; ++i) {
+            config._a[i] = input[i] = currentDate[i];
+        }
+
+        // Zero out whatever was not defaulted, including time
+        for (; i < 7; i++) {
+            config._a[i] = input[i] = (config._a[i] == null) ? (i === 2 ? 1 : 0) : config._a[i];
+        }
+
+        // Check for 24:00:00.000
+        if (config._a[HOUR] === 24 &&
+                config._a[MINUTE] === 0 &&
+                config._a[SECOND] === 0 &&
+                config._a[MILLISECOND] === 0) {
+            config._nextDay = true;
+            config._a[HOUR] = 0;
+        }
+
+        config._d = (config._useUTC ? createUTCDate : createDate).apply(null, input);
+        // Apply timezone offset from input. The actual utcOffset can be changed
+        // with parseZone.
+        if (config._tzm != null) {
+            config._d.setUTCMinutes(config._d.getUTCMinutes() - config._tzm);
+        }
+
+        if (config._nextDay) {
+            config._a[HOUR] = 24;
+        }
+    }
+
+    function dayOfYearFromWeekInfo(config) {
+        var w, weekYear, week, weekday, dow, doy, temp, weekdayOverflow;
+
+        w = config._w;
+        if (w.GG != null || w.W != null || w.E != null) {
+            dow = 1;
+            doy = 4;
+
+            // TODO: We need to take the current isoWeekYear, but that depends on
+            // how we interpret now (local, utc, fixed offset). So create
+            // a now version of current config (take local/utc/offset flags, and
+            // create now).
+            weekYear = defaults(w.GG, config._a[YEAR], weekOfYear(local__createLocal(), 1, 4).year);
+            week = defaults(w.W, 1);
+            weekday = defaults(w.E, 1);
+            if (weekday < 1 || weekday > 7) {
+                weekdayOverflow = true;
+            }
+        } else {
+            dow = config._locale._week.dow;
+            doy = config._locale._week.doy;
+
+            weekYear = defaults(w.gg, config._a[YEAR], weekOfYear(local__createLocal(), dow, doy).year);
+            week = defaults(w.w, 1);
+
+            if (w.d != null) {
+                // weekday -- low day numbers are considered next week
+                weekday = w.d;
+                if (weekday < 0 || weekday > 6) {
+                    weekdayOverflow = true;
+                }
+            } else if (w.e != null) {
+                // local weekday -- counting starts from begining of week
+                weekday = w.e + dow;
+                if (w.e < 0 || w.e > 6) {
+                    weekdayOverflow = true;
+                }
+            } else {
+                // default to begining of week
+                weekday = dow;
+            }
+        }
+        if (week < 1 || week > weeksInYear(weekYear, dow, doy)) {
+            getParsingFlags(config)._overflowWeeks = true;
+        } else if (weekdayOverflow != null) {
+            getParsingFlags(config)._overflowWeekday = true;
+        } else {
+            temp = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy);
+            config._a[YEAR] = temp.year;
+            config._dayOfYear = temp.dayOfYear;
+        }
+    }
+
+    // constant that refers to the ISO standard
+    utils_hooks__hooks.ISO_8601 = function () {};
+
+    // date from string and format string
+    function configFromStringAndFormat(config) {
+        // TODO: Move this to another part of the creation flow to prevent circular deps
+        if (config._f === utils_hooks__hooks.ISO_8601) {
+            configFromISO(config);
+            return;
+        }
+
+        config._a = [];
+        getParsingFlags(config).empty = true;
+
+        // This array is used to make a Date, either with `new Date` or `Date.UTC`
+        var string = '' + config._i,
+            i, parsedInput, tokens, token, skipped,
+            stringLength = string.length,
+            totalParsedInputLength = 0;
+
+        tokens = expandFormat(config._f, config._locale).match(formattingTokens) || [];
+
+        for (i = 0; i < tokens.length; i++) {
+            token = tokens[i];
+            parsedInput = (string.match(getParseRegexForToken(token, config)) || [])[0];
+            // console.log('token', token, 'parsedInput', parsedInput,
+            //         'regex', getParseRegexForToken(token, config));
+            if (parsedInput) {
+                skipped = string.substr(0, string.indexOf(parsedInput));
+                if (skipped.length > 0) {
+                    getParsingFlags(config).unusedInput.push(skipped);
+                }
+                string = string.slice(string.indexOf(parsedInput) + parsedInput.length);
+                totalParsedInputLength += parsedInput.length;
+            }
+            // don't parse if it's not a known token
+            if (formatTokenFunctions[token]) {
+                if (parsedInput) {
+                    getParsingFlags(config).empty = false;
+                }
+                else {
+                    getParsingFlags(config).unusedTokens.push(token);
+                }
+                addTimeToArrayFromToken(token, parsedInput, config);
+            }
+            else if (config._strict && !parsedInput) {
+                getParsingFlags(config).unusedTokens.push(token);
+            }
+        }
+
+        // add remaining unparsed input length to the string
+        getParsingFlags(config).charsLeftOver = stringLength - totalParsedInputLength;
+        if (string.length > 0) {
+            getParsingFlags(config).unusedInput.push(string);
+        }
+
+        // clear _12h flag if hour is <= 12
+        if (getParsingFlags(config).bigHour === true &&
+                config._a[HOUR] <= 12 &&
+                config._a[HOUR] > 0) {
+            getParsingFlags(config).bigHour = undefined;
+        }
+        // handle meridiem
+        config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
+
+        configFromArray(config);
+        checkOverflow(config);
+    }
+
+
+    function meridiemFixWrap (locale, hour, meridiem) {
+        var isPm;
+
+        if (meridiem == null) {
+            // nothing to do
+            return hour;
+        }
+        if (locale.meridiemHour != null) {
+            return locale.meridiemHour(hour, meridiem);
+        } else if (locale.isPM != null) {
+            // Fallback
+            isPm = locale.isPM(meridiem);
+            if (isPm && hour < 12) {
+                hour += 12;
+            }
+            if (!isPm && hour === 12) {
+                hour = 0;
+            }
+            return hour;
+        } else {
+            // this is not supposed to happen
+            return hour;
+        }
+    }
+
+    // date from string and array of format strings
+    function configFromStringAndArray(config) {
+        var tempConfig,
+            bestMoment,
+
+            scoreToBeat,
+            i,
+            currentScore;
+
+        if (config._f.length === 0) {
+            getParsingFlags(config).invalidFormat = true;
+            config._d = new Date(NaN);
+            return;
+        }
+
+        for (i = 0; i < config._f.length; i++) {
+            currentScore = 0;
+            tempConfig = copyConfig({}, config);
+            if (config._useUTC != null) {
+                tempConfig._useUTC = config._useUTC;
+            }
+            tempConfig._f = config._f[i];
+            configFromStringAndFormat(tempConfig);
+
+            if (!valid__isValid(tempConfig)) {
+                continue;
+            }
+
+            // if there is any input that was not parsed add a penalty for that format
+            currentScore += getParsingFlags(tempConfig).charsLeftOver;
+
+            //or tokens
+            currentScore += getParsingFlags(tempConfig).unusedTokens.length * 10;
+
+            getParsingFlags(tempConfig).score = currentScore;
+
+            if (scoreToBeat == null || currentScore < scoreToBeat) {
+                scoreToBeat = currentScore;
+                bestMoment = tempConfig;
+            }
+        }
+
+        extend(config, bestMoment || tempConfig);
+    }
+
+    function configFromObject(config) {
+        if (config._d) {
+            return;
+        }
+
+        var i = normalizeObjectUnits(config._i);
+        config._a = map([i.year, i.month, i.day || i.date, i.hour, i.minute, i.second, i.millisecond], function (obj) {
+            return obj && parseInt(obj, 10);
+        });
+
+        configFromArray(config);
+    }
+
+    function createFromConfig (config) {
+        var res = new Moment(checkOverflow(prepareConfig(config)));
+        if (res._nextDay) {
+            // Adding is smart enough around DST
+            res.add(1, 'd');
+            res._nextDay = undefined;
+        }
+
+        return res;
+    }
+
+    function prepareConfig (config) {
+        var input = config._i,
+            format = config._f;
+
+        config._locale = config._locale || locale_locales__getLocale(config._l);
+
+        if (input === null || (format === undefined && input === '')) {
+            return valid__createInvalid({nullInput: true});
+        }
+
+        if (typeof input === 'string') {
+            config._i = input = config._locale.preparse(input);
+        }
+
+        if (isMoment(input)) {
+            return new Moment(checkOverflow(input));
+        } else if (isArray(format)) {
+            configFromStringAndArray(config);
+        } else if (format) {
+            configFromStringAndFormat(config);
+        } else if (isDate(input)) {
+            config._d = input;
+        } else {
+            configFromInput(config);
+        }
+
+        if (!valid__isValid(config)) {
+            config._d = null;
+        }
+
+        return config;
+    }
+
+    function configFromInput(config) {
+        var input = config._i;
+        if (input === undefined) {
+            config._d = new Date(utils_hooks__hooks.now());
+        } else if (isDate(input)) {
+            config._d = new Date(+input);
+        } else if (typeof input === 'string') {
+            configFromString(config);
+        } else if (isArray(input)) {
+            config._a = map(input.slice(0), function (obj) {
+                return parseInt(obj, 10);
+            });
+            configFromArray(config);
+        } else if (typeof(input) === 'object') {
+            configFromObject(config);
+        } else if (typeof(input) === 'number') {
+            // from milliseconds
+            config._d = new Date(input);
+        } else {
+            utils_hooks__hooks.createFromInputFallback(config);
+        }
+    }
+
+    function createLocalOrUTC (input, format, locale, strict, isUTC) {
+        var c = {};
+
+        if (typeof(locale) === 'boolean') {
+            strict = locale;
+            locale = undefined;
+        }
+        // object construction must be done this way.
+        // https://github.com/moment/moment/issues/1423
+        c._isAMomentObject = true;
+        c._useUTC = c._isUTC = isUTC;
+        c._l = locale;
+        c._i = input;
+        c._f = format;
+        c._strict = strict;
+
+        return createFromConfig(c);
+    }
+
+    function local__createLocal (input, format, locale, strict) {
+        return createLocalOrUTC(input, format, locale, strict, false);
+    }
+
+    var prototypeMin = deprecate(
+         'moment().min is deprecated, use moment.max instead. https://github.com/moment/moment/issues/1548',
+         function () {
+             var other = local__createLocal.apply(null, arguments);
+             if (this.isValid() && other.isValid()) {
+                 return other < this ? this : other;
+             } else {
+                 return valid__createInvalid();
+             }
+         }
+     );
+
+    var prototypeMax = deprecate(
+        'moment().max is deprecated, use moment.min instead. https://github.com/moment/moment/issues/1548',
+        function () {
+            var other = local__createLocal.apply(null, arguments);
+            if (this.isValid() && other.isValid()) {
+                return other > this ? this : other;
+            } else {
+                return valid__createInvalid();
+            }
+        }
+    );
+
+    // Pick a moment m from moments so that m[fn](other) is true for all
+    // other. This relies on the function fn to be transitive.
+    //
+    // moments should either be an array of moment objects or an array, whose
+    // first element is an array of moment objects.
+    function pickBy(fn, moments) {
+        var res, i;
+        if (moments.length === 1 && isArray(moments[0])) {
+            moments = moments[0];
+        }
+        if (!moments.length) {
+            return local__createLocal();
+        }
+        res = moments[0];
+        for (i = 1; i < moments.length; ++i) {
+            if (!moments[i].isValid() || moments[i][fn](res)) {
+                res = moments[i];
+            }
+        }
+        return res;
+    }
+
+    // TODO: Use [].sort instead?
+    function min () {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isBefore', args);
+    }
+
+    function max () {
+        var args = [].slice.call(arguments, 0);
+
+        return pickBy('isAfter', args);
+    }
+
+    var now = function () {
+        return Date.now ? Date.now() : +(new Date());
+    };
+
+    function Duration (duration) {
+        var normalizedInput = normalizeObjectUnits(duration),
+            years = normalizedInput.year || 0,
+            quarters = normalizedInput.quarter || 0,
+            months = normalizedInput.month || 0,
+            weeks = normalizedInput.week || 0,
+            days = normalizedInput.day || 0,
+            hours = normalizedInput.hour || 0,
+            minutes = normalizedInput.minute || 0,
+            seconds = normalizedInput.second || 0,
+            milliseconds = normalizedInput.millisecond || 0;
+
+        // representation for dateAddRemove
+        this._milliseconds = +milliseconds +
+            seconds * 1e3 + // 1000
+            minutes * 6e4 + // 1000 * 60
+            hours * 36e5; // 1000 * 60 * 60
+        // Because of dateAddRemove treats 24 hours as different from a
+        // day when working around DST, we need to store them separately
+        this._days = +days +
+            weeks * 7;
+        // It is impossible translate months into days without knowing
+        // which months you are are talking about, so we have to store
+        // it separately.
+        this._months = +months +
+            quarters * 3 +
+            years * 12;
+
+        this._data = {};
+
+        this._locale = locale_locales__getLocale();
+
+        this._bubble();
+    }
+
+    function isDuration (obj) {
+        return obj instanceof Duration;
+    }
+
+    // FORMATTING
+
+    function offset (token, separator) {
+        addFormatToken(token, 0, 0, function () {
+            var offset = this.utcOffset();
+            var sign = '+';
+            if (offset < 0) {
+                offset = -offset;
+                sign = '-';
+            }
+            return sign + zeroFill(~~(offset / 60), 2) + separator + zeroFill(~~(offset) % 60, 2);
+        });
+    }
+
+    offset('Z', ':');
+    offset('ZZ', '');
+
+    // PARSING
+
+    addRegexToken('Z',  matchShortOffset);
+    addRegexToken('ZZ', matchShortOffset);
+    addParseToken(['Z', 'ZZ'], function (input, array, config) {
+        config._useUTC = true;
+        config._tzm = offsetFromString(matchShortOffset, input);
+    });
+
+    // HELPERS
+
+    // timezone chunker
+    // '+10:00' > ['10',  '00']
+    // '-1530'  > ['-15', '30']
+    var chunkOffset = /([\+\-]|\d\d)/gi;
+
+    function offsetFromString(matcher, string) {
+        var matches = ((string || '').match(matcher) || []);
+        var chunk   = matches[matches.length - 1] || [];
+        var parts   = (chunk + '').match(chunkOffset) || ['-', 0, 0];
+        var minutes = +(parts[1] * 60) + toInt(parts[2]);
+
+        return parts[0] === '+' ? minutes : -minutes;
+    }
+
+    // Return a moment from input, that is local/utc/zone equivalent to model.
+    function cloneWithOffset(input, model) {
+        var res, diff;
+        if (model._isUTC) {
+            res = model.clone();
+            diff = (isMoment(input) || isDate(input) ? +input : +local__createLocal(input)) - (+res);
+            // Use low-level api, because this fn is low-level api.
+            res._d.setTime(+res._d + diff);
+            utils_hooks__hooks.updateOffset(res, false);
+            return res;
+        } else {
+            return local__createLocal(input).local();
+        }
+    }
+
+    function getDateOffset (m) {
+        // On Firefox.24 Date#getTimezoneOffset returns a floating point.
+        // https://github.com/moment/moment/pull/1871
+        return -Math.round(m._d.getTimezoneOffset() / 15) * 15;
+    }
+
+    // HOOKS
+
+    // This function will be called whenever a moment is mutated.
+    // It is intended to keep the offset in sync with the timezone.
+    utils_hooks__hooks.updateOffset = function () {};
+
+    // MOMENTS
+
+    // keepLocalTime = true means only change the timezone, without
+    // affecting the local hour. So 5:31:26 +0300 --[utcOffset(2, true)]-->
+    // 5:31:26 +0200 It is possible that 5:31:26 doesn't exist with offset
+    // +0200, so we adjust the time as needed, to be valid.
+    //
+    // Keeping the time actually adds/subtracts (one hour)
+    // from the actual represented time. That is why we call updateOffset
+    // a second time. In case it wants us to change the offset again
+    // _changeInProgress == true case, then we have to adjust, because
+    // there is no such time in the given timezone.
+    function getSetOffset (input, keepLocalTime) {
+        var offset = this._offset || 0,
+            localAdjust;
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        if (input != null) {
+            if (typeof input === 'string') {
+                input = offsetFromString(matchShortOffset, input);
+            } else if (Math.abs(input) < 16) {
+                input = input * 60;
+            }
+            if (!this._isUTC && keepLocalTime) {
+                localAdjust = getDateOffset(this);
+            }
+            this._offset = input;
+            this._isUTC = true;
+            if (localAdjust != null) {
+                this.add(localAdjust, 'm');
+            }
+            if (offset !== input) {
+                if (!keepLocalTime || this._changeInProgress) {
+                    add_subtract__addSubtract(this, create__createDuration(input - offset, 'm'), 1, false);
+                } else if (!this._changeInProgress) {
+                    this._changeInProgress = true;
+                    utils_hooks__hooks.updateOffset(this, true);
+                    this._changeInProgress = null;
+                }
+            }
+            return this;
+        } else {
+            return this._isUTC ? offset : getDateOffset(this);
+        }
+    }
+
+    function getSetZone (input, keepLocalTime) {
+        if (input != null) {
+            if (typeof input !== 'string') {
+                input = -input;
+            }
+
+            this.utcOffset(input, keepLocalTime);
+
+            return this;
+        } else {
+            return -this.utcOffset();
+        }
+    }
+
+    function setOffsetToUTC (keepLocalTime) {
+        return this.utcOffset(0, keepLocalTime);
+    }
+
+    function setOffsetToLocal (keepLocalTime) {
+        if (this._isUTC) {
+            this.utcOffset(0, keepLocalTime);
+            this._isUTC = false;
+
+            if (keepLocalTime) {
+                this.subtract(getDateOffset(this), 'm');
+            }
+        }
+        return this;
+    }
+
+    function setOffsetToParsedOffset () {
+        if (this._tzm) {
+            this.utcOffset(this._tzm);
+        } else if (typeof this._i === 'string') {
+            this.utcOffset(offsetFromString(matchOffset, this._i));
+        }
+        return this;
+    }
+
+    function hasAlignedHourOffset (input) {
+        if (!this.isValid()) {
+            return false;
+        }
+        input = input ? local__createLocal(input).utcOffset() : 0;
+
+        return (this.utcOffset() - input) % 60 === 0;
+    }
+
+    function isDaylightSavingTime () {
+        return (
+            this.utcOffset() > this.clone().month(0).utcOffset() ||
+            this.utcOffset() > this.clone().month(5).utcOffset()
+        );
+    }
+
+    function isDaylightSavingTimeShifted () {
+        if (!isUndefined(this._isDSTShifted)) {
+            return this._isDSTShifted;
+        }
+
+        var c = {};
+
+        copyConfig(c, this);
+        c = prepareConfig(c);
+
+        if (c._a) {
+            var other = c._isUTC ? create_utc__createUTC(c._a) : local__createLocal(c._a);
+            this._isDSTShifted = this.isValid() &&
+                compareArrays(c._a, other.toArray()) > 0;
+        } else {
+            this._isDSTShifted = false;
+        }
+
+        return this._isDSTShifted;
+    }
+
+    function isLocal () {
+        return this.isValid() ? !this._isUTC : false;
+    }
+
+    function isUtcOffset () {
+        return this.isValid() ? this._isUTC : false;
+    }
+
+    function isUtc () {
+        return this.isValid() ? this._isUTC && this._offset === 0 : false;
+    }
+
+    // ASP.NET json date format regex
+    var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?\d*)?$/;
+
+    // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
+    // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
+    // and further modified to allow for strings containing both week and day
+    var isoRegex = /^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$/;
+
+    function create__createDuration (input, key) {
+        var duration = input,
+            // matching against regexp is expensive, do it on demand
+            match = null,
+            sign,
+            ret,
+            diffRes;
+
+        if (isDuration(input)) {
+            duration = {
+                ms : input._milliseconds,
+                d  : input._days,
+                M  : input._months
+            };
+        } else if (typeof input === 'number') {
+            duration = {};
+            if (key) {
+                duration[key] = input;
+            } else {
+                duration.milliseconds = input;
+            }
+        } else if (!!(match = aspNetRegex.exec(input))) {
+            sign = (match[1] === '-') ? -1 : 1;
+            duration = {
+                y  : 0,
+                d  : toInt(match[DATE])        * sign,
+                h  : toInt(match[HOUR])        * sign,
+                m  : toInt(match[MINUTE])      * sign,
+                s  : toInt(match[SECOND])      * sign,
+                ms : toInt(match[MILLISECOND]) * sign
+            };
+        } else if (!!(match = isoRegex.exec(input))) {
+            sign = (match[1] === '-') ? -1 : 1;
+            duration = {
+                y : parseIso(match[2], sign),
+                M : parseIso(match[3], sign),
+                w : parseIso(match[4], sign),
+                d : parseIso(match[5], sign),
+                h : parseIso(match[6], sign),
+                m : parseIso(match[7], sign),
+                s : parseIso(match[8], sign)
+            };
+        } else if (duration == null) {// checks for null or undefined
+            duration = {};
+        } else if (typeof duration === 'object' && ('from' in duration || 'to' in duration)) {
+            diffRes = momentsDifference(local__createLocal(duration.from), local__createLocal(duration.to));
+
+            duration = {};
+            duration.ms = diffRes.milliseconds;
+            duration.M = diffRes.months;
+        }
+
+        ret = new Duration(duration);
+
+        if (isDuration(input) && hasOwnProp(input, '_locale')) {
+            ret._locale = input._locale;
+        }
+
+        return ret;
+    }
+
+    create__createDuration.fn = Duration.prototype;
+
+    function parseIso (inp, sign) {
+        // We'd normally use ~~inp for this, but unfortunately it also
+        // converts floats to ints.
+        // inp may be undefined, so careful calling replace on it.
+        var res = inp && parseFloat(inp.replace(',', '.'));
+        // apply sign while we're at it
+        return (isNaN(res) ? 0 : res) * sign;
+    }
+
+    function positiveMomentsDifference(base, other) {
+        var res = {milliseconds: 0, months: 0};
+
+        res.months = other.month() - base.month() +
+            (other.year() - base.year()) * 12;
+        if (base.clone().add(res.months, 'M').isAfter(other)) {
+            --res.months;
+        }
+
+        res.milliseconds = +other - +(base.clone().add(res.months, 'M'));
+
+        return res;
+    }
+
+    function momentsDifference(base, other) {
+        var res;
+        if (!(base.isValid() && other.isValid())) {
+            return {milliseconds: 0, months: 0};
+        }
+
+        other = cloneWithOffset(other, base);
+        if (base.isBefore(other)) {
+            res = positiveMomentsDifference(base, other);
+        } else {
+            res = positiveMomentsDifference(other, base);
+            res.milliseconds = -res.milliseconds;
+            res.months = -res.months;
+        }
+
+        return res;
+    }
+
+    function absRound (number) {
+        if (number < 0) {
+            return Math.round(-1 * number) * -1;
+        } else {
+            return Math.round(number);
+        }
+    }
+
+    // TODO: remove 'name' arg after deprecation is removed
+    function createAdder(direction, name) {
+        return function (val, period) {
+            var dur, tmp;
+            //invert the arguments, but complain about it
+            if (period !== null && !isNaN(+period)) {
+                deprecateSimple(name, 'moment().' + name  + '(period, number) is deprecated. Please use moment().' + name + '(number, period).');
+                tmp = val; val = period; period = tmp;
+            }
+
+            val = typeof val === 'string' ? +val : val;
+            dur = create__createDuration(val, period);
+            add_subtract__addSubtract(this, dur, direction);
+            return this;
+        };
+    }
+
+    function add_subtract__addSubtract (mom, duration, isAdding, updateOffset) {
+        var milliseconds = duration._milliseconds,
+            days = absRound(duration._days),
+            months = absRound(duration._months);
+
+        if (!mom.isValid()) {
+            // No op
+            return;
+        }
+
+        updateOffset = updateOffset == null ? true : updateOffset;
+
+        if (milliseconds) {
+            mom._d.setTime(+mom._d + milliseconds * isAdding);
+        }
+        if (days) {
+            get_set__set(mom, 'Date', get_set__get(mom, 'Date') + days * isAdding);
+        }
+        if (months) {
+            setMonth(mom, get_set__get(mom, 'Month') + months * isAdding);
+        }
+        if (updateOffset) {
+            utils_hooks__hooks.updateOffset(mom, days || months);
+        }
+    }
+
+    var add_subtract__add      = createAdder(1, 'add');
+    var add_subtract__subtract = createAdder(-1, 'subtract');
+
+    function moment_calendar__calendar (time, formats) {
+        // We want to compare the start of today, vs this.
+        // Getting start-of-today depends on whether we're local/utc/offset or not.
+        var now = time || local__createLocal(),
+            sod = cloneWithOffset(now, this).startOf('day'),
+            diff = this.diff(sod, 'days', true),
+            format = diff < -6 ? 'sameElse' :
+                diff < -1 ? 'lastWeek' :
+                diff < 0 ? 'lastDay' :
+                diff < 1 ? 'sameDay' :
+                diff < 2 ? 'nextDay' :
+                diff < 7 ? 'nextWeek' : 'sameElse';
+
+        var output = formats && (isFunction(formats[format]) ? formats[format]() : formats[format]);
+
+        return this.format(output || this.localeData().calendar(format, this, local__createLocal(now)));
+    }
+
+    function clone () {
+        return new Moment(this);
+    }
+
+    function isAfter (input, units) {
+        var localInput = isMoment(input) ? input : local__createLocal(input);
+        if (!(this.isValid() && localInput.isValid())) {
+            return false;
+        }
+        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        if (units === 'millisecond') {
+            return +this > +localInput;
+        } else {
+            return +localInput < +this.clone().startOf(units);
+        }
+    }
+
+    function isBefore (input, units) {
+        var localInput = isMoment(input) ? input : local__createLocal(input);
+        if (!(this.isValid() && localInput.isValid())) {
+            return false;
+        }
+        units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
+        if (units === 'millisecond') {
+            return +this < +localInput;
+        } else {
+            return +this.clone().endOf(units) < +localInput;
+        }
+    }
+
+    function isBetween (from, to, units) {
+        return this.isAfter(from, units) && this.isBefore(to, units);
+    }
+
+    function isSame (input, units) {
+        var localInput = isMoment(input) ? input : local__createLocal(input),
+            inputMs;
+        if (!(this.isValid() && localInput.isValid())) {
+            return false;
+        }
+        units = normalizeUnits(units || 'millisecond');
+        if (units === 'millisecond') {
+            return +this === +localInput;
+        } else {
+            inputMs = +localInput;
+            return +(this.clone().startOf(units)) <= inputMs && inputMs <= +(this.clone().endOf(units));
+        }
+    }
+
+    function isSameOrAfter (input, units) {
+        return this.isSame(input, units) || this.isAfter(input,units);
+    }
+
+    function isSameOrBefore (input, units) {
+        return this.isSame(input, units) || this.isBefore(input,units);
+    }
+
+    function diff (input, units, asFloat) {
+        var that,
+            zoneDelta,
+            delta, output;
+
+        if (!this.isValid()) {
+            return NaN;
+        }
+
+        that = cloneWithOffset(input, this);
+
+        if (!that.isValid()) {
+            return NaN;
+        }
+
+        zoneDelta = (that.utcOffset() - this.utcOffset()) * 6e4;
+
+        units = normalizeUnits(units);
+
+        if (units === 'year' || units === 'month' || units === 'quarter') {
+            output = monthDiff(this, that);
+            if (units === 'quarter') {
+                output = output / 3;
+            } else if (units === 'year') {
+                output = output / 12;
+            }
+        } else {
+            delta = this - that;
+            output = units === 'second' ? delta / 1e3 : // 1000
+                units === 'minute' ? delta / 6e4 : // 1000 * 60
+                units === 'hour' ? delta / 36e5 : // 1000 * 60 * 60
+                units === 'day' ? (delta - zoneDelta) / 864e5 : // 1000 * 60 * 60 * 24, negate dst
+                units === 'week' ? (delta - zoneDelta) / 6048e5 : // 1000 * 60 * 60 * 24 * 7, negate dst
+                delta;
+        }
+        return asFloat ? output : absFloor(output);
+    }
+
+    function monthDiff (a, b) {
+        // difference in months
+        var wholeMonthDiff = ((b.year() - a.year()) * 12) + (b.month() - a.month()),
+            // b is in (anchor - 1 month, anchor + 1 month)
+            anchor = a.clone().add(wholeMonthDiff, 'months'),
+            anchor2, adjust;
+
+        if (b - anchor < 0) {
+            anchor2 = a.clone().add(wholeMonthDiff - 1, 'months');
+            // linear across the month
+            adjust = (b - anchor) / (anchor - anchor2);
+        } else {
+            anchor2 = a.clone().add(wholeMonthDiff + 1, 'months');
+            // linear across the month
+            adjust = (b - anchor) / (anchor2 - anchor);
+        }
+
+        return -(wholeMonthDiff + adjust);
+    }
+
+    utils_hooks__hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+
+    function toString () {
+        return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
+    }
+
+    function moment_format__toISOString () {
+        var m = this.clone().utc();
+        if (0 < m.year() && m.year() <= 9999) {
+            if (isFunction(Date.prototype.toISOString)) {
+                // native implementation is ~50x faster, use it when we can
+                return this.toDate().toISOString();
+            } else {
+                return formatMoment(m, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+            }
+        } else {
+            return formatMoment(m, 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
+        }
+    }
+
+    function format (inputString) {
+        var output = formatMoment(this, inputString || utils_hooks__hooks.defaultFormat);
+        return this.localeData().postformat(output);
+    }
+
+    function from (time, withoutSuffix) {
+        if (this.isValid() &&
+                ((isMoment(time) && time.isValid()) ||
+                 local__createLocal(time).isValid())) {
+            return create__createDuration({to: this, from: time}).locale(this.locale()).humanize(!withoutSuffix);
+        } else {
+            return this.localeData().invalidDate();
+        }
+    }
+
+    function fromNow (withoutSuffix) {
+        return this.from(local__createLocal(), withoutSuffix);
+    }
+
+    function to (time, withoutSuffix) {
+        if (this.isValid() &&
+                ((isMoment(time) && time.isValid()) ||
+                 local__createLocal(time).isValid())) {
+            return create__createDuration({from: this, to: time}).locale(this.locale()).humanize(!withoutSuffix);
+        } else {
+            return this.localeData().invalidDate();
+        }
+    }
+
+    function toNow (withoutSuffix) {
+        return this.to(local__createLocal(), withoutSuffix);
+    }
+
+    // If passed a locale key, it will set the locale for this
+    // instance.  Otherwise, it will return the locale configuration
+    // variables for this instance.
+    function locale (key) {
+        var newLocaleData;
+
+        if (key === undefined) {
+            return this._locale._abbr;
+        } else {
+            newLocaleData = locale_locales__getLocale(key);
+            if (newLocaleData != null) {
+                this._locale = newLocaleData;
+            }
+            return this;
+        }
+    }
+
+    var lang = deprecate(
+        'moment().lang() is deprecated. Instead, use moment().localeData() to get the language configuration. Use moment().locale() to change languages.',
+        function (key) {
+            if (key === undefined) {
+                return this.localeData();
+            } else {
+                return this.locale(key);
+            }
+        }
+    );
+
+    function localeData () {
+        return this._locale;
+    }
+
+    function startOf (units) {
+        units = normalizeUnits(units);
+        // the following switch intentionally omits break keywords
+        // to utilize falling through the cases.
+        switch (units) {
+        case 'year':
+            this.month(0);
+            /* falls through */
+        case 'quarter':
+        case 'month':
+            this.date(1);
+            /* falls through */
+        case 'week':
+        case 'isoWeek':
+        case 'day':
+            this.hours(0);
+            /* falls through */
+        case 'hour':
+            this.minutes(0);
+            /* falls through */
+        case 'minute':
+            this.seconds(0);
+            /* falls through */
+        case 'second':
+            this.milliseconds(0);
+        }
+
+        // weeks are a special case
+        if (units === 'week') {
+            this.weekday(0);
+        }
+        if (units === 'isoWeek') {
+            this.isoWeekday(1);
+        }
+
+        // quarters are also special
+        if (units === 'quarter') {
+            this.month(Math.floor(this.month() / 3) * 3);
+        }
+
+        return this;
+    }
+
+    function endOf (units) {
+        units = normalizeUnits(units);
+        if (units === undefined || units === 'millisecond') {
+            return this;
+        }
+        return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
+    }
+
+    function to_type__valueOf () {
+        return +this._d - ((this._offset || 0) * 60000);
+    }
+
+    function unix () {
+        return Math.floor(+this / 1000);
+    }
+
+    function toDate () {
+        return this._offset ? new Date(+this) : this._d;
+    }
+
+    function toArray () {
+        var m = this;
+        return [m.year(), m.month(), m.date(), m.hour(), m.minute(), m.second(), m.millisecond()];
+    }
+
+    function toObject () {
+        var m = this;
+        return {
+            years: m.year(),
+            months: m.month(),
+            date: m.date(),
+            hours: m.hours(),
+            minutes: m.minutes(),
+            seconds: m.seconds(),
+            milliseconds: m.milliseconds()
+        };
+    }
+
+    function toJSON () {
+        // new Date(NaN).toJSON() === null
+        return this.isValid() ? this.toISOString() : null;
+    }
+
+    function moment_valid__isValid () {
+        return valid__isValid(this);
+    }
+
+    function parsingFlags () {
+        return extend({}, getParsingFlags(this));
+    }
+
+    function invalidAt () {
+        return getParsingFlags(this).overflow;
+    }
+
+    function creationData() {
+        return {
+            input: this._i,
+            format: this._f,
+            locale: this._locale,
+            isUTC: this._isUTC,
+            strict: this._strict
+        };
+    }
+
+    // FORMATTING
+
+    addFormatToken(0, ['gg', 2], 0, function () {
+        return this.weekYear() % 100;
+    });
+
+    addFormatToken(0, ['GG', 2], 0, function () {
+        return this.isoWeekYear() % 100;
+    });
+
+    function addWeekYearFormatToken (token, getter) {
+        addFormatToken(0, [token, token.length], 0, getter);
+    }
+
+    addWeekYearFormatToken('gggg',     'weekYear');
+    addWeekYearFormatToken('ggggg',    'weekYear');
+    addWeekYearFormatToken('GGGG',  'isoWeekYear');
+    addWeekYearFormatToken('GGGGG', 'isoWeekYear');
+
+    // ALIASES
+
+    addUnitAlias('weekYear', 'gg');
+    addUnitAlias('isoWeekYear', 'GG');
+
+    // PARSING
+
+    addRegexToken('G',      matchSigned);
+    addRegexToken('g',      matchSigned);
+    addRegexToken('GG',     match1to2, match2);
+    addRegexToken('gg',     match1to2, match2);
+    addRegexToken('GGGG',   match1to4, match4);
+    addRegexToken('gggg',   match1to4, match4);
+    addRegexToken('GGGGG',  match1to6, match6);
+    addRegexToken('ggggg',  match1to6, match6);
+
+    addWeekParseToken(['gggg', 'ggggg', 'GGGG', 'GGGGG'], function (input, week, config, token) {
+        week[token.substr(0, 2)] = toInt(input);
+    });
+
+    addWeekParseToken(['gg', 'GG'], function (input, week, config, token) {
+        week[token] = utils_hooks__hooks.parseTwoDigitYear(input);
+    });
+
+    // MOMENTS
+
+    function getSetWeekYear (input) {
+        return getSetWeekYearHelper.call(this,
+                input,
+                this.week(),
+                this.weekday(),
+                this.localeData()._week.dow,
+                this.localeData()._week.doy);
+    }
+
+    function getSetISOWeekYear (input) {
+        return getSetWeekYearHelper.call(this,
+                input, this.isoWeek(), this.isoWeekday(), 1, 4);
+    }
+
+    function getISOWeeksInYear () {
+        return weeksInYear(this.year(), 1, 4);
+    }
+
+    function getWeeksInYear () {
+        var weekInfo = this.localeData()._week;
+        return weeksInYear(this.year(), weekInfo.dow, weekInfo.doy);
+    }
+
+    function getSetWeekYearHelper(input, week, weekday, dow, doy) {
+        var weeksTarget;
+        if (input == null) {
+            return weekOfYear(this, dow, doy).year;
+        } else {
+            weeksTarget = weeksInYear(input, dow, doy);
+            if (week > weeksTarget) {
+                week = weeksTarget;
+            }
+            return setWeekAll.call(this, input, week, weekday, dow, doy);
+        }
+    }
+
+    function setWeekAll(weekYear, week, weekday, dow, doy) {
+        var dayOfYearData = dayOfYearFromWeeks(weekYear, week, weekday, dow, doy),
+            date = createUTCDate(dayOfYearData.year, 0, dayOfYearData.dayOfYear);
+
+        this.year(date.getUTCFullYear());
+        this.month(date.getUTCMonth());
+        this.date(date.getUTCDate());
+        return this;
+    }
+
+    // FORMATTING
+
+    addFormatToken('Q', 0, 'Qo', 'quarter');
+
+    // ALIASES
+
+    addUnitAlias('quarter', 'Q');
+
+    // PARSING
+
+    addRegexToken('Q', match1);
+    addParseToken('Q', function (input, array) {
+        array[MONTH] = (toInt(input) - 1) * 3;
+    });
+
+    // MOMENTS
+
+    function getSetQuarter (input) {
+        return input == null ? Math.ceil((this.month() + 1) / 3) : this.month((input - 1) * 3 + this.month() % 3);
+    }
+
+    // FORMATTING
+
+    addFormatToken('w', ['ww', 2], 'wo', 'week');
+    addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
+
+    // ALIASES
+
+    addUnitAlias('week', 'w');
+    addUnitAlias('isoWeek', 'W');
+
+    // PARSING
+
+    addRegexToken('w',  match1to2);
+    addRegexToken('ww', match1to2, match2);
+    addRegexToken('W',  match1to2);
+    addRegexToken('WW', match1to2, match2);
+
+    addWeekParseToken(['w', 'ww', 'W', 'WW'], function (input, week, config, token) {
+        week[token.substr(0, 1)] = toInt(input);
+    });
+
+    // HELPERS
+
+    // LOCALES
+
+    function localeWeek (mom) {
+        return weekOfYear(mom, this._week.dow, this._week.doy).week;
+    }
+
+    var defaultLocaleWeek = {
+        dow : 0, // Sunday is the first day of the week.
+        doy : 6  // The week that contains Jan 1st is the first week of the year.
+    };
+
+    function localeFirstDayOfWeek () {
+        return this._week.dow;
+    }
+
+    function localeFirstDayOfYear () {
+        return this._week.doy;
+    }
+
+    // MOMENTS
+
+    function getSetWeek (input) {
+        var week = this.localeData().week(this);
+        return input == null ? week : this.add((input - week) * 7, 'd');
+    }
+
+    function getSetISOWeek (input) {
+        var week = weekOfYear(this, 1, 4).week;
+        return input == null ? week : this.add((input - week) * 7, 'd');
+    }
+
+    // FORMATTING
+
+    addFormatToken('D', ['DD', 2], 'Do', 'date');
+
+    // ALIASES
+
+    addUnitAlias('date', 'D');
+
+    // PARSING
+
+    addRegexToken('D',  match1to2);
+    addRegexToken('DD', match1to2, match2);
+    addRegexToken('Do', function (isStrict, locale) {
+        return isStrict ? locale._ordinalParse : locale._ordinalParseLenient;
+    });
+
+    addParseToken(['D', 'DD'], DATE);
+    addParseToken('Do', function (input, array) {
+        array[DATE] = toInt(input.match(match1to2)[0], 10);
+    });
+
+    // MOMENTS
+
+    var getSetDayOfMonth = makeGetSet('Date', true);
+
+    // FORMATTING
+
+    addFormatToken('d', 0, 'do', 'day');
+
+    addFormatToken('dd', 0, 0, function (format) {
+        return this.localeData().weekdaysMin(this, format);
+    });
+
+    addFormatToken('ddd', 0, 0, function (format) {
+        return this.localeData().weekdaysShort(this, format);
+    });
+
+    addFormatToken('dddd', 0, 0, function (format) {
+        return this.localeData().weekdays(this, format);
+    });
+
+    addFormatToken('e', 0, 0, 'weekday');
+    addFormatToken('E', 0, 0, 'isoWeekday');
+
+    // ALIASES
+
+    addUnitAlias('day', 'd');
+    addUnitAlias('weekday', 'e');
+    addUnitAlias('isoWeekday', 'E');
+
+    // PARSING
+
+    addRegexToken('d',    match1to2);
+    addRegexToken('e',    match1to2);
+    addRegexToken('E',    match1to2);
+    addRegexToken('dd',   matchWord);
+    addRegexToken('ddd',  matchWord);
+    addRegexToken('dddd', matchWord);
+
+    addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config, token) {
+        var weekday = config._locale.weekdaysParse(input, token, config._strict);
+        // if we didn't get a weekday name, mark the date as invalid
+        if (weekday != null) {
+            week.d = weekday;
+        } else {
+            getParsingFlags(config).invalidWeekday = input;
+        }
+    });
+
+    addWeekParseToken(['d', 'e', 'E'], function (input, week, config, token) {
+        week[token] = toInt(input);
+    });
+
+    // HELPERS
+
+    function parseWeekday(input, locale) {
+        if (typeof input !== 'string') {
+            return input;
+        }
+
+        if (!isNaN(input)) {
+            return parseInt(input, 10);
+        }
+
+        input = locale.weekdaysParse(input);
+        if (typeof input === 'number') {
+            return input;
+        }
+
+        return null;
+    }
+
+    // LOCALES
+
+    var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
+    function localeWeekdays (m, format) {
+        return isArray(this._weekdays) ? this._weekdays[m.day()] :
+            this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
+    }
+
+    var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
+    function localeWeekdaysShort (m) {
+        return this._weekdaysShort[m.day()];
+    }
+
+    var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
+    function localeWeekdaysMin (m) {
+        return this._weekdaysMin[m.day()];
+    }
+
+    function localeWeekdaysParse (weekdayName, format, strict) {
+        var i, mom, regex;
+
+        if (!this._weekdaysParse) {
+            this._weekdaysParse = [];
+            this._minWeekdaysParse = [];
+            this._shortWeekdaysParse = [];
+            this._fullWeekdaysParse = [];
+        }
+
+        for (i = 0; i < 7; i++) {
+            // make the regex if we don't have it already
+
+            mom = local__createLocal([2000, 1]).day(i);
+            if (strict && !this._fullWeekdaysParse[i]) {
+                this._fullWeekdaysParse[i] = new RegExp('^' + this.weekdays(mom, '').replace('.', '\.?') + '$', 'i');
+                this._shortWeekdaysParse[i] = new RegExp('^' + this.weekdaysShort(mom, '').replace('.', '\.?') + '$', 'i');
+                this._minWeekdaysParse[i] = new RegExp('^' + this.weekdaysMin(mom, '').replace('.', '\.?') + '$', 'i');
+            }
+            if (!this._weekdaysParse[i]) {
+                regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
+                this._weekdaysParse[i] = new RegExp(regex.replace('.', ''), 'i');
+            }
+            // test the regex
+            if (strict && format === 'dddd' && this._fullWeekdaysParse[i].test(weekdayName)) {
+                return i;
+            } else if (strict && format === 'ddd' && this._shortWeekdaysParse[i].test(weekdayName)) {
+                return i;
+            } else if (strict && format === 'dd' && this._minWeekdaysParse[i].test(weekdayName)) {
+                return i;
+            } else if (!strict && this._weekdaysParse[i].test(weekdayName)) {
+                return i;
+            }
+        }
+    }
+
+    // MOMENTS
+
+    function getSetDayOfWeek (input) {
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+        if (input != null) {
+            input = parseWeekday(input, this.localeData());
+            return this.add(input - day, 'd');
+        } else {
+            return day;
+        }
+    }
+
+    function getSetLocaleDayOfWeek (input) {
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        var weekday = (this.day() + 7 - this.localeData()._week.dow) % 7;
+        return input == null ? weekday : this.add(input - weekday, 'd');
+    }
+
+    function getSetISODayOfWeek (input) {
+        if (!this.isValid()) {
+            return input != null ? this : NaN;
+        }
+        // behaves the same as moment#day except
+        // as a getter, returns 7 instead of 0 (1-7 range instead of 0-6)
+        // as a setter, sunday should belong to the previous week.
+        return input == null ? this.day() || 7 : this.day(this.day() % 7 ? input : input - 7);
+    }
+
+    // FORMATTING
+
+    addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
+
+    // ALIASES
+
+    addUnitAlias('dayOfYear', 'DDD');
+
+    // PARSING
+
+    addRegexToken('DDD',  match1to3);
+    addRegexToken('DDDD', match3);
+    addParseToken(['DDD', 'DDDD'], function (input, array, config) {
+        config._dayOfYear = toInt(input);
+    });
+
+    // HELPERS
+
+    // MOMENTS
+
+    function getSetDayOfYear (input) {
+        var dayOfYear = Math.round((this.clone().startOf('day') - this.clone().startOf('year')) / 864e5) + 1;
+        return input == null ? dayOfYear : this.add((input - dayOfYear), 'd');
+    }
+
+    // FORMATTING
+
+    function hFormat() {
+        return this.hours() % 12 || 12;
+    }
+
+    addFormatToken('H', ['HH', 2], 0, 'hour');
+    addFormatToken('h', ['hh', 2], 0, hFormat);
+
+    addFormatToken('hmm', 0, 0, function () {
+        return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2);
+    });
+
+    addFormatToken('hmmss', 0, 0, function () {
+        return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2) +
+            zeroFill(this.seconds(), 2);
+    });
+
+    addFormatToken('Hmm', 0, 0, function () {
+        return '' + this.hours() + zeroFill(this.minutes(), 2);
+    });
+
+    addFormatToken('Hmmss', 0, 0, function () {
+        return '' + this.hours() + zeroFill(this.minutes(), 2) +
+            zeroFill(this.seconds(), 2);
+    });
+
+    function meridiem (token, lowercase) {
+        addFormatToken(token, 0, 0, function () {
+            return this.localeData().meridiem(this.hours(), this.minutes(), lowercase);
+        });
+    }
+
+    meridiem('a', true);
+    meridiem('A', false);
+
+    // ALIASES
+
+    addUnitAlias('hour', 'h');
+
+    // PARSING
+
+    function matchMeridiem (isStrict, locale) {
+        return locale._meridiemParse;
+    }
+
+    addRegexToken('a',  matchMeridiem);
+    addRegexToken('A',  matchMeridiem);
+    addRegexToken('H',  match1to2);
+    addRegexToken('h',  match1to2);
+    addRegexToken('HH', match1to2, match2);
+    addRegexToken('hh', match1to2, match2);
+
+    addRegexToken('hmm', match3to4);
+    addRegexToken('hmmss', match5to6);
+    addRegexToken('Hmm', match3to4);
+    addRegexToken('Hmmss', match5to6);
+
+    addParseToken(['H', 'HH'], HOUR);
+    addParseToken(['a', 'A'], function (input, array, config) {
+        config._isPm = config._locale.isPM(input);
+        config._meridiem = input;
+    });
+    addParseToken(['h', 'hh'], function (input, array, config) {
+        array[HOUR] = toInt(input);
+        getParsingFlags(config).bigHour = true;
+    });
+    addParseToken('hmm', function (input, array, config) {
+        var pos = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos));
+        array[MINUTE] = toInt(input.substr(pos));
+        getParsingFlags(config).bigHour = true;
+    });
+    addParseToken('hmmss', function (input, array, config) {
+        var pos1 = input.length - 4;
+        var pos2 = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos1));
+        array[MINUTE] = toInt(input.substr(pos1, 2));
+        array[SECOND] = toInt(input.substr(pos2));
+        getParsingFlags(config).bigHour = true;
+    });
+    addParseToken('Hmm', function (input, array, config) {
+        var pos = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos));
+        array[MINUTE] = toInt(input.substr(pos));
+    });
+    addParseToken('Hmmss', function (input, array, config) {
+        var pos1 = input.length - 4;
+        var pos2 = input.length - 2;
+        array[HOUR] = toInt(input.substr(0, pos1));
+        array[MINUTE] = toInt(input.substr(pos1, 2));
+        array[SECOND] = toInt(input.substr(pos2));
+    });
+
+    // LOCALES
+
+    function localeIsPM (input) {
+        // IE8 Quirks Mode & IE7 Standards Mode do not allow accessing strings like arrays
+        // Using charAt should be more compatible.
+        return ((input + '').toLowerCase().charAt(0) === 'p');
+    }
+
+    var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i;
+    function localeMeridiem (hours, minutes, isLower) {
+        if (hours > 11) {
+            return isLower ? 'pm' : 'PM';
+        } else {
+            return isLower ? 'am' : 'AM';
+        }
+    }
+
+
+    // MOMENTS
+
+    // Setting the hour should keep the time, because the user explicitly
+    // specified which hour he wants. So trying to maintain the same hour (in
+    // a new timezone) makes sense. Adding/subtracting hours does not follow
+    // this rule.
+    var getSetHour = makeGetSet('Hours', true);
+
+    // FORMATTING
+
+    addFormatToken('m', ['mm', 2], 0, 'minute');
+
+    // ALIASES
+
+    addUnitAlias('minute', 'm');
+
+    // PARSING
+
+    addRegexToken('m',  match1to2);
+    addRegexToken('mm', match1to2, match2);
+    addParseToken(['m', 'mm'], MINUTE);
+
+    // MOMENTS
+
+    var getSetMinute = makeGetSet('Minutes', false);
+
+    // FORMATTING
+
+    addFormatToken('s', ['ss', 2], 0, 'second');
+
+    // ALIASES
+
+    addUnitAlias('second', 's');
+
+    // PARSING
+
+    addRegexToken('s',  match1to2);
+    addRegexToken('ss', match1to2, match2);
+    addParseToken(['s', 'ss'], SECOND);
+
+    // MOMENTS
+
+    var getSetSecond = makeGetSet('Seconds', false);
+
+    // FORMATTING
+
+    addFormatToken('S', 0, 0, function () {
+        return ~~(this.millisecond() / 100);
+    });
+
+    addFormatToken(0, ['SS', 2], 0, function () {
+        return ~~(this.millisecond() / 10);
+    });
+
+    addFormatToken(0, ['SSS', 3], 0, 'millisecond');
+    addFormatToken(0, ['SSSS', 4], 0, function () {
+        return this.millisecond() * 10;
+    });
+    addFormatToken(0, ['SSSSS', 5], 0, function () {
+        return this.millisecond() * 100;
+    });
+    addFormatToken(0, ['SSSSSS', 6], 0, function () {
+        return this.millisecond() * 1000;
+    });
+    addFormatToken(0, ['SSSSSSS', 7], 0, function () {
+        return this.millisecond() * 10000;
+    });
+    addFormatToken(0, ['SSSSSSSS', 8], 0, function () {
+        return this.millisecond() * 100000;
+    });
+    addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
+        return this.millisecond() * 1000000;
+    });
+
+
+    // ALIASES
+
+    addUnitAlias('millisecond', 'ms');
+
+    // PARSING
+
+    addRegexToken('S',    match1to3, match1);
+    addRegexToken('SS',   match1to3, match2);
+    addRegexToken('SSS',  match1to3, match3);
+
+    var token;
+    for (token = 'SSSS'; token.length <= 9; token += 'S') {
+        addRegexToken(token, matchUnsigned);
+    }
+
+    function parseMs(input, array) {
+        array[MILLISECOND] = toInt(('0.' + input) * 1000);
+    }
+
+    for (token = 'S'; token.length <= 9; token += 'S') {
+        addParseToken(token, parseMs);
+    }
+    // MOMENTS
+
+    var getSetMillisecond = makeGetSet('Milliseconds', false);
+
+    // FORMATTING
+
+    addFormatToken('z',  0, 0, 'zoneAbbr');
+    addFormatToken('zz', 0, 0, 'zoneName');
+
+    // MOMENTS
+
+    function getZoneAbbr () {
+        return this._isUTC ? 'UTC' : '';
+    }
+
+    function getZoneName () {
+        return this._isUTC ? 'Coordinated Universal Time' : '';
+    }
+
+    var momentPrototype__proto = Moment.prototype;
+
+    momentPrototype__proto.add               = add_subtract__add;
+    momentPrototype__proto.calendar          = moment_calendar__calendar;
+    momentPrototype__proto.clone             = clone;
+    momentPrototype__proto.diff              = diff;
+    momentPrototype__proto.endOf             = endOf;
+    momentPrototype__proto.format            = format;
+    momentPrototype__proto.from              = from;
+    momentPrototype__proto.fromNow           = fromNow;
+    momentPrototype__proto.to                = to;
+    momentPrototype__proto.toNow             = toNow;
+    momentPrototype__proto.get               = getSet;
+    momentPrototype__proto.invalidAt         = invalidAt;
+    momentPrototype__proto.isAfter           = isAfter;
+    momentPrototype__proto.isBefore          = isBefore;
+    momentPrototype__proto.isBetween         = isBetween;
+    momentPrototype__proto.isSame            = isSame;
+    momentPrototype__proto.isSameOrAfter     = isSameOrAfter;
+    momentPrototype__proto.isSameOrBefore    = isSameOrBefore;
+    momentPrototype__proto.isValid           = moment_valid__isValid;
+    momentPrototype__proto.lang              = lang;
+    momentPrototype__proto.locale            = locale;
+    momentPrototype__proto.localeData        = localeData;
+    momentPrototype__proto.max               = prototypeMax;
+    momentPrototype__proto.min               = prototypeMin;
+    momentPrototype__proto.parsingFlags      = parsingFlags;
+    momentPrototype__proto.set               = getSet;
+    momentPrototype__proto.startOf           = startOf;
+    momentPrototype__proto.subtract          = add_subtract__subtract;
+    momentPrototype__proto.toArray           = toArray;
+    momentPrototype__proto.toObject          = toObject;
+    momentPrototype__proto.toDate            = toDate;
+    momentPrototype__proto.toISOString       = moment_format__toISOString;
+    momentPrototype__proto.toJSON            = toJSON;
+    momentPrototype__proto.toString          = toString;
+    momentPrototype__proto.unix              = unix;
+    momentPrototype__proto.valueOf           = to_type__valueOf;
+    momentPrototype__proto.creationData      = creationData;
+
+    // Year
+    momentPrototype__proto.year       = getSetYear;
+    momentPrototype__proto.isLeapYear = getIsLeapYear;
+
+    // Week Year
+    momentPrototype__proto.weekYear    = getSetWeekYear;
+    momentPrototype__proto.isoWeekYear = getSetISOWeekYear;
+
+    // Quarter
+    momentPrototype__proto.quarter = momentPrototype__proto.quarters = getSetQuarter;
+
+    // Month
+    momentPrototype__proto.month       = getSetMonth;
+    momentPrototype__proto.daysInMonth = getDaysInMonth;
+
+    // Week
+    momentPrototype__proto.week           = momentPrototype__proto.weeks        = getSetWeek;
+    momentPrototype__proto.isoWeek        = momentPrototype__proto.isoWeeks     = getSetISOWeek;
+    momentPrototype__proto.weeksInYear    = getWeeksInYear;
+    momentPrototype__proto.isoWeeksInYear = getISOWeeksInYear;
+
+    // Day
+    momentPrototype__proto.date       = getSetDayOfMonth;
+    momentPrototype__proto.day        = momentPrototype__proto.days             = getSetDayOfWeek;
+    momentPrototype__proto.weekday    = getSetLocaleDayOfWeek;
+    momentPrototype__proto.isoWeekday = getSetISODayOfWeek;
+    momentPrototype__proto.dayOfYear  = getSetDayOfYear;
+
+    // Hour
+    momentPrototype__proto.hour = momentPrototype__proto.hours = getSetHour;
+
+    // Minute
+    momentPrototype__proto.minute = momentPrototype__proto.minutes = getSetMinute;
+
+    // Second
+    momentPrototype__proto.second = momentPrototype__proto.seconds = getSetSecond;
+
+    // Millisecond
+    momentPrototype__proto.millisecond = momentPrototype__proto.milliseconds = getSetMillisecond;
+
+    // Offset
+    momentPrototype__proto.utcOffset            = getSetOffset;
+    momentPrototype__proto.utc                  = setOffsetToUTC;
+    momentPrototype__proto.local                = setOffsetToLocal;
+    momentPrototype__proto.parseZone            = setOffsetToParsedOffset;
+    momentPrototype__proto.hasAlignedHourOffset = hasAlignedHourOffset;
+    momentPrototype__proto.isDST                = isDaylightSavingTime;
+    momentPrototype__proto.isDSTShifted         = isDaylightSavingTimeShifted;
+    momentPrototype__proto.isLocal              = isLocal;
+    momentPrototype__proto.isUtcOffset          = isUtcOffset;
+    momentPrototype__proto.isUtc                = isUtc;
+    momentPrototype__proto.isUTC                = isUtc;
+
+    // Timezone
+    momentPrototype__proto.zoneAbbr = getZoneAbbr;
+    momentPrototype__proto.zoneName = getZoneName;
+
+    // Deprecations
+    momentPrototype__proto.dates  = deprecate('dates accessor is deprecated. Use date instead.', getSetDayOfMonth);
+    momentPrototype__proto.months = deprecate('months accessor is deprecated. Use month instead', getSetMonth);
+    momentPrototype__proto.years  = deprecate('years accessor is deprecated. Use year instead', getSetYear);
+    momentPrototype__proto.zone   = deprecate('moment().zone is deprecated, use moment().utcOffset instead. https://github.com/moment/moment/issues/1779', getSetZone);
+
+    var momentPrototype = momentPrototype__proto;
+
+    function moment__createUnix (input) {
+        return local__createLocal(input * 1000);
+    }
+
+    function moment__createInZone () {
+        return local__createLocal.apply(null, arguments).parseZone();
+    }
+
+    var defaultCalendar = {
+        sameDay : '[Today at] LT',
+        nextDay : '[Tomorrow at] LT',
+        nextWeek : 'dddd [at] LT',
+        lastDay : '[Yesterday at] LT',
+        lastWeek : '[Last] dddd [at] LT',
+        sameElse : 'L'
+    };
+
+    function locale_calendar__calendar (key, mom, now) {
+        var output = this._calendar[key];
+        return isFunction(output) ? output.call(mom, now) : output;
+    }
+
+    var defaultLongDateFormat = {
+        LTS  : 'h:mm:ss A',
+        LT   : 'h:mm A',
+        L    : 'MM/DD/YYYY',
+        LL   : 'MMMM D, YYYY',
+        LLL  : 'MMMM D, YYYY h:mm A',
+        LLLL : 'dddd, MMMM D, YYYY h:mm A'
+    };
+
+    function longDateFormat (key) {
+        var format = this._longDateFormat[key],
+            formatUpper = this._longDateFormat[key.toUpperCase()];
+
+        if (format || !formatUpper) {
+            return format;
+        }
+
+        this._longDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
+            return val.slice(1);
+        });
+
+        return this._longDateFormat[key];
+    }
+
+    var defaultInvalidDate = 'Invalid date';
+
+    function invalidDate () {
+        return this._invalidDate;
+    }
+
+    var defaultOrdinal = '%d';
+    var defaultOrdinalParse = /\d{1,2}/;
+
+    function ordinal (number) {
+        return this._ordinal.replace('%d', number);
+    }
+
+    function preParsePostFormat (string) {
+        return string;
+    }
+
+    var defaultRelativeTime = {
+        future : 'in %s',
+        past   : '%s ago',
+        s  : 'a few seconds',
+        m  : 'a minute',
+        mm : '%d minutes',
+        h  : 'an hour',
+        hh : '%d hours',
+        d  : 'a day',
+        dd : '%d days',
+        M  : 'a month',
+        MM : '%d months',
+        y  : 'a year',
+        yy : '%d years'
+    };
+
+    function relative__relativeTime (number, withoutSuffix, string, isFuture) {
+        var output = this._relativeTime[string];
+        return (isFunction(output)) ?
+            output(number, withoutSuffix, string, isFuture) :
+            output.replace(/%d/i, number);
+    }
+
+    function pastFuture (diff, output) {
+        var format = this._relativeTime[diff > 0 ? 'future' : 'past'];
+        return isFunction(format) ? format(output) : format.replace(/%s/i, output);
+    }
+
+    var prototype__proto = Locale.prototype;
+
+    prototype__proto._calendar       = defaultCalendar;
+    prototype__proto.calendar        = locale_calendar__calendar;
+    prototype__proto._longDateFormat = defaultLongDateFormat;
+    prototype__proto.longDateFormat  = longDateFormat;
+    prototype__proto._invalidDate    = defaultInvalidDate;
+    prototype__proto.invalidDate     = invalidDate;
+    prototype__proto._ordinal        = defaultOrdinal;
+    prototype__proto.ordinal         = ordinal;
+    prototype__proto._ordinalParse   = defaultOrdinalParse;
+    prototype__proto.preparse        = preParsePostFormat;
+    prototype__proto.postformat      = preParsePostFormat;
+    prototype__proto._relativeTime   = defaultRelativeTime;
+    prototype__proto.relativeTime    = relative__relativeTime;
+    prototype__proto.pastFuture      = pastFuture;
+    prototype__proto.set             = locale_set__set;
+
+    // Month
+    prototype__proto.months            =        localeMonths;
+    prototype__proto._months           = defaultLocaleMonths;
+    prototype__proto.monthsShort       =        localeMonthsShort;
+    prototype__proto._monthsShort      = defaultLocaleMonthsShort;
+    prototype__proto.monthsParse       =        localeMonthsParse;
+    prototype__proto._monthsRegex      = defaultMonthsRegex;
+    prototype__proto.monthsRegex       = monthsRegex;
+    prototype__proto._monthsShortRegex = defaultMonthsShortRegex;
+    prototype__proto.monthsShortRegex  = monthsShortRegex;
+
+    // Week
+    prototype__proto.week = localeWeek;
+    prototype__proto._week = defaultLocaleWeek;
+    prototype__proto.firstDayOfYear = localeFirstDayOfYear;
+    prototype__proto.firstDayOfWeek = localeFirstDayOfWeek;
+
+    // Day of Week
+    prototype__proto.weekdays       =        localeWeekdays;
+    prototype__proto._weekdays      = defaultLocaleWeekdays;
+    prototype__proto.weekdaysMin    =        localeWeekdaysMin;
+    prototype__proto._weekdaysMin   = defaultLocaleWeekdaysMin;
+    prototype__proto.weekdaysShort  =        localeWeekdaysShort;
+    prototype__proto._weekdaysShort = defaultLocaleWeekdaysShort;
+    prototype__proto.weekdaysParse  =        localeWeekdaysParse;
+
+    // Hours
+    prototype__proto.isPM = localeIsPM;
+    prototype__proto._meridiemParse = defaultLocaleMeridiemParse;
+    prototype__proto.meridiem = localeMeridiem;
+
+    function lists__get (format, index, field, setter) {
+        var locale = locale_locales__getLocale();
+        var utc = create_utc__createUTC().set(setter, index);
+        return locale[field](utc, format);
+    }
+
+    function list (format, index, field, count, setter) {
+        if (typeof format === 'number') {
+            index = format;
+            format = undefined;
+        }
+
+        format = format || '';
+
+        if (index != null) {
+            return lists__get(format, index, field, setter);
+        }
+
+        var i;
+        var out = [];
+        for (i = 0; i < count; i++) {
+            out[i] = lists__get(format, i, field, setter);
+        }
+        return out;
+    }
+
+    function lists__listMonths (format, index) {
+        return list(format, index, 'months', 12, 'month');
+    }
+
+    function lists__listMonthsShort (format, index) {
+        return list(format, index, 'monthsShort', 12, 'month');
+    }
+
+    function lists__listWeekdays (format, index) {
+        return list(format, index, 'weekdays', 7, 'day');
+    }
+
+    function lists__listWeekdaysShort (format, index) {
+        return list(format, index, 'weekdaysShort', 7, 'day');
+    }
+
+    function lists__listWeekdaysMin (format, index) {
+        return list(format, index, 'weekdaysMin', 7, 'day');
+    }
+
+    locale_locales__getSetGlobalLocale('en', {
+        ordinalParse: /\d{1,2}(th|st|nd|rd)/,
+        ordinal : function (number) {
+            var b = number % 10,
+                output = (toInt(number % 100 / 10) === 1) ? 'th' :
+                (b === 1) ? 'st' :
+                (b === 2) ? 'nd' :
+                (b === 3) ? 'rd' : 'th';
+            return number + output;
+        }
+    });
+
+    // Side effect imports
+    utils_hooks__hooks.lang = deprecate('moment.lang is deprecated. Use moment.locale instead.', locale_locales__getSetGlobalLocale);
+    utils_hooks__hooks.langData = deprecate('moment.langData is deprecated. Use moment.localeData instead.', locale_locales__getLocale);
+
+    var mathAbs = Math.abs;
+
+    function duration_abs__abs () {
+        var data           = this._data;
+
+        this._milliseconds = mathAbs(this._milliseconds);
+        this._days         = mathAbs(this._days);
+        this._months       = mathAbs(this._months);
+
+        data.milliseconds  = mathAbs(data.milliseconds);
+        data.seconds       = mathAbs(data.seconds);
+        data.minutes       = mathAbs(data.minutes);
+        data.hours         = mathAbs(data.hours);
+        data.months        = mathAbs(data.months);
+        data.years         = mathAbs(data.years);
+
+        return this;
+    }
+
+    function duration_add_subtract__addSubtract (duration, input, value, direction) {
+        var other = create__createDuration(input, value);
+
+        duration._milliseconds += direction * other._milliseconds;
+        duration._days         += direction * other._days;
+        duration._months       += direction * other._months;
+
+        return duration._bubble();
+    }
+
+    // supports only 2.0-style add(1, 's') or add(duration)
+    function duration_add_subtract__add (input, value) {
+        return duration_add_subtract__addSubtract(this, input, value, 1);
+    }
+
+    // supports only 2.0-style subtract(1, 's') or subtract(duration)
+    function duration_add_subtract__subtract (input, value) {
+        return duration_add_subtract__addSubtract(this, input, value, -1);
+    }
+
+    function absCeil (number) {
+        if (number < 0) {
+            return Math.floor(number);
+        } else {
+            return Math.ceil(number);
+        }
+    }
+
+    function bubble () {
+        var milliseconds = this._milliseconds;
+        var days         = this._days;
+        var months       = this._months;
+        var data         = this._data;
+        var seconds, minutes, hours, years, monthsFromDays;
+
+        // if we have a mix of positive and negative values, bubble down first
+        // check: https://github.com/moment/moment/issues/2166
+        if (!((milliseconds >= 0 && days >= 0 && months >= 0) ||
+                (milliseconds <= 0 && days <= 0 && months <= 0))) {
+            milliseconds += absCeil(monthsToDays(months) + days) * 864e5;
+            days = 0;
+            months = 0;
+        }
+
+        // The following code bubbles up values, see the tests for
+        // examples of what that means.
+        data.milliseconds = milliseconds % 1000;
+
+        seconds           = absFloor(milliseconds / 1000);
+        data.seconds      = seconds % 60;
+
+        minutes           = absFloor(seconds / 60);
+        data.minutes      = minutes % 60;
+
+        hours             = absFloor(minutes / 60);
+        data.hours        = hours % 24;
+
+        days += absFloor(hours / 24);
+
+        // convert days to months
+        monthsFromDays = absFloor(daysToMonths(days));
+        months += monthsFromDays;
+        days -= absCeil(monthsToDays(monthsFromDays));
+
+        // 12 months -> 1 year
+        years = absFloor(months / 12);
+        months %= 12;
+
+        data.days   = days;
+        data.months = months;
+        data.years  = years;
+
+        return this;
+    }
+
+    function daysToMonths (days) {
+        // 400 years have 146097 days (taking into account leap year rules)
+        // 400 years have 12 months === 4800
+        return days * 4800 / 146097;
+    }
+
+    function monthsToDays (months) {
+        // the reverse of daysToMonths
+        return months * 146097 / 4800;
+    }
+
+    function as (units) {
+        var days;
+        var months;
+        var milliseconds = this._milliseconds;
+
+        units = normalizeUnits(units);
+
+        if (units === 'month' || units === 'year') {
+            days   = this._days   + milliseconds / 864e5;
+            months = this._months + daysToMonths(days);
+            return units === 'month' ? months : months / 12;
+        } else {
+            // handle milliseconds separately because of floating point math errors (issue #1867)
+            days = this._days + Math.round(monthsToDays(this._months));
+            switch (units) {
+                case 'week'   : return days / 7     + milliseconds / 6048e5;
+                case 'day'    : return days         + milliseconds / 864e5;
+                case 'hour'   : return days * 24    + milliseconds / 36e5;
+                case 'minute' : return days * 1440  + milliseconds / 6e4;
+                case 'second' : return days * 86400 + milliseconds / 1000;
+                // Math.floor prevents floating point math errors here
+                case 'millisecond': return Math.floor(days * 864e5) + milliseconds;
+                default: throw new Error('Unknown unit ' + units);
+            }
+        }
+    }
+
+    // TODO: Use this.as('ms')?
+    function duration_as__valueOf () {
+        return (
+            this._milliseconds +
+            this._days * 864e5 +
+            (this._months % 12) * 2592e6 +
+            toInt(this._months / 12) * 31536e6
+        );
+    }
+
+    function makeAs (alias) {
+        return function () {
+            return this.as(alias);
+        };
+    }
+
+    var asMilliseconds = makeAs('ms');
+    var asSeconds      = makeAs('s');
+    var asMinutes      = makeAs('m');
+    var asHours        = makeAs('h');
+    var asDays         = makeAs('d');
+    var asWeeks        = makeAs('w');
+    var asMonths       = makeAs('M');
+    var asYears        = makeAs('y');
+
+    function duration_get__get (units) {
+        units = normalizeUnits(units);
+        return this[units + 's']();
+    }
+
+    function makeGetter(name) {
+        return function () {
+            return this._data[name];
+        };
+    }
+
+    var milliseconds = makeGetter('milliseconds');
+    var seconds      = makeGetter('seconds');
+    var minutes      = makeGetter('minutes');
+    var hours        = makeGetter('hours');
+    var days         = makeGetter('days');
+    var months       = makeGetter('months');
+    var years        = makeGetter('years');
+
+    function weeks () {
+        return absFloor(this.days() / 7);
+    }
+
+    var round = Math.round;
+    var thresholds = {
+        s: 45,  // seconds to minute
+        m: 45,  // minutes to hour
+        h: 22,  // hours to day
+        d: 26,  // days to month
+        M: 11   // months to year
+    };
+
+    // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
+    function substituteTimeAgo(string, number, withoutSuffix, isFuture, locale) {
+        return locale.relativeTime(number || 1, !!withoutSuffix, string, isFuture);
+    }
+
+    function duration_humanize__relativeTime (posNegDuration, withoutSuffix, locale) {
+        var duration = create__createDuration(posNegDuration).abs();
+        var seconds  = round(duration.as('s'));
+        var minutes  = round(duration.as('m'));
+        var hours    = round(duration.as('h'));
+        var days     = round(duration.as('d'));
+        var months   = round(duration.as('M'));
+        var years    = round(duration.as('y'));
+
+        var a = seconds < thresholds.s && ['s', seconds]  ||
+                minutes <= 1           && ['m']           ||
+                minutes < thresholds.m && ['mm', minutes] ||
+                hours   <= 1           && ['h']           ||
+                hours   < thresholds.h && ['hh', hours]   ||
+                days    <= 1           && ['d']           ||
+                days    < thresholds.d && ['dd', days]    ||
+                months  <= 1           && ['M']           ||
+                months  < thresholds.M && ['MM', months]  ||
+                years   <= 1           && ['y']           || ['yy', years];
+
+        a[2] = withoutSuffix;
+        a[3] = +posNegDuration > 0;
+        a[4] = locale;
+        return substituteTimeAgo.apply(null, a);
+    }
+
+    // This function allows you to set a threshold for relative time strings
+    function duration_humanize__getSetRelativeTimeThreshold (threshold, limit) {
+        if (thresholds[threshold] === undefined) {
+            return false;
+        }
+        if (limit === undefined) {
+            return thresholds[threshold];
+        }
+        thresholds[threshold] = limit;
+        return true;
+    }
+
+    function humanize (withSuffix) {
+        var locale = this.localeData();
+        var output = duration_humanize__relativeTime(this, !withSuffix, locale);
+
+        if (withSuffix) {
+            output = locale.pastFuture(+this, output);
+        }
+
+        return locale.postformat(output);
+    }
+
+    var iso_string__abs = Math.abs;
+
+    function iso_string__toISOString() {
+        // for ISO strings we do not use the normal bubbling rules:
+        //  * milliseconds bubble up until they become hours
+        //  * days do not bubble at all
+        //  * months bubble up until they become years
+        // This is because there is no context-free conversion between hours and days
+        // (think of clock changes)
+        // and also not between days and months (28-31 days per month)
+        var seconds = iso_string__abs(this._milliseconds) / 1000;
+        var days         = iso_string__abs(this._days);
+        var months       = iso_string__abs(this._months);
+        var minutes, hours, years;
+
+        // 3600 seconds -> 60 minutes -> 1 hour
+        minutes           = absFloor(seconds / 60);
+        hours             = absFloor(minutes / 60);
+        seconds %= 60;
+        minutes %= 60;
+
+        // 12 months -> 1 year
+        years  = absFloor(months / 12);
+        months %= 12;
+
+
+        // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
+        var Y = years;
+        var M = months;
+        var D = days;
+        var h = hours;
+        var m = minutes;
+        var s = seconds;
+        var total = this.asSeconds();
+
+        if (!total) {
+            // this is the same as C#'s (Noda) and python (isodate)...
+            // but not other JS (goog.date)
+            return 'P0D';
+        }
+
+        return (total < 0 ? '-' : '') +
+            'P' +
+            (Y ? Y + 'Y' : '') +
+            (M ? M + 'M' : '') +
+            (D ? D + 'D' : '') +
+            ((h || m || s) ? 'T' : '') +
+            (h ? h + 'H' : '') +
+            (m ? m + 'M' : '') +
+            (s ? s + 'S' : '');
+    }
+
+    var duration_prototype__proto = Duration.prototype;
+
+    duration_prototype__proto.abs            = duration_abs__abs;
+    duration_prototype__proto.add            = duration_add_subtract__add;
+    duration_prototype__proto.subtract       = duration_add_subtract__subtract;
+    duration_prototype__proto.as             = as;
+    duration_prototype__proto.asMilliseconds = asMilliseconds;
+    duration_prototype__proto.asSeconds      = asSeconds;
+    duration_prototype__proto.asMinutes      = asMinutes;
+    duration_prototype__proto.asHours        = asHours;
+    duration_prototype__proto.asDays         = asDays;
+    duration_prototype__proto.asWeeks        = asWeeks;
+    duration_prototype__proto.asMonths       = asMonths;
+    duration_prototype__proto.asYears        = asYears;
+    duration_prototype__proto.valueOf        = duration_as__valueOf;
+    duration_prototype__proto._bubble        = bubble;
+    duration_prototype__proto.get            = duration_get__get;
+    duration_prototype__proto.milliseconds   = milliseconds;
+    duration_prototype__proto.seconds        = seconds;
+    duration_prototype__proto.minutes        = minutes;
+    duration_prototype__proto.hours          = hours;
+    duration_prototype__proto.days           = days;
+    duration_prototype__proto.weeks          = weeks;
+    duration_prototype__proto.months         = months;
+    duration_prototype__proto.years          = years;
+    duration_prototype__proto.humanize       = humanize;
+    duration_prototype__proto.toISOString    = iso_string__toISOString;
+    duration_prototype__proto.toString       = iso_string__toISOString;
+    duration_prototype__proto.toJSON         = iso_string__toISOString;
+    duration_prototype__proto.locale         = locale;
+    duration_prototype__proto.localeData     = localeData;
+
+    // Deprecations
+    duration_prototype__proto.toIsoString = deprecate('toIsoString() is deprecated. Please use toISOString() instead (notice the capitals)', iso_string__toISOString);
+    duration_prototype__proto.lang = lang;
+
+    // Side effect imports
+
+    // FORMATTING
+
+    addFormatToken('X', 0, 0, 'unix');
+    addFormatToken('x', 0, 0, 'valueOf');
+
+    // PARSING
+
+    addRegexToken('x', matchSigned);
+    addRegexToken('X', matchTimestamp);
+    addParseToken('X', function (input, array, config) {
+        config._d = new Date(parseFloat(input, 10) * 1000);
+    });
+    addParseToken('x', function (input, array, config) {
+        config._d = new Date(toInt(input));
+    });
+
+    // Side effect imports
+
+
+    utils_hooks__hooks.version = '2.12.0';
+
+    setHookCallback(local__createLocal);
+
+    utils_hooks__hooks.fn                    = momentPrototype;
+    utils_hooks__hooks.min                   = min;
+    utils_hooks__hooks.max                   = max;
+    utils_hooks__hooks.now                   = now;
+    utils_hooks__hooks.utc                   = create_utc__createUTC;
+    utils_hooks__hooks.unix                  = moment__createUnix;
+    utils_hooks__hooks.months                = lists__listMonths;
+    utils_hooks__hooks.isDate                = isDate;
+    utils_hooks__hooks.locale                = locale_locales__getSetGlobalLocale;
+    utils_hooks__hooks.invalid               = valid__createInvalid;
+    utils_hooks__hooks.duration              = create__createDuration;
+    utils_hooks__hooks.isMoment              = isMoment;
+    utils_hooks__hooks.weekdays              = lists__listWeekdays;
+    utils_hooks__hooks.parseZone             = moment__createInZone;
+    utils_hooks__hooks.localeData            = locale_locales__getLocale;
+    utils_hooks__hooks.isDuration            = isDuration;
+    utils_hooks__hooks.monthsShort           = lists__listMonthsShort;
+    utils_hooks__hooks.weekdaysMin           = lists__listWeekdaysMin;
+    utils_hooks__hooks.defineLocale          = defineLocale;
+    utils_hooks__hooks.updateLocale          = updateLocale;
+    utils_hooks__hooks.locales               = locale_locales__listLocales;
+    utils_hooks__hooks.weekdaysShort         = lists__listWeekdaysShort;
+    utils_hooks__hooks.normalizeUnits        = normalizeUnits;
+    utils_hooks__hooks.relativeTimeThreshold = duration_humanize__getSetRelativeTimeThreshold;
+    utils_hooks__hooks.prototype             = momentPrototype;
+
+    var _moment = utils_hooks__hooks;
+
+    return _moment;
+
+}));
+},{}],47:[function(require,module,exports){
 'use strict';
 var propIsEnumerable = Object.prototype.propertyIsEnumerable;
 
@@ -22434,7 +26609,7 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 /**
  * @preserve jquery-param (c) 2015 KNOWLEDGECODE | MIT
  */
@@ -22487,7 +26662,7 @@ module.exports = Object.assign || function (target, source) {
 
 }(this));
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 (function (process){
 /*
  * PinkySwear.js 2.2.2 - Minimalistic implementation of the Promises/A+ spec
@@ -22608,7 +26783,7 @@ module.exports = Object.assign || function (target, source) {
 
 
 }).call(this,require('_process'))
-},{"_process":35}],49:[function(require,module,exports){
+},{"_process":35}],50:[function(require,module,exports){
 /*! qwest 2.2.9 (https://github.com/pyrsmk/qwest) */
 
 module.exports = function() {
@@ -22997,14 +27172,14 @@ module.exports = function() {
 
 }();
 
-},{"jquery-param":47,"pinkyswear":48}],50:[function(require,module,exports){
+},{"jquery-param":48,"pinkyswear":49}],51:[function(require,module,exports){
 module.exports = require('react/lib/ReactCSSTransitionGroup');
-},{"react/lib/ReactCSSTransitionGroup":136}],51:[function(require,module,exports){
+},{"react/lib/ReactCSSTransitionGroup":137}],52:[function(require,module,exports){
 'use strict';
 
 module.exports = require('react/lib/ReactDOM');
 
-},{"react/lib/ReactDOM":146}],52:[function(require,module,exports){
+},{"react/lib/ReactDOM":147}],53:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -23095,7 +27270,7 @@ function mapAsync(array, work, callback) {
     });
   });
 }
-},{}],53:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23128,7 +27303,7 @@ var History = {
 exports['default'] = History;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./PropTypes":60,"./routerWarning":83,"_process":35}],54:[function(require,module,exports){
+},{"./PropTypes":61,"./routerWarning":84,"_process":35}],55:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -23159,7 +27334,7 @@ var IndexLink = _react2['default'].createClass({
 
 exports['default'] = IndexLink;
 module.exports = exports['default'];
-},{"./Link":58,"react":272}],55:[function(require,module,exports){
+},{"./Link":59,"react":273}],56:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23226,7 +27401,7 @@ var IndexRedirect = _react2['default'].createClass({
 exports['default'] = IndexRedirect;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./PropTypes":60,"./Redirect":61,"./routerWarning":83,"_process":35,"invariant":107,"react":272}],56:[function(require,module,exports){
+},{"./PropTypes":61,"./Redirect":62,"./routerWarning":84,"_process":35,"invariant":108,"react":273}],57:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23290,7 +27465,7 @@ var IndexRoute = _react2['default'].createClass({
 exports['default'] = IndexRoute;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./PropTypes":60,"./RouteUtils":64,"./routerWarning":83,"_process":35,"invariant":107,"react":272}],57:[function(require,module,exports){
+},{"./PropTypes":61,"./RouteUtils":65,"./routerWarning":84,"_process":35,"invariant":108,"react":273}],58:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23362,7 +27537,7 @@ var Lifecycle = {
 exports['default'] = Lifecycle;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./routerWarning":83,"_process":35,"invariant":107,"react":272}],58:[function(require,module,exports){
+},{"./routerWarning":84,"_process":35,"invariant":108,"react":273}],59:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23529,7 +27704,7 @@ var Link = _react2['default'].createClass({
 exports['default'] = Link;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./routerWarning":83,"_process":35,"react":272}],59:[function(require,module,exports){
+},{"./routerWarning":84,"_process":35,"react":273}],60:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23759,7 +27934,7 @@ function formatPattern(pattern, params) {
   return pathname.replace(/\/+/g, '/');
 }
 }).call(this,require('_process'))
-},{"_process":35,"invariant":107}],60:[function(require,module,exports){
+},{"_process":35,"invariant":108}],61:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -23813,7 +27988,7 @@ exports['default'] = {
   components: components,
   route: route
 };
-},{"react":272}],61:[function(require,module,exports){
+},{"react":273}],62:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23919,7 +28094,7 @@ var Redirect = _react2['default'].createClass({
 exports['default'] = Redirect;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./PatternUtils":59,"./PropTypes":60,"./RouteUtils":64,"_process":35,"invariant":107,"react":272}],62:[function(require,module,exports){
+},{"./PatternUtils":60,"./PropTypes":61,"./RouteUtils":65,"_process":35,"invariant":108,"react":273}],63:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23978,7 +28153,7 @@ var Route = _react2['default'].createClass({
 exports['default'] = Route;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./PropTypes":60,"./RouteUtils":64,"_process":35,"invariant":107,"react":272}],63:[function(require,module,exports){
+},{"./PropTypes":61,"./RouteUtils":65,"_process":35,"invariant":108,"react":273}],64:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24027,7 +28202,7 @@ var RouteContext = {
 exports['default'] = RouteContext;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./routerWarning":83,"_process":35,"react":272}],64:[function(require,module,exports){
+},{"./routerWarning":84,"_process":35,"react":273}],65:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24144,7 +28319,7 @@ function createRoutes(routes) {
   return routes;
 }
 }).call(this,require('_process'))
-},{"./routerWarning":83,"_process":35,"react":272}],65:[function(require,module,exports){
+},{"./routerWarning":84,"_process":35,"react":273}],66:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24357,7 +28532,7 @@ var Router = _react2['default'].createClass({
 exports['default'] = Router;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./PropTypes":60,"./RouteUtils":64,"./RouterContext":66,"./RouterUtils":67,"./createTransitionManager":74,"./routerWarning":83,"_process":35,"history/lib/createHashHistory":94,"history/lib/useQueries":101,"react":272}],66:[function(require,module,exports){
+},{"./PropTypes":61,"./RouteUtils":65,"./RouterContext":67,"./RouterUtils":68,"./createTransitionManager":75,"./routerWarning":84,"_process":35,"history/lib/createHashHistory":95,"history/lib/useQueries":102,"react":273}],67:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24514,7 +28689,7 @@ var RouterContext = _react2['default'].createClass({
 exports['default'] = RouterContext;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./RouteUtils":64,"./deprecateObjectProperties":75,"./getRouteParams":77,"./routerWarning":83,"_process":35,"invariant":107,"react":272}],67:[function(require,module,exports){
+},{"./RouteUtils":65,"./deprecateObjectProperties":76,"./getRouteParams":78,"./routerWarning":84,"_process":35,"invariant":108,"react":273}],68:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24550,7 +28725,7 @@ function createRoutingHistory(history, transitionManager) {
   return history;
 }
 }).call(this,require('_process'))
-},{"./deprecateObjectProperties":75,"_process":35}],68:[function(require,module,exports){
+},{"./deprecateObjectProperties":76,"_process":35}],69:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24585,7 +28760,7 @@ var RoutingContext = _react2['default'].createClass({
 exports['default'] = RoutingContext;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./RouterContext":66,"./routerWarning":83,"_process":35,"react":272}],69:[function(require,module,exports){
+},{"./RouterContext":67,"./routerWarning":84,"_process":35,"react":273}],70:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -24677,7 +28852,7 @@ function runLeaveHooks(routes) {
   }
 }
 }).call(this,require('_process'))
-},{"./AsyncUtils":52,"./routerWarning":83,"_process":35}],70:[function(require,module,exports){
+},{"./AsyncUtils":53,"./routerWarning":84,"_process":35}],71:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -24694,7 +28869,7 @@ var _createRouterHistory2 = _interopRequireDefault(_createRouterHistory);
 
 exports['default'] = _createRouterHistory2['default'](_historyLibCreateBrowserHistory2['default']);
 module.exports = exports['default'];
-},{"./createRouterHistory":73,"history/lib/createBrowserHistory":92}],71:[function(require,module,exports){
+},{"./createRouterHistory":74,"history/lib/createBrowserHistory":93}],72:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -24760,7 +28935,7 @@ function computeChangedRoutes(prevState, nextState) {
 
 exports['default'] = computeChangedRoutes;
 module.exports = exports['default'];
-},{"./PatternUtils":59}],72:[function(require,module,exports){
+},{"./PatternUtils":60}],73:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -24794,7 +28969,7 @@ function createMemoryHistory(options) {
 }
 
 module.exports = exports['default'];
-},{"history/lib/createMemoryHistory":97,"history/lib/useBasename":100,"history/lib/useQueries":101}],73:[function(require,module,exports){
+},{"history/lib/createMemoryHistory":98,"history/lib/useBasename":101,"history/lib/useQueries":102}],74:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -24814,7 +28989,7 @@ exports['default'] = function (createHistory) {
 };
 
 module.exports = exports['default'];
-},{"./useRouterHistory":84}],74:[function(require,module,exports){
+},{"./useRouterHistory":85}],75:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -25115,7 +29290,7 @@ function createTransitionManager(history, routes) {
 //export default useRoutes
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./TransitionUtils":69,"./computeChangedRoutes":71,"./getComponents":76,"./isActive":80,"./matchRoutes":82,"./routerWarning":83,"_process":35,"history/lib/Actions":86}],75:[function(require,module,exports){
+},{"./TransitionUtils":70,"./computeChangedRoutes":72,"./getComponents":77,"./isActive":81,"./matchRoutes":83,"./routerWarning":84,"_process":35,"history/lib/Actions":87}],76:[function(require,module,exports){
 (function (process){
 /*eslint no-empty: 0*/
 'use strict';
@@ -25175,7 +29350,7 @@ function deprecateObjectProperties(object, message) {
 
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./routerWarning":83,"_process":35}],76:[function(require,module,exports){
+},{"./routerWarning":84,"_process":35}],77:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -25209,7 +29384,7 @@ function getComponents(nextState, callback) {
 
 exports['default'] = getComponents;
 module.exports = exports['default'];
-},{"./AsyncUtils":52}],77:[function(require,module,exports){
+},{"./AsyncUtils":53}],78:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -25234,7 +29409,7 @@ function getRouteParams(route, params) {
 
 exports['default'] = getRouteParams;
 module.exports = exports['default'];
-},{"./PatternUtils":59}],78:[function(require,module,exports){
+},{"./PatternUtils":60}],79:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -25251,7 +29426,7 @@ var _createRouterHistory2 = _interopRequireDefault(_createRouterHistory);
 
 exports['default'] = _createRouterHistory2['default'](_historyLibCreateHashHistory2['default']);
 module.exports = exports['default'];
-},{"./createRouterHistory":73,"history/lib/createHashHistory":94}],79:[function(require,module,exports){
+},{"./createRouterHistory":74,"history/lib/createHashHistory":95}],80:[function(require,module,exports){
 /* components */
 'use strict';
 
@@ -25388,7 +29563,7 @@ var _createMemoryHistory2 = require('./createMemoryHistory');
 var _createMemoryHistory3 = _interopRequireDefault(_createMemoryHistory2);
 
 exports.createMemoryHistory = _createMemoryHistory3['default'];
-},{"./History":53,"./IndexLink":54,"./IndexRedirect":55,"./IndexRoute":56,"./Lifecycle":57,"./Link":58,"./PatternUtils":59,"./PropTypes":60,"./Redirect":61,"./Route":62,"./RouteContext":63,"./RouteUtils":64,"./Router":65,"./RouterContext":66,"./RoutingContext":68,"./browserHistory":70,"./createMemoryHistory":72,"./hashHistory":78,"./match":81,"./useRouterHistory":84,"./useRoutes":85}],80:[function(require,module,exports){
+},{"./History":54,"./IndexLink":55,"./IndexRedirect":56,"./IndexRoute":57,"./Lifecycle":58,"./Link":59,"./PatternUtils":60,"./PropTypes":61,"./Redirect":62,"./Route":63,"./RouteContext":64,"./RouteUtils":65,"./Router":66,"./RouterContext":67,"./RoutingContext":69,"./browserHistory":71,"./createMemoryHistory":73,"./hashHistory":79,"./match":82,"./useRouterHistory":85,"./useRoutes":86}],81:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -25516,7 +29691,7 @@ function isActive(_ref, indexOnly, currentLocation, routes, params) {
 }
 
 module.exports = exports['default'];
-},{"./PatternUtils":59}],81:[function(require,module,exports){
+},{"./PatternUtils":60}],82:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -25600,7 +29775,7 @@ function match(_ref, callback) {
 exports['default'] = match;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./RouteUtils":64,"./RouterUtils":67,"./createMemoryHistory":72,"./createTransitionManager":74,"_process":35,"invariant":107}],82:[function(require,module,exports){
+},{"./RouteUtils":65,"./RouterUtils":68,"./createMemoryHistory":73,"./createTransitionManager":75,"_process":35,"invariant":108}],83:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -25809,7 +29984,7 @@ function matchRoutes(routes, location, callback) {
 exports['default'] = matchRoutes;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./AsyncUtils":52,"./PatternUtils":59,"./RouteUtils":64,"./routerWarning":83,"_process":35}],83:[function(require,module,exports){
+},{"./AsyncUtils":53,"./PatternUtils":60,"./RouteUtils":65,"./routerWarning":84,"_process":35}],84:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -25834,7 +30009,7 @@ function routerWarning(falseToWarn, message) {
 
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":35,"warning":108}],84:[function(require,module,exports){
+},{"_process":35,"warning":109}],85:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -25859,7 +30034,7 @@ function useRouterHistory(createHistory) {
 }
 
 module.exports = exports['default'];
-},{"history/lib/useBasename":100,"history/lib/useQueries":101}],85:[function(require,module,exports){
+},{"history/lib/useBasename":101,"history/lib/useQueries":102}],86:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -25913,7 +30088,7 @@ function useRoutes(createHistory) {
 exports['default'] = useRoutes;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./createTransitionManager":74,"./routerWarning":83,"_process":35,"history/lib/useQueries":101}],86:[function(require,module,exports){
+},{"./createTransitionManager":75,"./routerWarning":84,"_process":35,"history/lib/useQueries":102}],87:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -25945,7 +30120,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],87:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -26004,7 +30179,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],88:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -26080,7 +30255,7 @@ function readState(key) {
   return null;
 }
 }).call(this,require('_process'))
-},{"_process":35,"warning":108}],89:[function(require,module,exports){
+},{"_process":35,"warning":109}],90:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -26156,13 +30331,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],90:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],91:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -26212,7 +30387,7 @@ function parsePath(path) {
   };
 }
 }).call(this,require('_process'))
-},{"_process":35,"warning":108}],92:[function(require,module,exports){
+},{"_process":35,"warning":109}],93:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -26391,7 +30566,7 @@ function createBrowserHistory() {
 exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":86,"./DOMStateStorage":88,"./DOMUtils":89,"./ExecutionEnvironment":90,"./PathUtils":91,"./createDOMHistory":93,"_process":35,"invariant":107}],93:[function(require,module,exports){
+},{"./Actions":87,"./DOMStateStorage":89,"./DOMUtils":90,"./ExecutionEnvironment":91,"./PathUtils":92,"./createDOMHistory":94,"_process":35,"invariant":108}],94:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -26434,7 +30609,7 @@ function createDOMHistory(options) {
 exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./DOMUtils":89,"./ExecutionEnvironment":90,"./createHistory":95,"_process":35,"invariant":107}],94:[function(require,module,exports){
+},{"./DOMUtils":90,"./ExecutionEnvironment":91,"./createHistory":96,"_process":35,"invariant":108}],95:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -26683,7 +30858,7 @@ function createHashHistory() {
 exports['default'] = createHashHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":86,"./DOMStateStorage":88,"./DOMUtils":89,"./ExecutionEnvironment":90,"./PathUtils":91,"./createDOMHistory":93,"_process":35,"invariant":107,"warning":108}],95:[function(require,module,exports){
+},{"./Actions":87,"./DOMStateStorage":89,"./DOMUtils":90,"./ExecutionEnvironment":91,"./PathUtils":92,"./createDOMHistory":94,"_process":35,"invariant":108,"warning":109}],96:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -26974,7 +31149,7 @@ function createHistory() {
 exports['default'] = createHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":86,"./AsyncUtils":87,"./PathUtils":91,"./createLocation":96,"./deprecate":98,"./runTransitionHook":99,"_process":35,"deep-equal":102,"warning":108}],96:[function(require,module,exports){
+},{"./Actions":87,"./AsyncUtils":88,"./PathUtils":92,"./createLocation":97,"./deprecate":99,"./runTransitionHook":100,"_process":35,"deep-equal":103,"warning":109}],97:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -27028,7 +31203,7 @@ function createLocation() {
 exports['default'] = createLocation;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":86,"./PathUtils":91,"_process":35,"warning":108}],97:[function(require,module,exports){
+},{"./Actions":87,"./PathUtils":92,"_process":35,"warning":109}],98:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -27185,7 +31360,7 @@ function createMemoryHistory() {
 exports['default'] = createMemoryHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":86,"./PathUtils":91,"./createHistory":95,"_process":35,"invariant":107,"warning":108}],98:[function(require,module,exports){
+},{"./Actions":87,"./PathUtils":92,"./createHistory":96,"_process":35,"invariant":108,"warning":109}],99:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -27207,7 +31382,7 @@ function deprecate(fn, message) {
 exports['default'] = deprecate;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":35,"warning":108}],99:[function(require,module,exports){
+},{"_process":35,"warning":109}],100:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -27234,7 +31409,7 @@ function runTransitionHook(hook, location, callback) {
 exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":35,"warning":108}],100:[function(require,module,exports){
+},{"_process":35,"warning":109}],101:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -27370,7 +31545,7 @@ function useBasename(createHistory) {
 
 exports['default'] = useBasename;
 module.exports = exports['default'];
-},{"./ExecutionEnvironment":90,"./PathUtils":91,"./deprecate":98,"./runTransitionHook":99}],101:[function(require,module,exports){
+},{"./ExecutionEnvironment":91,"./PathUtils":92,"./deprecate":99,"./runTransitionHook":100}],102:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -27549,7 +31724,7 @@ function useQueries(createHistory) {
 exports['default'] = useQueries;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./PathUtils":91,"./deprecate":98,"./runTransitionHook":99,"_process":35,"query-string":105,"warning":108}],102:[function(require,module,exports){
+},{"./PathUtils":92,"./deprecate":99,"./runTransitionHook":100,"_process":35,"query-string":106,"warning":109}],103:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -27645,7 +31820,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":103,"./lib/keys.js":104}],103:[function(require,module,exports){
+},{"./lib/is_arguments.js":104,"./lib/keys.js":105}],104:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -27667,7 +31842,7 @@ function unsupported(object){
     false;
 };
 
-},{}],104:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -27678,7 +31853,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 'use strict';
 var strictUriEncode = require('strict-uri-encode');
 
@@ -27746,7 +31921,7 @@ exports.stringify = function (obj) {
 	}).join('&') : '';
 };
 
-},{"strict-uri-encode":106}],106:[function(require,module,exports){
+},{"strict-uri-encode":107}],107:[function(require,module,exports){
 'use strict';
 module.exports = function (str) {
 	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
@@ -27754,7 +31929,7 @@ module.exports = function (str) {
 	});
 };
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -27809,7 +31984,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":35}],108:[function(require,module,exports){
+},{"_process":35}],109:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -27873,7 +32048,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":35}],109:[function(require,module,exports){
+},{"_process":35}],110:[function(require,module,exports){
 var React = require('react')
 
 var Swipeable = React.createClass({displayName: "Swipeable",
@@ -28034,7 +32209,7 @@ var Swipeable = React.createClass({displayName: "Swipeable",
 
 module.exports = Swipeable
 
-},{"react":272}],110:[function(require,module,exports){
+},{"react":273}],111:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -28071,7 +32246,7 @@ var AutoFocusUtils = {
 };
 
 module.exports = AutoFocusUtils;
-},{"./ReactMount":176,"./findDOMNode":222,"fbjs/lib/focusNode":254}],111:[function(require,module,exports){
+},{"./ReactMount":177,"./findDOMNode":223,"fbjs/lib/focusNode":255}],112:[function(require,module,exports){
 /**
  * Copyright 2013-2015 Facebook, Inc.
  * All rights reserved.
@@ -28477,7 +32652,7 @@ var BeforeInputEventPlugin = {
 };
 
 module.exports = BeforeInputEventPlugin;
-},{"./EventConstants":123,"./EventPropagators":127,"./FallbackCompositionState":128,"./SyntheticCompositionEvent":204,"./SyntheticInputEvent":208,"fbjs/lib/ExecutionEnvironment":246,"fbjs/lib/keyOf":264}],112:[function(require,module,exports){
+},{"./EventConstants":124,"./EventPropagators":128,"./FallbackCompositionState":129,"./SyntheticCompositionEvent":205,"./SyntheticInputEvent":209,"fbjs/lib/ExecutionEnvironment":247,"fbjs/lib/keyOf":265}],113:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -28617,7 +32792,7 @@ var CSSProperty = {
 };
 
 module.exports = CSSProperty;
-},{}],113:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -28795,7 +32970,7 @@ ReactPerf.measureMethods(CSSPropertyOperations, 'CSSPropertyOperations', {
 
 module.exports = CSSPropertyOperations;
 }).call(this,require('_process'))
-},{"./CSSProperty":112,"./ReactPerf":182,"./dangerousStyleValue":219,"_process":35,"fbjs/lib/ExecutionEnvironment":246,"fbjs/lib/camelizeStyleName":248,"fbjs/lib/hyphenateStyleName":259,"fbjs/lib/memoizeStringOnly":266,"fbjs/lib/warning":271}],114:[function(require,module,exports){
+},{"./CSSProperty":113,"./ReactPerf":183,"./dangerousStyleValue":220,"_process":35,"fbjs/lib/ExecutionEnvironment":247,"fbjs/lib/camelizeStyleName":249,"fbjs/lib/hyphenateStyleName":260,"fbjs/lib/memoizeStringOnly":267,"fbjs/lib/warning":272}],115:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -28891,7 +33066,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 
 module.exports = CallbackQueue;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"./PooledClass":132,"_process":35,"fbjs/lib/invariant":260}],115:[function(require,module,exports){
+},{"./Object.assign":132,"./PooledClass":133,"_process":35,"fbjs/lib/invariant":261}],116:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -29213,7 +33388,7 @@ var ChangeEventPlugin = {
 };
 
 module.exports = ChangeEventPlugin;
-},{"./EventConstants":123,"./EventPluginHub":124,"./EventPropagators":127,"./ReactUpdates":197,"./SyntheticEvent":206,"./getEventTarget":228,"./isEventSupported":233,"./isTextInputElement":234,"fbjs/lib/ExecutionEnvironment":246,"fbjs/lib/keyOf":264}],116:[function(require,module,exports){
+},{"./EventConstants":124,"./EventPluginHub":125,"./EventPropagators":128,"./ReactUpdates":198,"./SyntheticEvent":207,"./getEventTarget":229,"./isEventSupported":234,"./isTextInputElement":235,"fbjs/lib/ExecutionEnvironment":247,"fbjs/lib/keyOf":265}],117:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -29237,7 +33412,7 @@ var ClientReactRootIndex = {
 };
 
 module.exports = ClientReactRootIndex;
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -29369,7 +33544,7 @@ ReactPerf.measureMethods(DOMChildrenOperations, 'DOMChildrenOperations', {
 
 module.exports = DOMChildrenOperations;
 }).call(this,require('_process'))
-},{"./Danger":120,"./ReactMultiChildUpdateTypes":178,"./ReactPerf":182,"./setInnerHTML":238,"./setTextContent":239,"_process":35,"fbjs/lib/invariant":260}],118:[function(require,module,exports){
+},{"./Danger":121,"./ReactMultiChildUpdateTypes":179,"./ReactPerf":183,"./setInnerHTML":239,"./setTextContent":240,"_process":35,"fbjs/lib/invariant":261}],119:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -29606,7 +33781,7 @@ var DOMProperty = {
 
 module.exports = DOMProperty;
 }).call(this,require('_process'))
-},{"_process":35,"fbjs/lib/invariant":260}],119:[function(require,module,exports){
+},{"_process":35,"fbjs/lib/invariant":261}],120:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -29834,7 +34009,7 @@ ReactPerf.measureMethods(DOMPropertyOperations, 'DOMPropertyOperations', {
 
 module.exports = DOMPropertyOperations;
 }).call(this,require('_process'))
-},{"./DOMProperty":118,"./ReactPerf":182,"./quoteAttributeValueForBrowser":236,"_process":35,"fbjs/lib/warning":271}],120:[function(require,module,exports){
+},{"./DOMProperty":119,"./ReactPerf":183,"./quoteAttributeValueForBrowser":237,"_process":35,"fbjs/lib/warning":272}],121:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -29982,7 +34157,7 @@ var Danger = {
 
 module.exports = Danger;
 }).call(this,require('_process'))
-},{"_process":35,"fbjs/lib/ExecutionEnvironment":246,"fbjs/lib/createNodesFromMarkup":251,"fbjs/lib/emptyFunction":252,"fbjs/lib/getMarkupWrap":256,"fbjs/lib/invariant":260}],121:[function(require,module,exports){
+},{"_process":35,"fbjs/lib/ExecutionEnvironment":247,"fbjs/lib/createNodesFromMarkup":252,"fbjs/lib/emptyFunction":253,"fbjs/lib/getMarkupWrap":257,"fbjs/lib/invariant":261}],122:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -30010,7 +34185,7 @@ var keyOf = require('fbjs/lib/keyOf');
 var DefaultEventPluginOrder = [keyOf({ ResponderEventPlugin: null }), keyOf({ SimpleEventPlugin: null }), keyOf({ TapEventPlugin: null }), keyOf({ EnterLeaveEventPlugin: null }), keyOf({ ChangeEventPlugin: null }), keyOf({ SelectEventPlugin: null }), keyOf({ BeforeInputEventPlugin: null })];
 
 module.exports = DefaultEventPluginOrder;
-},{"fbjs/lib/keyOf":264}],122:[function(require,module,exports){
+},{"fbjs/lib/keyOf":265}],123:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -30135,7 +34310,7 @@ var EnterLeaveEventPlugin = {
 };
 
 module.exports = EnterLeaveEventPlugin;
-},{"./EventConstants":123,"./EventPropagators":127,"./ReactMount":176,"./SyntheticMouseEvent":210,"fbjs/lib/keyOf":264}],123:[function(require,module,exports){
+},{"./EventConstants":124,"./EventPropagators":128,"./ReactMount":177,"./SyntheticMouseEvent":211,"fbjs/lib/keyOf":265}],124:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -30228,7 +34403,7 @@ var EventConstants = {
 };
 
 module.exports = EventConstants;
-},{"fbjs/lib/keyMirror":263}],124:[function(require,module,exports){
+},{"fbjs/lib/keyMirror":264}],125:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -30510,7 +34685,7 @@ var EventPluginHub = {
 
 module.exports = EventPluginHub;
 }).call(this,require('_process'))
-},{"./EventPluginRegistry":125,"./EventPluginUtils":126,"./ReactErrorUtils":167,"./accumulateInto":216,"./forEachAccumulated":224,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],125:[function(require,module,exports){
+},{"./EventPluginRegistry":126,"./EventPluginUtils":127,"./ReactErrorUtils":168,"./accumulateInto":217,"./forEachAccumulated":225,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],126:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -30733,7 +34908,7 @@ var EventPluginRegistry = {
 
 module.exports = EventPluginRegistry;
 }).call(this,require('_process'))
-},{"_process":35,"fbjs/lib/invariant":260}],126:[function(require,module,exports){
+},{"_process":35,"fbjs/lib/invariant":261}],127:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -30938,7 +35113,7 @@ var EventPluginUtils = {
 
 module.exports = EventPluginUtils;
 }).call(this,require('_process'))
-},{"./EventConstants":123,"./ReactErrorUtils":167,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],127:[function(require,module,exports){
+},{"./EventConstants":124,"./ReactErrorUtils":168,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],128:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -31076,7 +35251,7 @@ var EventPropagators = {
 
 module.exports = EventPropagators;
 }).call(this,require('_process'))
-},{"./EventConstants":123,"./EventPluginHub":124,"./accumulateInto":216,"./forEachAccumulated":224,"_process":35,"fbjs/lib/warning":271}],128:[function(require,module,exports){
+},{"./EventConstants":124,"./EventPluginHub":125,"./accumulateInto":217,"./forEachAccumulated":225,"_process":35,"fbjs/lib/warning":272}],129:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -31172,7 +35347,7 @@ assign(FallbackCompositionState.prototype, {
 PooledClass.addPoolingTo(FallbackCompositionState);
 
 module.exports = FallbackCompositionState;
-},{"./Object.assign":131,"./PooledClass":132,"./getTextContentAccessor":231}],129:[function(require,module,exports){
+},{"./Object.assign":132,"./PooledClass":133,"./getTextContentAccessor":232}],130:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -31403,7 +35578,7 @@ var HTMLDOMPropertyConfig = {
 };
 
 module.exports = HTMLDOMPropertyConfig;
-},{"./DOMProperty":118,"fbjs/lib/ExecutionEnvironment":246}],130:[function(require,module,exports){
+},{"./DOMProperty":119,"fbjs/lib/ExecutionEnvironment":247}],131:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -31540,7 +35715,7 @@ var LinkedValueUtils = {
 
 module.exports = LinkedValueUtils;
 }).call(this,require('_process'))
-},{"./ReactPropTypeLocations":184,"./ReactPropTypes":185,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],131:[function(require,module,exports){
+},{"./ReactPropTypeLocations":185,"./ReactPropTypes":186,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],132:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -31588,7 +35763,7 @@ function assign(target, sources) {
 }
 
 module.exports = assign;
-},{}],132:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -31710,7 +35885,7 @@ var PooledClass = {
 
 module.exports = PooledClass;
 }).call(this,require('_process'))
-},{"_process":35,"fbjs/lib/invariant":260}],133:[function(require,module,exports){
+},{"_process":35,"fbjs/lib/invariant":261}],134:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -31751,7 +35926,7 @@ React.__SECRET_DOM_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOM;
 React.__SECRET_DOM_SERVER_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = ReactDOMServer;
 
 module.exports = React;
-},{"./Object.assign":131,"./ReactDOM":146,"./ReactDOMServer":156,"./ReactIsomorphic":174,"./deprecated":220}],134:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactDOM":147,"./ReactDOMServer":157,"./ReactIsomorphic":175,"./deprecated":221}],135:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -31790,7 +35965,7 @@ var ReactBrowserComponentMixin = {
 
 module.exports = ReactBrowserComponentMixin;
 }).call(this,require('_process'))
-},{"./ReactInstanceMap":173,"./findDOMNode":222,"_process":35,"fbjs/lib/warning":271}],135:[function(require,module,exports){
+},{"./ReactInstanceMap":174,"./findDOMNode":223,"_process":35,"fbjs/lib/warning":272}],136:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -32115,7 +36290,7 @@ ReactPerf.measureMethods(ReactBrowserEventEmitter, 'ReactBrowserEventEmitter', {
 });
 
 module.exports = ReactBrowserEventEmitter;
-},{"./EventConstants":123,"./EventPluginHub":124,"./EventPluginRegistry":125,"./Object.assign":131,"./ReactEventEmitterMixin":168,"./ReactPerf":182,"./ViewportMetrics":215,"./isEventSupported":233}],136:[function(require,module,exports){
+},{"./EventConstants":124,"./EventPluginHub":125,"./EventPluginRegistry":126,"./Object.assign":132,"./ReactEventEmitterMixin":169,"./ReactPerf":183,"./ViewportMetrics":216,"./isEventSupported":234}],137:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -32199,7 +36374,7 @@ var ReactCSSTransitionGroup = React.createClass({
 });
 
 module.exports = ReactCSSTransitionGroup;
-},{"./Object.assign":131,"./React":133,"./ReactCSSTransitionGroupChild":137,"./ReactTransitionGroup":195}],137:[function(require,module,exports){
+},{"./Object.assign":132,"./React":134,"./ReactCSSTransitionGroupChild":138,"./ReactTransitionGroup":196}],138:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -32365,7 +36540,7 @@ var ReactCSSTransitionGroupChild = React.createClass({
 });
 
 module.exports = ReactCSSTransitionGroupChild;
-},{"./React":133,"./ReactDOM":146,"./ReactTransitionEvents":194,"./onlyChild":235,"fbjs/lib/CSSCore":244}],138:[function(require,module,exports){
+},{"./React":134,"./ReactDOM":147,"./ReactTransitionEvents":195,"./onlyChild":236,"fbjs/lib/CSSCore":245}],139:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -32490,7 +36665,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 }).call(this,require('_process'))
-},{"./ReactReconciler":187,"./instantiateReactComponent":232,"./shouldUpdateReactComponent":240,"./traverseAllChildren":241,"_process":35,"fbjs/lib/warning":271}],139:[function(require,module,exports){
+},{"./ReactReconciler":188,"./instantiateReactComponent":233,"./shouldUpdateReactComponent":241,"./traverseAllChildren":242,"_process":35,"fbjs/lib/warning":272}],140:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -32673,7 +36848,7 @@ var ReactChildren = {
 };
 
 module.exports = ReactChildren;
-},{"./PooledClass":132,"./ReactElement":163,"./traverseAllChildren":241,"fbjs/lib/emptyFunction":252}],140:[function(require,module,exports){
+},{"./PooledClass":133,"./ReactElement":164,"./traverseAllChildren":242,"fbjs/lib/emptyFunction":253}],141:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -33447,7 +37622,7 @@ var ReactClass = {
 
 module.exports = ReactClass;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"./ReactComponent":141,"./ReactElement":163,"./ReactNoopUpdateQueue":180,"./ReactPropTypeLocationNames":183,"./ReactPropTypeLocations":184,"_process":35,"fbjs/lib/emptyObject":253,"fbjs/lib/invariant":260,"fbjs/lib/keyMirror":263,"fbjs/lib/keyOf":264,"fbjs/lib/warning":271}],141:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactComponent":142,"./ReactElement":164,"./ReactNoopUpdateQueue":181,"./ReactPropTypeLocationNames":184,"./ReactPropTypeLocations":185,"_process":35,"fbjs/lib/emptyObject":254,"fbjs/lib/invariant":261,"fbjs/lib/keyMirror":264,"fbjs/lib/keyOf":265,"fbjs/lib/warning":272}],142:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -33572,7 +37747,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactComponent;
 }).call(this,require('_process'))
-},{"./ReactNoopUpdateQueue":180,"./canDefineProperty":218,"_process":35,"fbjs/lib/emptyObject":253,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],142:[function(require,module,exports){
+},{"./ReactNoopUpdateQueue":181,"./canDefineProperty":219,"_process":35,"fbjs/lib/emptyObject":254,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],143:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -33614,7 +37789,7 @@ var ReactComponentBrowserEnvironment = {
 };
 
 module.exports = ReactComponentBrowserEnvironment;
-},{"./ReactDOMIDOperations":151,"./ReactMount":176}],143:[function(require,module,exports){
+},{"./ReactDOMIDOperations":152,"./ReactMount":177}],144:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -33668,7 +37843,7 @@ var ReactComponentEnvironment = {
 
 module.exports = ReactComponentEnvironment;
 }).call(this,require('_process'))
-},{"_process":35,"fbjs/lib/invariant":260}],144:[function(require,module,exports){
+},{"_process":35,"fbjs/lib/invariant":261}],145:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -34365,7 +38540,7 @@ var ReactCompositeComponent = {
 
 module.exports = ReactCompositeComponent;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"./ReactComponentEnvironment":143,"./ReactCurrentOwner":145,"./ReactElement":163,"./ReactInstanceMap":173,"./ReactPerf":182,"./ReactPropTypeLocationNames":183,"./ReactPropTypeLocations":184,"./ReactReconciler":187,"./ReactUpdateQueue":196,"./shouldUpdateReactComponent":240,"_process":35,"fbjs/lib/emptyObject":253,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],145:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactComponentEnvironment":144,"./ReactCurrentOwner":146,"./ReactElement":164,"./ReactInstanceMap":174,"./ReactPerf":183,"./ReactPropTypeLocationNames":184,"./ReactPropTypeLocations":185,"./ReactReconciler":188,"./ReactUpdateQueue":197,"./shouldUpdateReactComponent":241,"_process":35,"fbjs/lib/emptyObject":254,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],146:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -34396,7 +38571,7 @@ var ReactCurrentOwner = {
 };
 
 module.exports = ReactCurrentOwner;
-},{}],146:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -34491,7 +38666,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = React;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":145,"./ReactDOMTextComponent":157,"./ReactDefaultInjection":160,"./ReactInstanceHandles":172,"./ReactMount":176,"./ReactPerf":182,"./ReactReconciler":187,"./ReactUpdates":197,"./ReactVersion":198,"./findDOMNode":222,"./renderSubtreeIntoContainer":237,"_process":35,"fbjs/lib/ExecutionEnvironment":246,"fbjs/lib/warning":271}],147:[function(require,module,exports){
+},{"./ReactCurrentOwner":146,"./ReactDOMTextComponent":158,"./ReactDefaultInjection":161,"./ReactInstanceHandles":173,"./ReactMount":177,"./ReactPerf":183,"./ReactReconciler":188,"./ReactUpdates":198,"./ReactVersion":199,"./findDOMNode":223,"./renderSubtreeIntoContainer":238,"_process":35,"fbjs/lib/ExecutionEnvironment":247,"fbjs/lib/warning":272}],148:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -34542,7 +38717,7 @@ var ReactDOMButton = {
 };
 
 module.exports = ReactDOMButton;
-},{}],148:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -35507,7 +39682,7 @@ assign(ReactDOMComponent.prototype, ReactDOMComponent.Mixin, ReactMultiChild.Mix
 
 module.exports = ReactDOMComponent;
 }).call(this,require('_process'))
-},{"./AutoFocusUtils":110,"./CSSPropertyOperations":113,"./DOMProperty":118,"./DOMPropertyOperations":119,"./EventConstants":123,"./Object.assign":131,"./ReactBrowserEventEmitter":135,"./ReactComponentBrowserEnvironment":142,"./ReactDOMButton":147,"./ReactDOMInput":152,"./ReactDOMOption":153,"./ReactDOMSelect":154,"./ReactDOMTextarea":158,"./ReactMount":176,"./ReactMultiChild":177,"./ReactPerf":182,"./ReactUpdateQueue":196,"./canDefineProperty":218,"./escapeTextContentForBrowser":221,"./isEventSupported":233,"./setInnerHTML":238,"./setTextContent":239,"./validateDOMNesting":243,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/keyOf":264,"fbjs/lib/shallowEqual":269,"fbjs/lib/warning":271}],149:[function(require,module,exports){
+},{"./AutoFocusUtils":111,"./CSSPropertyOperations":114,"./DOMProperty":119,"./DOMPropertyOperations":120,"./EventConstants":124,"./Object.assign":132,"./ReactBrowserEventEmitter":136,"./ReactComponentBrowserEnvironment":143,"./ReactDOMButton":148,"./ReactDOMInput":153,"./ReactDOMOption":154,"./ReactDOMSelect":155,"./ReactDOMTextarea":159,"./ReactMount":177,"./ReactMultiChild":178,"./ReactPerf":183,"./ReactUpdateQueue":197,"./canDefineProperty":219,"./escapeTextContentForBrowser":222,"./isEventSupported":234,"./setInnerHTML":239,"./setTextContent":240,"./validateDOMNesting":244,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/keyOf":265,"fbjs/lib/shallowEqual":270,"fbjs/lib/warning":272}],150:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -35687,7 +39862,7 @@ var ReactDOMFactories = mapObject({
 
 module.exports = ReactDOMFactories;
 }).call(this,require('_process'))
-},{"./ReactElement":163,"./ReactElementValidator":164,"_process":35,"fbjs/lib/mapObject":265}],150:[function(require,module,exports){
+},{"./ReactElement":164,"./ReactElementValidator":165,"_process":35,"fbjs/lib/mapObject":266}],151:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -35706,7 +39881,7 @@ var ReactDOMFeatureFlags = {
 };
 
 module.exports = ReactDOMFeatureFlags;
-},{}],151:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -35803,7 +39978,7 @@ ReactPerf.measureMethods(ReactDOMIDOperations, 'ReactDOMIDOperations', {
 
 module.exports = ReactDOMIDOperations;
 }).call(this,require('_process'))
-},{"./DOMChildrenOperations":117,"./DOMPropertyOperations":119,"./ReactMount":176,"./ReactPerf":182,"_process":35,"fbjs/lib/invariant":260}],152:[function(require,module,exports){
+},{"./DOMChildrenOperations":118,"./DOMPropertyOperations":120,"./ReactMount":177,"./ReactPerf":183,"_process":35,"fbjs/lib/invariant":261}],153:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -35959,7 +40134,7 @@ function _handleChange(event) {
 
 module.exports = ReactDOMInput;
 }).call(this,require('_process'))
-},{"./LinkedValueUtils":130,"./Object.assign":131,"./ReactDOMIDOperations":151,"./ReactMount":176,"./ReactUpdates":197,"_process":35,"fbjs/lib/invariant":260}],153:[function(require,module,exports){
+},{"./LinkedValueUtils":131,"./Object.assign":132,"./ReactDOMIDOperations":152,"./ReactMount":177,"./ReactUpdates":198,"_process":35,"fbjs/lib/invariant":261}],154:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -36051,7 +40226,7 @@ var ReactDOMOption = {
 
 module.exports = ReactDOMOption;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"./ReactChildren":139,"./ReactDOMSelect":154,"_process":35,"fbjs/lib/warning":271}],154:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactChildren":140,"./ReactDOMSelect":155,"_process":35,"fbjs/lib/warning":272}],155:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -36242,7 +40417,7 @@ function _handleChange(event) {
 
 module.exports = ReactDOMSelect;
 }).call(this,require('_process'))
-},{"./LinkedValueUtils":130,"./Object.assign":131,"./ReactMount":176,"./ReactUpdates":197,"_process":35,"fbjs/lib/warning":271}],155:[function(require,module,exports){
+},{"./LinkedValueUtils":131,"./Object.assign":132,"./ReactMount":177,"./ReactUpdates":198,"_process":35,"fbjs/lib/warning":272}],156:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -36455,7 +40630,7 @@ var ReactDOMSelection = {
 };
 
 module.exports = ReactDOMSelection;
-},{"./getNodeForCharacterOffset":230,"./getTextContentAccessor":231,"fbjs/lib/ExecutionEnvironment":246}],156:[function(require,module,exports){
+},{"./getNodeForCharacterOffset":231,"./getTextContentAccessor":232,"fbjs/lib/ExecutionEnvironment":247}],157:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -36482,7 +40657,7 @@ var ReactDOMServer = {
 };
 
 module.exports = ReactDOMServer;
-},{"./ReactDefaultInjection":160,"./ReactServerRendering":191,"./ReactVersion":198}],157:[function(require,module,exports){
+},{"./ReactDefaultInjection":161,"./ReactServerRendering":192,"./ReactVersion":199}],158:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -36612,7 +40787,7 @@ assign(ReactDOMTextComponent.prototype, {
 
 module.exports = ReactDOMTextComponent;
 }).call(this,require('_process'))
-},{"./DOMChildrenOperations":117,"./DOMPropertyOperations":119,"./Object.assign":131,"./ReactComponentBrowserEnvironment":142,"./ReactMount":176,"./escapeTextContentForBrowser":221,"./setTextContent":239,"./validateDOMNesting":243,"_process":35}],158:[function(require,module,exports){
+},{"./DOMChildrenOperations":118,"./DOMPropertyOperations":120,"./Object.assign":132,"./ReactComponentBrowserEnvironment":143,"./ReactMount":177,"./escapeTextContentForBrowser":222,"./setTextContent":240,"./validateDOMNesting":244,"_process":35}],159:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -36728,7 +40903,7 @@ function _handleChange(event) {
 
 module.exports = ReactDOMTextarea;
 }).call(this,require('_process'))
-},{"./LinkedValueUtils":130,"./Object.assign":131,"./ReactDOMIDOperations":151,"./ReactUpdates":197,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],159:[function(require,module,exports){
+},{"./LinkedValueUtils":131,"./Object.assign":132,"./ReactDOMIDOperations":152,"./ReactUpdates":198,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],160:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -36796,7 +40971,7 @@ var ReactDefaultBatchingStrategy = {
 };
 
 module.exports = ReactDefaultBatchingStrategy;
-},{"./Object.assign":131,"./ReactUpdates":197,"./Transaction":214,"fbjs/lib/emptyFunction":252}],160:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactUpdates":198,"./Transaction":215,"fbjs/lib/emptyFunction":253}],161:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -36896,7 +41071,7 @@ module.exports = {
   inject: inject
 };
 }).call(this,require('_process'))
-},{"./BeforeInputEventPlugin":111,"./ChangeEventPlugin":115,"./ClientReactRootIndex":116,"./DefaultEventPluginOrder":121,"./EnterLeaveEventPlugin":122,"./HTMLDOMPropertyConfig":129,"./ReactBrowserComponentMixin":134,"./ReactComponentBrowserEnvironment":142,"./ReactDOMComponent":148,"./ReactDOMTextComponent":157,"./ReactDefaultBatchingStrategy":159,"./ReactDefaultPerf":161,"./ReactEventListener":169,"./ReactInjection":170,"./ReactInstanceHandles":172,"./ReactMount":176,"./ReactReconcileTransaction":186,"./SVGDOMPropertyConfig":199,"./SelectEventPlugin":200,"./ServerReactRootIndex":201,"./SimpleEventPlugin":202,"_process":35,"fbjs/lib/ExecutionEnvironment":246}],161:[function(require,module,exports){
+},{"./BeforeInputEventPlugin":112,"./ChangeEventPlugin":116,"./ClientReactRootIndex":117,"./DefaultEventPluginOrder":122,"./EnterLeaveEventPlugin":123,"./HTMLDOMPropertyConfig":130,"./ReactBrowserComponentMixin":135,"./ReactComponentBrowserEnvironment":143,"./ReactDOMComponent":149,"./ReactDOMTextComponent":158,"./ReactDefaultBatchingStrategy":160,"./ReactDefaultPerf":162,"./ReactEventListener":170,"./ReactInjection":171,"./ReactInstanceHandles":173,"./ReactMount":177,"./ReactReconcileTransaction":187,"./SVGDOMPropertyConfig":200,"./SelectEventPlugin":201,"./ServerReactRootIndex":202,"./SimpleEventPlugin":203,"_process":35,"fbjs/lib/ExecutionEnvironment":247}],162:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37134,7 +41309,7 @@ var ReactDefaultPerf = {
 };
 
 module.exports = ReactDefaultPerf;
-},{"./DOMProperty":118,"./ReactDefaultPerfAnalysis":162,"./ReactMount":176,"./ReactPerf":182,"fbjs/lib/performanceNow":268}],162:[function(require,module,exports){
+},{"./DOMProperty":119,"./ReactDefaultPerfAnalysis":163,"./ReactMount":177,"./ReactPerf":183,"fbjs/lib/performanceNow":269}],163:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -37336,7 +41511,7 @@ var ReactDefaultPerfAnalysis = {
 };
 
 module.exports = ReactDefaultPerfAnalysis;
-},{"./Object.assign":131}],163:[function(require,module,exports){
+},{"./Object.assign":132}],164:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -37586,7 +41761,7 @@ ReactElement.isValidElement = function (object) {
 
 module.exports = ReactElement;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"./ReactCurrentOwner":145,"./canDefineProperty":218,"_process":35}],164:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactCurrentOwner":146,"./canDefineProperty":219,"_process":35}],165:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -37870,7 +42045,7 @@ var ReactElementValidator = {
 
 module.exports = ReactElementValidator;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":145,"./ReactElement":163,"./ReactPropTypeLocationNames":183,"./ReactPropTypeLocations":184,"./canDefineProperty":218,"./getIteratorFn":229,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],165:[function(require,module,exports){
+},{"./ReactCurrentOwner":146,"./ReactElement":164,"./ReactPropTypeLocationNames":184,"./ReactPropTypeLocations":185,"./canDefineProperty":219,"./getIteratorFn":230,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],166:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -37922,7 +42097,7 @@ assign(ReactEmptyComponent.prototype, {
 ReactEmptyComponent.injection = ReactEmptyComponentInjection;
 
 module.exports = ReactEmptyComponent;
-},{"./Object.assign":131,"./ReactElement":163,"./ReactEmptyComponentRegistry":166,"./ReactReconciler":187}],166:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactElement":164,"./ReactEmptyComponentRegistry":167,"./ReactReconciler":188}],167:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -37971,7 +42146,7 @@ var ReactEmptyComponentRegistry = {
 };
 
 module.exports = ReactEmptyComponentRegistry;
-},{}],167:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -38051,7 +42226,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactErrorUtils;
 }).call(this,require('_process'))
-},{"_process":35}],168:[function(require,module,exports){
+},{"_process":35}],169:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38090,7 +42265,7 @@ var ReactEventEmitterMixin = {
 };
 
 module.exports = ReactEventEmitterMixin;
-},{"./EventPluginHub":124}],169:[function(require,module,exports){
+},{"./EventPluginHub":125}],170:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38302,7 +42477,7 @@ var ReactEventListener = {
 };
 
 module.exports = ReactEventListener;
-},{"./Object.assign":131,"./PooledClass":132,"./ReactInstanceHandles":172,"./ReactMount":176,"./ReactUpdates":197,"./getEventTarget":228,"fbjs/lib/EventListener":245,"fbjs/lib/ExecutionEnvironment":246,"fbjs/lib/getUnboundedScrollPosition":257}],170:[function(require,module,exports){
+},{"./Object.assign":132,"./PooledClass":133,"./ReactInstanceHandles":173,"./ReactMount":177,"./ReactUpdates":198,"./getEventTarget":229,"fbjs/lib/EventListener":246,"fbjs/lib/ExecutionEnvironment":247,"fbjs/lib/getUnboundedScrollPosition":258}],171:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38341,7 +42516,7 @@ var ReactInjection = {
 };
 
 module.exports = ReactInjection;
-},{"./DOMProperty":118,"./EventPluginHub":124,"./ReactBrowserEventEmitter":135,"./ReactClass":140,"./ReactComponentEnvironment":143,"./ReactEmptyComponent":165,"./ReactNativeComponent":179,"./ReactPerf":182,"./ReactRootIndex":189,"./ReactUpdates":197}],171:[function(require,module,exports){
+},{"./DOMProperty":119,"./EventPluginHub":125,"./ReactBrowserEventEmitter":136,"./ReactClass":141,"./ReactComponentEnvironment":144,"./ReactEmptyComponent":166,"./ReactNativeComponent":180,"./ReactPerf":183,"./ReactRootIndex":190,"./ReactUpdates":198}],172:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38466,7 +42641,7 @@ var ReactInputSelection = {
 };
 
 module.exports = ReactInputSelection;
-},{"./ReactDOMSelection":155,"fbjs/lib/containsNode":249,"fbjs/lib/focusNode":254,"fbjs/lib/getActiveElement":255}],172:[function(require,module,exports){
+},{"./ReactDOMSelection":156,"fbjs/lib/containsNode":250,"fbjs/lib/focusNode":255,"fbjs/lib/getActiveElement":256}],173:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -38771,7 +42946,7 @@ var ReactInstanceHandles = {
 
 module.exports = ReactInstanceHandles;
 }).call(this,require('_process'))
-},{"./ReactRootIndex":189,"_process":35,"fbjs/lib/invariant":260}],173:[function(require,module,exports){
+},{"./ReactRootIndex":190,"_process":35,"fbjs/lib/invariant":261}],174:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38819,7 +42994,7 @@ var ReactInstanceMap = {
 };
 
 module.exports = ReactInstanceMap;
-},{}],174:[function(require,module,exports){
+},{}],175:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -38896,7 +43071,7 @@ var React = {
 
 module.exports = React;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"./ReactChildren":139,"./ReactClass":140,"./ReactComponent":141,"./ReactDOMFactories":149,"./ReactElement":163,"./ReactElementValidator":164,"./ReactPropTypes":185,"./ReactVersion":198,"./onlyChild":235,"_process":35}],175:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactChildren":140,"./ReactClass":141,"./ReactComponent":142,"./ReactDOMFactories":150,"./ReactElement":164,"./ReactElementValidator":165,"./ReactPropTypes":186,"./ReactVersion":199,"./onlyChild":236,"_process":35}],176:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -38942,7 +43117,7 @@ var ReactMarkupChecksum = {
 };
 
 module.exports = ReactMarkupChecksum;
-},{"./adler32":217}],176:[function(require,module,exports){
+},{"./adler32":218}],177:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -39795,7 +43970,7 @@ ReactPerf.measureMethods(ReactMount, 'ReactMount', {
 
 module.exports = ReactMount;
 }).call(this,require('_process'))
-},{"./DOMProperty":118,"./Object.assign":131,"./ReactBrowserEventEmitter":135,"./ReactCurrentOwner":145,"./ReactDOMFeatureFlags":150,"./ReactElement":163,"./ReactEmptyComponentRegistry":166,"./ReactInstanceHandles":172,"./ReactInstanceMap":173,"./ReactMarkupChecksum":175,"./ReactPerf":182,"./ReactReconciler":187,"./ReactUpdateQueue":196,"./ReactUpdates":197,"./instantiateReactComponent":232,"./setInnerHTML":238,"./shouldUpdateReactComponent":240,"./validateDOMNesting":243,"_process":35,"fbjs/lib/containsNode":249,"fbjs/lib/emptyObject":253,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],177:[function(require,module,exports){
+},{"./DOMProperty":119,"./Object.assign":132,"./ReactBrowserEventEmitter":136,"./ReactCurrentOwner":146,"./ReactDOMFeatureFlags":151,"./ReactElement":164,"./ReactEmptyComponentRegistry":167,"./ReactInstanceHandles":173,"./ReactInstanceMap":174,"./ReactMarkupChecksum":176,"./ReactPerf":183,"./ReactReconciler":188,"./ReactUpdateQueue":197,"./ReactUpdates":198,"./instantiateReactComponent":233,"./setInnerHTML":239,"./shouldUpdateReactComponent":241,"./validateDOMNesting":244,"_process":35,"fbjs/lib/containsNode":250,"fbjs/lib/emptyObject":254,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],178:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -40294,7 +44469,7 @@ var ReactMultiChild = {
 
 module.exports = ReactMultiChild;
 }).call(this,require('_process'))
-},{"./ReactChildReconciler":138,"./ReactComponentEnvironment":143,"./ReactCurrentOwner":145,"./ReactMultiChildUpdateTypes":178,"./ReactReconciler":187,"./flattenChildren":223,"_process":35}],178:[function(require,module,exports){
+},{"./ReactChildReconciler":139,"./ReactComponentEnvironment":144,"./ReactCurrentOwner":146,"./ReactMultiChildUpdateTypes":179,"./ReactReconciler":188,"./flattenChildren":224,"_process":35}],179:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -40327,7 +44502,7 @@ var ReactMultiChildUpdateTypes = keyMirror({
 });
 
 module.exports = ReactMultiChildUpdateTypes;
-},{"fbjs/lib/keyMirror":263}],179:[function(require,module,exports){
+},{"fbjs/lib/keyMirror":264}],180:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -40424,7 +44599,7 @@ var ReactNativeComponent = {
 
 module.exports = ReactNativeComponent;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"_process":35,"fbjs/lib/invariant":260}],180:[function(require,module,exports){
+},{"./Object.assign":132,"_process":35,"fbjs/lib/invariant":261}],181:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -40545,7 +44720,7 @@ var ReactNoopUpdateQueue = {
 
 module.exports = ReactNoopUpdateQueue;
 }).call(this,require('_process'))
-},{"_process":35,"fbjs/lib/warning":271}],181:[function(require,module,exports){
+},{"_process":35,"fbjs/lib/warning":272}],182:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -40639,7 +44814,7 @@ var ReactOwner = {
 
 module.exports = ReactOwner;
 }).call(this,require('_process'))
-},{"_process":35,"fbjs/lib/invariant":260}],182:[function(require,module,exports){
+},{"_process":35,"fbjs/lib/invariant":261}],183:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -40738,7 +44913,7 @@ function _noMeasure(objName, fnName, func) {
 
 module.exports = ReactPerf;
 }).call(this,require('_process'))
-},{"_process":35}],183:[function(require,module,exports){
+},{"_process":35}],184:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -40765,7 +44940,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = ReactPropTypeLocationNames;
 }).call(this,require('_process'))
-},{"_process":35}],184:[function(require,module,exports){
+},{"_process":35}],185:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -40788,7 +44963,7 @@ var ReactPropTypeLocations = keyMirror({
 });
 
 module.exports = ReactPropTypeLocations;
-},{"fbjs/lib/keyMirror":263}],185:[function(require,module,exports){
+},{"fbjs/lib/keyMirror":264}],186:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41145,7 +45320,7 @@ function getClassName(propValue) {
 }
 
 module.exports = ReactPropTypes;
-},{"./ReactElement":163,"./ReactPropTypeLocationNames":183,"./getIteratorFn":229,"fbjs/lib/emptyFunction":252}],186:[function(require,module,exports){
+},{"./ReactElement":164,"./ReactPropTypeLocationNames":184,"./getIteratorFn":230,"fbjs/lib/emptyFunction":253}],187:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41297,7 +45472,7 @@ assign(ReactReconcileTransaction.prototype, Transaction.Mixin, Mixin);
 PooledClass.addPoolingTo(ReactReconcileTransaction);
 
 module.exports = ReactReconcileTransaction;
-},{"./CallbackQueue":114,"./Object.assign":131,"./PooledClass":132,"./ReactBrowserEventEmitter":135,"./ReactDOMFeatureFlags":150,"./ReactInputSelection":171,"./Transaction":214}],187:[function(require,module,exports){
+},{"./CallbackQueue":115,"./Object.assign":132,"./PooledClass":133,"./ReactBrowserEventEmitter":136,"./ReactDOMFeatureFlags":151,"./ReactInputSelection":172,"./Transaction":215}],188:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41405,7 +45580,7 @@ var ReactReconciler = {
 };
 
 module.exports = ReactReconciler;
-},{"./ReactRef":188}],188:[function(require,module,exports){
+},{"./ReactRef":189}],189:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41484,7 +45659,7 @@ ReactRef.detachRefs = function (instance, element) {
 };
 
 module.exports = ReactRef;
-},{"./ReactOwner":181}],189:[function(require,module,exports){
+},{"./ReactOwner":182}],190:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41514,7 +45689,7 @@ var ReactRootIndex = {
 };
 
 module.exports = ReactRootIndex;
-},{}],190:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -41538,7 +45713,7 @@ var ReactServerBatchingStrategy = {
 };
 
 module.exports = ReactServerBatchingStrategy;
-},{}],191:[function(require,module,exports){
+},{}],192:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -41624,7 +45799,7 @@ module.exports = {
   renderToStaticMarkup: renderToStaticMarkup
 };
 }).call(this,require('_process'))
-},{"./ReactDefaultBatchingStrategy":159,"./ReactElement":163,"./ReactInstanceHandles":172,"./ReactMarkupChecksum":175,"./ReactServerBatchingStrategy":190,"./ReactServerRenderingTransaction":192,"./ReactUpdates":197,"./instantiateReactComponent":232,"_process":35,"fbjs/lib/emptyObject":253,"fbjs/lib/invariant":260}],192:[function(require,module,exports){
+},{"./ReactDefaultBatchingStrategy":160,"./ReactElement":164,"./ReactInstanceHandles":173,"./ReactMarkupChecksum":176,"./ReactServerBatchingStrategy":191,"./ReactServerRenderingTransaction":193,"./ReactUpdates":198,"./instantiateReactComponent":233,"_process":35,"fbjs/lib/emptyObject":254,"fbjs/lib/invariant":261}],193:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -41712,7 +45887,7 @@ assign(ReactServerRenderingTransaction.prototype, Transaction.Mixin, Mixin);
 PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 
 module.exports = ReactServerRenderingTransaction;
-},{"./CallbackQueue":114,"./Object.assign":131,"./PooledClass":132,"./Transaction":214,"fbjs/lib/emptyFunction":252}],193:[function(require,module,exports){
+},{"./CallbackQueue":115,"./Object.assign":132,"./PooledClass":133,"./Transaction":215,"fbjs/lib/emptyFunction":253}],194:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41811,7 +45986,7 @@ var ReactTransitionChildMapping = {
 };
 
 module.exports = ReactTransitionChildMapping;
-},{"./flattenChildren":223}],194:[function(require,module,exports){
+},{"./flattenChildren":224}],195:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -41921,7 +46096,7 @@ var ReactTransitionEvents = {
 };
 
 module.exports = ReactTransitionEvents;
-},{"fbjs/lib/ExecutionEnvironment":246}],195:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":247}],196:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42127,7 +46302,7 @@ var ReactTransitionGroup = React.createClass({
 });
 
 module.exports = ReactTransitionGroup;
-},{"./Object.assign":131,"./React":133,"./ReactTransitionChildMapping":193,"fbjs/lib/emptyFunction":252}],196:[function(require,module,exports){
+},{"./Object.assign":132,"./React":134,"./ReactTransitionChildMapping":194,"fbjs/lib/emptyFunction":253}],197:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -42387,7 +46562,7 @@ var ReactUpdateQueue = {
 
 module.exports = ReactUpdateQueue;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"./ReactCurrentOwner":145,"./ReactElement":163,"./ReactInstanceMap":173,"./ReactUpdates":197,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],197:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactCurrentOwner":146,"./ReactElement":164,"./ReactInstanceMap":174,"./ReactUpdates":198,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],198:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -42613,7 +46788,7 @@ var ReactUpdates = {
 
 module.exports = ReactUpdates;
 }).call(this,require('_process'))
-},{"./CallbackQueue":114,"./Object.assign":131,"./PooledClass":132,"./ReactPerf":182,"./ReactReconciler":187,"./Transaction":214,"_process":35,"fbjs/lib/invariant":260}],198:[function(require,module,exports){
+},{"./CallbackQueue":115,"./Object.assign":132,"./PooledClass":133,"./ReactPerf":183,"./ReactReconciler":188,"./Transaction":215,"_process":35,"fbjs/lib/invariant":261}],199:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42628,7 +46803,7 @@ module.exports = ReactUpdates;
 'use strict';
 
 module.exports = '0.14.7';
-},{}],199:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42756,7 +46931,7 @@ var SVGDOMPropertyConfig = {
 };
 
 module.exports = SVGDOMPropertyConfig;
-},{"./DOMProperty":118}],200:[function(require,module,exports){
+},{"./DOMProperty":119}],201:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42958,7 +47133,7 @@ var SelectEventPlugin = {
 };
 
 module.exports = SelectEventPlugin;
-},{"./EventConstants":123,"./EventPropagators":127,"./ReactInputSelection":171,"./SyntheticEvent":206,"./isTextInputElement":234,"fbjs/lib/ExecutionEnvironment":246,"fbjs/lib/getActiveElement":255,"fbjs/lib/keyOf":264,"fbjs/lib/shallowEqual":269}],201:[function(require,module,exports){
+},{"./EventConstants":124,"./EventPropagators":128,"./ReactInputSelection":172,"./SyntheticEvent":207,"./isTextInputElement":235,"fbjs/lib/ExecutionEnvironment":247,"fbjs/lib/getActiveElement":256,"fbjs/lib/keyOf":265,"fbjs/lib/shallowEqual":270}],202:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -42988,7 +47163,7 @@ var ServerReactRootIndex = {
 };
 
 module.exports = ServerReactRootIndex;
-},{}],202:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -43578,7 +47753,7 @@ var SimpleEventPlugin = {
 
 module.exports = SimpleEventPlugin;
 }).call(this,require('_process'))
-},{"./EventConstants":123,"./EventPropagators":127,"./ReactMount":176,"./SyntheticClipboardEvent":203,"./SyntheticDragEvent":205,"./SyntheticEvent":206,"./SyntheticFocusEvent":207,"./SyntheticKeyboardEvent":209,"./SyntheticMouseEvent":210,"./SyntheticTouchEvent":211,"./SyntheticUIEvent":212,"./SyntheticWheelEvent":213,"./getEventCharCode":225,"_process":35,"fbjs/lib/EventListener":245,"fbjs/lib/emptyFunction":252,"fbjs/lib/invariant":260,"fbjs/lib/keyOf":264}],203:[function(require,module,exports){
+},{"./EventConstants":124,"./EventPropagators":128,"./ReactMount":177,"./SyntheticClipboardEvent":204,"./SyntheticDragEvent":206,"./SyntheticEvent":207,"./SyntheticFocusEvent":208,"./SyntheticKeyboardEvent":210,"./SyntheticMouseEvent":211,"./SyntheticTouchEvent":212,"./SyntheticUIEvent":213,"./SyntheticWheelEvent":214,"./getEventCharCode":226,"_process":35,"fbjs/lib/EventListener":246,"fbjs/lib/emptyFunction":253,"fbjs/lib/invariant":261,"fbjs/lib/keyOf":265}],204:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -43618,7 +47793,7 @@ function SyntheticClipboardEvent(dispatchConfig, dispatchMarker, nativeEvent, na
 SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 
 module.exports = SyntheticClipboardEvent;
-},{"./SyntheticEvent":206}],204:[function(require,module,exports){
+},{"./SyntheticEvent":207}],205:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -43656,7 +47831,7 @@ function SyntheticCompositionEvent(dispatchConfig, dispatchMarker, nativeEvent, 
 SyntheticEvent.augmentClass(SyntheticCompositionEvent, CompositionEventInterface);
 
 module.exports = SyntheticCompositionEvent;
-},{"./SyntheticEvent":206}],205:[function(require,module,exports){
+},{"./SyntheticEvent":207}],206:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -43694,7 +47869,7 @@ function SyntheticDragEvent(dispatchConfig, dispatchMarker, nativeEvent, nativeE
 SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 
 module.exports = SyntheticDragEvent;
-},{"./SyntheticMouseEvent":210}],206:[function(require,module,exports){
+},{"./SyntheticMouseEvent":211}],207:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -43877,7 +48052,7 @@ PooledClass.addPoolingTo(SyntheticEvent, PooledClass.fourArgumentPooler);
 
 module.exports = SyntheticEvent;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"./PooledClass":132,"_process":35,"fbjs/lib/emptyFunction":252,"fbjs/lib/warning":271}],207:[function(require,module,exports){
+},{"./Object.assign":132,"./PooledClass":133,"_process":35,"fbjs/lib/emptyFunction":253,"fbjs/lib/warning":272}],208:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -43915,7 +48090,7 @@ function SyntheticFocusEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 
 module.exports = SyntheticFocusEvent;
-},{"./SyntheticUIEvent":212}],208:[function(require,module,exports){
+},{"./SyntheticUIEvent":213}],209:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -43954,7 +48129,7 @@ function SyntheticInputEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticEvent.augmentClass(SyntheticInputEvent, InputEventInterface);
 
 module.exports = SyntheticInputEvent;
-},{"./SyntheticEvent":206}],209:[function(require,module,exports){
+},{"./SyntheticEvent":207}],210:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44040,7 +48215,7 @@ function SyntheticKeyboardEvent(dispatchConfig, dispatchMarker, nativeEvent, nat
 SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 
 module.exports = SyntheticKeyboardEvent;
-},{"./SyntheticUIEvent":212,"./getEventCharCode":225,"./getEventKey":226,"./getEventModifierState":227}],210:[function(require,module,exports){
+},{"./SyntheticUIEvent":213,"./getEventCharCode":226,"./getEventKey":227,"./getEventModifierState":228}],211:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44114,7 +48289,7 @@ function SyntheticMouseEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 
 module.exports = SyntheticMouseEvent;
-},{"./SyntheticUIEvent":212,"./ViewportMetrics":215,"./getEventModifierState":227}],211:[function(require,module,exports){
+},{"./SyntheticUIEvent":213,"./ViewportMetrics":216,"./getEventModifierState":228}],212:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44161,7 +48336,7 @@ function SyntheticTouchEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 
 module.exports = SyntheticTouchEvent;
-},{"./SyntheticUIEvent":212,"./getEventModifierState":227}],212:[function(require,module,exports){
+},{"./SyntheticUIEvent":213,"./getEventModifierState":228}],213:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44222,7 +48397,7 @@ function SyntheticUIEvent(dispatchConfig, dispatchMarker, nativeEvent, nativeEve
 SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
-},{"./SyntheticEvent":206,"./getEventTarget":228}],213:[function(require,module,exports){
+},{"./SyntheticEvent":207,"./getEventTarget":229}],214:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44278,7 +48453,7 @@ function SyntheticWheelEvent(dispatchConfig, dispatchMarker, nativeEvent, native
 SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 module.exports = SyntheticWheelEvent;
-},{"./SyntheticMouseEvent":210}],214:[function(require,module,exports){
+},{"./SyntheticMouseEvent":211}],215:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44512,7 +48687,7 @@ var Transaction = {
 
 module.exports = Transaction;
 }).call(this,require('_process'))
-},{"_process":35,"fbjs/lib/invariant":260}],215:[function(require,module,exports){
+},{"_process":35,"fbjs/lib/invariant":261}],216:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44540,7 +48715,7 @@ var ViewportMetrics = {
 };
 
 module.exports = ViewportMetrics;
-},{}],216:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -44602,7 +48777,7 @@ function accumulateInto(current, next) {
 
 module.exports = accumulateInto;
 }).call(this,require('_process'))
-},{"_process":35,"fbjs/lib/invariant":260}],217:[function(require,module,exports){
+},{"_process":35,"fbjs/lib/invariant":261}],218:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44645,7 +48820,7 @@ function adler32(data) {
 }
 
 module.exports = adler32;
-},{}],218:[function(require,module,exports){
+},{}],219:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44672,7 +48847,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = canDefineProperty;
 }).call(this,require('_process'))
-},{"_process":35}],219:[function(require,module,exports){
+},{"_process":35}],220:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44728,7 +48903,7 @@ function dangerousStyleValue(name, value) {
 }
 
 module.exports = dangerousStyleValue;
-},{"./CSSProperty":112}],220:[function(require,module,exports){
+},{"./CSSProperty":113}],221:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44779,7 +48954,7 @@ function deprecated(fnName, newModule, newPackage, ctx, fn) {
 
 module.exports = deprecated;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"_process":35,"fbjs/lib/warning":271}],221:[function(require,module,exports){
+},{"./Object.assign":132,"_process":35,"fbjs/lib/warning":272}],222:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44818,7 +48993,7 @@ function escapeTextContentForBrowser(text) {
 }
 
 module.exports = escapeTextContentForBrowser;
-},{}],222:[function(require,module,exports){
+},{}],223:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44870,7 +49045,7 @@ function findDOMNode(componentOrElement) {
 
 module.exports = findDOMNode;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":145,"./ReactInstanceMap":173,"./ReactMount":176,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],223:[function(require,module,exports){
+},{"./ReactCurrentOwner":146,"./ReactInstanceMap":174,"./ReactMount":177,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],224:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -44921,7 +49096,7 @@ function flattenChildren(children) {
 
 module.exports = flattenChildren;
 }).call(this,require('_process'))
-},{"./traverseAllChildren":241,"_process":35,"fbjs/lib/warning":271}],224:[function(require,module,exports){
+},{"./traverseAllChildren":242,"_process":35,"fbjs/lib/warning":272}],225:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -44951,7 +49126,7 @@ var forEachAccumulated = function (arr, cb, scope) {
 };
 
 module.exports = forEachAccumulated;
-},{}],225:[function(require,module,exports){
+},{}],226:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45002,7 +49177,7 @@ function getEventCharCode(nativeEvent) {
 }
 
 module.exports = getEventCharCode;
-},{}],226:[function(require,module,exports){
+},{}],227:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45106,7 +49281,7 @@ function getEventKey(nativeEvent) {
 }
 
 module.exports = getEventKey;
-},{"./getEventCharCode":225}],227:[function(require,module,exports){
+},{"./getEventCharCode":226}],228:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45151,7 +49326,7 @@ function getEventModifierState(nativeEvent) {
 }
 
 module.exports = getEventModifierState;
-},{}],228:[function(require,module,exports){
+},{}],229:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45181,7 +49356,7 @@ function getEventTarget(nativeEvent) {
 }
 
 module.exports = getEventTarget;
-},{}],229:[function(require,module,exports){
+},{}],230:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45222,7 +49397,7 @@ function getIteratorFn(maybeIterable) {
 }
 
 module.exports = getIteratorFn;
-},{}],230:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45296,7 +49471,7 @@ function getNodeForCharacterOffset(root, offset) {
 }
 
 module.exports = getNodeForCharacterOffset;
-},{}],231:[function(require,module,exports){
+},{}],232:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45330,7 +49505,7 @@ function getTextContentAccessor() {
 }
 
 module.exports = getTextContentAccessor;
-},{"fbjs/lib/ExecutionEnvironment":246}],232:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":247}],233:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -45445,7 +49620,7 @@ function instantiateReactComponent(node) {
 
 module.exports = instantiateReactComponent;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"./ReactCompositeComponent":144,"./ReactEmptyComponent":165,"./ReactNativeComponent":179,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],233:[function(require,module,exports){
+},{"./Object.assign":132,"./ReactCompositeComponent":145,"./ReactEmptyComponent":166,"./ReactNativeComponent":180,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],234:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45506,7 +49681,7 @@ function isEventSupported(eventNameSuffix, capture) {
 }
 
 module.exports = isEventSupported;
-},{"fbjs/lib/ExecutionEnvironment":246}],234:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":247}],235:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45547,7 +49722,7 @@ function isTextInputElement(elem) {
 }
 
 module.exports = isTextInputElement;
-},{}],235:[function(require,module,exports){
+},{}],236:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -45583,7 +49758,7 @@ function onlyChild(children) {
 
 module.exports = onlyChild;
 }).call(this,require('_process'))
-},{"./ReactElement":163,"_process":35,"fbjs/lib/invariant":260}],236:[function(require,module,exports){
+},{"./ReactElement":164,"_process":35,"fbjs/lib/invariant":261}],237:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45610,7 +49785,7 @@ function quoteAttributeValueForBrowser(value) {
 }
 
 module.exports = quoteAttributeValueForBrowser;
-},{"./escapeTextContentForBrowser":221}],237:[function(require,module,exports){
+},{"./escapeTextContentForBrowser":222}],238:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45627,7 +49802,7 @@ module.exports = quoteAttributeValueForBrowser;
 var ReactMount = require('./ReactMount');
 
 module.exports = ReactMount.renderSubtreeIntoContainer;
-},{"./ReactMount":176}],238:[function(require,module,exports){
+},{"./ReactMount":177}],239:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45718,7 +49893,7 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = setInnerHTML;
-},{"fbjs/lib/ExecutionEnvironment":246}],239:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":247}],240:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45759,7 +49934,7 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = setTextContent;
-},{"./escapeTextContentForBrowser":221,"./setInnerHTML":238,"fbjs/lib/ExecutionEnvironment":246}],240:[function(require,module,exports){
+},{"./escapeTextContentForBrowser":222,"./setInnerHTML":239,"fbjs/lib/ExecutionEnvironment":247}],241:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -45803,7 +49978,7 @@ function shouldUpdateReactComponent(prevElement, nextElement) {
 }
 
 module.exports = shouldUpdateReactComponent;
-},{}],241:[function(require,module,exports){
+},{}],242:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -45995,7 +50170,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 
 module.exports = traverseAllChildren;
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":145,"./ReactElement":163,"./ReactInstanceHandles":172,"./getIteratorFn":229,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/warning":271}],242:[function(require,module,exports){
+},{"./ReactCurrentOwner":146,"./ReactElement":164,"./ReactInstanceHandles":173,"./getIteratorFn":230,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/warning":272}],243:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -46105,7 +50280,7 @@ function update(value, spec) {
 
 module.exports = update;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"_process":35,"fbjs/lib/invariant":260,"fbjs/lib/keyOf":264}],243:[function(require,module,exports){
+},{"./Object.assign":132,"_process":35,"fbjs/lib/invariant":261,"fbjs/lib/keyOf":265}],244:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -46471,7 +50646,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = validateDOMNesting;
 }).call(this,require('_process'))
-},{"./Object.assign":131,"_process":35,"fbjs/lib/emptyFunction":252,"fbjs/lib/warning":271}],244:[function(require,module,exports){
+},{"./Object.assign":132,"_process":35,"fbjs/lib/emptyFunction":253,"fbjs/lib/warning":272}],245:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -46571,7 +50746,7 @@ var CSSCore = {
 
 module.exports = CSSCore;
 }).call(this,require('_process'))
-},{"./invariant":260,"_process":35}],245:[function(require,module,exports){
+},{"./invariant":261,"_process":35}],246:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -46658,7 +50833,7 @@ var EventListener = {
 
 module.exports = EventListener;
 }).call(this,require('_process'))
-},{"./emptyFunction":252,"_process":35}],246:[function(require,module,exports){
+},{"./emptyFunction":253,"_process":35}],247:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46695,7 +50870,7 @@ var ExecutionEnvironment = {
 };
 
 module.exports = ExecutionEnvironment;
-},{}],247:[function(require,module,exports){
+},{}],248:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46728,7 +50903,7 @@ function camelize(string) {
 }
 
 module.exports = camelize;
-},{}],248:[function(require,module,exports){
+},{}],249:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46769,7 +50944,7 @@ function camelizeStyleName(string) {
 }
 
 module.exports = camelizeStyleName;
-},{"./camelize":247}],249:[function(require,module,exports){
+},{"./camelize":248}],250:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46825,7 +51000,7 @@ function containsNode(_x, _x2) {
 }
 
 module.exports = containsNode;
-},{"./isTextNode":262}],250:[function(require,module,exports){
+},{"./isTextNode":263}],251:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -46911,7 +51086,7 @@ function createArrayFromMixed(obj) {
 }
 
 module.exports = createArrayFromMixed;
-},{"./toArray":270}],251:[function(require,module,exports){
+},{"./toArray":271}],252:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -46998,7 +51173,7 @@ function createNodesFromMarkup(markup, handleScript) {
 
 module.exports = createNodesFromMarkup;
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":246,"./createArrayFromMixed":250,"./getMarkupWrap":256,"./invariant":260,"_process":35}],252:[function(require,module,exports){
+},{"./ExecutionEnvironment":247,"./createArrayFromMixed":251,"./getMarkupWrap":257,"./invariant":261,"_process":35}],253:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47037,7 +51212,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 };
 
 module.exports = emptyFunction;
-},{}],253:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47060,7 +51235,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = emptyObject;
 }).call(this,require('_process'))
-},{"_process":35}],254:[function(require,module,exports){
+},{"_process":35}],255:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47087,7 +51262,7 @@ function focusNode(node) {
 }
 
 module.exports = focusNode;
-},{}],255:[function(require,module,exports){
+},{}],256:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47123,7 +51298,7 @@ function getActiveElement() /*?DOMElement*/{
 }
 
 module.exports = getActiveElement;
-},{}],256:[function(require,module,exports){
+},{}],257:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47221,7 +51396,7 @@ function getMarkupWrap(nodeName) {
 
 module.exports = getMarkupWrap;
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":246,"./invariant":260,"_process":35}],257:[function(require,module,exports){
+},{"./ExecutionEnvironment":247,"./invariant":261,"_process":35}],258:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47260,7 +51435,7 @@ function getUnboundedScrollPosition(scrollable) {
 }
 
 module.exports = getUnboundedScrollPosition;
-},{}],258:[function(require,module,exports){
+},{}],259:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47294,7 +51469,7 @@ function hyphenate(string) {
 }
 
 module.exports = hyphenate;
-},{}],259:[function(require,module,exports){
+},{}],260:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47334,7 +51509,7 @@ function hyphenateStyleName(string) {
 }
 
 module.exports = hyphenateStyleName;
-},{"./hyphenate":258}],260:[function(require,module,exports){
+},{"./hyphenate":259}],261:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47387,7 +51562,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 
 module.exports = invariant;
 }).call(this,require('_process'))
-},{"_process":35}],261:[function(require,module,exports){
+},{"_process":35}],262:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47411,7 +51586,7 @@ function isNode(object) {
 }
 
 module.exports = isNode;
-},{}],262:[function(require,module,exports){
+},{}],263:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47437,7 +51612,7 @@ function isTextNode(object) {
 }
 
 module.exports = isTextNode;
-},{"./isNode":261}],263:[function(require,module,exports){
+},{"./isNode":262}],264:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47488,7 +51663,7 @@ var keyMirror = function (obj) {
 
 module.exports = keyMirror;
 }).call(this,require('_process'))
-},{"./invariant":260,"_process":35}],264:[function(require,module,exports){
+},{"./invariant":261,"_process":35}],265:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47524,7 +51699,7 @@ var keyOf = function (oneKeyObj) {
 };
 
 module.exports = keyOf;
-},{}],265:[function(require,module,exports){
+},{}],266:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47576,7 +51751,7 @@ function mapObject(object, callback, context) {
 }
 
 module.exports = mapObject;
-},{}],266:[function(require,module,exports){
+},{}],267:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47608,7 +51783,7 @@ function memoizeStringOnly(callback) {
 }
 
 module.exports = memoizeStringOnly;
-},{}],267:[function(require,module,exports){
+},{}],268:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47632,7 +51807,7 @@ if (ExecutionEnvironment.canUseDOM) {
 }
 
 module.exports = performance || {};
-},{"./ExecutionEnvironment":246}],268:[function(require,module,exports){
+},{"./ExecutionEnvironment":247}],269:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47667,7 +51842,7 @@ if (performance.now) {
 }
 
 module.exports = performanceNow;
-},{"./performance":267}],269:[function(require,module,exports){
+},{"./performance":268}],270:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -47718,7 +51893,7 @@ function shallowEqual(objA, objB) {
 }
 
 module.exports = shallowEqual;
-},{}],270:[function(require,module,exports){
+},{}],271:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -47778,7 +51953,7 @@ function toArray(obj) {
 
 module.exports = toArray;
 }).call(this,require('_process'))
-},{"./invariant":260,"_process":35}],271:[function(require,module,exports){
+},{"./invariant":261,"_process":35}],272:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -47838,12 +52013,12 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"./emptyFunction":252,"_process":35}],272:[function(require,module,exports){
+},{"./emptyFunction":253,"_process":35}],273:[function(require,module,exports){
 'use strict';
 
 module.exports = require('./lib/React');
 
-},{"./lib/React":133}],273:[function(require,module,exports){
+},{"./lib/React":134}],274:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -47895,7 +52070,7 @@ module.exports = function (editProperty, _onValue, o) {
 };
 
 function noop() {}
-},{"react":272}],274:[function(require,module,exports){
+},{"react":273}],275:[function(require,module,exports){
 'use strict';
 
 module.exports = function (value) {
@@ -47903,14 +52078,14 @@ module.exports = function (value) {
         value: value
     };
 };
-},{}],275:[function(require,module,exports){
+},{}],276:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     identity: require('./identity'),
     edit: require('./edit')
 };
-},{"./edit":273,"./identity":274}],276:[function(require,module,exports){
+},{"./edit":274,"./identity":275}],277:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -47962,7 +52137,7 @@ module.exports = React.createClass({
         );
     }
 });
-},{"lodash":41,"react":272}],277:[function(require,module,exports){
+},{"lodash":41,"react":273}],278:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -48001,7 +52176,7 @@ module.exports = function () {
         }
     });
 };
-},{"react":272}],278:[function(require,module,exports){
+},{"react":273}],279:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -48044,7 +52219,7 @@ module.exports = function (options) {
         }
     });
 };
-},{"react":272}],279:[function(require,module,exports){
+},{"react":273}],280:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -48052,7 +52227,7 @@ module.exports = {
     dropdown: require('./dropdown'),
     input: require('./input')
 };
-},{"./boolean":277,"./dropdown":278,"./input":280}],280:[function(require,module,exports){
+},{"./boolean":278,"./dropdown":279,"./input":281}],281:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -48113,7 +52288,7 @@ module.exports = function (attrs) {
         }
     });
 };
-},{"react":272}],281:[function(require,module,exports){
+},{"react":273}],282:[function(require,module,exports){
 'use strict';
 var React = require('react');
 
@@ -48156,13 +52331,13 @@ module.exports = function (getHighlights) {
         return element;
     };
 };
-},{"react":272}],282:[function(require,module,exports){
+},{"react":273}],283:[function(require,module,exports){
 'use strict';
 
 module.exports = function (value) {
     return value;
 };
-},{}],283:[function(require,module,exports){
+},{}],284:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -48170,13 +52345,13 @@ module.exports = {
     identity: require('./identity.js'),
     lowercase: require('./lowercase.js')
 };
-},{"./highlight.js":281,"./identity.js":282,"./lowercase.js":284}],284:[function(require,module,exports){
+},{"./highlight.js":282,"./identity.js":283,"./lowercase.js":285}],285:[function(require,module,exports){
 'use strict';
 
 module.exports = function (value) {
     return value.toLowerCase();
 };
-},{}],285:[function(require,module,exports){
+},{}],286:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -48190,14 +52365,14 @@ module.exports = {
     predicates: require('./predicates'),
     cells: require('./cells')
 };
-},{"./cells":275,"./column_names":276,"./editors":279,"./formatters":283,"./predicates":286,"./search":289,"./sort_column":290,"./sort_columns":291,"./table":292}],286:[function(require,module,exports){
+},{"./cells":276,"./column_names":277,"./editors":280,"./formatters":284,"./predicates":287,"./search":290,"./sort_column":291,"./sort_columns":292,"./table":293}],287:[function(require,module,exports){
 'use strict';
 
 module.exports = {
     infix: require('./infix.js'),
     prefix: require('./prefix.js')
 };
-},{"./infix.js":287,"./prefix.js":288}],287:[function(require,module,exports){
+},{"./infix.js":288,"./prefix.js":289}],288:[function(require,module,exports){
 'use strict';
 
 module.exports = function (infix) {
@@ -48221,7 +52396,7 @@ module.exports = function (infix) {
         }
     };
 };
-},{}],288:[function(require,module,exports){
+},{}],289:[function(require,module,exports){
 'use strict';
 
 module.exports = function (prefix) {
@@ -48242,7 +52417,7 @@ module.exports = function (prefix) {
         }
     };
 };
-},{}],289:[function(require,module,exports){
+},{}],290:[function(require,module,exports){
 'use strict';
 var isNumber = require('lodash').isNumber;
 var isString = require('lodash').isString;
@@ -48401,7 +52576,7 @@ module.exports.matches = function (column, value, query, options) {
 
     return predicate.matches(options.transform(value));
 };
-},{"./formatters":283,"./predicates":286,"lodash":41,"react":272}],290:[function(require,module,exports){
+},{"./formatters":284,"./predicates":287,"lodash":41,"react":273}],291:[function(require,module,exports){
 'use strict';
 
 module.exports = function (columns, column, done) {
@@ -48430,7 +52605,7 @@ module.exports.sort = function (data, column, sorter) {
 
     return sorter(data, [column.property], [column.sort]);
 };
-},{}],291:[function(require,module,exports){
+},{}],292:[function(require,module,exports){
 'use strict';
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
@@ -48485,7 +52660,7 @@ module.exports.sort = function (data, sortColumns, sorter) {
 
     return sorter(data, propertyList, orderList);
 };
-},{}],292:[function(require,module,exports){
+},{}],293:[function(require,module,exports){
 'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -48595,4 +52770,4 @@ function id(a) {
     return a;
 }
 function noop() {}
-},{"./column_names":276,"lodash":41,"react":272,"react/lib/update":242}]},{},[1]);
+},{"./column_names":277,"lodash":41,"react":273,"react/lib/update":243}]},{},[1]);

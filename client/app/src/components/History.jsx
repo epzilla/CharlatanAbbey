@@ -1,16 +1,15 @@
 'use strict';
 
-var React = require('react');
-var Router = require('react-router');
-var Link = Router.Link;
-var EventStore = require('../stores/event-store');
-var Actions = require('../actions/view-actions');
-var EventTypes = require('../constants/constants').EventTypes;
-var _ = require('lodash');
-var moment = require('moment-timezone');
-var Swipeable = require('react-swipeable');
+import React from 'react';
+import { Link } from 'react-router';
+import _ from 'lodash';
+import moment from 'moment-timezone';
+import Swipeable from 'react-swipeable';
+import EventStore from '../stores/event-store';
+import Actions from '../actions/view-actions';
+import { EventTypes } from '../constants/constants';
 
-var FeedingCell = React.createClass({
+const FeedingCell = React.createClass({
 
   contextTypes: {
     router: React.PropTypes.object.isRequired
@@ -21,8 +20,8 @@ var FeedingCell = React.createClass({
   },
 
   render: function () {
-    var feeding = this.props.feeding;
-    var amount, diaper, burp, meds, spit, nap;
+    let feeding = this.props.feeding;
+    let amount, diaper, burp, meds, spit, nap;
 
     if (feeding.diaper) {
       diaper = <li>{ _.capitalize(feeding.diaper) } diaper</li>;
@@ -45,10 +44,10 @@ var FeedingCell = React.createClass({
     }
 
     if (feeding.eventType === EventTypes.NAP) {
-      var napStart = feeding.startTime ? moment(feeding.startTime).format('h:mma') : null;
-      var napEnd = feeding.startTime ? moment(feeding.endTime).format('h:mma') : null;
-      var duration = feeding.duration || napEnd.diff(napStart, 'minutes');
-      var formattedDuration = moment.duration(duration, 'minutes').asHours().toFixed(2) + ' hr.';
+      let napStart = feeding.startTime ? moment(feeding.startTime).format('h:mma') : null;
+      let napEnd = feeding.startTime ? moment(feeding.endTime).format('h:mma') : null;
+      let duration = feeding.duration || napEnd.diff(napStart, 'minutes');
+      let formattedDuration = moment.duration(duration, 'minutes').asHours().toFixed(2) + ' hr.';
       nap = (
         <li>Napped from {napStart} to {napEnd} (<em>{formattedDuration}</em>)</li>
       );
@@ -73,12 +72,12 @@ var FeedingCell = React.createClass({
   }
 });
 
-var FeedingCol = React.createClass({
+const FeedingCol = React.createClass({
   render: function () {
-    var feedingData = this.props.feedings;
-    var name = this.props.feedings[0].name;
+    let feedingData = this.props.feedings;
+    let name = this.props.feedings[0].name;
 
-    var feedings = feedingData.map(function (feeding) {
+    let feedings = feedingData.map(function (feeding) {
       return (<FeedingCell key={feeding._id} feeding={feeding} />);
     });
 
@@ -93,7 +92,7 @@ var FeedingCol = React.createClass({
   }
 });
 
-var History = React.createClass({
+const History = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
@@ -140,9 +139,9 @@ var History = React.createClass({
   },
 
   render: function () {
-    var timeFilter = this.state.timeFilter;
-    var typeFilter = this.state.typeFilter;
-    var feedingTable = _.map(this.state.events[timeFilter][typeFilter], function (feedingGroup) {
+    let timeFilter = this.state.timeFilter;
+    let typeFilter = this.state.typeFilter;
+    let feedingTable = _.map(this.state.events[timeFilter][typeFilter], function (feedingGroup) {
       return (<FeedingCol key={feedingGroup[0]._id} feedings={feedingGroup} />);
     });
 
@@ -201,4 +200,4 @@ var History = React.createClass({
   }
 });
 
-module.exports = History;
+export default History;

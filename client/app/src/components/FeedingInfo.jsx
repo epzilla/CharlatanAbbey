@@ -1,17 +1,17 @@
 'use strict';
 
-var React = require('react');
-var moment = require('moment-timezone');
-var _ = require('lodash');
-var cx = require('classnames');
+import React from 'react';
+import moment from 'moment-timezone';
+import _ from 'lodash';
+import cx from 'classnames';
 
-var FeedingInfo = React.createClass({
+const FeedingInfo = React.createClass({
 
   _getFormattedFood: function () {
-    var foodList;
-    var food = this.props.feeding.food;
-    var amt = this.props.feeding.amount;
-    var bottleEmoji = <span className='emojifier'><img src='/img/bottle.png' className='emoji' /></span>;
+    let foodList;
+    let food = this.props.feeding.food;
+    let amt = this.props.feeding.amount;
+    let bottleEmoji = <span className='emojifier'><img src='/img/bottle.png' className='emoji' /></span>;
 
     if (amt % 1 === 0) {
       amt = Math.floor(amt) + ' oz.';
@@ -31,16 +31,16 @@ var FeedingInfo = React.createClass({
   },
 
   render: function () {
-    var medsEmoji, medsLi, spitLi, feederLi;
-    var feeding = this.props.feeding;
-    var poopEmojiClass = cx({
+    let medsEmoji, medsLi, spitLi, feederLi;
+    let feeding = this.props.feeding;
+    let poopEmojiClass = cx({
       'emojifier': true,
       'ok': feeding.poopFlag === 0,
       'warn': feeding.poopFlag === 1,
       'uh-oh': feeding.poopFlag === 2
     });
 
-    var poopEmoji = (
+    let poopEmoji = (
       <span className={poopEmojiClass} style={{display: 'inline'}}>
         <img align="absmiddle" alt=":poop:" className="emoji" src="/img/poop.png" title=":poop:" />
       </span>
@@ -102,4 +102,4 @@ var FeedingInfo = React.createClass({
   }
 });
 
-module.exports = FeedingInfo;
+export default FeedingInfo;

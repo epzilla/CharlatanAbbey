@@ -1,14 +1,14 @@
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var moment = require('moment-timezone');
-var cx = require('classnames');
-var Table = require('reactabular').Table;
-var TimeLogStore = require('../stores/time-log-store');
-var Actions = require('../actions/view-actions');
+import React from 'react';
+import _ from 'lodash';
+import moment from 'moment-timezone';
+import cx from 'classnames';
+import { Table } from 'reactabular';
+import TimeLogStore from '../stores/time-log-store';
+import Actions from '../actions/view-actions';
 
-var ClockOutBtn = React.createClass({
+const ClockOutBtn = React.createClass({
 
   _clockOut: function () {
     Actions.clockOut(this.props.clockOutID, {timeOut: new Date()});
@@ -25,7 +25,7 @@ var ClockOutBtn = React.createClass({
   }
 });
 
-var FilterStepper = React.createClass({
+const FilterStepper = React.createClass({
   getInitialState: function () {
     return {
       currentStep: this.props.options[this.props.options.length - 1],
@@ -43,9 +43,9 @@ var FilterStepper = React.createClass({
   },
 
   _prev: function () {
-    var ptr = this.state.pointer;
+    let ptr = this.state.pointer;
     if (ptr !== 0) {
-      var newPtr = this.state.pointer - 1;
+      let newPtr = this.state.pointer - 1;
       this.setState({
         pointer: newPtr,
         currentStep: this.props.options[newPtr]
@@ -56,9 +56,9 @@ var FilterStepper = React.createClass({
   },
 
   _next: function () {
-    var ptr = this.state.pointer;
+    let ptr = this.state.pointer;
     if (ptr !== this.props.options.length - 1) {
-      var newPtr = this.state.pointer + 1;
+      let newPtr = this.state.pointer + 1;
       this.setState({
         pointer: newPtr,
         currentStep: this.props.options[newPtr]
@@ -83,16 +83,16 @@ var FilterStepper = React.createClass({
   }
 });
 
-var Timesheet = React.createClass({
+const Timesheet = React.createClass({
 
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
 
   getInitialState: function () {
-    var now = moment(new Date());
-    var thisWeek = now.startOf('week').format('M/D');
-    var logs = TimeLogStore.getEverything();
+    let now = moment(new Date());
+    let thisWeek = now.startOf('week').format('M/D');
+    let logs = TimeLogStore.getEverything();
 
     if (!logs.weekly[thisWeek]) {
       thisWeek = this._findMostRecent(logs.weekly);
@@ -127,7 +127,7 @@ var Timesheet = React.createClass({
   },
 
   _clockIn: function () {
-    var now = new Date();
+    let now = new Date();
     Actions.clockIn({
       date: now,
       timeIn: now
@@ -143,7 +143,7 @@ var Timesheet = React.createClass({
   },
 
   _setFilter: function (e) {
-    var filter = e.target.value;
+    let filter = e.target.value;
     if (filter === 'all') {
       this.setState({
         timeFilter: filter,
@@ -166,14 +166,14 @@ var Timesheet = React.createClass({
 
   render: function () {
 
-    var clockInBtn, clockOutBtn, filterStepper, totalHours;
-    var filter = this.state.timeFilter;
-    var subFilter = this.state.subFilter;
+    let clockInBtn, clockOutBtn, filterStepper, totalHours;
+    let filter = this.state.timeFilter;
+    let subFilter = this.state.subFilter;
 
-    var dataSet = this.state.timeLogs[filter];
-    var specificData = subFilter ? dataSet[subFilter] : dataSet;
+    let dataSet = this.state.timeLogs[filter];
+    let specificData = subFilter ? dataSet[subFilter] : dataSet;
 
-    var columns = [
+    let columns = [
       {
         property: 'date',
         header: 'Date',
@@ -193,7 +193,7 @@ var Timesheet = React.createClass({
     ];
 
     if (this.state.isClockedIn) {
-      var clockOutID = this.state.timeLogs.all[0]._id;
+      let clockOutID = this.state.timeLogs.all[0]._id;
       clockOutBtn = (
         <ClockOutBtn key={'clock-out-timesheet'} clockOutID={clockOutID} className='btn feed-btn' />
       );
@@ -209,7 +209,7 @@ var Timesheet = React.createClass({
     }
 
     if (filter !== 'all') {
-      var totalTime = _.reduce(specificData, function (total, n) {
+      let totalTime = _.reduce(specificData, function (total, n) {
         return total + n.hours;
       }, 0).toFixed(2);
 
@@ -270,4 +270,4 @@ var Timesheet = React.createClass({
   }
 });
 
-module.exports = Timesheet;
+export default Timesheet;

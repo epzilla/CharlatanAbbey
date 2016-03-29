@@ -1,21 +1,22 @@
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Dispatcher = require('../dispatcher/app-dispatcher');
+import { EventEmitter } from 'events';
+import assign from 'object-assign';
+import AppDispatcher from '../dispatcher/app-dispatcher';
 import ls from '../utils/local-storage';
-var ActionTypes = Constants.ActionTypes;
-var CHANGE_EVENT = 'change';
-var _ = require('lodash');
-var moment = require('moment-timezone');
-var _rawLogs = ls.get('raw-time-logs') || [];
-var _timeLogs = ls.get('time-logs') || [];
-var _weeklyTimeLogs = ls.get('weekly-time-logs') || {};
-var _monthlyTimeLogs = ls.get('monthly-time-logs') || {};
-var _thisWeekLog;
-var _thisMonthLog;
-var _isClockedIn = false;
+import { ActionTypes } from '../constants/constants';
+import _ from 'lodash';
+import moment from 'moment';
+import 'moment-timezone';
 
-var TimeLogStore = assign({}, EventEmitter.prototype, {
+const CHANGE_EVENT = 'change';
+let _rawLogs = ls.get('raw-time-logs') || [];
+let _timeLogs = ls.get('time-logs') || [];
+let _weeklyTimeLogs = ls.get('weekly-time-logs') || {};
+let _monthlyTimeLogs = ls.get('monthly-time-logs') || {};
+let _thisWeekLog;
+let _thisMonthLog;
+let _isClockedIn = false;
+
+const TimeLogStore = assign({}, EventEmitter.prototype, {
   emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
@@ -28,9 +29,7 @@ var TimeLogStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getTimeLogs: function () {
-    return _timeLogs;
-  },
+  getTimeLogs: () => _timeLogs,
 
   getEverything: function () {
     return {
@@ -40,12 +39,10 @@ var TimeLogStore = assign({}, EventEmitter.prototype, {
     };
   },
 
-  isClockedIn: function () {
-    return _isClockedIn;
-  }
+  isClockedIn: () => _isClockedIn
 });
 
-var updateStore = function () {
+const updateStore = function () {
   _timeLogs = _.chain(_rawLogs)
     .map(function (tl) {
       return {
@@ -62,9 +59,9 @@ var updateStore = function () {
 
   _isClockedIn = !(_timeLogs[0].timeOut);
 
-  var now = moment(new Date());
-  var thisWeek = now.startOf('week').format('M/D');
-  var thisMonth = now.startOf('month').format('MMM');
+  let now = moment(new Date());
+  let thisWeek = now.startOf('week').format('M/D');
+  let thisMonth = now.startOf('month').format('MMM');
   _weeklyTimeLogs = _.groupBy(_timeLogs, 'weekOf');
   _monthlyTimeLogs = _.groupBy(_timeLogs, 'monthOf');
   _thisWeekLog = _weeklyTimeLogs[thisWeek];
@@ -75,17 +72,16 @@ var updateStore = function () {
   TimeLogStore.emitChange();
 };
 
-var needsUpdating = function (logs) {
-  return ((!logs) || (logs.length === 0) || (JSON.stringify(_rawLogs) !== JSON.stringify(logs)));
-};
+const needsUpdating = (logs) => ((!logs) || (logs.length === 0) || (JSON.stringify(_rawLogs) !== JSON.stringify(logs)));
 
-TimeLogStore.dispatchToken = Dispatcher.register(function (payload) {
-  var action;
+TimeLogStore.dispatchToken =
+AppDispatcher.register(function (payload) {
+  let action;
   action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_TIME_LOGS:
       if (needsUpdating(action.data)) {
-        var newLogs = action.data;
+        let newLogs = action.data;
         _rawLogs = _.chain(action.data)
           .concat(newLogs)
           .sortBy(function (tl) {
@@ -108,4 +104,4 @@ TimeLogStore.dispatchToken = Dispatcher.register(function (payload) {
   }
 });
 
-module.exports = TimeLogStore;
+export default TimeLogStore;

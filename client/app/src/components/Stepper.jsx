@@ -1,11 +1,11 @@
-var React = require('react');
-var cx = require('classnames');
+import React from 'react';
+import cx from 'classnames';
 import { fractions } from '../utils/fractions';
 
-var StepperBtn = React.createClass({
+const StepperBtn = React.createClass({
 
   render: function () {
-    var btnClasses = cx({
+    let btnClasses = cx({
       'btn': true,
       'btn-invert': true,
       'stepper-btn': true,
@@ -13,13 +13,13 @@ var StepperBtn = React.createClass({
       'bottom-btn': this.props.btnPos === 'bottom'
     });
 
-    var iClass = cx({
+    let iClass = cx({
       'fa': true,
       'fa-angle-up': this.props.btnPos === 'top',
       'fa-angle-down': this.props.btnPos === 'bottom'
     });
 
-    var dir = this.props.btnPos === 'top' ? 'up' : 'down';
+    let dir = this.props.btnPos === 'top' ? 'up' : 'down';
 
     return (
       <button className={btnClasses} data-direction={dir} onClick={this.props.onClick}>
@@ -29,7 +29,7 @@ var StepperBtn = React.createClass({
   }
 });
 
-var Stepper = React.createClass({
+const Stepper = React.createClass({
 
   _fractionalPointer: 0,
 
@@ -44,7 +44,7 @@ var Stepper = React.createClass({
   },
 
   _stepUpFull: function () {
-    var curVal = parseInt(this.state.val);
+    let curVal = parseInt(this.state.val);
 
     if (this.props.max !== undefined && curVal === this.props.max) {
       if (this.props.wrap) {
@@ -68,7 +68,7 @@ var Stepper = React.createClass({
   },
 
   _stepUpFractional: function () {
-    var fracPointer = this.state.fraction;
+    let fracPointer = this.state.fraction;
 
     if (fracPointer !== 5) {
       fracPointer++;
@@ -87,7 +87,7 @@ var Stepper = React.createClass({
   },
 
   _stepDownFull: function () {
-    var curVal = parseInt(this.state.val);
+    let curVal = parseInt(this.state.val);
 
     if (this.props.min !== undefined && curVal === this.props.min) {
       if (this.props.wrap) {
@@ -111,7 +111,7 @@ var Stepper = React.createClass({
   },
 
   _stepDownFractional: function () {
-    var fracPointer = this.state.fraction;
+    let fracPointer = this.state.fraction;
 
     if (fracPointer !== 0) {
       fracPointer--;
@@ -131,7 +131,7 @@ var Stepper = React.createClass({
 
   getInitialState: function () {
     if (this.props.full) {
-      var val = this.props.initialValue ? this.props.initialValue : 2;
+      let val = this.props.initialValue ? this.props.initialValue : 2;
       if (this.props.padSingleDigits && val < 10) {
         val = '0' + val;
       }
@@ -173,8 +173,8 @@ var Stepper = React.createClass({
   },
 
   render: function () {
-    var full = this.props.full;
-    var classes = cx({
+    let full = this.props.full;
+    let classes = cx({
       'stepper': true,
       'stepper-full': full,
       'stepper-fractional': !full
@@ -190,4 +190,4 @@ var Stepper = React.createClass({
   }
 });
 
-module.exports = Stepper;
+export default Stepper;

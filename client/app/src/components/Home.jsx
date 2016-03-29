@@ -7,7 +7,7 @@ import BabyStore from '../stores/baby-store';
 import LoginForm from './LoginForm.jsx';
 import BabiesSummaryView from './BabiesSummaryView.jsx';
 
-var Home = React.createClass({
+const Home = React.createClass({
   getInitialState: function () {
     return {
       babies: ls.get('babies')
@@ -33,4 +33,4 @@ var Home = React.createClass({
   }
 });
 
-module.exports = Home;
+export default Home;

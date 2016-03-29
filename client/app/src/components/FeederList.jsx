@@ -1,15 +1,15 @@
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var Feeder = require('./Feeder.jsx');
-var BabyStore = require('../stores/baby-store');
-var Actions = require('../actions/view-actions');
-var uuid = require('../utils/uuid');
+import React from 'react';
+import _ from 'lodash';
+import Feeder from './Feeder.jsx';
+import BabyStore from '../stores/baby-store';
+import Actions from '../actions/view-actions';
+import * as uuid from '../utils/uuid';
 
-var ENTER_KEY = 13;
+const ENTER_KEY = 13;
 
-var FeederList = React.createClass({
+const FeederList = React.createClass({
 
   getInitialState: function () {
     return {
@@ -21,7 +21,7 @@ var FeederList = React.createClass({
 
   _add: function (e) {
     e.preventDefault();
-    var id = uuid.getUUID();
+    let id = uuid.getUUID();
     this.setState({
       feeders: this.state.feeders.concat({
         id: id,
@@ -65,8 +65,8 @@ var FeederList = React.createClass({
   },
 
   render: function () {
-    var that = this;
-    var feeders = _.map(this.state.feeders, function (feeder) {
+    let that = this;
+    let feeders = _.map(this.state.feeders, function (feeder) {
       return (
         <Feeder
           feeder={feeder}
@@ -95,5 +95,5 @@ var FeederList = React.createClass({
   }
 });
 
-module.exports = FeederList;
+export default FeederList;
 

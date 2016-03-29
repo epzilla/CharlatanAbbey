@@ -1,66 +1,51 @@
 'use strict';
-var _ = require('lodash');
+import _ from 'lodash';
 import API from '../utils/api';
-var moment = require('moment-timezone');
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var AppConstants = require('../constants/constants');
-var fractions = require('../utils/fractions');
-var ActionTypes = AppConstants.ActionTypes;
+import moment from 'moment-timezone';
+import AppDispatcher from '../dispatcher/app-dispatcher';
+import { ActionTypes } from '../constants/constants';
+import fractions from '../utils/fractions';
 
-var ViewActions = {
+var Actions = {
 
-  findBabies: function (obj) {
+  findBabies: (obj) => {
     obj.birthdate = moment(obj.birthdate).format("MM-DD-YYYY");
     API.findBabies(obj);
   },
 
-  getFoodTypes: function () {
-    API.getFoodTypes();
-  },
+  getFoodTypes: () => API.getFoodTypes(),
 
-  getEvents: function (babyID) {
-    API.getEvents(babyID);
-  },
+  getEvents: (babyID) => API.getEvents(babyID),
 
-  getTimeLogs: function (babyID) {
-    API.getTimeLogs(babyID);
-  },
+  getTimeLogs: (babyID) => API.getTimeLogs(babyID),
 
-  submitEventForm: function (formValues) {
-    API.submitEvent(formValues);
-  },
+  submitEventForm: (formValues) => API.submitEvent(formValues),
 
-  editEventForm: function (formValues) {
-    API.editEvent(formValues);
-  },
+  editEventForm: (formValues) => API.editEvent(formValues),
 
-  clockIn: function (timeLog) {
-    API.clockIn(timeLog);
-  },
+  clockIn: (timeLog) => API.clockIn(timeLog),
 
-  clockOut: function (id, timeLog) {
-    API.clockOut(id, timeLog);
-  },
+  clockOut: (id, timeLog) => API.clockOut(id, timeLog),
 
-  wizardNext: function () {
+  wizardNext: () => {
     AppDispatcher.handleViewAction({
       type: ActionTypes.WIZARD_NEXT
     });
   },
 
-  wizardPrev: function () {
+  wizardPrev: () => {
     AppDispatcher.handleViewAction({
       type: ActionTypes.WIZARD_PREV
     });
   },
 
-  wizardDone: function () {
+  wizardDone: () => {
     AppDispatcher.handleViewAction({
       type: ActionTypes.WIZARD_DONE
     });
   },
 
-  sendInitialConfig: function (info) {
+  sendInitialConfig: (info) => {
     var babyA = {
       firstname: info.babyA,
       lastname: info.query.lastname,
@@ -69,9 +54,7 @@ var ViewActions = {
         hours: fractions.getDecimal(info.fullHours, info.fracHours),
         ounces: fractions.getDecimal(info.fullOunces, info.fracOunces)
       },
-      feeders: _.map(info.feeders, function (feeder) {
-        return {name: feeder.name};
-      })
+      feeders: _.map(info.feeders, feeder => {name: feeder.name})
     };
 
     var babyB = _.assign({}, babyA, {firstname: info.babyB});
@@ -80,4 +63,4 @@ var ViewActions = {
   }
 };
 
-module.exports = ViewActions;
+export default Actions;

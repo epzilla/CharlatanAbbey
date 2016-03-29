@@ -1,14 +1,14 @@
 'use strict';
 
-var React = require('react');
-var Stepper = require('./Stepper.jsx');
+import React from 'react';
+import Stepper from './Stepper.jsx';
 
-var FractionalStepper = React.createClass({
+const FractionalStepper = React.createClass({
 
   getInitialState: function () {
-    var initial = this.props.initialValue ? parseFloat(this.props.initialValue) : 6.0;
-    var fullNumber = Math.floor(initial);
-    var remainder = initial % 1;
+    let initial = this.props.initialValue ? parseFloat(this.props.initialValue) : 6.0;
+    let fullNumber = Math.floor(initial);
+    let remainder = initial % 1;
     return {
       initialValue: initial,
       fullNumber: fullNumber,
@@ -29,8 +29,8 @@ var FractionalStepper = React.createClass({
 
   render: function () {
 
-    var fullNumber = Math.floor(this.state.initialValue);
-    var remainder = this.state.initialValue % 1;
+    let fullNumber = Math.floor(this.state.initialValue);
+    let remainder = this.state.initialValue % 1;
 
     return (
       <section className='frac-stepper'>
@@ -45,4 +45,4 @@ var FractionalStepper = React.createClass({
 
 });
 
-module.exports = FractionalStepper;
+export default FractionalStepper;

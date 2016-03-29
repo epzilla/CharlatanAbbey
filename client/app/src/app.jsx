@@ -1,17 +1,17 @@
 'use strict';
 
-var React = require('react');
+import React from 'react';
 import { render } from 'react-dom';
-var CSSTransitionGroup = require('react-addons-css-transition-group');
-var _ = require('lodash');
+import CSSTransitionGroup from 'react-addons-css-transition-group';
+import _ from 'lodash';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-var GetStarted = require('./components/GetStarted.jsx');
-var Home = require('./components/Home.jsx');
-var History = require('./components/History.jsx');
-var Log = require('./components/Log.jsx');
-var Edit = require('./components/Edit.jsx');
-var Timesheet = require('./components/Timesheet.jsx');
-import * as API from './utils/api';
+import GetStarted from './components/GetStarted.jsx';
+import Home from './components/Home.jsx';
+import History from './components/History.jsx';
+import Log from './components/Log.jsx';
+import Edit from './components/Edit.jsx';
+import Timesheet from './components/Timesheet.jsx';
+import API from './utils/api';
 import ls from './utils/local-storage';
 
 var App = React.createClass({
@@ -34,9 +34,9 @@ var App = React.createClass({
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  var babies = ls.get('babies');
+  let babies = ls.get('babies');
   if (!_.isEmpty(babies)) {
-    var babyIDs = _.map(babies, '_id');
+    let babyIDs = _.map(babies, '_id');
     API.getEvents(babyIDs);
     API.getTimeLogs(babyIDs);
   }

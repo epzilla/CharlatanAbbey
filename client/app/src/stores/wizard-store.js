@@ -1,13 +1,13 @@
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Dispatcher = require('../dispatcher/app-dispatcher');
-var ActionTypes = Constants.ActionTypes;
-var CHANGE_EVENT = 'change';
+import ActionTypes from '../constants/constants';
+import { EventEmitter } from 'events';
+import assign from 'object-assign';
+import AppDispatcher from '../dispatcher/app-dispatcher';
 
-var state = { step: 0 };
+const CHANGE_EVENT = 'change';
 
-var WizardStore = assign({}, EventEmitter.prototype, {
+let state = { step: 0 };
+
+const WizardStore = assign({}, EventEmitter.prototype, {
   emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
@@ -20,13 +20,12 @@ var WizardStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getAll: function () {
-    return state;
-  }
+  getAll: () => state
 });
 
-WizardStore.dispatchToken = Dispatcher.register(function (payload) {
-  var action;
+WizardStore.dispatchToken =
+AppDispatcher.register(function (payload) {
+  let action;
   action = payload.action;
   switch (action.type) {
     case ActionTypes.WIZARD_NEXT:
@@ -46,4 +45,4 @@ WizardStore.dispatchToken = Dispatcher.register(function (payload) {
   }
 });
 
-module.exports = WizardStore;
+export default WizardStore;

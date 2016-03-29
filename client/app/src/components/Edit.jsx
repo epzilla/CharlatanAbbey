@@ -1,13 +1,14 @@
 'use strict';
 
-var React = require('react');
-var EventStore = require('../stores/event-store');
-var BabyStore = require('../stores/baby-store');
-var Actions = require('../actions/view-actions');
-var _ = require('lodash');
-var moment = require('moment-timezone');
-var TimeStepper = require('./TimeStepper.jsx');
-var FractionalStepper = require('./FractionalStepper.jsx');
+import React from 'react';
+import _ from 'lodash';
+import moment from 'moment';
+import 'moment-timezone';
+import EventStore from '../stores/event-store';
+import BabyStore from '../stores/baby-store';
+import Actions from '../actions/view-actions';
+import TimeStepper from './TimeStepper.jsx';
+import FractionalStepper from './FractionalStepper.jsx';
 
 var Edit = React.createClass({
 
@@ -364,4 +365,4 @@ var Edit = React.createClass({
   }
 });
 
-module.exports = Edit;
+export default Edit;

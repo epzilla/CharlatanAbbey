@@ -1,9 +1,8 @@
 'use strict';
-var AppDispatcher = require('../dispatcher/app-dispatcher');
-var AppConstants = require('../constants/constants');
-var ActionTypes = AppConstants.ActionTypes;
+import AppDispatcher from '../dispatcher/app-dispatcher';
+import { ActionTypes } from '../constants/constants';
 
-var ServerActions = {
+const Actions = {
   receiveEvents: function (data) {
     AppDispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_EVENTS,
@@ -81,4 +80,4 @@ var ServerActions = {
   }
 };
 
-module.exports = ServerActions;
+export default Actions;

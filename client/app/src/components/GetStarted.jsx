@@ -1,18 +1,18 @@
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var BabyStore = require('../stores/baby-store');
-var Actions = require('../actions/view-actions');
-var FractionalStepper = require('./FractionalStepper.jsx');
-var Wizard = require('./Wizard.jsx');
-var FeederList = require('./FeederList.jsx');
+import React from 'react';
+import _ from 'lodash';
+import BabyStore from '../stores/baby-store';
+import Actions from '../actions/view-actions';
+import FractionalStepper from './FractionalStepper.jsx';
+import Wizard from './Wizard.jsx';
+import FeederList from './FeederList.jsx';
 import * as uuid from '../utils/uuid';
 import * as fractions from '../utils/fractions';
 
-var View1 = React.createClass({
+const View1 = React.createClass({
   _setValue: function (e) {
-    var obj = {};
+    let obj = {};
     obj[e.target.name] = e.target.value;
     this.props.onChange(obj);
   },
@@ -57,7 +57,7 @@ var View1 = React.createClass({
   }
 });
 
-var View2 = React.createClass({
+const View2 = React.createClass({
   _updateHours: function (val) {
     if (val.full) {
       this.props.onChange({
@@ -83,15 +83,15 @@ var View2 = React.createClass({
   },
 
   render: function () {
-    var initialOunces, initialHours;
-    var _state = this.props.initialState;
+    let initialOunces, initialHours;
+    let _state = this.props.initialState;
     if (_state.fullOunces) {
-      var fracOunces = _.isObject(_state.fracOunces) ? _state.fracOunces.actualValue : _state.fracOunces;
+      let fracOunces = _.isObject(_state.fracOunces) ? _state.fracOunces.actualValue : _state.fracOunces;
       initialOunces = _state.fullOunces + fracOunces;
     }
 
     if (_state.fullOunces) {
-      var fracHours = _.isObject(_state.fracHours) ? _state.fracHours.actualValue : _state.fracHours;
+      let fracHours = _.isObject(_state.fracHours) ? _state.fracHours.actualValue : _state.fracHours;
       initialHours = _state.fullHours + fracHours;
     }
 
@@ -118,7 +118,7 @@ var View2 = React.createClass({
   }
 });
 
-var View3 = React.createClass({
+const View3 = React.createClass({
   _onChange: function (val) {
     this.props.onChange({ feeders: val })
   },
@@ -137,9 +137,9 @@ var View3 = React.createClass({
   }
 });
 
-var View4 = React.createClass({
+const View4 = React.createClass({
   render: function () {
-    var info = this.props.info;
+    let info = this.props.info;
 
     return (
       <div className="get-started-4">
@@ -160,7 +160,7 @@ var View4 = React.createClass({
   }
 });
 
-var GetStarted = React.createClass({
+const GetStarted = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
@@ -231,4 +231,4 @@ var GetStarted = React.createClass({
   }
 });
 
-module.exports = GetStarted;
+export default GetStarted;

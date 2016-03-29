@@ -1,14 +1,14 @@
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var Actions = require('../actions/view-actions');
-var FeedingInfo = require('./FeedingInfo.jsx');
-var EventStore = require('../stores/event-store');
-var TimeLogStore = require('../stores/time-log-store');
-var ActionButtons = require('./ActionButtons.jsx');
+import React from 'react';
+import _ from 'lodash';
+import Actions from '../actions/view-actions';
+import FeedingInfo from './FeedingInfo.jsx';
+import EventStore from '../stores/event-store';
+import TimeLogStore from '../stores/time-log-store';
+import ActionButtons from './ActionButtons.jsx';
 
-var BabiesSummaryView = React.createClass({
+const BabiesSummaryView = React.createClass({
   getInitialState: function () {
     return {
       babyIDs: _.map(this.props.babies, '_id'),
@@ -34,7 +34,7 @@ var BabiesSummaryView = React.createClass({
   },
 
   render: function () {
-    var feedingsInfo;
+    let feedingsInfo;
 
     if (_.isEmpty(this.state.feedings)) {
       feedingsInfo = (
@@ -65,4 +65,4 @@ var BabiesSummaryView = React.createClass({
   }
 });
 
-module.exports = BabiesSummaryView;
+export default BabiesSummaryView;

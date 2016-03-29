@@ -1,16 +1,17 @@
 'use strict';
 
-var React = require('react');
-var cx = require('classnames');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import cx from 'classnames';
 
-var ESCAPE_KEY = 27;
-var ENTER_KEY = 13;
+const ESCAPE_KEY = 27;
+const ENTER_KEY = 13;
 
-var Feeder = React.createClass({
+const Feeder = React.createClass({
 
   handleSubmit: function (e) {
     e.preventDefault();
-    var val = this.state.editText.trim();
+    let val = this.state.editText.trim();
     if (val) {
       this.props.onSave(val);
       this.setState({editText: val});
@@ -53,14 +54,14 @@ var Feeder = React.createClass({
 
   componentDidUpdate: function (prevProps) {
     if (!prevProps.editing && this.props.editing) {
-      var node = React.findDOMNode(this.refs.editField);
+      let node = ReactDOM.findDOMNode(this.refs.editField);
       node.focus();
       node.setSelectionRange(0, node.value.length);
     }
   },
 
   render: function () {
-    var that = this;
+    let that = this;
 
     return (
 
@@ -92,4 +93,4 @@ var Feeder = React.createClass({
   }
 });
 
-module.exports = Feeder;
+export default Feeder;

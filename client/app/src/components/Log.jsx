@@ -1,20 +1,20 @@
 'use strict';
 
-var React = require('react');
-var Router = require('react-router');
-var Link = Router.Link;
-var BabyStore = require('../stores/baby-store');
-var FoodTypeStore = require('../stores/food-type-store');
-var EventStore = require('../stores/event-store');
-var Actions = require('../actions/view-actions');
-var EventTypes = require('../constants/constants').EventTypes;
-var _ = require('lodash');
-var moment = require('moment-timezone');
-var FractionalStepper = require('./FractionalStepper.jsx');
-var TimeStepper = require('./TimeStepper.jsx');
-var SwitchButton = require('./SwitchButton.jsx');
+import React from 'react';
+import { Link } from 'react-router';
+import _ from 'lodash';
+import moment from 'moment';
+import 'moment-timezone';
+import BabyStore from '../stores/baby-store';
+import FoodTypeStore from '../stores/food-type-store';
+import EventStore from '../stores/event-store';
+import Actions from '../actions/view-actions';
+import { EventTypes } from '../constants/constants';
+import FractionalStepper from './FractionalStepper.jsx';
+import TimeStepper from './TimeStepper.jsx';
+import SwitchButton from './SwitchButton.jsx';
 
-var Log = React.createClass({
+const Log = React.createClass({
 
   contextTypes: {
     router: React.PropTypes.object.isRequired
@@ -27,7 +27,7 @@ var Log = React.createClass({
       submitting: true
     });
 
-    var frac = this.state.fracAmount.actualValue ? this.state.fracAmount.actualValue : this.state.fracAmount;
+    let frac = this.state.fracAmount.actualValue ? this.state.fracAmount.actualValue : this.state.fracAmount;
 
     switch (this.state.eventType) {
       case EventTypes.BURP:
@@ -130,8 +130,8 @@ var Log = React.createClass({
   },
 
   _setMeds: function (e) {
-    var meds = this.state.medicine;
-    var val = e.target.value;
+    let meds = this.state.medicine;
+    let val = e.target.value;
 
     if (_.contains(meds, val)) {
       meds = _.without(meds, val);
@@ -145,8 +145,8 @@ var Log = React.createClass({
   },
 
   _setFoods: function (e) {
-    var foods = this.state.foods;
-    var val = e.target.value;
+    let foods = this.state.foods;
+    let val = e.target.value;
 
     if (_.contains(foods, val)) {
       foods = _.without(foods, val);
@@ -160,8 +160,8 @@ var Log = React.createClass({
   },
 
   _setDiaper: function (e) {
-    var diapers = this.state.diaper;
-    var val = e.target.value;
+    let diapers = this.state.diaper;
+    let val = e.target.value;
 
     if (_.contains(diapers, val)) {
       diapers = _.without(diapers, val);
@@ -223,13 +223,13 @@ var Log = React.createClass({
   },
 
   render: function () {
-    var that = this;
-    var baby = this.state.baby ? this.state.baby.firstname : null;
-    var ounceField, feederField, medField, burpField, diaperField, foodField,
+    let that = this;
+    let baby = this.state.baby ? this.state.baby.firstname : null;
+    let ounceField, feederField, medField, burpField, diaperField, foodField,
         spitField, eventTypeField, napTimeField, timeAgoField;
 
     if (this.state.eventType === EventTypes.FEEDING) {
-      var foods = _.map(this.state.foodTypes, function (f) {
+      let foods = _.map(this.state.foodTypes, function (f) {
         return (
           <SwitchButton
             type='checkbox'
@@ -242,7 +242,7 @@ var Log = React.createClass({
       });
 
       if (this.state.baby) {
-        var feeders = _.map(this.state.baby.feeders, function (f) {
+        let feeders = _.map(this.state.baby.feeders, function (f) {
           return (
             <span className='switch' key={f.name}>
               <input type='radio' name='feeder' onChange={that._setFeeder} value={f.name}/>
@@ -479,4 +479,4 @@ var Log = React.createClass({
   }
 });
 
-module.exports = Log;
+export default Log;

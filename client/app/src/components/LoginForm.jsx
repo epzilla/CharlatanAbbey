@@ -1,10 +1,10 @@
 'use strict';
 
-var React = require('react');
-var BabyStore = require('../stores/baby-store');
-var Actions = require('../actions/view-actions');
+import React from 'react';
+import BabyStore from '../stores/baby-store';
+import Actions from '../actions/view-actions';
 
-var LoginForm = React.createClass({
+const LoginForm = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
@@ -23,7 +23,7 @@ var LoginForm = React.createClass({
   },
 
   _setValue: function (e) {
-    var obj = {};
+    let obj = {};
     obj[e.target.name] = e.target.value;
     this.setState(obj);
   },
@@ -68,4 +68,4 @@ var LoginForm = React.createClass({
   }
 });
 
-module.exports = LoginForm;
+export default LoginForm;

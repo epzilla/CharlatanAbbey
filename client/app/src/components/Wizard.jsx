@@ -1,13 +1,13 @@
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var Actions = require('../actions/view-actions');
-var WizardStore = require('../stores/wizard-store');
+import React from 'react';
+import _ from 'lodash';
+import Actions from '../actions/view-actions';
+import WizardStore from '../stores/wizard-store';
 
-var Wizard = React.createClass({
+const Wizard = React.createClass({
   getInitialState: function () {
-    var initialState = this.props.initialState || {};
+    let initialState = this.props.initialState || {};
     return _.assign(initialState, WizardStore.getAll());
   },
 
@@ -42,8 +42,8 @@ var Wizard = React.createClass({
   },
 
   render: function () {
-    var currentView = this.props.views[this.state.step];
-    var nextBtn = currentView.props.onFinish ?
+    let currentView = this.props.views[this.state.step];
+    let nextBtn = currentView.props.onFinish ?
       <button className="btn" onClick={currentView.props.onFinish}>Done</button> :
       <button className="btn" onClick={this._next} disabled={this.state.step === this.props.views.length - 1}>Next</button>;
 
@@ -74,4 +74,4 @@ var Wizard = React.createClass({
   }
 });
 
-module.exports = Wizard;
+export default Wizard;

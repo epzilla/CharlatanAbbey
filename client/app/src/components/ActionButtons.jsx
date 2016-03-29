@@ -1,12 +1,12 @@
 'use strict';
 
-var React = require('react');
-var Link = require('react-router').Link;
-var ActionSheet = require('./ActionSheet.jsx');
-var CSSTransitionGroup = require('react-addons-css-transition-group');
-var Actions = require('../actions/view-actions');
+import React from 'react';
+import { Link } from 'react-router';
+import ActionSheet from './ActionSheet.jsx';
+import CSSTransitionGroup from 'react-addons-css-transition-group';
+import Actions from '../actions/view-actions';
 
-var ActionButtons = React.createClass({
+const ActionButtons = React.createClass({
 
   getInitialState: function () {
     return {
@@ -29,7 +29,7 @@ var ActionButtons = React.createClass({
 
   render: function () {
 
-    var actionSheet;
+    let actionSheet;
 
     if (this.state.logEvent) {
       actionSheet = (
@@ -61,4 +61,4 @@ var ActionButtons = React.createClass({
   }
 });
 
-module.exports = ActionButtons;
+export default ActionButtons;

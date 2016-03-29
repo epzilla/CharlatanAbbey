@@ -1,14 +1,13 @@
-var Constants = require('../constants/constants');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var Dispatcher = require('../dispatcher/app-dispatcher');
+import { ActionTypes } from '../constants/constants';
+import { EventEmitter } from 'events';
+import assign from 'object-assign';
+import AppDispatcher from '../dispatcher/app-dispatcher';
 import ls from '../utils/local-storage';
-var ActionTypes = Constants.ActionTypes;
-var CHANGE_EVENT = 'change';
-var _feeders = ls.get('feeders') || [];
 
+const CHANGE_EVENT = 'change';
+let _feeders = ls.get('feeders') || [];
 
-var FeederStore = assign({}, EventEmitter.prototype, {
+const FeederStore = assign({}, EventEmitter.prototype, {
   emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
@@ -21,13 +20,12 @@ var FeederStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getFeeders: function () {
-    return _feeders;
-  }
+  getFeeders: () => _feeders
 });
 
-FeederStore.dispatchToken = Dispatcher.register(function (payload) {
-  var action;
+FeederStore.dispatchToken =
+AppDispatcher.register(function (payload) {
+  let action;
   action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_FEEDERS:
@@ -38,4 +36,4 @@ FeederStore.dispatchToken = Dispatcher.register(function (payload) {
   FeederStore.emitChange();
 });
 
-module.exports = FeederStore;
+export default FeederStore;
