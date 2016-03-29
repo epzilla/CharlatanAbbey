@@ -1,4 +1,4 @@
-import ActionTypes from '../constants/constants';
+import { ActionTypes } from '../constants/constants';
 import { EventEmitter } from 'events';
 import assign from 'object-assign';
 import AppDispatcher from '../dispatcher/app-dispatcher';

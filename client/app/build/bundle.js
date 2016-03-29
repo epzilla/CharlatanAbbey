@@ -217,7 +217,9 @@ var _constants = require('../constants/constants');
 
 var _fractions = require('../utils/fractions');
 
-var _fractions2 = _interopRequireDefault(_fractions);
+var fractions = _interopRequireWildcard(_fractions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -280,11 +282,11 @@ var Actions = {
       lastname: info.query.lastname,
       birth: info.query.birthdate,
       defaults: {
-        hours: _fractions2.default.getDecimal(info.fullHours, info.fracHours),
-        ounces: _fractions2.default.getDecimal(info.fullOunces, info.fracOunces)
+        hours: fractions.getDecimal(info.fullHours, info.fracHours),
+        ounces: fractions.getDecimal(info.fullOunces, info.fracOunces)
       },
       feeders: _lodash2.default.map(info.feeders, function (feeder) {
-        name: feeder.name;
+        return { name: feeder.name };
       })
     };
 
@@ -4807,8 +4809,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _constants = require('../constants/constants');
 
-var _constants2 = _interopRequireDefault(_constants);
-
 var _events = require('events');
 
 var _objectAssign = require('object-assign');
@@ -4847,17 +4847,17 @@ WizardStore.dispatchToken = _appDispatcher2.default.register(function (payload) 
   var action = void 0;
   action = payload.action;
   switch (action.type) {
-    case _constants2.default.WIZARD_NEXT:
+    case _constants.ActionTypes.WIZARD_NEXT:
       state.step++;
       WizardStore.emitChange();
       break;
-    case _constants2.default.WIZARD_PREV:
+    case _constants.ActionTypes.WIZARD_PREV:
       if (state.step > 0) {
         state.step--;
         WizardStore.emitChange();
       }
       break;
-    case _constants2.default.WIZARD_DONE:
+    case _constants.ActionTypes.WIZARD_DONE:
       state = { step: 0 };
       WizardStore.emitChange();
       break;

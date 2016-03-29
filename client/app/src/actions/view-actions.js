@@ -4,7 +4,7 @@ import API from '../utils/api';
 import moment from 'moment-timezone';
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import { ActionTypes } from '../constants/constants';
-import fractions from '../utils/fractions';
+import * as fractions from '../utils/fractions';
 
 var Actions = {
 
@@ -46,7 +46,7 @@ var Actions = {
   },
 
   sendInitialConfig: info => {
-    var babyA = {
+    let babyA = {
       firstname: info.babyA,
       lastname: info.query.lastname,
       birth: info.query.birthdate,
@@ -54,10 +54,10 @@ var Actions = {
         hours: fractions.getDecimal(info.fullHours, info.fracHours),
         ounces: fractions.getDecimal(info.fullOunces, info.fracOunces)
       },
-      feeders: _.map(info.feeders, feeder => {name: feeder.name})
+      feeders: _.map(info.feeders, feeder => ({name: feeder.name}))
     };
 
-    var babyB = _.assign({}, babyA, {firstname: info.babyB});
+    let babyB = _.assign({}, babyA, {firstname: info.babyB});
 
     API.sendInitialConfig({ babies: [babyA, babyB] });
   }
