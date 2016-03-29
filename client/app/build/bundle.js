@@ -872,13 +872,19 @@ var Feeder = React.createClass({displayName: "Feeder",
   },
 
   render: function () {
+    var that = this;
+
     return (
 
       React.createElement("li", {className: cx({
         editing: this.props.editing
       })}, 
         React.createElement("div", {className: "view"}, 
-          React.createElement("label", {onClick: this.handleEdit}, 
+          React.createElement("label", {onClick: this.handleEdit, onTouchEnd: function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            that.handleEdit();
+          }}, 
             this.props.feeder.name
           ), 
           React.createElement("button", {className: "btn btn-destroy", onClick: this.props.onDestroy}, 
@@ -17892,7 +17898,7 @@ moment.tz.load(require('./data/packed/latest.json'));
 
 },{"moment":45}],45:[function(require,module,exports){
 //! moment.js
-//! version : 2.11.2
+//! version : 2.11.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -19709,7 +19715,7 @@ moment.tz.load(require('./data/packed/latest.json'));
     }
 
     // ASP.NET json date format regex
-    var aspNetRegex = /^(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?\d*)?$/;
+    var aspNetRegex = /(\-)?(?:(\d*)[. ])?(\d+)\:(\d+)(?:\:(\d+)\.?(\d{3})?)?/;
 
     // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
     // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
@@ -21464,7 +21470,7 @@ moment.tz.load(require('./data/packed/latest.json'));
     // Side effect imports
 
 
-    utils_hooks__hooks.version = '2.11.2';
+    utils_hooks__hooks.version = '2.11.1';
 
     setHookCallback(local__createLocal);
 
@@ -48408,8 +48414,9 @@ function isNative(value) {
 module.exports = getNative;
 
 },{}],288:[function(require,module,exports){
+(function (global){
 /**
- * lodash 3.0.8 (Custom Build) <https://lodash.com/>
+ * lodash 3.0.5 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -48426,7 +48433,7 @@ var argsTag = '[object Arguments]',
     genTag = '[object GeneratorFunction]';
 
 /** Used for built-in method references. */
-var objectProto = Object.prototype;
+var objectProto = global.Object.prototype;
 
 /** Used to check objects for own properties. */
 var hasOwnProperty = objectProto.hasOwnProperty;
@@ -48494,6 +48501,7 @@ function isArguments(value) {
  *
  * @static
  * @memberOf _
+ * @type Function
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
@@ -48512,7 +48520,8 @@ function isArguments(value) {
  * // => false
  */
 function isArrayLike(value) {
-  return value != null && isLength(getLength(value)) && !isFunction(value);
+  return value != null &&
+    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
 }
 
 /**
@@ -48521,6 +48530,7 @@ function isArrayLike(value) {
  *
  * @static
  * @memberOf _
+ * @type Function
  * @category Lang
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
@@ -48560,8 +48570,8 @@ function isArrayLikeObject(value) {
  */
 function isFunction(value) {
   // The use of `Object#toString` avoids issues with the `typeof` operator
-  // in Safari 8 which returns 'object' for typed array and weak map constructors,
-  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+  // in Safari 8 which returns 'object' for typed array constructors, and
+  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
   var tag = isObject(value) ? objectToString.call(value) : '';
   return tag == funcTag || tag == genTag;
 }
@@ -48591,8 +48601,7 @@ function isFunction(value) {
  * // => false
  */
 function isLength(value) {
-  return typeof value == 'number' &&
-    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
 }
 
 /**
@@ -48619,6 +48628,8 @@ function isLength(value) {
  * // => false
  */
 function isObject(value) {
+  // Avoid a V8 JIT bug in Chrome 19-20.
+  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
   var type = typeof value;
   return !!value && (type == 'object' || type == 'function');
 }
@@ -48652,6 +48663,7 @@ function isObjectLike(value) {
 
 module.exports = isArguments;
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],289:[function(require,module,exports){
 /**
  * lodash 3.5.3 (Custom Build) <https://lodash.com/>
@@ -49609,8 +49621,9 @@ function isObject(value) {
 module.exports = baseIsEqual;
 
 },{"lodash.isarray":305,"lodash.istypedarray":293,"lodash.keys":294}],293:[function(require,module,exports){
+(function (global){
 /**
- * lodash 3.0.5 (Custom Build) <https://lodash.com/>
+ * lodash 3.0.3 (Custom Build) <https://lodash.com/>
  * Build: `lodash modularize exports="npm" -o ./`
  * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -49663,7 +49676,7 @@ typedArrayTags[regexpTag] = typedArrayTags[setTag] =
 typedArrayTags[stringTag] = typedArrayTags[weakMapTag] = false;
 
 /** Used for built-in method references. */
-var objectProto = Object.prototype;
+var objectProto = global.Object.prototype;
 
 /**
  * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
@@ -49696,8 +49709,7 @@ var objectToString = objectProto.toString;
  * // => false
  */
 function isLength(value) {
-  return typeof value == 'number' &&
-    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
 }
 
 /**
@@ -49744,19 +49756,19 @@ function isObjectLike(value) {
  * // => false
  */
 function isTypedArray(value) {
-  return isObjectLike(value) &&
-    isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
+  return isObjectLike(value) && isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
 }
 
 module.exports = isTypedArray;
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],294:[function(require,module,exports){
 module.exports=require(286)
-},{"C:\\webapps\\charlatan-abbey\\node_modules\\reactabular\\node_modules\\lodash.sortbyorder\\node_modules\\lodash._baseeach\\node_modules\\lodash.keys\\index.js":286,"lodash._getnative":295,"lodash.isarguments":296,"lodash.isarray":305}],295:[function(require,module,exports){
+},{"/Users/adamepling/apps/charlatan-abbey/node_modules/reactabular/node_modules/lodash.sortbyorder/node_modules/lodash._baseeach/node_modules/lodash.keys/index.js":286,"lodash._getnative":295,"lodash.isarguments":296,"lodash.isarray":305}],295:[function(require,module,exports){
 module.exports=require(287)
-},{"C:\\webapps\\charlatan-abbey\\node_modules\\reactabular\\node_modules\\lodash.sortbyorder\\node_modules\\lodash._baseeach\\node_modules\\lodash.keys\\node_modules\\lodash._getnative\\index.js":287}],296:[function(require,module,exports){
+},{"/Users/adamepling/apps/charlatan-abbey/node_modules/reactabular/node_modules/lodash.sortbyorder/node_modules/lodash._baseeach/node_modules/lodash.keys/node_modules/lodash._getnative/index.js":287}],296:[function(require,module,exports){
 module.exports=require(288)
-},{"C:\\webapps\\charlatan-abbey\\node_modules\\reactabular\\node_modules\\lodash.sortbyorder\\node_modules\\lodash._baseeach\\node_modules\\lodash.keys\\node_modules\\lodash.isarguments\\index.js":288}],297:[function(require,module,exports){
+},{"/Users/adamepling/apps/charlatan-abbey/node_modules/reactabular/node_modules/lodash.sortbyorder/node_modules/lodash._baseeach/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":288}],297:[function(require,module,exports){
 /**
  * lodash 3.0.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`
@@ -49905,11 +49917,11 @@ module.exports = pairs;
 
 },{"lodash.keys":299}],299:[function(require,module,exports){
 module.exports=require(286)
-},{"C:\\webapps\\charlatan-abbey\\node_modules\\reactabular\\node_modules\\lodash.sortbyorder\\node_modules\\lodash._baseeach\\node_modules\\lodash.keys\\index.js":286,"lodash._getnative":300,"lodash.isarguments":301,"lodash.isarray":305}],300:[function(require,module,exports){
+},{"/Users/adamepling/apps/charlatan-abbey/node_modules/reactabular/node_modules/lodash.sortbyorder/node_modules/lodash._baseeach/node_modules/lodash.keys/index.js":286,"lodash._getnative":300,"lodash.isarguments":301,"lodash.isarray":305}],300:[function(require,module,exports){
 module.exports=require(287)
-},{"C:\\webapps\\charlatan-abbey\\node_modules\\reactabular\\node_modules\\lodash.sortbyorder\\node_modules\\lodash._baseeach\\node_modules\\lodash.keys\\node_modules\\lodash._getnative\\index.js":287}],301:[function(require,module,exports){
+},{"/Users/adamepling/apps/charlatan-abbey/node_modules/reactabular/node_modules/lodash.sortbyorder/node_modules/lodash._baseeach/node_modules/lodash.keys/node_modules/lodash._getnative/index.js":287}],301:[function(require,module,exports){
 module.exports=require(288)
-},{"C:\\webapps\\charlatan-abbey\\node_modules\\reactabular\\node_modules\\lodash.sortbyorder\\node_modules\\lodash._baseeach\\node_modules\\lodash.keys\\node_modules\\lodash.isarguments\\index.js":288}],302:[function(require,module,exports){
+},{"/Users/adamepling/apps/charlatan-abbey/node_modules/reactabular/node_modules/lodash.sortbyorder/node_modules/lodash._baseeach/node_modules/lodash.keys/node_modules/lodash.isarguments/index.js":288}],302:[function(require,module,exports){
 /**
  * lodash 3.0.2 (Custom Build) <https://lodash.com/>
  * Build: `lodash modern modularize exports="npm" -o ./`

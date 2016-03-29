@@ -61,13 +61,19 @@ var Feeder = React.createClass({
   },
 
   render: function () {
+    var that = this;
+
     return (
 
       <li className={cx({
         editing: this.props.editing
       })}>
         <div className="view">
-          <label onClick={this.handleEdit}>
+          <label onClick={this.handleEdit} onTouchEnd={function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            that.handleEdit();
+          }}>
             {this.props.feeder.name}
           </label>
           <button className="btn btn-destroy" onClick={this.props.onDestroy}>
