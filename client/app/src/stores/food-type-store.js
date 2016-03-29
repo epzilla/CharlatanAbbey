@@ -2,7 +2,7 @@ var Constants = require('../constants/constants');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var Dispatcher = require('../dispatcher/app-dispatcher');
-var ls = require('../utils/local-storage');
+import ls from '../utils/local-storage';
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _foodTypes = ls.get('foodTypes') || [];

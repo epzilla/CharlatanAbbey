@@ -4,7 +4,7 @@ var assign = require('object-assign');
 var Dispatcher = require('../dispatcher/app-dispatcher');
 var _ = require('lodash');
 var moment = require('moment-timezone');
-var ls = require('../utils/local-storage');
+import ls from '../utils/local-storage';
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _events = ls.get('events') || [];

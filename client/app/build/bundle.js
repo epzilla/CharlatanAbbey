@@ -5,6 +5,18 @@ var _reactDom = require('react-dom');
 
 var _reactRouter = require('react-router');
 
+var _api = require('./utils/api');
+
+var API = _interopRequireWildcard(_api);
+
+var _localStorage = require('./utils/local-storage');
+
+var _localStorage2 = _interopRequireDefault(_localStorage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 var React = require('react');
 
 var CSSTransitionGroup = require('react-addons-css-transition-group');
@@ -16,8 +28,7 @@ var History = require('./components/History.jsx');
 var Log = require('./components/Log.jsx');
 var Edit = require('./components/Edit.jsx');
 var Timesheet = require('./components/Timesheet.jsx');
-var API = require('./utils/api');
-var ls = require('./utils/local-storage');
+
 
 var App = React.createClass({
   displayName: 'App',
@@ -41,7 +52,7 @@ var App = React.createClass({
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  var babies = ls.get('babies');
+  var babies = _localStorage2.default.get('babies');
   if (!_.isEmpty(babies)) {
     var babyIDs = _.map(babies, '_id');
     API.getEvents(babyIDs);
@@ -153,8 +164,14 @@ module.exports = ServerActions;
 },{"../constants/constants":22,"../dispatcher/app-dispatcher":23}],3:[function(require,module,exports){
 'use strict';
 
+var _api = require('../utils/api');
+
+var _api2 = _interopRequireDefault(_api);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var _ = require('lodash');
-var API = require('../utils/api');
+
 var moment = require('moment-timezone');
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var AppConstants = require('../constants/constants');
@@ -165,35 +182,35 @@ var ViewActions = {
 
   findBabies: function findBabies(obj) {
     obj.birthdate = moment(obj.birthdate).format("MM-DD-YYYY");
-    API.findBabies(obj);
+    _api2.default.findBabies(obj);
   },
 
   getFoodTypes: function getFoodTypes() {
-    API.getFoodTypes();
+    _api2.default.getFoodTypes();
   },
 
   getEvents: function getEvents(babyID) {
-    API.getEvents(babyID);
+    _api2.default.getEvents(babyID);
   },
 
   getTimeLogs: function getTimeLogs(babyID) {
-    API.getTimeLogs(babyID);
+    _api2.default.getTimeLogs(babyID);
   },
 
   submitEventForm: function submitEventForm(formValues) {
-    API.submitEvent(formValues);
+    _api2.default.submitEvent(formValues);
   },
 
   editEventForm: function editEventForm(formValues) {
-    API.editEvent(formValues);
+    _api2.default.editEvent(formValues);
   },
 
   clockIn: function clockIn(timeLog) {
-    API.clockIn(timeLog);
+    _api2.default.clockIn(timeLog);
   },
 
   clockOut: function clockOut(id, timeLog) {
-    API.clockOut(id, timeLog);
+    _api2.default.clockOut(id, timeLog);
   },
 
   wizardNext: function wizardNext() {
@@ -230,7 +247,7 @@ var ViewActions = {
 
     var babyB = _.assign({}, babyA, { firstname: info.babyB });
 
-    API.sendInitialConfig({ babies: [babyA, babyB] });
+    _api2.default.sendInitialConfig({ babies: [babyA, babyB] });
   }
 };
 
@@ -416,8 +433,8 @@ var EventStore = require('../stores/event-store');
 var TimeLogStore = require('../stores/time-log-store');
 var ActionButtons = require('./ActionButtons.jsx');
 
-var Home = React.createClass({
-  displayName: 'Home',
+var BabiesSummaryView = React.createClass({
+  displayName: 'BabiesSummaryView',
 
   getInitialState: function getInitialState() {
     return {
@@ -481,7 +498,7 @@ var Home = React.createClass({
   }
 });
 
-module.exports = Home;
+module.exports = BabiesSummaryView;
 
 },{"../actions/view-actions":3,"../stores/event-store":25,"../stores/time-log-store":27,"./ActionButtons.jsx":4,"./FeedingInfo.jsx":10,"lodash":41,"react":272}],7:[function(require,module,exports){
 'use strict';
@@ -1438,6 +1455,16 @@ module.exports = FractionalStepper;
 },{"./Stepper.jsx":17,"react":272}],12:[function(require,module,exports){
 'use strict';
 
+var _uuid = require('../utils/uuid');
+
+var uuid = _interopRequireWildcard(_uuid);
+
+var _fractions = require('../utils/fractions');
+
+var fractions = _interopRequireWildcard(_fractions);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 var React = require('react');
 var _ = require('lodash');
 var BabyStore = require('../stores/baby-store');
@@ -1445,8 +1472,7 @@ var Actions = require('../actions/view-actions');
 var FractionalStepper = require('./FractionalStepper.jsx');
 var Wizard = require('./Wizard.jsx');
 var FeederList = require('./FeederList.jsx');
-var uuid = require('../utils/uuid');
-var fractions = require('../utils/fractions');
+
 
 var View1 = React.createClass({
   displayName: 'View1',
@@ -2077,38 +2103,57 @@ module.exports = History;
 },{"../actions/view-actions":3,"../constants/constants":22,"../stores/event-store":25,"lodash":41,"moment-timezone":43,"react":272,"react-router":79,"react-swipeable":109}],14:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var ls = require('../utils/local-storage');
-var BabyStore = require('../stores/baby-store');
-var LoginForm = require('./LoginForm.jsx');
-var BabiesSummaryView = require('./BabiesSummaryView.jsx');
+var _react = require('react');
 
-var Home = React.createClass({
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _localStorage = require('../utils/local-storage');
+
+var _localStorage2 = _interopRequireDefault(_localStorage);
+
+var _babyStore = require('../stores/baby-store');
+
+var _babyStore2 = _interopRequireDefault(_babyStore);
+
+var _LoginForm = require('./LoginForm.jsx');
+
+var _LoginForm2 = _interopRequireDefault(_LoginForm);
+
+var _BabiesSummaryView = require('./BabiesSummaryView.jsx');
+
+var _BabiesSummaryView2 = _interopRequireDefault(_BabiesSummaryView);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Home = _react2.default.createClass({
   displayName: 'Home',
 
   getInitialState: function getInitialState() {
     return {
-      babies: ls.get('babies')
+      babies: _localStorage2.default.get('babies')
     };
   },
 
   _onChange: function _onChange() {
     this.setState({
-      babies: BabyStore.getBabies()
+      babies: _babyStore2.default.getBabies()
     });
   },
 
   componentDidMount: function componentDidMount() {
-    BabyStore.addChangeListener(this._onChange);
+    _babyStore2.default.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    BabyStore.removeChangeListener(this._onChange);
+    _babyStore2.default.removeChangeListener(this._onChange);
   },
 
   render: function render() {
-    return _.isEmpty(this.state.babies) ? React.createElement(LoginForm, null) : React.createElement(BabiesSummaryView, { babies: this.state.babies });
+    return _lodash2.default.isEmpty(this.state.babies) ? _react2.default.createElement(_LoginForm2.default, null) : _react2.default.createElement(_BabiesSummaryView2.default, { babies: this.state.babies });
   }
 });
 
@@ -2851,7 +2896,7 @@ var LoginForm = React.createClass({
 
   _onChange: function _onChange() {
     if (BabyStore.getSearchFailed()) {
-      this.context.router.push({ pathname: '/get-started/', query: this.state });
+      this.context.router.push({ pathname: 'get-started', query: this.state });
     } else {
       this.setState({
         babies: BabyStore.getBabies(),
@@ -2916,9 +2961,11 @@ module.exports = LoginForm;
 },{"../actions/view-actions":3,"../stores/baby-store":24,"react":272}],17:[function(require,module,exports){
 'use strict';
 
+var _fractions = require('../utils/fractions');
+
 var React = require('react');
 var cx = require('classnames');
-var fractions = require('../utils/fractions').fractions;
+
 
 var StepperBtn = React.createClass({
   displayName: 'StepperBtn',
@@ -3000,11 +3047,11 @@ var Stepper = React.createClass({
 
     this.setState({
       fraction: fracPointer,
-      val: fractions[fracPointer].displayValue
+      val: _fractions.fractions[fracPointer].displayValue
     });
     this.props.onChange({
       full: false,
-      amount: fractions[fracPointer]
+      amount: _fractions.fractions[fracPointer]
     });
   },
 
@@ -3043,11 +3090,11 @@ var Stepper = React.createClass({
 
     this.setState({
       fraction: fracPointer,
-      val: fractions[fracPointer].displayValue
+      val: _fractions.fractions[fracPointer].displayValue
     });
     this.props.onChange({
       full: false,
-      amount: fractions[fracPointer]
+      amount: _fractions.fractions[fracPointer]
     });
   },
 
@@ -3798,16 +3845,22 @@ module.exports = AppDispatcher;
 },{"..//constants/constants":22,"flux":37,"object-assign":46}],24:[function(require,module,exports){
 'use strict';
 
+var _localStorage = require('../utils/local-storage');
+
+var _localStorage2 = _interopRequireDefault(_localStorage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Constants = require('../constants/constants');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var _ = require('lodash');
 var Dispatcher = require('../dispatcher/app-dispatcher');
-var ls = require('../utils/local-storage');
+
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
-var _babies = ls.get('babies') || [];
-var _feeders = ls.get('feeders') || [];
+var _babies = _localStorage2.default.get('babies') || [];
+var _feeders = _localStorage2.default.get('feeders') || [];
 var _failedSearch;
 
 var BabyStore = assign({}, EventEmitter.prototype, {
@@ -3847,8 +3900,8 @@ BabyStore.dispatchToken = Dispatcher.register(function (payload) {
     case ActionTypes.RECEIVE_BABIES:
       _babies = action.data;
       _feeders = _babies[0].feeders;
-      ls.set('babies', _babies);
-      ls.set('feeders', _feeders);
+      _localStorage2.default.set('babies', _babies);
+      _localStorage2.default.set('feeders', _feeders);
       break;
     case ActionTypes.NO_BABIES_FOUND:
       _failedSearch = true;
@@ -3861,36 +3914,42 @@ module.exports = BabyStore;
 },{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"lodash":41,"object-assign":46}],25:[function(require,module,exports){
 'use strict';
 
+var _localStorage = require('../utils/local-storage');
+
+var _localStorage2 = _interopRequireDefault(_localStorage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Constants = require('../constants/constants');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var Dispatcher = require('../dispatcher/app-dispatcher');
 var _ = require('lodash');
 var moment = require('moment-timezone');
-var ls = require('../utils/local-storage');
+
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
-var _events = ls.get('events') || [];
-var _feedings = ls.get('feedings') || [];
-var _diapers = ls.get('diapers') || [];
-var _meds = ls.get('meds') || [];
-var _spits = ls.get('spits') || [];
-var _poops = ls.get('poops') || [];
-var _latest = ls.get('latest') || [];
-var _latestPoops = ls.get('latest-poops') || {};
-var _latestPrevacid = ls.get('latest-prevacid') || {};
-var _lastDayFeedings = ls.get('last-day-feedings') || {};
-var _lastDayEvents = ls.get('last-day-events') || {};
-var _lastDayMeds = ls.get('last-day-meds') || {};
-var _lastDayPoops = ls.get('last-day-poops') || {};
-var _lastWeekEvents = ls.get('last-week-events') || {};
-var _lastWeekFeedings = ls.get('last-week-feedings') || {};
-var _lastWeekMeds = ls.get('last-week-meds') || {};
-var _lastWeekPoops = ls.get('last-week-poops') || {};
-var _groupedEvents = ls.get('grouped-events') || {};
-var _groupedFeedings = ls.get('grouped-feedings') || {};
-var _groupedMeds = ls.get('grouped-meds') || {};
-var _groupedPoops = ls.get('grouped-poops') || {};
+var _events = _localStorage2.default.get('events') || [];
+var _feedings = _localStorage2.default.get('feedings') || [];
+var _diapers = _localStorage2.default.get('diapers') || [];
+var _meds = _localStorage2.default.get('meds') || [];
+var _spits = _localStorage2.default.get('spits') || [];
+var _poops = _localStorage2.default.get('poops') || [];
+var _latest = _localStorage2.default.get('latest') || [];
+var _latestPoops = _localStorage2.default.get('latest-poops') || {};
+var _latestPrevacid = _localStorage2.default.get('latest-prevacid') || {};
+var _lastDayFeedings = _localStorage2.default.get('last-day-feedings') || {};
+var _lastDayEvents = _localStorage2.default.get('last-day-events') || {};
+var _lastDayMeds = _localStorage2.default.get('last-day-meds') || {};
+var _lastDayPoops = _localStorage2.default.get('last-day-poops') || {};
+var _lastWeekEvents = _localStorage2.default.get('last-week-events') || {};
+var _lastWeekFeedings = _localStorage2.default.get('last-week-feedings') || {};
+var _lastWeekMeds = _localStorage2.default.get('last-week-meds') || {};
+var _lastWeekPoops = _localStorage2.default.get('last-week-poops') || {};
+var _groupedEvents = _localStorage2.default.get('grouped-events') || {};
+var _groupedFeedings = _localStorage2.default.get('grouped-feedings') || {};
+var _groupedMeds = _localStorage2.default.get('grouped-meds') || {};
+var _groupedPoops = _localStorage2.default.get('grouped-poops') || {};
 
 if (_groupedFeedings && _groupedFeedings.length > 0) {
   _latest = _.map(_groupedFeedings, function (baby) {
@@ -4035,23 +4094,23 @@ var updateStore = function updateStore() {
     return baby[0];
   });
 
-  ls.set('last-day-feedings', _lastDayFeedings);
-  ls.set('last-day-poops', _lastDayFeedings);
-  ls.set('last-day-meds', _lastDayFeedings);
-  ls.set('last-day-events', _lastDayEvents);
-  ls.set('last-week-feedings', _lastWeekFeedings);
-  ls.set('last-week-poops', _lastWeekPoops);
-  ls.set('last-week-meds', _lastWeekMeds);
-  ls.set('last-week-events', _lastWeekEvents);
-  ls.set('latest', _latest);
-  ls.set('feedings', _feedings);
-  ls.set('meds', _meds);
-  ls.set('poops', _poops);
-  ls.set('grouped-feedings', _groupedFeedings);
-  ls.set('grouped-meds', _groupedMeds);
-  ls.set('grouped-poops', _groupedPoops);
-  ls.set('grouped-events', _groupedEvents);
-  ls.set('latest-poops', _latestPoops);
+  _localStorage2.default.set('last-day-feedings', _lastDayFeedings);
+  _localStorage2.default.set('last-day-poops', _lastDayFeedings);
+  _localStorage2.default.set('last-day-meds', _lastDayFeedings);
+  _localStorage2.default.set('last-day-events', _lastDayEvents);
+  _localStorage2.default.set('last-week-feedings', _lastWeekFeedings);
+  _localStorage2.default.set('last-week-poops', _lastWeekPoops);
+  _localStorage2.default.set('last-week-meds', _lastWeekMeds);
+  _localStorage2.default.set('last-week-events', _lastWeekEvents);
+  _localStorage2.default.set('latest', _latest);
+  _localStorage2.default.set('feedings', _feedings);
+  _localStorage2.default.set('meds', _meds);
+  _localStorage2.default.set('poops', _poops);
+  _localStorage2.default.set('grouped-feedings', _groupedFeedings);
+  _localStorage2.default.set('grouped-meds', _groupedMeds);
+  _localStorage2.default.set('grouped-poops', _groupedPoops);
+  _localStorage2.default.set('grouped-events', _groupedEvents);
+  _localStorage2.default.set('latest-poops', _latestPoops);
   EventStore.emitChange();
 };
 
@@ -4061,13 +4120,13 @@ EventStore.dispatchToken = Dispatcher.register(function (payload) {
   switch (action.type) {
     case ActionTypes.RECEIVE_EVENTS:
       _events = action.data;
-      ls.set('events', _events);
+      _localStorage2.default.set('events', _events);
       updateStore();
       break;
 
     case ActionTypes.SUCCESSFUL_EVENT_POST:
       _events.push(action.data);
-      ls.set('events', _events);
+      _localStorage2.default.set('events', _events);
       updateStore();
       break;
 
@@ -4093,14 +4152,20 @@ module.exports = EventStore;
 },{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"lodash":41,"moment-timezone":43,"object-assign":46}],26:[function(require,module,exports){
 'use strict';
 
+var _localStorage = require('../utils/local-storage');
+
+var _localStorage2 = _interopRequireDefault(_localStorage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Constants = require('../constants/constants');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var Dispatcher = require('../dispatcher/app-dispatcher');
-var ls = require('../utils/local-storage');
+
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
-var _foodTypes = ls.get('foodTypes') || [];
+var _foodTypes = _localStorage2.default.get('foodTypes') || [];
 
 var FoodTypeStore = assign({}, EventEmitter.prototype, {
   emitChange: function emitChange() {
@@ -4126,7 +4191,7 @@ FoodTypeStore.dispatchToken = Dispatcher.register(function (payload) {
   switch (action.type) {
     case ActionTypes.RECEIVE_FOOD_TYPES:
       _foodTypes = action.data;
-      ls.set('foodTypes', _foodTypes);
+      _localStorage2.default.set('foodTypes', _foodTypes);
       break;
   }
   FoodTypeStore.emitChange();
@@ -4137,19 +4202,25 @@ module.exports = FoodTypeStore;
 },{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"../utils/local-storage":31,"events":34,"object-assign":46}],27:[function(require,module,exports){
 'use strict';
 
+var _localStorage = require('../utils/local-storage');
+
+var _localStorage2 = _interopRequireDefault(_localStorage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Constants = require('../constants/constants');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var Dispatcher = require('../dispatcher/app-dispatcher');
-var ls = require('../utils/local-storage');
+
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 var _ = require('lodash');
 var moment = require('moment-timezone');
-var _rawLogs = ls.get('raw-time-logs') || [];
-var _timeLogs = ls.get('time-logs') || [];
-var _weeklyTimeLogs = ls.get('weekly-time-logs') || {};
-var _monthlyTimeLogs = ls.get('monthly-time-logs') || {};
+var _rawLogs = _localStorage2.default.get('raw-time-logs') || [];
+var _timeLogs = _localStorage2.default.get('time-logs') || [];
+var _weeklyTimeLogs = _localStorage2.default.get('weekly-time-logs') || {};
+var _monthlyTimeLogs = _localStorage2.default.get('monthly-time-logs') || {};
 var _thisWeekLog;
 var _thisMonthLog;
 var _isClockedIn = false;
@@ -4206,9 +4277,9 @@ var updateStore = function updateStore() {
   _monthlyTimeLogs = _.groupBy(_timeLogs, 'monthOf');
   _thisWeekLog = _weeklyTimeLogs[thisWeek];
   _thisMonthLog = _monthlyTimeLogs[thisMonth];
-  ls.set('weekly-time-logs', _weeklyTimeLogs);
-  ls.set('monthly-time-logs', _monthlyTimeLogs);
-  ls.set('time-logs', _timeLogs);
+  _localStorage2.default.set('weekly-time-logs', _weeklyTimeLogs);
+  _localStorage2.default.set('monthly-time-logs', _monthlyTimeLogs);
+  _localStorage2.default.set('time-logs', _timeLogs);
   TimeLogStore.emitChange();
 };
 
@@ -4299,13 +4370,28 @@ module.exports = WizardStore;
 },{"../constants/constants":22,"../dispatcher/app-dispatcher":23,"events":34,"object-assign":46}],29:[function(require,module,exports){
 'use strict';
 
-var Rest = require('./rest-service');
-var ServerActions = require('../actions/server-actions');
-var _ = require('lodash');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _arguments = arguments;
+
+var _restService = require('./rest-service');
+
+var _restService2 = _interopRequireDefault(_restService);
+
+var _serverActions = require('../actions/server-actions');
+
+var _serverActions2 = _interopRequireDefault(_serverActions);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 if (!String.prototype.includes) {
   String.prototype.includes = function () {
-    return String.prototype.indexOf.apply(this, arguments) !== -1;
+    return String.prototype.indexOf.apply(undefined, _arguments) !== -1;
   };
 }
 
@@ -4316,142 +4402,156 @@ var getJSON = function getJSON(json) {
   return json;
 };
 
-module.exports = {
+var API = {
   getEvents: function getEvents(babyIDs) {
-    return Rest.get('/api/events/babies/' + babyIDs).then(function (res) {
-      ServerActions.receiveEvents(getJSON(res.response));
+    return _restService2.default.get('/api/events/babies/' + babyIDs).then(function (res) {
+      _serverActions2.default.receiveEvents(getJSON(res.response));
     });
   },
 
   getFeedings: function getFeedings() {
-    return Rest.get('/api/events/feedings').then(function (res) {
-      ServerActions.receiveFeedings(getJSON(res.response));
+    return _restService2.default.get('/api/events/feedings').then(function (res) {
+      _serverActions2.default.receiveFeedings(getJSON(res.response));
     });
   },
 
   getBabies: function getBabies() {
-    return Rest.get('/api/babies').then(function (res) {
-      ServerActions.receiveBabies(getJSON(res.response));
+    return _restService2.default.get('/api/babies').then(function (res) {
+      _serverActions2.default.receiveBabies(getJSON(res.response));
     });
   },
 
   findBabies: function findBabies(obj) {
-    return Rest.post('/api/babies/search', obj).then(function (res) {
-      if (!_.isEmpty(res.response)) {
-        ServerActions.receiveBabies(getJSON(res.response));
+    return _restService2.default.post('/api/babies/search', obj).then(function (res) {
+      if (!_lodash2.default.isEmpty(res.response)) {
+        _serverActions2.default.receiveBabies(getJSON(res.response));
       } else {
-        ServerActions.noBabiesFound();
+        _serverActions2.default.noBabiesFound();
       }
     }).catch(function () {
-      ServerActions.noBabiesFound();
+      _serverActions2.default.noBabiesFound();
     });
   },
 
   getFoodTypes: function getFoodTypes() {
-    return Rest.get('/api/food-types').then(function (res) {
-      ServerActions.receiveFoodTypes(getJSON(res.response));
+    return _restService2.default.get('/api/food-types').then(function (res) {
+      _serverActions2.default.receiveFoodTypes(getJSON(res.response));
     });
   },
 
   getTimeLogs: function getTimeLogs(babyIDs) {
-    return Rest.get('/api/time-logs/babies/' + babyIDs).then(function (res) {
-      ServerActions.receiveTimeLogs(getJSON(res.response));
+    return _restService2.default.get('/api/time-logs/babies/' + babyIDs).then(function (res) {
+      _serverActions2.default.receiveTimeLogs(getJSON(res.response));
     });
   },
 
   submitEvent: function submitEvent(info) {
-    return Rest.post('/api/events', info).then(function (res) {
-      ServerActions.successfulEventPost(getJSON(res.response));
+    return _restService2.default.post('/api/events', info).then(function (res) {
+      _serverActions2.default.successfulEventPost(getJSON(res.response));
     });
   },
 
   editEvent: function editEvent(info) {
-    return Rest.put('/api/events/' + info._id, info).then(function (res) {
-      ServerActions.successfulEventEdit(getJSON(res.response));
+    return _restService2.default.put('/api/events/' + info._id, info).then(function (res) {
+      _serverActions2.default.successfulEventEdit(getJSON(res.response));
     });
   },
 
   clockIn: function clockIn(timeLog) {
-    return Rest.post('/api/time-logs', timeLog).then(function (res) {
-      ServerActions.clockedIn(getJSON(res.response));
+    return _restService2.default.post('/api/time-logs', timeLog).then(function (res) {
+      _serverActions2.default.clockedIn(getJSON(res.response));
     });
   },
 
   clockOut: function clockOut(id, timeLog) {
-    return Rest.put('/api/time-logs/' + id, timeLog).then(function (res) {
-      ServerActions.clockedOut(getJSON(res.response));
+    return _restService2.default.put('/api/time-logs/' + id, timeLog).then(function (res) {
+      _serverActions2.default.clockedOut(getJSON(res.response));
     });
   },
 
   sendInitialConfig: function sendInitialConfig(info) {
-    return Rest.post('/api/babies/initialize', info).then(function (res) {
-      ServerActions.receiveBabies(getJSON(res.response));
+    return _restService2.default.post('/api/babies/initialize', info).then(function (res) {
+      _serverActions2.default.receiveBabies(getJSON(res.response));
     });
   }
 };
 
+exports.default = API;
+
 },{"../actions/server-actions":2,"./rest-service":32,"lodash":41}],30:[function(require,module,exports){
 'use strict';
 
-var _ = require('lodash');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getByDisplayValue = exports.getByActualValue = exports.getDecimal = exports.getFraction = exports.fractions = undefined;
 
-module.exports = {
-  fractions: [{
-    displayValue: '--',
-    actualValue: 0.00
-  }, {
-    displayValue: '¼',
-    actualValue: 0.25
-  }, {
-    displayValue: '⅓',
-    actualValue: 0.33
-  }, {
-    displayValue: '½',
-    actualValue: 0.50
-  }, {
-    displayValue: '⅔',
-    actualValue: 0.67
-  }, {
-    displayValue: '¾',
-    actualValue: 0.75
-  }],
+var _lodash = require('lodash');
 
-  getFraction: function getFraction(whole, frac) {
-    if (!frac) {
-      return whole.toString();
-    }
+var _lodash2 = _interopRequireDefault(_lodash);
 
-    var fracDecimal = _.isObject(frac) ? frac.actualValue : parseFloat(frac.toPrecision(2));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-    if (!fracDecimal) {
-      return whole.toString();
-    }
+var fractions = exports.fractions = [{
+  displayValue: '--',
+  actualValue: 0.00
+}, {
+  displayValue: '¼',
+  actualValue: 0.25
+}, {
+  displayValue: '⅓',
+  actualValue: 0.33
+}, {
+  displayValue: '½',
+  actualValue: 0.50
+}, {
+  displayValue: '⅔',
+  actualValue: 0.67
+}, {
+  displayValue: '¾',
+  actualValue: 0.75
+}];
 
-    var fracDisplay = _.find(this.fractions, { actualValue: fracDecimal }).displayValue;
-    return whole + fracDisplay;
-  },
-
-  getDecimal: function getDecimal(whole, frac) {
-    var fracValue = _.isObject(frac) ? frac.actualValue : frac;
-    return !fracValue ? whole : whole + fracValue;
-  },
-
-  getByActualValue: function getByActualValue(actualValue) {
-    return _.find(this.fractions, { actualValue: actualValue });
-  },
-
-  getByDisplayValue: function getByDisplayValue(displayValue) {
-    return _.find(this.fractions, { displayValue: displayValue });
+var getFraction = exports.getFraction = function getFraction(whole, frac) {
+  if (!frac) {
+    return whole.toString();
   }
+
+  var fracDecimal = _lodash2.default.isObject(frac) ? frac.actualValue : parseFloat(frac.toPrecision(2));
+
+  if (!fracDecimal) {
+    return whole.toString();
+  }
+
+  var fracDisplay = _lodash2.default.find(fractions, { actualValue: fracDecimal }).displayValue;
+  return whole + fracDisplay;
+};
+
+var getDecimal = exports.getDecimal = function getDecimal(whole, frac) {
+  var fracValue = _lodash2.default.isObject(frac) ? frac.actualValue : frac;
+  return !fracValue ? whole : whole + fracValue;
+};
+
+var getByActualValue = exports.getByActualValue = function getByActualValue(actualValue) {
+  return _lodash2.default.find(fractions, { actualValue: actualValue });
+};
+
+var getByDisplayValue = exports.getByDisplayValue = function getByDisplayValue(displayValue) {
+  return _lodash2.default.find(fractions, { displayValue: displayValue });
 };
 
 },{"lodash":41}],31:[function(require,module,exports){
 'use strict';
 
-module.exports = {
-  prefix: 'charlatan',
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var ls = {
+  'prefix': 'charlatan',
+
   get: function get(key) {
-    var prefixedKey, self;
+    var prefixedKey = void 0,
+        self = void 0;
     self = this;
     prefixedKey = self.prefix.concat('-', key);
     if (window.localStorage && window.localStorage.getItem) {
@@ -4462,8 +4562,11 @@ module.exports = {
       }
     }
   },
+
   set: function set(key, val) {
-    var prefixedKey, self, value;
+    var prefixedKey = void 0,
+        self = void 0,
+        value = void 0;
     self = this;
     prefixedKey = self.prefix.concat('-', key);
     value = JSON.stringify(val);
@@ -4478,55 +4581,60 @@ module.exports = {
   }
 };
 
+exports.default = ls;
+
 },{}],32:[function(require,module,exports){
 'use strict';
 
-var qwest = require('qwest');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-module.exports = {
+var _qwest = require('qwest');
+
+var _qwest2 = _interopRequireDefault(_qwest);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
   get: function get(url) {
-    return qwest.get(url, null, {
-      responseType: 'json'
-    });
+    return _qwest2.default.get(url, null, { responseType: 'json' });
   },
+
   post: function post(url, data) {
-    return qwest.post(url, data, {
-      dataType: 'json',
-      responseType: 'json'
-    });
+    return _qwest2.default.post(url, data, { dataType: 'json', responseType: 'json' });
   },
+
   put: function put(url, data) {
-    return qwest.put(url, data, {
-      dataType: 'json',
-      responseType: 'json'
-    });
+    return _qwest2.default.put(url, data, { dataType: 'json', responseType: 'json' });
   },
+
   upload: function upload(url, data) {
-    return qwest.post(url, data, {
-      dataType: 'formdata'
-    });
+    return _qwest2.default.post(url, data, { dataType: 'formdata' });
   }
 };
 
 },{"qwest":49}],33:[function(require,module,exports){
 'use strict';
 
-module.exports = {
-  getUUID: function getUUID() {
-    /*jshint bitwise:false */
-    var i, random;
-    var uuid = '';
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var getUUID = exports.getUUID = function getUUID() {
+  /*jshint bitwise:false */
+  var i = void 0,
+      random = void 0;
+  var uuid = '';
 
-    for (i = 0; i < 32; i++) {
-      random = Math.random() * 16 | 0;
-      if (i === 8 || i === 12 || i === 16 || i === 20) {
-        uuid += '-';
-      }
-      uuid += (i === 12 ? 4 : i === 16 ? random & 3 | 8 : random).toString(16);
+  for (i = 0; i < 32; i++) {
+    random = Math.random() * 16 | 0;
+    if (i === 8 || i === 12 || i === 16 || i === 20) {
+      uuid += '-';
     }
-
-    return uuid;
+    uuid += (i === 12 ? 4 : i === 16 ? random & 3 | 8 : random).toString(16);
   }
+
+  return uuid;
 };
 
 },{}],34:[function(require,module,exports){

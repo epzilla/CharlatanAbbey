@@ -30,7 +30,7 @@ var LoginForm = React.createClass({
 
   _onChange: function () {
     if (BabyStore.getSearchFailed()) {
-      this.context.router.push({ pathname: '/get-started/', query: this.state});
+      this.context.router.push({ pathname: 'get-started', query: this.state});
     } else {
       this.setState({
         babies: BabyStore.getBabies(),

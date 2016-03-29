@@ -1,58 +1,52 @@
-var _ = require('lodash');
+import _ from 'lodash';
 
-module.exports = {
-  fractions: [
-    {
-      displayValue: '--',
-      actualValue: 0.00
-    },
-    {
-      displayValue: '¼',
-      actualValue: 0.25
-    },
-    {
-      displayValue: '⅓',
-      actualValue: 0.33
-    },
-    {
-      displayValue: '½',
-      actualValue: 0.50
-    },
-    {
-      displayValue: '⅔',
-      actualValue: 0.67
-    },
-    {
-      displayValue: '¾',
-      actualValue: 0.75
-    }
-  ],
-
-  getFraction: function (whole, frac) {
-    if (!frac) {
-      return whole.toString();
-    }
-
-    var fracDecimal = _.isObject(frac) ? frac.actualValue : parseFloat(frac.toPrecision(2));
-
-    if (!fracDecimal) {
-      return whole.toString();
-    }
-
-    var fracDisplay = _.find(this.fractions, {actualValue: fracDecimal}).displayValue;
-    return whole + fracDisplay;
+export const fractions = [
+  {
+    displayValue: '--',
+    actualValue: 0.00
   },
-
-  getDecimal: function (whole, frac) {
-    var fracValue = _.isObject(frac) ? frac.actualValue : frac;
-    return !fracValue ? whole : (whole + fracValue);
+  {
+    displayValue: '¼',
+    actualValue: 0.25
   },
-
-  getByActualValue: function (actualValue) {
-    return _.find(this.fractions, {actualValue: actualValue});
+  {
+    displayValue: '⅓',
+    actualValue: 0.33
   },
-
-  getByDisplayValue: function (displayValue) {
-    return _.find(this.fractions, {displayValue: displayValue});
+  {
+    displayValue: '½',
+    actualValue: 0.50
+  },
+  {
+    displayValue: '⅔',
+    actualValue: 0.67
+  },
+  {
+    displayValue: '¾',
+    actualValue: 0.75
   }
+];
+
+export const getFraction = (whole, frac) => {
+  if (!frac) {
+    return whole.toString();
+  }
+
+  var fracDecimal = _.isObject(frac) ? frac.actualValue : parseFloat(frac.toPrecision(2));
+
+  if (!fracDecimal) {
+    return whole.toString();
+  }
+
+  var fracDisplay = _.find(fractions, {actualValue: fracDecimal}).displayValue;
+  return whole + fracDisplay;
 };
+
+export const getDecimal = (whole, frac) => {
+  var fracValue = _.isObject(frac) ? frac.actualValue : frac;
+  return !fracValue ? whole : (whole + fracValue);
+};
+
+export const getByActualValue = actualValue => _.find(fractions, {actualValue: actualValue});
+
+export const getByDisplayValue = displayValue => _.find(fractions, {displayValue: displayValue});

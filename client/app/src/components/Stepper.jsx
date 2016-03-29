@@ -1,6 +1,6 @@
 var React = require('react');
 var cx = require('classnames');
-var fractions = require('../utils/fractions').fractions;
+import { fractions } from '../utils/fractions';
 
 var StepperBtn = React.createClass({
 

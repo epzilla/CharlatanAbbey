@@ -1,11 +1,11 @@
 'use strict';
 
-var React = require('react');
-var _ = require('lodash');
-var ls = require('../utils/local-storage');
-var BabyStore = require('../stores/baby-store');
-var LoginForm = require('./LoginForm.jsx');
-var BabiesSummaryView = require('./BabiesSummaryView.jsx');
+import React from 'react';
+import _ from 'lodash';
+import ls from '../utils/local-storage';
+import BabyStore from '../stores/baby-store';
+import LoginForm from './LoginForm.jsx';
+import BabiesSummaryView from './BabiesSummaryView.jsx';
 
 var Home = React.createClass({
   getInitialState: function () {

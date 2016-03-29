@@ -1,7 +1,8 @@
-module.exports = {
-  prefix: 'charlatan',
+const ls = {
+  'prefix': 'charlatan',
+
   get: function (key) {
-    var prefixedKey, self;
+    let prefixedKey, self;
     self = this;
     prefixedKey = self.prefix.concat('-', key);
     if (window.localStorage && window.localStorage.getItem) {
@@ -12,8 +13,9 @@ module.exports = {
       }
     }
   },
+
   set: function (key, val) {
-    var prefixedKey, self, value;
+    let prefixedKey, self, value;
     self = this;
     prefixedKey = self.prefix.concat('-', key);
     value = JSON.stringify(val);
@@ -27,3 +29,5 @@ module.exports = {
     }
   }
 };
+
+export default ls;

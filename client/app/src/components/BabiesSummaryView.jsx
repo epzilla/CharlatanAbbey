@@ -8,7 +8,7 @@ var EventStore = require('../stores/event-store');
 var TimeLogStore = require('../stores/time-log-store');
 var ActionButtons = require('./ActionButtons.jsx');
 
-var Home = React.createClass({
+var BabiesSummaryView = React.createClass({
   getInitialState: function () {
     return {
       babyIDs: _.map(this.props.babies, '_id'),
@@ -65,4 +65,4 @@ var Home = React.createClass({
   }
 });
 
-module.exports = Home;
+module.exports = BabiesSummaryView;

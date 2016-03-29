@@ -1,6 +1,6 @@
 'use strict';
 var _ = require('lodash');
-var API = require('../utils/api');
+import API from '../utils/api';
 var moment = require('moment-timezone');
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var AppConstants = require('../constants/constants');

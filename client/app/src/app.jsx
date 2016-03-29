@@ -11,8 +11,8 @@ var History = require('./components/History.jsx');
 var Log = require('./components/Log.jsx');
 var Edit = require('./components/Edit.jsx');
 var Timesheet = require('./components/Timesheet.jsx');
-var API = require('./utils/api');
-var ls = require('./utils/local-storage');
+import * as API from './utils/api';
+import ls from './utils/local-storage';
 
 var App = React.createClass({
   contextTypes: {

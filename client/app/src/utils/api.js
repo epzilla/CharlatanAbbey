@@ -1,92 +1,92 @@
-var Rest = require('./rest-service');
-var ServerActions = require('../actions/server-actions');
-var _ = require('lodash');
+import Rest from './rest-service';
+import ServerActions from '../actions/server-actions';
+import _ from 'lodash';
 
 if (!String.prototype.includes) {
-  String.prototype.includes = function() {
-    return String.prototype.indexOf.apply(this, arguments) !== -1;
-  };
+  String.prototype.includes = () => String.prototype.indexOf.apply(this, arguments) !== -1;
 }
 
-var getJSON = function (json) {
+const getJSON = json => {
   if (typeof json === 'string') {
     return JSON.parse(json);
   }
   return json;
 };
 
-module.exports = {
-  getEvents: function (babyIDs) {
-    return Rest.get('/api/events/babies/' + babyIDs).then(function (res) {
+const API = {
+  getEvents: babyIDs => {
+    return Rest.get('/api/events/babies/' + babyIDs).then( res => {
       ServerActions.receiveEvents(getJSON(res.response));
     });
   },
 
-  getFeedings: function () {
-    return Rest.get('/api/events/feedings').then(function (res) {
+  getFeedings: () => {
+    return Rest.get('/api/events/feedings').then( res => {
       ServerActions.receiveFeedings(getJSON(res.response));
     });
   },
 
-  getBabies: function () {
-    return Rest.get('/api/babies').then(function (res) {
+  getBabies: () => {
+    return Rest.get('/api/babies').then( res => {
       ServerActions.receiveBabies(getJSON(res.response));
     });
   },
 
-  findBabies: function (obj) {
+  findBabies: obj => {
     return Rest.post('/api/babies/search', obj)
-      .then(function (res) {
+      .then( res => {
         if (!_.isEmpty(res.response)) {
           ServerActions.receiveBabies(getJSON(res.response));
         } else {
           ServerActions.noBabiesFound();
         }
       })
-      .catch(function () {
+      .catch( () => {
         ServerActions.noBabiesFound();
       });
   },
 
-  getFoodTypes: function () {
-    return Rest.get('/api/food-types').then(function (res) {
+  getFoodTypes: () => {
+    return Rest.get('/api/food-types').then( res => {
       ServerActions.receiveFoodTypes(getJSON(res.response));
     });
   },
 
-  getTimeLogs: function (babyIDs) {
-    return Rest.get('/api/time-logs/babies/' + babyIDs).then(function (res) {
+  getTimeLogs: babyIDs => {
+    return Rest.get('/api/time-logs/babies/' + babyIDs).then( res => {
       ServerActions.receiveTimeLogs(getJSON(res.response));
     });
   },
 
-  submitEvent: function (info) {
-    return Rest.post('/api/events', info).then(function (res) {
+  submitEvent: info => {
+    return Rest.post('/api/events', info).then( res => {
       ServerActions.successfulEventPost(getJSON(res.response));
     });
   },
 
-  editEvent: function (info) {
-    return Rest.put('/api/events/' + info._id, info).then(function (res) {
+  editEvent: info => {
+    return Rest.put('/api/events/' + info._id, info).then( res => {
       ServerActions.successfulEventEdit(getJSON(res.response));
     });
   },
 
-  clockIn: function (timeLog) {
-    return Rest.post('/api/time-logs', timeLog).then(function (res) {
+  clockIn: timeLog => {
+    return Rest.post('/api/time-logs', timeLog).then( res => {
       ServerActions.clockedIn(getJSON(res.response));
     });
   },
 
-  clockOut: function (id, timeLog) {
-    return Rest.put('/api/time-logs/' + id, timeLog).then(function (res) {
+  clockOut: (id, timeLog) => {
+    return Rest.put('/api/time-logs/' + id, timeLog).then( res => {
       ServerActions.clockedOut(getJSON(res.response));
     });
   },
 
-  sendInitialConfig: function (info) {
-    return Rest.post('/api/babies/initialize', info).then(function (res) {
+  sendInitialConfig: info => {
+    return Rest.post('/api/babies/initialize', info).then( res => {
       ServerActions.receiveBabies(getJSON(res.response));
     });
   }
 };
+
+export default API;

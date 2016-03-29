@@ -7,8 +7,8 @@ var Actions = require('../actions/view-actions');
 var FractionalStepper = require('./FractionalStepper.jsx');
 var Wizard = require('./Wizard.jsx');
 var FeederList = require('./FeederList.jsx');
-var uuid = require('../utils/uuid');
-var fractions = require('../utils/fractions');
+import * as uuid from '../utils/uuid';
+import * as fractions from '../utils/fractions';
 
 var View1 = React.createClass({
   _setValue: function (e) {
