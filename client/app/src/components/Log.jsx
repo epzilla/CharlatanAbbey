@@ -1,11 +1,8 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
-var State = Router.State;
-var Navigation = Router.Navigation;
 var BabyStore = require('../stores/baby-store');
 var FoodTypeStore = require('../stores/food-type-store');
 var EventStore = require('../stores/event-store');
@@ -19,7 +16,9 @@ var SwitchButton = require('./SwitchButton.jsx');
 
 var Log = React.createClass({
 
-  mixins: [ State, Navigation ],
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   _submit: function (e) {
     e.preventDefault();
@@ -194,7 +193,7 @@ var Log = React.createClass({
   },
 
   _onChange: function () {
-    this.transitionTo('/');
+    this.context.router.push('/');
   },
 
   componentDidMount: function () {

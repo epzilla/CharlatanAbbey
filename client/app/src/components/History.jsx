@@ -1,10 +1,8 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
-var Navigation = Router.Navigation;
 var EventStore = require('../stores/event-store');
 var Actions = require('../actions/view-actions');
 var EventTypes = require('../constants/constants').EventTypes;
@@ -14,10 +12,12 @@ var Swipeable = require('react-swipeable');
 
 var FeedingCell = React.createClass({
 
-  mixins: [ Navigation ],
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   _edit: function () {
-    this.transitionTo('edit', {logEvent: this.props.feeding._id});
+    this.context.router.push('/edit/' + this.props.feeding._id);
   },
 
   render: function () {
@@ -94,7 +94,9 @@ var FeedingCol = React.createClass({
 });
 
 var History = React.createClass({
-  mixins: [ Navigation ],
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   _onChange: function () {
     this.setState({
@@ -103,7 +105,7 @@ var History = React.createClass({
   },
 
   _swipedRight: function () {
-    this.transitionTo('/');
+    this.context.router.push('/');
   },
 
   _setTimeFilter: function (e) {

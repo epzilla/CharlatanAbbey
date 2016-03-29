@@ -1,4 +1,3 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
@@ -20,6 +19,10 @@ var Wizard = React.createClass({
     WizardStore.removeChangeListener(this._onChange);
   },
 
+  _currentStep: function () {
+    return this.props.views[this.state.step];
+  },
+
   _onChange: function () {
     this.setState(WizardStore.getAll());
   },
@@ -31,7 +34,11 @@ var Wizard = React.createClass({
 
   _prev: function (e) {
     e.preventDefault();
-    Actions.wizardPrev();
+    if (this._currentStep().props.enableBackBtn) {
+      this._currentStep().props.back();
+    } else {
+      Actions.wizardPrev();
+    }
   },
 
   render: function () {
@@ -48,7 +55,16 @@ var Wizard = React.createClass({
               {this.props.views[this.state.step]}
             </div>
             <div className="wizard-btns">
-              <button className="btn" onClick={this._prev} disabled={this.state.step === 0}>Back</button>
+              <button
+                className="btn"
+                onClick={this._prev}
+                disabled={
+                  this.state.step === 0 &&
+                  !this._currentStep().props.enableBackBtn
+                }
+              >
+                Back
+              </button>
               {nextBtn}
             </div>
           </form>

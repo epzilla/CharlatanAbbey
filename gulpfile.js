@@ -6,7 +6,7 @@ var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var minifycss = require('gulp-minify-css');
 var browserify = require('browserify');
-var reactify = require('reactify');
+var babelify = require('babelify');
 var del = require('del');
 var source = require('vinyl-source-stream');
 var nodemon = require('gulp-nodemon');
@@ -44,7 +44,7 @@ gulp.task('sass', function () {
 gulp.task('browserify', function () {
   // Browserify/bundle the JS.
   browserify(paths.app)
-    .transform(reactify)
+    .transform(babelify, {presets: ['es2015', 'react']})
     .bundle()
     .on('error', function (err) {
       console.error(err);

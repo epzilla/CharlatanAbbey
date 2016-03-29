@@ -1,11 +1,9 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
 var _ = require('lodash');
 var BabyStore = require('../stores/baby-store');
 var Actions = require('../actions/view-actions');
-var Navigation = require('react-router').Navigation;
 var FractionalStepper = require('./FractionalStepper.jsx');
 var Wizard = require('./Wizard.jsx');
 var FeederList = require('./FeederList.jsx');
@@ -163,7 +161,9 @@ var View4 = React.createClass({
 });
 
 var GetStarted = React.createClass({
-  mixins: [Navigation],
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   getInitialState: function () {
     return {
@@ -177,7 +177,7 @@ var GetStarted = React.createClass({
           name: 'Daddy',
         }
       ],
-      query: this.props.query,
+      query: this.props.location.query,
       editing: null
     }
   },
@@ -192,7 +192,7 @@ var GetStarted = React.createClass({
 
   _onChange: function () {
     if (!_.isEmpty(BabyStore.getBabies())) {
-      this.transitionTo('/');
+      this.context.router.push('/');
     }
   },
 
@@ -211,7 +211,12 @@ var GetStarted = React.createClass({
         <Wizard
           initialState={this.props.query}
           views={[
-            <View1 initialState={this.state} onChange={this._setStateFromChildren}/>,
+            <View1
+              initialState={this.state}
+              onChange={this._setStateFromChildren}
+              back={this.context.router.goBack}
+              enableBackBtn
+            />,
             <View2 initialState={this.state} onChange={this._setStateFromChildren}/>,
             <View3
               initialState={this.state}

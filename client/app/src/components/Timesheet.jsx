@@ -1,10 +1,6 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
-var Router = require('react-router');
-var Navigation = Router.Navigation;
-var Link = Router.Link;
 var _ = require('lodash');
 var moment = require('moment-timezone');
 var cx = require('classnames');
@@ -13,6 +9,7 @@ var TimeLogStore = require('../stores/time-log-store');
 var Actions = require('../actions/view-actions');
 
 var ClockOutBtn = React.createClass({
+
   _clockOut: function () {
     Actions.clockOut(this.props.clockOutID, {timeOut: new Date()});
   },
@@ -88,7 +85,9 @@ var FilterStepper = React.createClass({
 
 var Timesheet = React.createClass({
 
-  mixins: [ Navigation ],
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   getInitialState: function () {
     var now = moment(new Date());
@@ -140,7 +139,7 @@ var Timesheet = React.createClass({
   },
 
   _goHome: function () {
-    this.transitionTo('/');
+    this.context.router.push('/');
   },
 
   _setFilter: function (e) {

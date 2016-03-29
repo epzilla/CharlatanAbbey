@@ -1,13 +1,13 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
 var BabyStore = require('../stores/baby-store');
 var Actions = require('../actions/view-actions');
-var Navigation = require('react-router').Navigation;
 
 var LoginForm = React.createClass({
-  mixins: [Navigation],
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   componentDidMount: function () {
     BabyStore.addChangeListener(this._onChange);
@@ -30,7 +30,7 @@ var LoginForm = React.createClass({
 
   _onChange: function () {
     if (BabyStore.getSearchFailed()) {
-      this.transitionTo('get-started', null, this.state);
+      this.context.router.push({ pathname: '/get-started/', query: this.state});
     } else {
       this.setState({
         babies: BabyStore.getBabies(),

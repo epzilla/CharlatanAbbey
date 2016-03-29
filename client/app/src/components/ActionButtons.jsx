@@ -1,10 +1,9 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
 var Link = require('react-router').Link;
 var ActionSheet = require('./ActionSheet.jsx');
-var CSSTransitionGroup = React.addons.CSSTransitionGroup;
+var CSSTransitionGroup = require('react-addons-css-transition-group');
 var Actions = require('../actions/view-actions');
 
 var ActionButtons = React.createClass({
@@ -43,7 +42,10 @@ var ActionButtons = React.createClass({
 
     return (
       <div>
-        <CSSTransitionGroup transitionName="action-sheet" >
+        <CSSTransitionGroup
+          transitionName="action-sheet"
+          transitionEnterTimeout={0}
+          transitionLeaveTimeout={0}>
           {actionSheet}
         </CSSTransitionGroup>
         <section className="action-btns flex-center" id="action-btns">

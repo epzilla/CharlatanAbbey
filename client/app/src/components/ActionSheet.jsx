@@ -1,17 +1,17 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
-var Navigation = require('react-router').Navigation;
 var _ = require('lodash');
 var Swipeable = require('react-swipeable');
 
 var EventBtn = React.createClass({
-  mixins: [ Navigation ],
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   _logEvent: function () {
     this.props.dismiss();
-    this.transitionTo('log-event', {id: this.props.baby._id });
+    this.context.router.push('/log-event/' + this.props.baby._id);
   },
 
   render: function () {
@@ -29,11 +29,13 @@ var EventBtn = React.createClass({
 
 var ActionSheet = React.createClass({
 
-  mixins: [ Navigation ],
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   _logTime: function () {
     this.props.dismiss();
-    this.transitionTo('timesheet');
+    this.context.router.push('timesheet');
   },
 
   render: function () {

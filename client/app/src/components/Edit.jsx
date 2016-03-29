@@ -1,10 +1,6 @@
-/** @jsx React.DOM */
 'use strict';
 
 var React = require('react');
-var Router = require('react-router');
-var State = Router.State;
-var Navigation = Router.Navigation;
 var EventStore = require('../stores/event-store');
 var BabyStore = require('../stores/baby-store');
 var Actions = require('../actions/view-actions');
@@ -15,7 +11,9 @@ var FractionalStepper = require('./FractionalStepper.jsx');
 
 var Edit = React.createClass({
 
-  mixins: [ State, Navigation ],
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 
   _submit: function (e) {
     e.preventDefault();
@@ -37,7 +35,7 @@ var Edit = React.createClass({
 
   _cancel: function (e) {
     e.preventDefault();
-    this.goBack();
+    this.context.router.goBack();
   },
 
   _setEventType: function (e) {
@@ -113,7 +111,7 @@ var Edit = React.createClass({
   },
 
   _onChange: function () {
-    this.transitionTo('history');
+    this.context.router.push('history');
   },
 
   componentDidMount: function () {
