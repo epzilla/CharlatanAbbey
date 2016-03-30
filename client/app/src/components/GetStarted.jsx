@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import BabyStore from '../stores/baby-store';
 import Actions from '../actions/view-actions';
@@ -25,6 +26,7 @@ const View1 = React.createClass({
         <div className="form-group">
           <label htmlFor="lastname">Last Name</label>
           <input
+            autoFocus={true}
             type="text"
             name="lastname"
             placeholder="Last Name"
@@ -36,6 +38,7 @@ const View1 = React.createClass({
           <label htmlFor="babyA">Baby A</label>
           <input
             type="text"
+            ref="babyA"
             name="babyA"
             placeholder="First Name"
             defaultValue={this.props.initialState ? this.props.initialState.babyA : ''}

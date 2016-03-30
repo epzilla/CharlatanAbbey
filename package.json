@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "body-parser": "~1.5.0",
-    "classnames": "^2.1.3",
+    "classnames": "^2.2.3",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
     "connect-mongo": "^0.4.1",
@@ -43,6 +43,7 @@
     "qwest": "^2.0.5",
     "react": "^0.14.0",
     "react-addons-css-transition-group": "^0.14.7",
+    "react-dom": "^0.14.8",
     "react-router": "^2.0.0",
     "react-swipeable": "^3.0.2",
     "reactabular": "~0.10.3",

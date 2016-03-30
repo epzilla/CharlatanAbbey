@@ -53,7 +53,7 @@ const LoginForm = React.createClass({
           </p>
           <div className="form-group">
             <label htmlFor="lastname">Last Name</label>
-            <input type="text" name="lastname" placeholder="Last Name" onChange={this._setValue} />
+            <input autoFocus={true} type="text" name="lastname" placeholder="Last Name" onChange={this._setValue} />
           </div>
           <div className="form-group">
             <label htmlFor="birthdate">Birthdate</label>

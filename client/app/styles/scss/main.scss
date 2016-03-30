@@ -58,6 +58,12 @@ input[type="text"] {
   color: #333;
 }
 
+input[type="date"] {
+  width: 100%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
 .table {
   display: flex;
   justify-content: stretch;

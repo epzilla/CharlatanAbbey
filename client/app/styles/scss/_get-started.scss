@@ -3,6 +3,7 @@
 .get-started,
 .login-form-container {
   @include slide(routechange, bottom, top, $transitionTime, ease);
+  background-color: $purps;
 }
 
 .login-form-container {
