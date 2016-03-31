@@ -2757,6 +2757,7 @@ var Log = _react2.default.createClass({
     if (this.state.eventType === _constants.EventTypes.FEEDING) {
       var foods = _lodash2.default.map(this.state.foodTypes, function (f) {
         return _react2.default.createElement(_SwitchButton2.default, {
+          key: f.name,
           type: 'checkbox',
           name: 'foods',
           onChange: that._setFoods,

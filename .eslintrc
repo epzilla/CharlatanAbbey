@@ -28,6 +28,9 @@
   ],
   // To give you an idea how to override rule options:
   "rules": {
+    ////////// JSX //////////
+    "jsx-key": 1,
+
     ////////// Possible Errors //////////
 
     "no-comma-dangle": 0,         // disallow trailing commas in object literals

@@ -232,6 +232,7 @@ const Log = React.createClass({
       let foods = _.map(this.state.foodTypes, function (f) {
         return (
           <SwitchButton
+            key={f.name}
             type='checkbox'
             name='foods'
             onChange={that._setFoods}
