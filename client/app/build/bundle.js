@@ -432,7 +432,8 @@ var EventBtn = _react2.default.createClass({
       {
         key: 'button' + baby.birth,
         className: 'btn feed-btn',
-        onClick: this._logEvent },
+        onClick: this._logEvent
+      },
       'Log ',
       baby.firstname
     );
@@ -795,7 +796,12 @@ var Edit = _react2.default.createClass({
     var baby = logEvent.name;
     var time = (0, _moment2.default)(logEvent.time);
 
-    var ounceField, feederField, medField, burpField, diaperField, spitField;
+    var ounceField = void 0,
+        feederField = void 0,
+        medField = void 0,
+        burpField = void 0,
+        diaperField = void 0,
+        spitField = void 0;
 
     if (logEvent.eventType === 'feeding') {
       ounceField = _react2.default.createElement(
@@ -1205,8 +1211,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var ESCAPE_KEY = 27;
 var ENTER_KEY = 13;
 
-var Feeder = _react2.default.createClass({
-  displayName: 'Feeder',
+var EditableItem = _react2.default.createClass({
+  displayName: 'EditableItem',
 
 
   handleSubmit: function handleSubmit(e) {
@@ -1222,12 +1228,12 @@ var Feeder = _react2.default.createClass({
 
   handleEdit: function handleEdit() {
     this.props.onEdit();
-    this.setState({ editText: this.props.feeder.name });
+    this.setState({ editText: this.props.item.name });
   },
 
   handleKeyDown: function handleKeyDown(e) {
     if (e.which === ESCAPE_KEY) {
-      this.setState({ editText: this.props.feeder.name });
+      this.setState({ editText: this.props.item.name });
       this.props.onCancel(e);
     } else if (e.which === ENTER_KEY) {
       this.handleSubmit(e);
@@ -1241,11 +1247,11 @@ var Feeder = _react2.default.createClass({
   },
 
   getInitialState: function getInitialState() {
-    return { editText: this.props.feeder.name };
+    return { editText: this.props.item.name };
   },
 
   shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.feeder !== this.props.feeder || nextProps.editing !== this.props.editing || nextState.editText !== this.state.editText;
+    return nextProps.item !== this.props.item || nextProps.editing !== this.props.editing || nextState.editText !== this.state.editText;
   },
 
   componentDidUpdate: function componentDidUpdate(prevProps) {
@@ -1274,7 +1280,7 @@ var Feeder = _react2.default.createClass({
               e.stopPropagation();
               that.handleEdit();
             } },
-          this.props.feeder.name
+          this.props.item.name
         ),
         _react2.default.createElement(
           'button',
@@ -1294,7 +1300,7 @@ var Feeder = _react2.default.createClass({
   }
 });
 
-exports.default = Feeder;
+exports.default = EditableItem;
 
 },{"classnames":36,"react":271,"react-dom":101}],9:[function(require,module,exports){
 'use strict';
@@ -1311,17 +1317,13 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _Feeder = require('./Feeder.jsx');
+var _classnames = require('classnames');
 
-var _Feeder2 = _interopRequireDefault(_Feeder);
+var _classnames2 = _interopRequireDefault(_classnames);
 
-var _babyStore = require('../stores/baby-store');
+var _EditableItem = require('./EditableItem.jsx');
 
-var _babyStore2 = _interopRequireDefault(_babyStore);
-
-var _viewActions = require('../actions/view-actions');
-
-var _viewActions2 = _interopRequireDefault(_viewActions);
+var _EditableItem2 = _interopRequireDefault(_EditableItem);
 
 var _uuid = require('../utils/uuid');
 
@@ -1331,17 +1333,15 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ENTER_KEY = 13;
-
-var FeederList = _react2.default.createClass({
-  displayName: 'FeederList',
+var itemList = _react2.default.createClass({
+  displayName: 'itemList',
 
 
   getInitialState: function getInitialState() {
     return {
       editing: null,
-      feeders: this.props.feeders || [],
-      newFeeder: ''
+      items: this.props.items || [],
+      newitem: ''
     };
   },
 
@@ -1349,7 +1349,7 @@ var FeederList = _react2.default.createClass({
     e.preventDefault();
     var id = uuid.getUUID();
     this.setState({
-      feeders: this.state.feeders.concat({
+      items: this.state.items.concat({
         id: id,
         name: ''
       })
@@ -1360,29 +1360,29 @@ var FeederList = _react2.default.createClass({
     });
   },
 
-  _destroy: function _destroy(feeder, e) {
+  _destroy: function _destroy(item, e) {
     e.preventDefault();
     this.setState({
-      feeders: _lodash2.default.reject(this.state.feeders, { id: feeder.id })
+      items: _lodash2.default.reject(this.state.items, { id: item.id })
     }, function () {
-      this.props.onChange(this.state.feeders);
+      this.props.onChange(this.state.items);
     });
   },
 
-  _edit: function _edit(feeder) {
-    this.setState({ editing: feeder.id });
+  _edit: function _edit(item) {
+    this.setState({ editing: item.id });
   },
 
-  _save: function _save(feederToSave, text) {
-    // this.props.model.save(feederToSave, text);
+  _save: function _save(itemToSave, text) {
+    // this.props.model.save(itemToSave, text);
     //TODO save
     this.setState({
       editing: null,
-      feeders: _lodash2.default.map(this.state.feeders, function (feeder) {
-        return feeder !== feederToSave ? feeder : { id: feeder.id, name: text };
+      items: _lodash2.default.map(this.state.items, function (item) {
+        return item !== itemToSave ? item : { id: item.id, name: text };
       })
     }, function () {
-      this.props.onChange(this.state.feeders);
+      this.props.onChange(this.state.items);
     });
   },
 
@@ -1392,25 +1392,32 @@ var FeederList = _react2.default.createClass({
 
   render: function render() {
     var that = this;
-    var feeders = _lodash2.default.map(this.state.feeders, function (feeder) {
-      return _react2.default.createElement(_Feeder2.default, {
-        feeder: feeder,
-        onDestroy: that._destroy.bind(that, feeder),
-        onEdit: that._edit.bind(that, feeder),
-        editing: that.state.editing === feeder.id,
-        onSave: that._save.bind(that, feeder),
+    var items = _lodash2.default.map(this.state.items, function (item) {
+      return _react2.default.createElement(_EditableItem2.default, {
+        item: item,
+        onDestroy: that._destroy.bind(that, item),
+        onEdit: that._edit.bind(that, item),
+        editing: that.state.editing === item.id,
+        onSave: that._save.bind(that, item),
         onCancel: that._cancel,
-        key: feeder.id
+        key: item.id
       });
     });
 
+    var classObj = { 'editable-list': true };
+    if (this.props.className) {
+      classObj[this.props.className] = true;
+    }
+
+    var classes = (0, _classnames2.default)(classObj);
+
     return _react2.default.createElement(
       'div',
-      { className: 'feeder-list-container' },
+      { className: 'editable-list-container' },
       _react2.default.createElement(
         'ul',
-        { className: 'feeder-list' },
-        feeders
+        { className: classes },
+        items
       ),
       _react2.default.createElement(
         'div',
@@ -1425,9 +1432,9 @@ var FeederList = _react2.default.createClass({
   }
 });
 
-exports.default = FeederList;
+exports.default = itemList;
 
-},{"../actions/view-actions":3,"../stores/baby-store":24,"../utils/uuid":33,"./Feeder.jsx":8,"lodash":89,"react":271}],10:[function(require,module,exports){
+},{"../utils/uuid":33,"./EditableItem.jsx":8,"classnames":36,"lodash":89,"react":271}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1668,10 +1675,6 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -1692,9 +1695,9 @@ var _Wizard = require('./Wizard.jsx');
 
 var _Wizard2 = _interopRequireDefault(_Wizard);
 
-var _FeederList = require('./FeederList.jsx');
+var _EditableList = require('./EditableList.jsx');
 
-var _FeederList2 = _interopRequireDefault(_FeederList);
+var _EditableList2 = _interopRequireDefault(_EditableList);
 
 var _uuid = require('../utils/uuid');
 
@@ -1736,7 +1739,6 @@ var View1 = _react2.default.createClass({
           'Last Name'
         ),
         _react2.default.createElement('input', {
-          autoFocus: true,
           type: 'text',
           name: 'lastname',
           placeholder: 'Last Name',
@@ -1753,6 +1755,7 @@ var View1 = _react2.default.createClass({
           'Baby A'
         ),
         _react2.default.createElement('input', {
+          autoFocus: true,
           type: 'text',
           ref: 'babyA',
           name: 'babyA',
@@ -1876,11 +1879,12 @@ var View3 = _react2.default.createClass({
       _react2.default.createElement(
         'h3',
         null,
-        'Last, but not least, give us the names of a few people who will be taking care of them and might want to use this app.'
+        'Next, give us the names of a few people who will be taking care of them and might want to use this app.'
       ),
-      _react2.default.createElement(_FeederList2.default, {
+      _react2.default.createElement(_EditableList2.default, {
+        className: 'feeder-list',
         onChange: this._onChange,
-        feeders: this.props.initialState.feeders ? this.props.initialState.feeders : this.props.initialFeeders
+        items: this.props.initialState.feeders ? this.props.initialState.feeders : this.props.initialFeeders
       })
     );
   }
@@ -1889,8 +1893,11 @@ var View3 = _react2.default.createClass({
 var View4 = _react2.default.createClass({
   displayName: 'View4',
 
+  _onChange: function _onChange(val) {
+    this.props.onChange({ meds: val });
+  },
+
   render: function render() {
-    var info = this.props.info;
 
     return _react2.default.createElement(
       'div',
@@ -1898,23 +1905,57 @@ var View4 = _react2.default.createClass({
       _react2.default.createElement(
         'h3',
         null,
-        'OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!'
+        'Are there any medications they take, that you might want to log?'
       ),
+      _react2.default.createElement(_EditableList2.default, {
+        className: 'meds-list',
+        onChange: this._onChange,
+        items: this.props.initialState.meds ? this.props.initialState.meds : this.props.initialMeds
+      })
+    );
+  }
+});
+
+var View5 = _react2.default.createClass({
+  displayName: 'View5',
+
+  _joinList: function _joinList(items) {
+    var names = _lodash2.default.map(items, function (item, i) {
+      return i === items.length - 1 && i > 0 ? 'and ' + item.name : item.name;
+    });
+    if (names.length > 2) {
+      return names.join(', ');
+    } else {
+      return names.join(' ');
+    }
+  },
+
+  render: function render() {
+    var info = this.props.info;
+
+    return _react2.default.createElement(
+      'div',
+      { className: 'get-started-5' },
       _react2.default.createElement(
-        'h4',
+        'h3',
         null,
-        info.babyA,
-        ' and ',
-        info.babyB,
-        ' ',
-        info.query.lastname
+        'OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!'
       ),
       _react2.default.createElement(
         'ul',
         null,
         _react2.default.createElement(
           'li',
-          null,
+          { className: 'babies' },
+          info.babyA,
+          ' and ',
+          info.babyB,
+          ' ',
+          info.query.lastname
+        ),
+        _react2.default.createElement(
+          'li',
+          { className: 'food' },
           'Eat about ',
           fractions.getFraction(info.fullOunces, info.fracOunces),
           ' ounces, every ',
@@ -1923,19 +1964,15 @@ var View4 = _react2.default.createClass({
         ),
         _react2.default.createElement(
           'li',
-          null,
-          'The people who should show up in the caretakers list are:',
-          _react2.default.createElement(
-            'ul',
-            null,
-            _lodash2.default.map(info.feeders, function (feeder) {
-              return _react2.default.createElement(
-                'li',
-                { key: feeder.id },
-                feeder.name
-              );
-            })
-          )
+          { className: 'people' },
+          'Caretakers: ',
+          this._joinList(info.feeders)
+        ),
+        _react2.default.createElement(
+          'li',
+          { className: 'meds' },
+          'Meds: ',
+          this._joinList(info.meds)
         )
       )
     );
@@ -1957,6 +1994,16 @@ var GetStarted = _react2.default.createClass({
       }, {
         id: uuid.getUUID(),
         name: 'Daddy'
+      }],
+      meds: [{
+        id: uuid.getUUID(),
+        name: 'Tylenol'
+      }, {
+        id: uuid.getUUID(),
+        name: 'Gas Drops'
+      }, {
+        id: uuid.getUUID(),
+        name: 'Diaper Rash Cream'
       }],
       query: this.props.location.query,
       editing: null
@@ -2001,7 +2048,11 @@ var GetStarted = _react2.default.createClass({
           initialState: this.state,
           initialFeeders: this.state.feeders,
           onChange: this._setStateFromChildren
-        }), _react2.default.createElement(View4, { info: this.state, onFinish: this._submit })]
+        }), _react2.default.createElement(View4, {
+          initialState: this.state,
+          initialMeds: this.state.meds,
+          onChange: this._setStateFromChildren
+        }), _react2.default.createElement(View5, { info: this.state, onFinish: this._submit })]
       })
     );
   }
@@ -2009,7 +2060,7 @@ var GetStarted = _react2.default.createClass({
 
 exports.default = GetStarted;
 
-},{"../actions/view-actions":3,"../stores/baby-store":24,"../utils/fractions":30,"../utils/uuid":33,"./FeederList.jsx":9,"./FractionalStepper.jsx":11,"./Wizard.jsx":21,"lodash":89,"react":271,"react-dom":101}],13:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/baby-store":24,"../utils/fractions":30,"../utils/uuid":33,"./EditableList.jsx":9,"./FractionalStepper.jsx":11,"./Wizard.jsx":21,"lodash":89,"react":271}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2037,10 +2088,6 @@ var _reactSwipeable2 = _interopRequireDefault(_reactSwipeable);
 var _eventStore = require('../stores/event-store');
 
 var _eventStore2 = _interopRequireDefault(_eventStore);
-
-var _viewActions = require('../actions/view-actions');
-
-var _viewActions2 = _interopRequireDefault(_viewActions);
 
 var _constants = require('../constants/constants');
 
@@ -2229,7 +2276,6 @@ var History = _react2.default.createClass({
 
   componentDidMount: function componentDidMount() {
     _eventStore2.default.addChangeListener(this._onChange);
-    // Actions.getEvents();
   },
 
   componentWillUnmount: function componentWillUnmount() {
@@ -2366,7 +2412,7 @@ var History = _react2.default.createClass({
 
 exports.default = History;
 
-},{"../actions/view-actions":3,"../constants/constants":22,"../stores/event-store":25,"lodash":89,"moment-timezone":91,"react":271,"react-router":129,"react-swipeable":136}],14:[function(require,module,exports){
+},{"../constants/constants":22,"../stores/event-store":25,"lodash":89,"moment-timezone":91,"react":271,"react-router":129,"react-swipeable":136}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3356,7 +3402,7 @@ var Stepper = _react2.default.createClass({
   _stepUpFull: function _stepUpFull() {
     var curVal = parseInt(this.state.val);
 
-    if (this.props.max !== undefined && curVal === this.props.max) {
+    if (this.props.max && curVal === this.props.max) {
       if (this.props.wrap) {
         curVal = this.props.min;
       }
@@ -3399,7 +3445,7 @@ var Stepper = _react2.default.createClass({
   _stepDownFull: function _stepDownFull() {
     var curVal = parseInt(this.state.val);
 
-    if (this.props.min !== undefined && curVal === this.props.min) {
+    if (this.props.min && curVal === this.props.min) {
       if (this.props.wrap) {
         curVal = this.props.max;
       }
@@ -3719,10 +3765,6 @@ var _lodash2 = _interopRequireDefault(_lodash);
 var _momentTimezone = require('moment-timezone');
 
 var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
-
-var _classnames = require('classnames');
-
-var _classnames2 = _interopRequireDefault(_classnames);
 
 var _reactabular = require('reactabular');
 
@@ -4075,7 +4117,7 @@ var Timesheet = _react2.default.createClass({
 
 exports.default = Timesheet;
 
-},{"../actions/view-actions":3,"../stores/time-log-store":27,"../utils/local-storage":31,"classnames":36,"lodash":89,"moment-timezone":91,"react":271,"reactabular":284}],21:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/time-log-store":27,"../utils/local-storage":31,"lodash":89,"moment-timezone":91,"react":271,"reactabular":284}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4338,8 +4380,7 @@ var BabyStore = (0, _objectAssign2.default)({}, _events.EventEmitter.prototype, 
 });
 
 BabyStore.dispatchToken = _appDispatcher2.default.register(function (payload) {
-  var action = void 0;
-  action = payload.action;
+  var action = payload.action;
   switch (action.type) {
     case _constants.ActionTypes.RECEIVE_BABIES:
       _babies = action.data;
@@ -4399,7 +4440,7 @@ var _spits = _localStorage2.default.get('spits') || [];
 var _poops = _localStorage2.default.get('poops') || [];
 var _latest = _localStorage2.default.get('latest') || [];
 var _latestPoops = _localStorage2.default.get('latest-poops') || {};
-var _latestPrevacid = _localStorage2.default.get('latest-prevacid') || {};
+var _latestMeds = _localStorage2.default.get('latest-meds') || {};
 var _lastDayFeedings = _localStorage2.default.get('last-day-feedings') || {};
 var _lastDayEvents = _localStorage2.default.get('last-day-events') || {};
 var _lastDayMeds = _localStorage2.default.get('last-day-meds') || {};
@@ -4534,9 +4575,14 @@ var updateStore = function updateStore() {
     return e.diaper && _lodash2.default.contains(e.diaper, 'poop');
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
 
-  _latestPrevacid = _lodash2.default.chain(_events).filter(function (e) {
-    return e.medicine && _lodash2.default.contains(e.medicine, 'prevacid');
+  _latestMeds = _lodash2.default.chain(_events).filter(function (e) {
+    return e.medicine;
   }).sortByOrder(['name', 'time'], ['asc', 'desc']).groupBy('name').value();
+
+  _lodash2.default.map(_latestMeds, function (baby) {
+    var hoursSinceMeds = (0, _moment2.default)(Date.now()).diff(baby[0].time, 'hours');
+    _groupedFeedings[baby[0].name][0].medFlag = hoursSinceMeds > 8;
+  });
 
   _lodash2.default.map(_latestPoops, function (baby) {
     var hoursSincePoop = (0, _moment2.default)(Date.now()).diff(baby[0].time, 'hours');
@@ -4547,11 +4593,6 @@ var updateStore = function updateStore() {
     } else {
       _groupedFeedings[baby[0].name][0].poopFlag = 2;
     }
-  });
-
-  _lodash2.default.map(_latestPrevacid, function (baby) {
-    var hoursSincePrevacid = (0, _moment2.default)(Date.now()).diff(baby[0].time, 'hours');
-    _groupedFeedings[baby[0].name][0].prevacidFlag = hoursSincePrevacid > 8;
   });
 
   _latest = _lodash2.default.map(_groupedFeedings, function (baby) {
@@ -4579,8 +4620,7 @@ var updateStore = function updateStore() {
 };
 
 EventStore.dispatchToken = _appDispatcher2.default.register(function (payload) {
-  var action;
-  action = payload.action;
+  var action = payload.action;
   switch (action.type) {
     case _constants.ActionTypes.RECEIVE_EVENTS:
       _events = action.data;
@@ -4660,8 +4700,7 @@ var FoodTypeStore = (0, _objectAssign2.default)({}, _events.EventEmitter.prototy
 });
 
 FoodTypeStore.dispatchToken = _appDispatcher2.default.register(function (payload) {
-  var action;
-  action = payload.action;
+  var action = payload.action;
   switch (action.type) {
     case _constants.ActionTypes.RECEIVE_FOOD_TYPES:
       _foodTypes = action.data;
@@ -4780,8 +4819,7 @@ var needsUpdating = function needsUpdating(logs) {
 };
 
 TimeLogStore.dispatchToken = _appDispatcher2.default.register(function (payload) {
-  var action = void 0;
-  action = payload.action;
+  var action = payload.action;
   switch (action.type) {
     case _constants.ActionTypes.RECEIVE_TIME_LOGS:
       if (needsUpdating(action.data)) {

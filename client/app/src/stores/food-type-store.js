@@ -25,8 +25,7 @@ const FoodTypeStore = assign({}, EventEmitter.prototype, {
 
 FoodTypeStore.dispatchToken =
 AppDispatcher.register(function (payload) {
-  var action;
-  action = payload.action;
+  let action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_FOOD_TYPES:
       _foodTypes = action.data;

@@ -14,7 +14,7 @@ import Timesheet from './components/Timesheet.jsx';
 import API from './utils/api';
 import ls from './utils/local-storage';
 
-var App = React.createClass({
+const App = React.createClass({
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },

@@ -34,8 +34,7 @@ const BabyStore = assign({}, EventEmitter.prototype, {
 
 BabyStore.dispatchToken =
 AppDispatcher.register(function (payload) {
-  let action;
-  action = payload.action;
+  let action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_BABIES:
       _babies = action.data;

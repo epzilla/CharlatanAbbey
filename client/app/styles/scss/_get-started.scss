@@ -74,4 +74,36 @@
     font-size: 1em;
     height: 7.5em;
   }
+
+  li {
+    &.food, &.people, &.meds, &.babies {
+      list-style-type: none;
+      position: relative;
+      &:before {
+        font-family: 'FontAwesome';
+        top: 0em;
+        left: -1.5em;
+        position: absolute;
+      }
+    }
+    &.babies:before, &.babies:after {
+      content: '\f1ae';
+      left: -1.75em;
+    }
+    &.babies:after {
+      font-family: 'FontAwesome';
+      top: 0em;
+      left: -1em;
+      position: absolute;
+    }
+    &.food:before {
+      content: '\f0f5';
+    }
+    &.people:before {
+      content: '\f0c0';
+    }
+    &.meds:before {
+      content: '\f1fb';
+    }
+  }
 }

@@ -46,7 +46,7 @@ const Stepper = React.createClass({
   _stepUpFull: function () {
     let curVal = parseInt(this.state.val);
 
-    if (this.props.max !== undefined && curVal === this.props.max) {
+    if (this.props.max && curVal === this.props.max) {
       if (this.props.wrap) {
         curVal = this.props.min;
       }
@@ -89,7 +89,7 @@ const Stepper = React.createClass({
   _stepDownFull: function () {
     let curVal = parseInt(this.state.val);
 
-    if (this.props.min !== undefined && curVal === this.props.min) {
+    if (this.props.min && curVal === this.props.min) {
       if (this.props.wrap) {
         curVal = this.props.max;
       }

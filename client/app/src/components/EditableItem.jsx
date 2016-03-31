@@ -7,7 +7,7 @@ import cx from 'classnames';
 const ESCAPE_KEY = 27;
 const ENTER_KEY = 13;
 
-const Feeder = React.createClass({
+const EditableItem = React.createClass({
 
   handleSubmit: function (e) {
     e.preventDefault();
@@ -22,12 +22,12 @@ const Feeder = React.createClass({
 
   handleEdit: function () {
     this.props.onEdit();
-    this.setState({editText: this.props.feeder.name});
+    this.setState({editText: this.props.item.name});
   },
 
   handleKeyDown: function (e) {
     if (e.which === ESCAPE_KEY) {
-      this.setState({editText: this.props.feeder.name});
+      this.setState({editText: this.props.item.name});
       this.props.onCancel(e);
     } else if (e.which === ENTER_KEY) {
       this.handleSubmit(e);
@@ -41,12 +41,12 @@ const Feeder = React.createClass({
   },
 
   getInitialState: function () {
-    return {editText: this.props.feeder.name};
+    return {editText: this.props.item.name};
   },
 
   shouldComponentUpdate: function (nextProps, nextState) {
     return (
-      nextProps.feeder !== this.props.feeder ||
+      nextProps.item !== this.props.item ||
       nextProps.editing !== this.props.editing ||
       nextState.editText !== this.state.editText
     );
@@ -74,7 +74,7 @@ const Feeder = React.createClass({
             e.stopPropagation();
             that.handleEdit();
           }}>
-            {this.props.feeder.name}
+            {this.props.item.name}
           </label>
           <button className="btn btn-destroy" onClick={this.props.onDestroy}>
             <i className="fa fa-times"></i>
@@ -93,4 +93,4 @@ const Feeder = React.createClass({
   }
 });
 
-export default Feeder;
+export default EditableItem;

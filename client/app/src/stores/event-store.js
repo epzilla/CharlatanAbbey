@@ -16,7 +16,7 @@ let _spits = ls.get('spits') || [];
 let _poops = ls.get('poops') || [];
 let _latest = ls.get('latest') || [];
 let _latestPoops = ls.get('latest-poops') || {};
-let _latestPrevacid = ls.get('latest-prevacid') || {};
+let _latestMeds = ls.get('latest-meds') || {};
 let _lastDayFeedings = ls.get('last-day-feedings') || {};
 let _lastDayEvents = ls.get('last-day-events') || {};
 let _lastDayMeds = ls.get('last-day-meds') || {};
@@ -190,16 +190,21 @@ const updateStore = function () {
     .groupBy('name')
     .value();
 
-  _latestPrevacid = _.chain(_events)
+  _latestMeds = _.chain(_events)
     .filter(function (e) {
-      return e.medicine && _.contains(e.medicine, 'prevacid');
+      return e.medicine;
     })
     .sortByOrder(['name', 'time'], ['asc', 'desc'])
     .groupBy('name')
     .value();
 
+  _.map(_latestMeds, function (baby) {
+    let hoursSinceMeds = moment(Date.now()).diff(baby[0].time, 'hours');
+    _groupedFeedings[baby[0].name][0].medFlag = (hoursSinceMeds > 8);
+  });
+
   _.map(_latestPoops, function (baby) {
-    var hoursSincePoop = moment(Date.now()).diff(baby[0].time, 'hours');
+    let hoursSincePoop = moment(Date.now()).diff(baby[0].time, 'hours');
     if (hoursSincePoop < 24) {
       _groupedFeedings[baby[0].name][0].poopFlag = 0;
     } else if (hoursSincePoop < 72) {
@@ -207,11 +212,6 @@ const updateStore = function () {
     } else {
       _groupedFeedings[baby[0].name][0].poopFlag = 2;
     }
-  });
-
-  _.map(_latestPrevacid, function (baby) {
-    var hoursSincePrevacid = moment(Date.now()).diff(baby[0].time, 'hours');
-    _groupedFeedings[baby[0].name][0].prevacidFlag = (hoursSincePrevacid > 8);
   });
 
   _latest = _.map(_groupedFeedings, function (baby) {
@@ -240,8 +240,7 @@ const updateStore = function () {
 
 EventStore.dispatchToken =
 AppDispatcher.register(function (payload) {
-  var action;
-  action = payload.action;
+  let action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_EVENTS:
       _events = action.data;
@@ -256,7 +255,7 @@ AppDispatcher.register(function (payload) {
       break;
 
     case ActionTypes.SUCCESSFUL_EVENT_EDIT:
-      for (var i = 0; i < _events.length; i++) {
+      for (let i = 0; i < _events.length; i++) {
         if (_events[i]._id.toString() === action.data._id.toString()) {
           _events.splice(i, 1, action.data);
           break;

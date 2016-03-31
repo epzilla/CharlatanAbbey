@@ -332,7 +332,7 @@ const Log = React.createClass({
           <h3>How was the diaper? <small>(Check all that apply)</small></h3>
           <div>
             <span className='switch'>
-              <input type='checkbox' name='diaper' onChange={this._setDiaper} defaultChecked  value='wet'/>
+              <input type='checkbox' name='diaper' onChange={this._setDiaper} defaultChecked value='wet'/>
               <label>Wet</label>
             </span>
             <span className='switch'>

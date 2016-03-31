@@ -1,13 +1,12 @@
 'use strict';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import BabyStore from '../stores/baby-store';
 import Actions from '../actions/view-actions';
 import FractionalStepper from './FractionalStepper.jsx';
 import Wizard from './Wizard.jsx';
-import FeederList from './FeederList.jsx';
+import EditableList from './EditableList.jsx';
 import * as uuid from '../utils/uuid';
 import * as fractions from '../utils/fractions';
 
@@ -26,7 +25,6 @@ const View1 = React.createClass({
         <div className="form-group">
           <label htmlFor="lastname">Last Name</label>
           <input
-            autoFocus={true}
             type="text"
             name="lastname"
             placeholder="Last Name"
@@ -37,6 +35,7 @@ const View1 = React.createClass({
         <div className="form-group">
           <label htmlFor="babyA">Baby A</label>
           <input
+            autoFocus={true}
             type="text"
             ref="babyA"
             name="babyA"
@@ -130,10 +129,11 @@ const View3 = React.createClass({
 
     return (
       <div className="get-started-3">
-        <h3>Last, but not least, give us the names of a few people who will be taking care of them and might want to use this app.</h3>
-        <FeederList
+        <h3>Next, give us the names of a few people who will be taking care of them and might want to use this app.</h3>
+        <EditableList
+          className="feeder-list"
           onChange={this._onChange}
-          feeders={this.props.initialState.feeders ? this.props.initialState.feeders : this.props.initialFeeders}
+          items={this.props.initialState.feeders ? this.props.initialState.feeders : this.props.initialFeeders}
         />
       </div>
     );
@@ -141,22 +141,48 @@ const View3 = React.createClass({
 });
 
 const View4 = React.createClass({
+  _onChange: function (val) {
+    this.props.onChange({ meds: val })
+  },
+
+  render: function () {
+
+    return (
+      <div className="get-started-4">
+        <h3>Are there any medications they take, that you might want to log?</h3>
+        <EditableList
+          className="meds-list"
+          onChange={this._onChange}
+          items={this.props.initialState.meds ? this.props.initialState.meds : this.props.initialMeds}
+        />
+      </div>
+    );
+  }
+});
+
+const View5 = React.createClass({
+  _joinList: function (items) {
+    let names = _.map(items, function (item, i) {
+      return (i === items.length - 1 && i > 0) ? 'and ' + item.name : item.name;
+    })
+    if (names.length > 2) {
+      return names.join(', ');
+    } else {
+      return names.join(' ');
+    }
+  },
+
   render: function () {
     let info = this.props.info;
 
     return (
-      <div className="get-started-4">
+      <div className="get-started-5">
         <h3>OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!</h3>
-        <h4>{info.babyA} and {info.babyB} {info.query.lastname}</h4>
         <ul>
-          <li>Eat about {fractions.getFraction(info.fullOunces, info.fracOunces)} ounces, every {fractions.getFraction(info.fullHours, info.fracHours)} hours.</li>
-          <li>The people who should show up in the caretakers list are:
-            <ul>
-              {_.map(info.feeders, function (feeder) {
-                return <li key={feeder.id}>{feeder.name}</li>;
-              })}
-            </ul>
-          </li>
+          <li className="babies">{info.babyA} and {info.babyB} {info.query.lastname}</li>
+          <li className="food">Eat about {fractions.getFraction(info.fullOunces, info.fracOunces)} ounces, every {fractions.getFraction(info.fullHours, info.fracHours)} hours.</li>
+          <li className="people">Caretakers: {this._joinList(info.feeders)}</li>
+          <li className="meds">Meds: {this._joinList(info.meds)}</li>
         </ul>
       </div>
     );
@@ -180,17 +206,31 @@ const GetStarted = React.createClass({
           name: 'Daddy',
         }
       ],
+      meds: [
+        {
+          id: uuid.getUUID(),
+          name: 'Tylenol'
+        },
+        {
+          id: uuid.getUUID(),
+          name: 'Gas Drops'
+        },
+        {
+          id: uuid.getUUID(),
+          name: 'Diaper Rash Cream'
+        }
+      ],
       query: this.props.location.query,
       editing: null
     }
   },
 
   componentDidMount: function () {
-    BabyStore.addChangeListener(this._onChange) ;
+    BabyStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function () {
-    BabyStore.removeChangeListener(this._onChange) ;
+    BabyStore.removeChangeListener(this._onChange);
   },
 
   _onChange: function () {
@@ -226,7 +266,12 @@ const GetStarted = React.createClass({
               initialFeeders={this.state.feeders}
               onChange={this._setStateFromChildren}
             />,
-            <View4 info={this.state} onFinish={this._submit}/>
+            <View4
+              initialState={this.state}
+              initialMeds={this.state.meds}
+              onChange={this._setStateFromChildren}
+            />,
+            <View5 info={this.state} onFinish={this._submit}/>
           ]}
         />
       </section>

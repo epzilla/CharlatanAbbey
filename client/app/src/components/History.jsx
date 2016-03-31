@@ -6,7 +6,6 @@ import _ from 'lodash';
 import moment from 'moment-timezone';
 import Swipeable from 'react-swipeable';
 import EventStore from '../stores/event-store';
-import Actions from '../actions/view-actions';
 import { EventTypes } from '../constants/constants';
 
 const FeedingCell = React.createClass({
@@ -131,7 +130,6 @@ const History = React.createClass({
 
   componentDidMount: function () {
     EventStore.addChangeListener(this._onChange);
-    // Actions.getEvents();
   },
 
   componentWillUnmount: function () {

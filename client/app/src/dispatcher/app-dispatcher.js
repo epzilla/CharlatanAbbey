@@ -5,7 +5,7 @@ import { PayloadSources } from '../constants/constants';
 const AppDispatcher = assign(new Dispatcher(), {
 
   handleServerAction: function (action) {
-    var payload = {
+    let payload = {
       source: PayloadSources.SERVER_ACTION,
       action: action
     };
@@ -13,7 +13,7 @@ const AppDispatcher = assign(new Dispatcher(), {
   },
 
   handleViewAction: function (action) {
-    var payload = {
+    let payload = {
       source: PayloadSources.VIEW_ACTION,
       action: action
     };
@@ -21,7 +21,7 @@ const AppDispatcher = assign(new Dispatcher(), {
   },
 
   handleRequestAction: function (action) {
-    var payload = {
+    let payload = {
       source: PayloadSources.REQUEST_ACTION,
       action: action
     };

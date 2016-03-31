@@ -1,4 +1,4 @@
-.feeder-list-container {
+.editable-list-container {
   .btn-container {
     padding: 2em 0;
     text-align: center;
@@ -37,32 +37,38 @@
   }
 }
 
-.feeder-list {
+.editable-list {
   list-style-type: none;
   padding: 0;
 }
 
-.feeder-list li {
+.editable-list li {
   position: relative;
   border-top: 1px solid #ededed;
   &:before {
     font-family: 'FontAwesome';
-    content: '\f007';
     top: 21%;
     left: 16px;
     position: absolute;
   }
 }
 
-.feeder-list li:last-child {
+.feeder-list li:before {
+  content: '\f007';
+}
+.meds-list li:before {
+  content: '\f1fb';
+}
+
+.editable-list li:last-child {
   border-bottom: 1px solid #ededed;
 }
 
-.feeder-list li.editing {
+.editable-list li.editing {
   padding: 0;
 }
 
-.feeder-list li.editing .edit {
+.editable-list li.editing .edit {
   border: none;
   display: block;
   width: 100%;
@@ -71,11 +77,11 @@
   background: darken($purps, 10%);
 }
 
-.feeder-list li.editing .view {
+.editable-list li.editing .view {
   display: none;
 }
 
-.feeder-list li label {
+.editable-list li label {
   white-space: pre-line;
   word-break: break-all;
   padding: 15px 60px 15px 15px;
@@ -85,11 +91,11 @@
   transition: color 0.4s;
 }
 
-.feeder-list li.completed label {
+.editable-list li.completed label {
   color: #d9d9d9;
   text-decoration: line-through;
 }
 
-.feeder-list li .edit {
+.editable-list li .edit {
   display: none;
 }

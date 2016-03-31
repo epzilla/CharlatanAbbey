@@ -10,7 +10,7 @@ import Actions from '../actions/view-actions';
 import TimeStepper from './TimeStepper.jsx';
 import FractionalStepper from './FractionalStepper.jsx';
 
-var Edit = React.createClass({
+const Edit = React.createClass({
 
   contextTypes: {
     router: React.PropTypes.object.isRequired
@@ -18,7 +18,7 @@ var Edit = React.createClass({
 
   _submit: function (e) {
     e.preventDefault();
-    var amount = (this.state.fullAmount || 2) + (this.state.fracAmount || 0);
+    let amount = (this.state.fullAmount || 2) + (this.state.fracAmount || 0);
 
     Actions.editEventForm({
       _id: this.props.params.logEvent,
@@ -76,8 +76,8 @@ var Edit = React.createClass({
   },
 
   _setMeds: function (e) {
-    var meds = this.state.medicine;
-    var val = e.target.value;
+    let meds = this.state.medicine;
+    let val = e.target.value;
 
     if (_.contains(meds, val)) {
       meds = _.without(meds, val);
@@ -91,8 +91,8 @@ var Edit = React.createClass({
   },
 
   _setDiaper: function (e) {
-    var diapers = this.state.diaper;
-    var val = e.target.value;
+    let diapers = this.state.diaper;
+    let val = e.target.value;
 
     if (_.contains(diapers, val)) {
       diapers = _.without(diapers, val);
@@ -124,9 +124,9 @@ var Edit = React.createClass({
   },
 
   getInitialState: function () {
-    var e = EventStore.getEvent(this.props.params.logEvent);
-    var diaper = e.diaper;
-    var meds = e.medicine;
+    let e = EventStore.getEvent(this.props.params.logEvent);
+    let diaper = e.diaper;
+    let meds = e.medicine;
 
     if (diaper) {
       diaper = diaper.split(' + ');
@@ -152,12 +152,12 @@ var Edit = React.createClass({
   },
 
   render: function () {
-    var that = this;
-    var logEvent = this.state.logEvent;
-    var baby = logEvent.name;
-    var time = moment(logEvent.time);
+    let that = this;
+    let logEvent = this.state.logEvent;
+    let baby = logEvent.name;
+    let time = moment(logEvent.time);
 
-    var ounceField, feederField, medField, burpField, diaperField, spitField;
+    let ounceField, feederField, medField, burpField, diaperField, spitField;
 
     if (logEvent.eventType === 'feeding') {
       ounceField = (
@@ -171,7 +171,7 @@ var Edit = React.createClass({
         </div>
       );
 
-      var feeders = _.map(this.state.feeders, function (f) {
+      let feeders = _.map(this.state.feeders, function (f) {
         return (
           <span className='switch' key={f.name}>
             <input type='radio'

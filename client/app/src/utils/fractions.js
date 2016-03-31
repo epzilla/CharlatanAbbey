@@ -32,18 +32,18 @@ export const getFraction = (whole, frac) => {
     return whole.toString();
   }
 
-  var fracDecimal = _.isObject(frac) ? frac.actualValue : parseFloat(frac.toPrecision(2));
+  let fracDecimal = _.isObject(frac) ? frac.actualValue : parseFloat(frac.toPrecision(2));
 
   if (!fracDecimal) {
     return whole.toString();
   }
 
-  var fracDisplay = _.find(fractions, {actualValue: fracDecimal}).displayValue;
+  let fracDisplay = _.find(fractions, {actualValue: fracDecimal}).displayValue;
   return whole + fracDisplay;
 };
 
 export const getDecimal = (whole, frac) => {
-  var fracValue = _.isObject(frac) ? frac.actualValue : frac;
+  let fracValue = _.isObject(frac) ? frac.actualValue : frac;
   return !fracValue ? whole : (whole + fracValue);
 };
 

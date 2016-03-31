@@ -6,7 +6,7 @@ import AppDispatcher from '../dispatcher/app-dispatcher';
 import { ActionTypes } from '../constants/constants';
 import * as fractions from '../utils/fractions';
 
-var Actions = {
+const Actions = {
 
   findBabies: (obj) => {
     obj.birthdate = moment(obj.birthdate).format("MM-DD-YYYY");

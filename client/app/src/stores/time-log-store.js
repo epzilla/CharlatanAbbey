@@ -76,8 +76,7 @@ const needsUpdating = (logs) => ((!logs) || (logs.length === 0) || (JSON.stringi
 
 TimeLogStore.dispatchToken =
 AppDispatcher.register(function (payload) {
-  let action;
-  action = payload.action;
+  let action = payload.action;
   switch (action.type) {
     case ActionTypes.RECEIVE_TIME_LOGS:
       if (needsUpdating(action.data)) {

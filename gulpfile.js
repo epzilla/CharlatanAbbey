@@ -71,7 +71,8 @@ gulp.task('nodemon', function (done){
   nodemon({
     script: './server/app.js',
     env: { 'NODE_ENV': 'development'},
-    nodeArgs: ['--debug']
+    nodeArgs: ['--debug'],
+    ignore: ['bundle.js']
   })
   .on('start', function onStart() {
     // ensure start only got called once

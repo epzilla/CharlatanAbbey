@@ -3,7 +3,6 @@
 import React from 'react';
 import _ from 'lodash';
 import moment from 'moment-timezone';
-import cx from 'classnames';
 import { Table } from 'reactabular';
 import TimeLogStore from '../stores/time-log-store';
 import Actions from '../actions/view-actions';
