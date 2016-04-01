@@ -1711,6 +1711,10 @@ var _EditableList = require('./EditableList.jsx');
 
 var _EditableList2 = _interopRequireDefault(_EditableList);
 
+var _SwitchButton = require('./SwitchButton.jsx');
+
+var _SwitchButton2 = _interopRequireDefault(_SwitchButton);
+
 var _uuid = require('../utils/uuid');
 
 var uuid = _interopRequireWildcard(_uuid);
@@ -1740,11 +1744,11 @@ var View1 = _react2.default.createClass({
       _react2.default.createElement(
         'h3',
         null,
-        'First things first. What are their names?'
+        'First things first. What are their names and genders?'
       ),
       _react2.default.createElement(
         'div',
-        { className: 'form-group' },
+        { className: 'form-group pad-bottom-1em' },
         _react2.default.createElement(
           'label',
           { htmlFor: 'lastname' },
@@ -1778,6 +1782,27 @@ var View1 = _react2.default.createClass({
       ),
       _react2.default.createElement(
         'div',
+        { className: 'gender-select form-group' },
+        _react2.default.createElement(_SwitchButton2.default, {
+          key: 'gender-select-1-B',
+          type: 'radio',
+          name: 'babyASex',
+          onChange: this._setValue,
+          value: 'Boy',
+          className: 'boy',
+          defaultChecked: true
+        }),
+        _react2.default.createElement(_SwitchButton2.default, {
+          key: 'gender-select-1-G',
+          type: 'radio',
+          name: 'babyASex',
+          onChange: this._setValue,
+          value: 'Girl',
+          className: 'girl'
+        })
+      ),
+      _react2.default.createElement(
+        'div',
         { className: 'form-group' },
         _react2.default.createElement(
           'label',
@@ -1790,6 +1815,27 @@ var View1 = _react2.default.createClass({
           placeholder: 'First Name',
           defaultValue: this.props.initialState ? this.props.initialState.babyB : '',
           onChange: this._setValue
+        })
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'gender-select form-group' },
+        _react2.default.createElement(_SwitchButton2.default, {
+          key: 'gender-select-2-B',
+          type: 'radio',
+          name: 'babyBSex',
+          onChange: this._setValue,
+          value: 'Boy',
+          className: 'boy',
+          defaultChecked: true
+        }),
+        _react2.default.createElement(_SwitchButton2.default, {
+          key: 'gender-select-2-G',
+          type: 'radio',
+          name: 'babyBSex',
+          onChange: this._setValue,
+          value: 'Girl',
+          className: 'girl'
         })
       )
     );
@@ -2072,7 +2118,7 @@ var GetStarted = _react2.default.createClass({
 
 exports.default = GetStarted;
 
-},{"../actions/view-actions":3,"../stores/baby-store":24,"../utils/fractions":30,"../utils/uuid":33,"./EditableList.jsx":9,"./FractionalStepper.jsx":11,"./Wizard.jsx":21,"lodash":41,"react":273}],13:[function(require,module,exports){
+},{"../actions/view-actions":3,"../stores/baby-store":24,"../utils/fractions":30,"../utils/uuid":33,"./EditableList.jsx":9,"./FractionalStepper.jsx":11,"./SwitchButton.jsx":18,"./Wizard.jsx":21,"lodash":41,"react":273}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3592,6 +3638,10 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SwitchButton = _react2.default.createClass({
@@ -3600,6 +3650,7 @@ var SwitchButton = _react2.default.createClass({
 
   render: function render() {
     var emoji = void 0;
+    var classes = 'switch ' + (this.props.className ? this.props.className : '');
 
     if (this.props.emoji) {
       var label = this.props.label ? this.props.label : _lodash2.default.capitalize(this.props.value);
@@ -3617,7 +3668,7 @@ var SwitchButton = _react2.default.createClass({
 
     return _react2.default.createElement(
       'span',
-      { className: 'switch' },
+      { className: classes },
       _react2.default.createElement('input', {
         type: this.props.type,
         name: this.props.name,
@@ -3637,7 +3688,7 @@ var SwitchButton = _react2.default.createClass({
 
 exports.default = SwitchButton;
 
-},{"lodash":41,"react":273}],19:[function(require,module,exports){
+},{"classnames":36,"lodash":41,"react":273}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

@@ -1,10 +1,12 @@
 import React from 'react';
 import _ from 'lodash';
+import cx from 'classnames';
 
 const SwitchButton = React.createClass({
 
   render: function () {
     let emoji;
+    let classes = 'switch ' + (this.props.className ? this.props.className : '');
 
     if (this.props.emoji) {
       let label = this.props.label ? this.props.label : _.capitalize(this.props.value);
@@ -21,7 +23,7 @@ const SwitchButton = React.createClass({
     }
 
     return (
-      <span className='switch'>
+      <span className={classes}>
         <input
           type={this.props.type}
           name={this.props.name}

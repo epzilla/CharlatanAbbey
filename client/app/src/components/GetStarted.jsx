@@ -7,6 +7,7 @@ import Actions from '../actions/view-actions';
 import FractionalStepper from './FractionalStepper.jsx';
 import Wizard from './Wizard.jsx';
 import EditableList from './EditableList.jsx';
+import SwitchButton from './SwitchButton.jsx';
 import * as uuid from '../utils/uuid';
 import * as fractions from '../utils/fractions';
 
@@ -21,8 +22,8 @@ const View1 = React.createClass({
 
     return (
       <div className="get-started-1">
-        <h3>First things first. What are their names?</h3>
-        <div className="form-group">
+        <h3>First things first. What are their names and genders?</h3>
+        <div className="form-group pad-bottom-1em">
           <label htmlFor="lastname">Last Name</label>
           <input
             type="text"
@@ -44,6 +45,25 @@ const View1 = React.createClass({
             onChange={this._setValue}
           />
         </div>
+        <div className="gender-select form-group">
+          <SwitchButton
+            key='gender-select-1-B'
+            type='radio'
+            name='babyASex'
+            onChange={this._setValue}
+            value='Boy'
+            className="boy"
+            defaultChecked
+          />
+          <SwitchButton
+            key='gender-select-1-G'
+            type='radio'
+            name='babyASex'
+            onChange={this._setValue}
+            value='Girl'
+            className="girl"
+          />
+        </div>
         <div className="form-group">
           <label htmlFor="babyB">Baby B</label>
           <input
@@ -52,6 +72,25 @@ const View1 = React.createClass({
             placeholder="First Name"
             defaultValue={this.props.initialState ? this.props.initialState.babyB : ''}
             onChange={this._setValue}
+          />
+        </div>
+        <div className="gender-select form-group">
+          <SwitchButton
+            key='gender-select-2-B'
+            type='radio'
+            name='babyBSex'
+            onChange={this._setValue}
+            value='Boy'
+            className="boy"
+            defaultChecked
+          />
+          <SwitchButton
+            key='gender-select-2-G'
+            type='radio'
+            name='babyBSex'
+            onChange={this._setValue}
+            value='Girl'
+            className="girl"
           />
         </div>
       </div>
