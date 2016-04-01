@@ -26,12 +26,19 @@ exports.index = function (req, res) {
 // Lookup babies by Lastname and DoB
 exports.find = function (req, res) {
   baby.find({
-    lastname: req.body.lastname,
+    lastname: req.body.lastname.toLowerCase(),
     birth: req.body.birthdate
   }, function (err, babies) {
     if (err) { return handleError(res, err); }
     return res.json(
-      _.sortBy(babies, 'firstname')
+      _.chain(babies)
+        .map(function (baby) {
+          baby.firstname = _.capitalize(baby.firstname);
+          baby.lastname = _.capitalize(baby.lastname);
+          return baby;
+        })
+        .sortBy('firstname')
+        .value()
     );
   });
 };
@@ -41,6 +48,8 @@ exports.show = function (req, res) {
   baby.findById(req.params.id, function (err, baby) {
     if (err) { return handleError(res, err); }
     if (!baby) { return res.send(404); }
+    baby.firstname = _.capitalize(baby.firstname);
+    baby.lastname = _.capitalize(baby.lastname);
     return res.json(baby);
   });
 };
@@ -49,6 +58,8 @@ exports.show = function (req, res) {
 exports.create = function (req, res) {
   baby.create(req.body, function (err, baby) {
     if(err) { return handleError(res, err); }
+    baby.firstname = _.capitalize(baby.firstname);
+    baby.lastname = _.capitalize(baby.lastname);
     return res.json(201, baby);
   });
 };
@@ -62,6 +73,8 @@ exports.update = function (req, res) {
     var updated = _.merge(baby, req.body);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
+      baby.firstname = _.capitalize(baby.firstname);
+      baby.lastname = _.capitalize(baby.lastname);
       return res.json(200, baby);
     });
   });
@@ -80,9 +93,24 @@ exports.destroy = function (req, res) {
 };
 
 exports.initialize = function (req, res) {
-  baby.insertMany(req.body.babies, function (err, babies) {
+  var babies = _.map(req.body.babies, function (baby) {
+    baby.firstname = baby.firstname.toLowerCase();
+    baby.lastname = baby.lastname.toLowerCase();
+    return baby;
+  });
+
+  baby.insertMany(babies, function (err, babies) {
     if (err) return handleError(res, err);
-    return res.json(201, babies);
+    return res.json(201,
+      _.chain(babies)
+        .map(function (baby) {
+          baby.firstname = _.capitalize(baby.firstname);
+          baby.lastname = _.capitalize(baby.lastname);
+          return baby;
+        })
+        .sortBy('firstname')
+        .value()
+    );
   });
 };
 
