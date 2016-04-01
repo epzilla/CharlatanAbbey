@@ -224,7 +224,9 @@ const Log = React.createClass({
 
   render: function () {
     let that = this;
-    let baby = this.state.baby ? this.state.baby.firstname : null;
+    let baby = this.state.baby;
+    let heOrShe = baby.sex === 'M' ? 'he' : 'she';
+    let himOrHer = baby.sex === 'M' ? 'him' : 'her';
     let ounceField, feederField, medField, burpField, diaperField, foodField,
         spitField, eventTypeField, napTimeField, timeAgoField;
 
@@ -242,8 +244,8 @@ const Log = React.createClass({
         );
       });
 
-      if (this.state.baby) {
-        let feeders = _.map(this.state.baby.feeders, function (f) {
+      if (baby) {
+        let feeders = _.map(baby.feeders, function (f) {
           return (
             <span className='switch' key={f.name}>
               <input type='radio' name='feeder' onChange={that._setFeeder} value={f.name}/>
@@ -254,7 +256,7 @@ const Log = React.createClass({
 
         feederField = (
           <div className='pad-bottom-1em feeder-field'>
-            <h3>Who fed her?</h3>
+            <h3>Who fed {himOrHer}?</h3>
             <div>
               {feeders}
             </div>
@@ -273,8 +275,12 @@ const Log = React.createClass({
 
       ounceField = (
         <div className='pad-bottom-1em ounce-field'>
-          <h3>How much did she eat?</h3>
-          <FractionalStepper onChange={this._setAmount} label="Oz."/>
+          <h3>How much did {heOrShe} eat?</h3>
+          <FractionalStepper
+            onChange={this._setAmount}
+            label="Oz."
+            initialValue={baby.defaults.ounces}
+          />
         </div>
       );
     }
@@ -304,7 +310,7 @@ const Log = React.createClass({
     if (this.state.eventType === EventTypes.FEEDING || this.state.eventType === EventTypes.MEDS) {
       medField = (
         <div className='pad-bottom-1em meds-field'>
-          <h3>Did she take any medicine? <small>(Check all that apply)</small></h3>
+          <h3>Did {heOrShe} take any medicine? <small>(Check all that apply)</small></h3>
           <div>
             <span className='switch'>
               <input type='checkbox' name='medicine' onChange={this._setMeds} value='gas drops'/>
@@ -441,8 +447,8 @@ const Log = React.createClass({
 
     return (
       <section className='modal-sheet'>
-        <form id='feed-form' data-baby={baby} onSubmit={this._submit}>
-          <h1>Log Event for {baby}</h1>
+        <form id='feed-form' data-baby={baby.firstname} onSubmit={this._submit}>
+          <h1>Log Event for {baby.firstname}</h1>
 
           <div className='pad-bottom-1em'>
             <h3>What type of event is this?</h3>

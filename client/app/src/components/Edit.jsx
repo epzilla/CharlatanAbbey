@@ -125,6 +125,7 @@ const Edit = React.createClass({
 
   getInitialState: function () {
     let e = EventStore.getEvent(this.props.params.logEvent);
+    let baby = BabyStore.getBaby(e.babyID);
     let diaper = e.diaper;
     let meds = e.medicine;
 
@@ -140,7 +141,7 @@ const Edit = React.createClass({
       logEvent: e,
       amount: e.amount,
       eventType: e.eventType,
-      name: e.name,
+      baby: baby,
       diaper: diaper || [],
       feeder: e.feeder,
       feeders: BabyStore.getFeeders(),
@@ -154,15 +155,17 @@ const Edit = React.createClass({
   render: function () {
     let that = this;
     let logEvent = this.state.logEvent;
-    let baby = logEvent.name;
+    let baby = this.state.baby;
     let time = moment(logEvent.time);
+    let heOrShe = this.state.baby.sex === 'M' ? 'he' : 'she';
+    let himOrHer = this.state.baby.sex === 'M' ? 'him' : 'her';
 
     let ounceField, feederField, medField, burpField, diaperField, spitField;
 
     if (logEvent.eventType === 'feeding') {
       ounceField = (
         <div className='pad-bottom-1em ounce-field'>
-          <h3>How much did she eat?</h3>
+          <h3>How much did {heOrShe} eat?</h3>
           <FractionalStepper
             onChange={this._setAmount}
             initialValue={logEvent.amount}
@@ -186,7 +189,7 @@ const Edit = React.createClass({
 
       feederField = (
         <div className='pad-bottom-1em feeder-field'>
-          <h3>Who fed her?</h3>
+          <h3>Who fed {himOrHer}?</h3>
           <div>
             {feeders}
           </div>
@@ -219,7 +222,7 @@ const Edit = React.createClass({
     if (logEvent.eventType === 'feeding' || logEvent.eventType === 'meds') {
       medField = (
         <div className='pad-bottom-1em meds-field'>
-          <h3>Did she take any medicine?</h3>
+          <h3>Did {heOrShe} take any medicine?</h3>
           <div>
             <span className='switch'>
               <input type='checkbox' name='medicine' onChange={this._setMeds}
@@ -315,8 +318,8 @@ const Edit = React.createClass({
 
     return (
       <section className='modal-sheet edit'>
-        <form id='feed-form' data-baby={baby} onSubmit={this._submit}>
-          <h1>Edit Event for {baby}</h1>
+        <form id='feed-form' data-baby={baby.firstname} onSubmit={this._submit}>
+          <h1>Edit Event for {baby.firstname}</h1>
 
           <div className='pad-bottom-1em'>
             <h3>What type of event was this?</h3>

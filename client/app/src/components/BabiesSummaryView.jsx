@@ -35,8 +35,9 @@ const BabiesSummaryView = React.createClass({
 
   render: function () {
     let feedingsInfo;
+    let that = this;
 
-    if (_.isEmpty(this.state.feedings)) {
+    if (_.isEmpty(that.state.feedings)) {
       feedingsInfo = (
         <div className="no-feedings">
           <h1>¯\_(ツ)_/¯</h1>
@@ -49,8 +50,8 @@ const BabiesSummaryView = React.createClass({
         </div>
       );
     } else {
-      feedingsInfo = _.map(this.state.feedings, function (feeding) {
-        return <FeedingInfo key={feeding._id} feeding={feeding} />;
+      feedingsInfo = _.map(that.state.feedings, function (feeding) {
+        return <FeedingInfo key={feeding._id} baby={_.find(that.props.babies, {_id: feeding.babyID})} feeding={feeding} />;
       });
     }
 

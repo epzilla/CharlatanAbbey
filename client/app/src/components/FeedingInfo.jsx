@@ -33,6 +33,8 @@ const FeedingInfo = React.createClass({
   render: function () {
     let medsEmoji, medsLi, spitLi, feederLi;
     let feeding = this.props.feeding;
+    let nextFeedingTime = moment(new Date(feeding.time)).add(this.props.baby.defaults.hours, 'hours').format('h:mma');
+
     let poopEmojiClass = cx({
       'emojifier': true,
       'ok': feeding.poopFlag === 0,
@@ -82,7 +84,7 @@ const FeedingInfo = React.createClass({
       <article key={this.props.key} className="list-group-item">
         <h2>{ feeding.name } {poopEmoji} {medsEmoji}</h2>
         <em>Next feeding at ~
-          { moment(new Date(feeding.time)).add(3, 'hours').format('h:mma') }
+          { nextFeedingTime }
         </em>
         <p>Last Feeding</p>
         <ul>

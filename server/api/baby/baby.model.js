@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var BabySchema = new Schema({
   firstname: String,
   lastname: String,
+  sex: String,
   birth: String,
   weight: String,
   feeders: [{
