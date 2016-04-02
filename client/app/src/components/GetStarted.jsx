@@ -8,6 +8,7 @@ import FractionalStepper from './FractionalStepper.jsx';
 import Wizard from './Wizard.jsx';
 import EditableList from './EditableList.jsx';
 import SwitchButton from './SwitchButton.jsx';
+import BabyNameWithIcon from './BabyNameWithIcon.jsx';
 import * as uuid from '../utils/uuid';
 import * as fractions from '../utils/fractions';
 
@@ -53,7 +54,7 @@ const View1 = React.createClass({
             onChange={this._setValue}
             value='Boy'
             className="boy"
-            defaultChecked
+            defaultChecked={this.props.initialState && this.props.initialState.babyASex && this.props.initialState.babyASex === 'Boy'}
           />
           <SwitchButton
             key='gender-select-1-G'
@@ -62,6 +63,7 @@ const View1 = React.createClass({
             onChange={this._setValue}
             value='Girl'
             className="girl"
+            defaultChecked={this.props.initialState && this.props.initialState.babyASex && this.props.initialState.babyASex === 'Girl'}
           />
         </div>
         <div className="form-group">
@@ -82,7 +84,7 @@ const View1 = React.createClass({
             onChange={this._setValue}
             value='Boy'
             className="boy"
-            defaultChecked
+            defaultChecked={this.props.initialState && this.props.initialState.babyASex && this.props.initialState.babyBSex === 'Boy'}
           />
           <SwitchButton
             key='gender-select-2-G'
@@ -91,6 +93,7 @@ const View1 = React.createClass({
             onChange={this._setValue}
             value='Girl'
             className="girl"
+            defaultChecked={this.props.initialState && this.props.initialState.babyASex && this.props.initialState.babyBSex === 'Girl'}
           />
         </div>
       </div>
@@ -213,12 +216,14 @@ const View5 = React.createClass({
 
   render: function () {
     let info = this.props.info;
-
     return (
       <div className="get-started-5">
         <h3>OK. Let’s review what we have. If it all looks good, click “Done” and we’ll get going!</h3>
         <ul>
-          <li className="babies">{info.babyA} and {info.babyB} {info.query.lastname}</li>
+          <li className="babies">
+            <BabyNameWithIcon baby={info.babyA} sex={info.babyASex}/>
+            <BabyNameWithIcon baby={info.babyB} sex={info.babyBSex}/>
+          </li>
           <li className="food">Eat about {fractions.getFraction(info.fullOunces, info.fracOunces)} ounces, every {fractions.getFraction(info.fullHours, info.fracHours)} hours.</li>
           <li className="people">Caretakers: {this._joinList(info.feeders)}</li>
           <li className="meds">Meds: {this._joinList(info.meds)}</li>
@@ -259,6 +264,8 @@ const GetStarted = React.createClass({
           name: 'Diaper Rash Cream'
         }
       ],
+      babyASex: 'Boy',
+      babyBSex: 'Boy',
       query: this.props.location.query,
       editing: null
     }
@@ -279,7 +286,7 @@ const GetStarted = React.createClass({
   },
 
   _setStateFromChildren: function (state) {
-    this.setState(state);
+    this.setState(state, () => console.info(this.state));
   },
 
   _submit: function (e) {

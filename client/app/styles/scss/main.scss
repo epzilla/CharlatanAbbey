@@ -372,29 +372,6 @@ input[type="date"] {
   }
 }
 
-.gender-select {
-  .switch {
-    &.boy {
-      label {
-        background: #0BB7D4;
-      }
-    }
-    &.girl {
-      label {
-        background: #E0798B;
-      }
-    }
-    input:checked~label {
-      &:before {
-        content: '\f058';
-        font-family: 'FontAwesome';
-        position: absolute;
-        left: 12px;
-      }
-    }
-  }
-}
-
 .pad-bottom-0-25em {
   padding-bottom: 0.25em;
 }
