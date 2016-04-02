@@ -2,6 +2,7 @@
 
 import React from 'react';
 import _ from 'lodash';
+import { Link } from 'react-router';
 import Actions from '../actions/view-actions';
 import FeedingInfo from './FeedingInfo.jsx';
 import EventStore from '../stores/event-store';
@@ -57,6 +58,11 @@ const BabiesSummaryView = React.createClass({
 
     return (
       <article className='home-screen'>
+        <section className="settings-menu-icon" >
+          <Link to="/settings" className="settings-btn flex-center">
+            <i className="fa fa-cog"></i>
+          </Link>
+        </section>
         <section className="baby-info">
           { feedingsInfo }
         </section>

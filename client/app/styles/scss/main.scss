@@ -7,6 +7,7 @@
 @import 'wizard';
 @import 'editable-list';
 @import 'get-started';
+@import 'settings';
 
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400italic,400,700);
 
@@ -262,7 +263,7 @@ input[type="date"] {
   height: 100%;
 }
 
-.close-btn {
+.close-btn, .settings-btn {
   color: aliceblue;
   text-decoration: none;
   position: absolute;
@@ -745,6 +746,7 @@ table {
     margin-bottom: 3em;
   }
 }
+
 .big-downward-arrow {
   position: relative;
   &:before {
@@ -754,5 +756,17 @@ table {
     font-weight: 100;
     position: absolute;
     left: 45%;
+  }
+}
+
+.settings-menu-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  .settings-btn {
+    z-index: 0
+  }
+  a {
+    color: lighten($purps, 30%);
   }
 }
