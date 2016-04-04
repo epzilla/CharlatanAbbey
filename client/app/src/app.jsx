@@ -12,6 +12,7 @@ import Log from './components/Log.jsx';
 import Edit from './components/Edit.jsx';
 import Timesheet from './components/Timesheet.jsx';
 import Settings from './components/Settings.jsx';
+import SettingsTimesheet from './components/SettingsTimesheet.jsx';
 import API from './utils/api';
 import ls from './utils/local-storage';
 
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <Route path="/timesheet" component={Timesheet}/>
         <Route path="/edit/:logEvent" component={Edit}/>
         <Route path="/settings" component={Settings}/>
+        <Route path="/settings/timesheet" component={SettingsTimesheet}/>
       </Route>
     </Router>
   ), document.getElementById('reaction'))

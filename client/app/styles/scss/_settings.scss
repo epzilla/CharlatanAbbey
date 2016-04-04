@@ -1,3 +1,38 @@
 .settings {
-	min-height: 100vh;
+  min-height: 100vh;
+
+  .settings-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  a {
+    color: #FAFAFA;
+    text-decoration: none;
+  }
+
+  .category {
+    position: relative;
+    border-top: 1px solid #ededed;
+    padding: 1em;
+    cursor: pointer;
+    &:last-of-type {
+      border-bottom: 1px solid #ededed;
+    }
+    .fa, .emojifier {
+      padding: 0 0.5em;
+      &.fa-child {
+        padding-right: 0.8125em;
+      }
+    }
+    &:after {
+      content: '\f054';
+      font-family: 'FontAwesome';
+      position: absolute;
+      right: 1em;
+    }
+    &:hover, &:active {
+      background-color: lighten($purps, 10%);
+    }
+  }
 }
