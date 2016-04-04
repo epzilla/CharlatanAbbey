@@ -286,7 +286,7 @@ const GetStarted = React.createClass({
   },
 
   _setStateFromChildren: function (state) {
-    this.setState(state, () => console.info(this.state));
+    this.setState(state);
   },
 
   _submit: function (e) {

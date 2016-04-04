@@ -138,9 +138,14 @@
   .switch {
     height: 2em;
     width: 50%;
+    position: relative;
     label {
       padding: 4px 12px;
       background-color: silver;
+    }
+    input {
+      height: 100%;
+      width: 100%;
     }
     &.boy {
       input:checked~label {
