@@ -2,6 +2,7 @@
 @import 'normalize';
 @import '../../../../node_modules/font-awesome/scss/font-awesome.scss';
 @import 'variables';
+@import 'react-toggle';
 @import 'helpers';
 @import 'mixins';
 @import 'wizard';
@@ -756,42 +757,5 @@ table {
     font-weight: 100;
     position: absolute;
     left: 45%;
-  }
-}
-
-.settings-menu-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  .settings-btn {
-    z-index: 0
-  }
-  a {
-    color: lighten($purps, 30%);
-  }
-}
-
-.form-group {
-  label[for='rate'] {
-    position: relative;
-    &:before {
-      content: '$';
-      background-color: #DADADA;
-      font-size: 1.2em;
-      left: 0.15em;
-      top: 1.2em;
-      color: #333;
-      width: 1em;
-      height: 1.6em;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      border-right: 1px solid #333;
-      position: absolute;
-    }
-  }
-  input[name='rate'] {
-    padding-left: 1.75em;
-    color: #333;
   }
 }

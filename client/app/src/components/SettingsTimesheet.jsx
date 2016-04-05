@@ -3,6 +3,7 @@
 import React from 'react';
 import Swipeable from 'react-swipeable';
 import { Link } from 'react-router';
+import Toggle from 'react-toggle';
 
 const SettingsTimesheet = React.createClass({
   contextTypes: {
@@ -20,32 +21,34 @@ const SettingsTimesheet = React.createClass({
 
   render: function () {
     return (
-      <section className='right-sheet'>
+      <section className='specific-settings right-sheet'>
         <Swipeable
             onSwipedRight={this._onSwipedRight}
             delta={100}
           >
-          <form id='settings-timesheet' onSubmit={this._submit}>
-            <div className='pad-bottom-1em'>
-              <h3>Caretaker Timesheet Settings</h3>
-            </div>
+          <div className="form-container flex-center">
+            <form id='settings-timesheet' onSubmit={this._submit}>
+              <div className='pad-bottom-1em'>
+                <h3>Caretaker Timesheet Settings</h3>
+              </div>
 
-            <div className='form-group'>
-              <label htmlFor='enable'>Enable Time Tracking</label>
-              <input type='checkbox' name='enable'/>
-            </div>
+              <div className='form-group'>
+                <label htmlFor='enable'>Enable Time Tracking</label>
+                <Toggle id='enable' defaultChecked={true} onChange={this._onChange}/>
+              </div>
 
-            <div className='form-group'>
-              <label htmlFor='rate'>Hourly Rate (USD)</label>
-              <input type='number' className='rate' name='rate'/>
-            </div>
+              <div className='form-group'>
+                <label htmlFor='rate'>Hourly Rate (USD)</label>
+                <input type='number' className='rate' name='rate'/>
+              </div>
 
-            <input type='submit'
-              className='btn btn-invert submit-btn'
-              disabled={this.state.submitting ? 'disabled' : false}
-              value={this.state.submitting ? 'Submitting...' : 'Submit'}
-            />
-          </form>
+              <input type='submit'
+                className='btn btn-invert submit-btn'
+                disabled={this.state.submitting ? 'disabled' : false}
+                value={this.state.submitting ? 'Saving...' : 'Save'}
+              />
+            </form>
+          </div>
         </Swipeable>
       </section>
     );

@@ -1,6 +1,7 @@
 import { ActionTypes } from '../constants/constants';
 import { EventEmitter } from 'events';
 import assign from 'object-assign';
+import _ from 'lodash';
 import AppDispatcher from '../dispatcher/app-dispatcher';
 import ls from '../utils/local-storage';
 
@@ -20,15 +21,21 @@ const FeederStore = assign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getFeeders: () => _feeders
+  getFeeders: () => {
+    if (_.isEmpty(_feeders)) {
+      _feeders = ls.get('feeders') || [];
+    }
+    return _feeders;
+  }
 });
 
 FeederStore.dispatchToken =
 AppDispatcher.register(function (payload) {
   let action = payload.action;
   switch (action.type) {
-    case ActionTypes.RECEIVE_FEEDERS:
-      _feeders = action.data;
+    case ActionTypes.RECEIVE_BABIES:
+      _feeders = action.data.feeders;
+      console.info(_feeders);
       ls.set('feeders', _feeders);
       break;
   }

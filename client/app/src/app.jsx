@@ -13,6 +13,8 @@ import Edit from './components/Edit.jsx';
 import Timesheet from './components/Timesheet.jsx';
 import Settings from './components/Settings.jsx';
 import SettingsTimesheet from './components/SettingsTimesheet.jsx';
+import SettingsSolidFoods from './components/SettingsSolidFoods.jsx';
+import SettingsCaretakers from './components/SettingsCaretakers.jsx';
 import API from './utils/api';
 import ls from './utils/local-storage';
 
@@ -42,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
     API.getEvents(babyIDs);
     API.getTimeLogs(babyIDs);
   }
+
   render((
     <Router history={browserHistory}>
       <Route path="/" component={App}>
@@ -53,6 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
         <Route path="/edit/:logEvent" component={Edit}/>
         <Route path="/settings" component={Settings}/>
         <Route path="/settings/timesheet" component={SettingsTimesheet}/>
+        <Route path="/settings/solids" component={SettingsSolidFoods}/>
+        <Route path="/settings/caretakers" component={SettingsCaretakers}/>
       </Route>
     </Router>
   ), document.getElementById('reaction'))
