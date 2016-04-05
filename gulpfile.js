@@ -43,7 +43,7 @@ gulp.task('sass', function () {
 
 gulp.task('browserify', function () {
   // Browserify/bundle the JS.
-  browserify(paths.app)
+  browserify(paths.app, {debug: true})
     .transform(babelify, {presets: ['es2015', 'react']})
     .bundle()
     .on('error', function (err) {
