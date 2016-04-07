@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Swipeable from 'react-swipeable';
-import { Link } from 'react-router';
 import Toggle from 'react-toggle';
 
 const SettingsTimesheet = React.createClass({
@@ -26,7 +25,7 @@ const SettingsTimesheet = React.createClass({
             onSwipedRight={this._onSwipedRight}
             delta={100}
           >
-          <div className="form-container flex-center">
+          <div className="form-container flex-center align-start">
             <form id='settings-timesheet' onSubmit={this._submit}>
               <div className='pad-bottom-1em'>
                 <h3>Caretaker Timesheet Settings</h3>

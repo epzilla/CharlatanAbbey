@@ -21,6 +21,11 @@ const SettingsFeeding = React.createClass({
     };
   },
 
+  _onSwipedRight: function (e) {
+    e.preventDefault();
+    this.context.router.push('/settings');
+  },
+
   _updateHours: function (val) {
     if (val.full) {
       this.setState({
@@ -63,7 +68,7 @@ const SettingsFeeding = React.createClass({
             onSwipedRight={this._onSwipedRight}
             delta={100}
           >
-          <div className="form-container flex-center">
+          <div className="form-container flex-center align-start">
             <form id='settings-feeding' onSubmit={this._submit}>
               <div className='pad-bottom-1em'>
                 <h3>Feeding Schedule</h3>

@@ -55,7 +55,7 @@ const SettingsSolidFoods = React.createClass({
             onSwipedRight={this._onSwipedRight}
             delta={100}
           >
-          <div className="form-container flex-center">
+          <div className="form-container flex-center align-start">
             <form id='settings-solid-foods' onSubmit={this._submit}>
               <div className='pad-bottom-1em'>
                 <h3>Solid Foods</h3>

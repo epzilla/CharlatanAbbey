@@ -55,7 +55,7 @@ const SettingsCaretakers = React.createClass({
             onSwipedRight={this._onSwipedRight}
             delta={100}
           >
-          <div className="form-container flex-center">
+          <div className="form-container flex-center align-start">
             <form id='settings-caretakers' onSubmit={this._submit}>
               <div className='pad-bottom-1em'>
                 <h3>Caretakers</h3>
