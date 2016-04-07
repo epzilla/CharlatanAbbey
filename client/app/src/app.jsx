@@ -17,6 +17,7 @@ import SettingsSolidFoods from './components/SettingsSolidFoods.jsx';
 import SettingsCaretakers from './components/SettingsCaretakers.jsx';
 import SettingsNames from './components/SettingsNames.jsx';
 import SettingsFeeding from './components/SettingsFeeding.jsx';
+import SettingsPoop from './components/SettingsPoop.jsx';
 import API from './utils/api';
 import ls from './utils/local-storage';
 
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <Route path="/settings/caretakers" component={SettingsCaretakers}/>
         <Route path="/settings/names" component={SettingsNames}/>
         <Route path="/settings/feedings" component={SettingsFeeding}/>
+        <Route path="/settings/poop" component={SettingsPoop}/>
       </Route>
     </Router>
   ), document.getElementById('reaction'))
