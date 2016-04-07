@@ -29,7 +29,9 @@ const BabyStore = assign({}, EventEmitter.prototype, {
 
   getFeeders: () => _feeders,
 
-  getSearchFailed: () => _failedSearch
+  getSearchFailed: () => _failedSearch,
+
+  getDefaults: () => _babies.length ? _babies[0].defaults : null
 });
 
 BabyStore.dispatchToken =

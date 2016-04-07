@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import _ from 'lodash';
 import EditableList from './EditableList.jsx';
 import FoodTypeStore from '../stores/food-type-store';
+import * as uuid from '../utils/uuid';
 
 const getFoodTypesFromStore = () => {
   let foodTypes = _.map(FoodTypeStore.getFoodTypes(), (ft) => {
