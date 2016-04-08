@@ -232,6 +232,10 @@ input[type="date"] {
   &.close-btn-fixed {
     position: fixed;
   }
+  &.breadcrumb {
+    left: 0;
+    right: auto;
+  }
   &:hover, &:focus {
     border: 1px solid aliceblue;
   }

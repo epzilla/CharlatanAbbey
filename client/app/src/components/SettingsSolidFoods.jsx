@@ -55,6 +55,9 @@ const SettingsSolidFoods = React.createClass({
             onSwipedRight={this._onSwipedRight}
             delta={100}
           >
+          <Link to="/settings" className="close-btn breadcrumb flex-center">
+            <i className="fa fa-chevron-left"></i>
+          </Link>
           <div className="form-container flex-center align-start">
             <form id='settings-solid-foods' onSubmit={this._submit}>
               <div className='pad-bottom-1em'>

@@ -3,6 +3,7 @@
 import React from 'react';
 import Swipeable from 'react-swipeable';
 import _ from 'lodash';
+import { Link } from 'react-router';
 import BabyStore from '../stores/baby-store';
 import FractionalStepper from './FractionalStepper.jsx';
 
@@ -68,6 +69,9 @@ const SettingsFeeding = React.createClass({
             onSwipedRight={this._onSwipedRight}
             delta={100}
           >
+          <Link to="/settings" className="close-btn breadcrumb flex-center">
+            <i className="fa fa-chevron-left"></i>
+          </Link>
           <div className="form-container flex-center align-start">
             <form id='settings-feeding' onSubmit={this._submit}>
               <div className='pad-bottom-1em'>

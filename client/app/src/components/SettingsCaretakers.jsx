@@ -57,6 +57,9 @@ const SettingsCaretakers = React.createClass({
           >
           <div className="form-container flex-center align-start">
             <form id='settings-caretakers' onSubmit={this._submit}>
+              <Link to="/settings" className="close-btn breadcrumb flex-center">
+                <i className="fa fa-chevron-left"></i>
+              </Link>
               <div className='pad-bottom-1em'>
                 <h3>Caretakers</h3>
               </div>

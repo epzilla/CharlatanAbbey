@@ -3,6 +3,7 @@
 import React from 'react';
 import Swipeable from 'react-swipeable';
 import Toggle from 'react-toggle';
+import { Link } from 'react-router';
 import Stepper from './Stepper.jsx';
 
 const SettingsPoop = React.createClass({
@@ -38,6 +39,9 @@ _updateWatchHours: function (val) {
             onSwipedRight={this._onSwipedRight}
             delta={100}
           >
+          <Link to="/settings" className="close-btn breadcrumb flex-center">
+            <i className="fa fa-chevron-left"></i>
+          </Link>
           <div className="form-container flex-center align-start">
             <form id='settings-timesheet' onSubmit={this._submit}>
               <div className='pad-bottom-1em'>
