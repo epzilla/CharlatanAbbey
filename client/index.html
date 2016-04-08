@@ -57,16 +57,8 @@
 <body>
   <div id="reaction"></div>
   <!-- build:js app/js/scripts.js -->
-  <script src="/app/src/fastclick.js"></script>
   <script src='/app/build/bundle.js'></script>
   <!-- endbuild -->
-  <script>
-    if ('addEventListener' in document) {
-      document.addEventListener('DOMContentLoaded', function() {
-        FastClick.attach(document.body);
-      }, false);
-    }
-  </script>
 </body>
 </html>
 

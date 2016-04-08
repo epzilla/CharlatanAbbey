@@ -51,20 +51,24 @@ _updateWatchHours: function (val) {
 
               <div className="get-started-2">
                 <h3>After how long would you start to be concerned if your baby hadn’t pooped?</h3>
-                <div>
+                <div className='stepper-with-label'>
                   <Stepper
+                    full
                     onChange={this._updateWarningHours}
                     label="Hrs."
                     initialValue={this.state.watchHours ? this.state.watchHours : 24}
                   />
+                  <span className="step-label">Hours</span>
                 </div>
-                <div>
-                  <h3>After how long would you call the doctor?</h3>
+                <h3>After how long would you call the doctor?</h3>
+                <div className='stepper-with-label'>
                   <Stepper
+                    full
                     onChange={this._updateWarningHours}
                     label="Hrs."
                     initialValue={this.state.warningHours ? this.state.warningHours : 72}
                   />
+                  <span className="step-label">Hours</span>
                 </div>
               </div>
 

@@ -10,12 +10,21 @@ const SettingsTimesheet = React.createClass({
   },
 
   getInitialState: () => {
-    return {submitting: false}
+    return {
+      submitting: false,
+      enabled: true
+    }
   },
 
   _onSwipedRight: function (e) {
     e.preventDefault();
     this.context.router.push('/settings');
+  },
+
+  _onChange: function () {
+    this.setState({
+      enabled: !!this.state.enabled
+    });
   },
 
   render: function () {
@@ -33,7 +42,7 @@ const SettingsTimesheet = React.createClass({
 
               <div className='form-group'>
                 <label htmlFor='enable'>Enable Time Tracking</label>
-                <Toggle id='enable' defaultChecked={true} onChange={this._onChange}/>
+                <Toggle id='enable' defaultChecked={this.state.enabled} onChange={this._onChange}/>
               </div>
 
               <div className='form-group'>
