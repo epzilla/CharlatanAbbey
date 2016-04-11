@@ -10,6 +10,11 @@ var BabySchema = new Schema({
   feeders: [{
   	name: String
   }],
+  meds: [{
+    name: String,
+    dosage: String,
+    hours: Number
+  }],
   defaults: {
     hours: Number,
     ounces: Number

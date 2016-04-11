@@ -43,7 +43,7 @@ _updateWatchHours: function (val) {
             <i className="fa fa-chevron-left"></i>
           </Link>
           <div className="form-container flex-center align-start">
-            <form id='settings-timesheet' onSubmit={this._submit}>
+            <form id='settings-poop' onSubmit={this._submit}>
               <div className='pad-bottom-1em'>
                 <h3>Poop Schedule</h3>
               </div>

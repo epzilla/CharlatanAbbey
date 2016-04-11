@@ -8,6 +8,7 @@ import ls from '../utils/local-storage';
 const CHANGE_EVENT = 'change';
 let _babies = ls.get('babies') || [];
 let _feeders = ls.get('feeders') || [];
+let _meds = ls.get('med-schedule') || {};
 let _failedSearch;
 
 const BabyStore = assign({}, EventEmitter.prototype, {
@@ -29,6 +30,8 @@ const BabyStore = assign({}, EventEmitter.prototype, {
 
   getFeeders: () => _feeders,
 
+  getMeds: () => _meds,
+
   getSearchFailed: () => _failedSearch,
 
   getDefaults: () => _babies.length ? _babies[0].defaults : null
@@ -41,8 +44,12 @@ AppDispatcher.register(function (payload) {
     case ActionTypes.RECEIVE_BABIES:
       _babies = action.data;
       _feeders = _babies[0].feeders;
+      _meds = {};
+      _meds[_babies[0]._id] = _babies[0].meds;
+      _meds[_babies[1]._id] = _babies[1].meds;
       ls.set('babies', _babies);
       ls.set('feeders', _feeders);
+      ls.set('med-schedule', _meds);
       break;
     case ActionTypes.NO_BABIES_FOUND:
       _failedSearch = true;

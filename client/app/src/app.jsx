@@ -18,6 +18,7 @@ import SettingsCaretakers from './components/SettingsCaretakers.jsx';
 import SettingsNames from './components/SettingsNames.jsx';
 import SettingsFeeding from './components/SettingsFeeding.jsx';
 import SettingsPoop from './components/SettingsPoop.jsx';
+import SettingsMeds from './components/SettingsMeds.jsx';
 import API from './utils/api';
 import ls from './utils/local-storage';
 
@@ -65,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <Route path="/settings/names" component={SettingsNames}/>
         <Route path="/settings/feedings" component={SettingsFeeding}/>
         <Route path="/settings/poop" component={SettingsPoop}/>
+        <Route path="/settings/meds" component={SettingsMeds}/>
       </Route>
     </Router>
   ), document.getElementById('reaction'))

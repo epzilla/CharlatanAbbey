@@ -54,7 +54,8 @@ const Actions = {
         hours: fractions.getDecimal(info.fullHours, info.fracHours),
         ounces: fractions.getDecimal(info.fullOunces, info.fracOunces)
       },
-      feeders: _.map(info.feeders, feeder => ({name: feeder.name}))
+      feeders: _.map(info.feeders, feeder => ({name: feeder.name})),
+      meds: _.map(info.meds, med => ({name: med.name}))
     };
 
     let babyB = _.assign({}, babyA, {firstname: info.babyB});
