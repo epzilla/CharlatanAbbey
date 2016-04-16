@@ -1,12 +1,11 @@
 'use strict';
 
 import React from 'react';
-import _ from 'lodash';
 import Swipeable from 'react-swipeable';
-import Toggle from 'react-toggle';
 import { Link } from 'react-router';
+import _ from 'lodash';
+import EditableList from './EditableList.jsx';
 import BabyStore from '../stores/baby-store';
-import MedScheduler from './MedScheduler.jsx';
 import * as uuid from '../utils/uuid';
 
 const getMedsFromStore = () => {
@@ -24,8 +23,16 @@ const SettingsMeds = React.createClass({
     router: React.PropTypes.object.isRequired
   },
 
-  getInitialState: () => {
+  getInitialState: function () {
     return getMedsFromStore();
+  },
+
+  componentDidMount: function () {
+    BabyStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function () {
+    BabyStore.removeChangeListener(this._onChange);
   },
 
   _onSwipedRight: function (e) {
@@ -33,32 +40,35 @@ const SettingsMeds = React.createClass({
     this.context.router.push('/settings');
   },
 
-  render: function () {
-    let meds = _.map(this.state.meds, med => {
-      return <MedScheduler key={med.uuid} med={med} onChange={this._updateMedSchedule} />;
-    });
+  _onChange: function () {
+    this.setState(getMedsFromStore());
+  },
 
+  _onListEdit: function (e) {
+    this.setState(e);
+  },
+
+  render: function () {
     return (
       <section className='specific-settings right-sheet'>
         <Swipeable
             onSwipedRight={this._onSwipedRight}
             delta={100}
           >
-          <Link to="/settings" className="close-btn breadcrumb flex-center">
-            <i className="fa fa-chevron-left"></i>
-          </Link>
           <div className="form-container flex-center align-start">
             <form id='settings-meds' onSubmit={this._submit}>
+              <Link to="/settings" className="close-btn breadcrumb flex-center">
+                <i className="fa fa-chevron-left"></i>
+              </Link>
               <div className='pad-bottom-1em'>
-                <h3>Medicine Schedule</h3>
+                <h3>Medicines</h3>
               </div>
 
-              <div className='form-group'>
-                <label htmlFor='enable'>Enable Medicine Reminders</label>
-                <Toggle id='enable' defaultChecked={true} onChange={this._onChange}/>
-              </div>
-
-              { meds }
+              <EditableList
+                className="caretaker-list"
+                onChange={this._onListEdit}
+                items={this.state.meds}
+              />
 
               <input type='submit'
                 className='btn btn-invert submit-btn'

@@ -44,9 +44,8 @@ AppDispatcher.register(function (payload) {
     case ActionTypes.RECEIVE_BABIES:
       _babies = action.data;
       _feeders = _babies[0].feeders;
-      _meds = {};
-      _meds[_babies[0]._id] = _babies[0].meds;
-      _meds[_babies[1]._id] = _babies[1].meds;
+      _meds = [];
+      _meds.concat(_babies[0].meds).concat(_babies[1].meds);
       ls.set('babies', _babies);
       ls.set('feeders', _feeders);
       ls.set('med-schedule', _meds);

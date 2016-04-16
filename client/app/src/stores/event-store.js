@@ -198,10 +198,10 @@ const updateStore = function () {
     .groupBy('name')
     .value();
 
-  _.map(_latestMeds, function (baby) {
-    let hoursSinceMeds = moment(Date.now()).diff(baby[0].time, 'hours');
-    _groupedFeedings[baby[0].name][0].medFlag = (hoursSinceMeds > 8);
-  });
+  // _.map(_latestMeds, function (baby) {
+  //   let hoursSinceMeds = moment(Date.now()).diff(baby[0].time, 'hours');
+  //   _groupedFeedings[baby[0].name][0].medFlag = (hoursSinceMeds > 8);
+  // });
 
   _.map(_latestPoops, function (baby) {
     let hoursSincePoop = moment(Date.now()).diff(baby[0].time, 'hours');
